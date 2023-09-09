@@ -1,0 +1,33 @@
+#register-city-manager-additional-form {
+  .js-form-item {
+    #locality-select {
+      margin-top: 0;
+    }
+  }
+  .page-title-title {
+    i {
+      margin-right: .938rem;
+    }
+  }
+
+  .form-item-field-phone, .form-item-administrativearea,
+  .form-item-locality, .form-item-addressline1,
+  .form-item-dependentlocality, .form-item-postalcode {
+    margin-top: 0;
+  }
+
+  .form-actions {
+    padding-top: 0 !important;
+  }
+}
+
+div[class*="container-steps-6"] {
+  @include media-breakpoint-down(sm) {
+    .content-btn-logo {
+      height: 55px;
+      .title-progress {
+        display: none;
+      }
+    }
+  }
+}

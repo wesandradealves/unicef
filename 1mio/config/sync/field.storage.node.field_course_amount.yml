@@ -1,0 +1,20 @@
+uuid: ba40b500-d1ab-4660-bdec-643b8675108a
+langcode: pt-br
+status: true
+dependencies:
+  module:
+    - node
+id: node.field_course_amount
+field_name: field_course_amount
+entity_type: node
+type: integer
+settings:
+  unsigned: false
+  size: normal
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

@@ -1,0 +1,26 @@
+form[id*="tfa-"] {
+  padding: 4rem;
+
+  & ul[data-drupal-selector="edit-apps"],
+  & > [data-drupal-selector="edit-info"] {
+    padding-top: 2rem;
+  }
+
+  & > #edit-actions {
+    padding-top: 2rem;
+  }
+
+  & h3 {
+    font-size: 1.1rem;
+  }
+
+  & [data-drupal-selector="edit-cancel"] {
+    color: $blue-primary-main;
+    background: $gray-primary-10;
+
+    &:hover {
+      background: $gray-primary-15;
+    }
+
+  }
+}

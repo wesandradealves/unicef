@@ -1,0 +1,11 @@
+uuid: e055055c-7bb0-4139-be61-b91c719bab5e
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.company_segment
+id: taxonomy_term.company_segment
+target_entity_type_id: taxonomy_term
+target_bundle: company_segment
+default_langcode: site_default
+language_alterable: false

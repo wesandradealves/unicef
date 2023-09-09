@@ -1,0 +1,41 @@
+{#
+/**
+  * @file
+  * Theme override for a 'form' element.
+  *
+  * Available variables
+  * - attributes: A list of HTML attributes for the wrapper element.
+  * - children: The child elements of the form.
+  *
+  * @see template_preprocess_form()
+  */
+#}
+
+{# Hero Banner public profile #}
+{{
+  include('@umio/components/hero_banner_public_profile.html.twig', {
+    title: ('Self-declaration form'|t),
+    image_banner: '/' ~ directory ~ '/images/banner-public-profile.png',
+  })
+}}
+
+{# Title description #}
+<section class="cb-young-public-profile--head">
+  {% include '@umio/components/title_description.html.twig' with {
+    titleColor: '#575757',
+    title: ("Select the alternatives that declare yourself"|t),
+    description: ("This information is not shared and is not required to respond. But they help us to direct you with priority to some vacancies."|t),
+    }
+  %}
+</section>
+
+{# Public profile form #}
+<section>
+  <div class="col-12 col-md-10 offset-md-1 col-lg-6 offset-lg-3">
+    {% block content %}
+      <form{{ attributes }}>
+        {{ children }}
+      </form>
+    {% endblock %}
+  </div>
+</section>

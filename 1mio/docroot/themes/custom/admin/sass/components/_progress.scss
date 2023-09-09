@@ -1,0 +1,7 @@
+.progress {
+  min-height: 2rem;
+  &__track {
+    min-height: calc(2rem - 2px);
+  }
+
+}

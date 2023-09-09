@@ -1,0 +1,79 @@
+uuid: c621e569-1178-4f7c-bb69-824856577d22
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.company.field_company_address
+    - field.field.node.company.field_company_branch_activity
+    - field.field.node.company.field_company_cnpj
+    - field.field.node.company.field_company_commitment_term
+    - field.field.node.company.field_company_corporate_name
+    - field.field.node.company.field_company_cover
+    - field.field.node.company.field_company_email
+    - field.field.node.company.field_company_justify
+    - field.field.node.company.field_company_logo
+    - field.field.node.company.field_company_main_office
+    - field.field.node.company.field_company_mission_statement
+    - field.field.node.company.field_company_phone
+    - field.field.node.company.field_company_phone_extension
+    - field.field.node.company.field_company_profile
+    - field.field.node.company.field_company_public
+    - field.field.node.company.field_company_region
+    - field.field.node.company.field_company_scope_operation
+    - field.field.node.company.field_company_second_email
+    - field.field.node.company.field_company_segment
+    - field.field.node.company.field_company_size
+    - field.field.node.company.field_company_start_activity
+    - field.field.node.company.field_company_telephone
+    - field.field.node.company.field_company_type
+    - field.field.node.company.field_company_unicef_stamp
+    - field.field.node.company.field_company_values_statement
+    - field.field.node.company.field_deleted_at
+    - node.type.company
+  module:
+    - user
+id: node.company.teaser
+targetEntityType: node
+bundle: company
+mode: teaser
+content:
+  content_moderation_control:
+    settings: {  }
+    third_party_settings: {  }
+    weight: -20
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  field_company_address: true
+  field_company_branch_activity: true
+  field_company_cnpj: true
+  field_company_commitment_term: true
+  field_company_corporate_name: true
+  field_company_cover: true
+  field_company_email: true
+  field_company_justify: true
+  field_company_logo: true
+  field_company_main_office: true
+  field_company_mission_statement: true
+  field_company_phone: true
+  field_company_phone_extension: true
+  field_company_profile: true
+  field_company_public: true
+  field_company_region: true
+  field_company_scope_operation: true
+  field_company_second_email: true
+  field_company_segment: true
+  field_company_size: true
+  field_company_start_activity: true
+  field_company_telephone: true
+  field_company_type: true
+  field_company_unicef_stamp: true
+  field_company_values_statement: true
+  field_deleted_at: true
+  langcode: true
+  search_api_excerpt: true

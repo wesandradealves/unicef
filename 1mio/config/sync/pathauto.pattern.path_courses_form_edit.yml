@@ -1,0 +1,22 @@
+uuid: b45ede6d-c817-4bb4-aef8-01e43a943859
+langcode: pt-br
+status: true
+dependencies:
+  module:
+    - node
+id: path_courses_form_edit
+label: 'Cursos Form Edit'
+type: 'canonical_entities:node'
+pattern: '/cursos/[node:nid]/edit'
+selection_criteria:
+  31e260b8-a3a1-4289-a35e-31e5a781e92e:
+    id: node_type
+    negate: false
+    uuid: 31e260b8-a3a1-4289-a35e-31e5a781e92e
+    context_mapping:
+      node: node
+    bundles:
+      course: course
+selection_logic: and
+weight: -9
+relationships: {  }

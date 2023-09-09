@@ -1,0 +1,79 @@
+{#
+/**
+ * @file
+ * Theme override to display a menu.
+ *
+ * Available variables:
+ * - menu_name: The machine name of the menu.
+ * - items: A nested list of menu items. Each menu item contains:
+ *   - attributes: HTML attributes for the menu item.
+ *   - below: The menu item child items.
+ *   - title: The menu link title.
+ *   - url: The menu link url, instance of \Drupal\Core\Url
+ *   - localized_options: Menu link localized options.
+ *   - is_expanded: true if the link has visible children within the current
+ *     menu tree.
+ *   - is_collapsed: true if the link has children within the current menu tree
+ *     that are not currently visible.
+ *   - in_active_trail: true if the link is in the active trail.
+ */
+#}
+{% import _self as menus %}
+
+{#
+  We call a macro which calls itself to render the full tree.
+  @see https://twig.symfony.com/doc/1.x/tags/macro.html
+#}
+{{ menus.menu_links(items, attributes, 0) }}
+
+{% macro menu_links(items, attributes, menu_level) %}
+  {% import _self as menus %}
+  {% if items %}
+    <ul{{ attributes.addClass('menu navbar-nav') }}>
+    {% for item in items %}
+      {%
+        set classes = [
+          'menu-item',
+          item.below ? 'dropdown',
+          'nav-item p-0'
+        ]
+      %}
+      <li{{ item.attributes.addClass(classes) }}>
+        {% set title = item.title %}
+        {% if item.url.options.attributes.icon_class %}
+          {% set title %}
+            <i class="{{ item.url.options.attributes.icon_class }}"></i> {{ item.title }}
+          {% endset %}
+        {% endif %}
+        {% if item.below %}
+          {{ link(title, item.url, {
+              'class': ['nav-link dropdown-toggle h-100'],
+              'id': item.title|clean_class,
+              'role': 'button',
+              'data-bs-toggle': 'dropdown',
+              'aria-expanded': 'FALSE'
+            })
+          }}
+        {% else %}
+          {{ link(title, item.url, { 'class': ['nav-link'] }) }}
+        {% endif %}
+        {% if item.below %}
+          {{ menus.submenu_links(item, item.below, attributes) }}
+        {% endif %}
+      </li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endmacro %}
+
+
+{% macro submenu_links(item, items, attributes) %}
+  {% import _self as menus %}
+  <ul class="menu dropdown-menu m-0 p-0" aria-labelledby="{{ item.title|clean_class }}">
+  {% for item in items %}
+    <li{{ item.attributes }}>
+      {{ link(item.title, item.url, { 'class': ['dropdown-item h-100'] }) }}
+    </li>
+  {% endfor %}
+  </ul>
+{% endmacro %}

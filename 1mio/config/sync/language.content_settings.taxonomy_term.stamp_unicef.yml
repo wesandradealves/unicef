@@ -1,0 +1,11 @@
+uuid: 6c6a0af8-6f7a-4e8f-8da2-135f919d61cc
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.stamp_unicef
+id: taxonomy_term.stamp_unicef
+target_entity_type_id: taxonomy_term
+target_bundle: stamp_unicef
+default_langcode: site_default
+language_alterable: false

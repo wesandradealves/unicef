@@ -1,0 +1,29 @@
+uuid: 18644e09-5659-4c4d-8ed7-da9ec8b66089
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_company_branch_activity
+    - node.type.company
+    - taxonomy.vocabulary.company_branch_activity
+id: node.company.field_company_branch_activity
+field_name: field_company_branch_activity
+entity_type: node
+bundle: company
+label: 'Ramo de atividade'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      company_branch_activity: company_branch_activity
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: company_branch_activity
+field_type: entity_reference

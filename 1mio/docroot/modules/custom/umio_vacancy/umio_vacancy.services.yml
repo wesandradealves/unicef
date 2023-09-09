@@ -1,0 +1,9 @@
+services:
+  umio_vacancy.edit_form:
+    class: Drupal\umio_vacancy\Service\VacancyPreprocessEditFormService
+    arguments: [
+      '@current_user'
+    ]
+
+  umio_vacancy.form:
+    class: Drupal\umio_vacancy\Service\VacancyFormService

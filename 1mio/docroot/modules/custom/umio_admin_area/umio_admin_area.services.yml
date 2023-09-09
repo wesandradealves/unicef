@@ -1,0 +1,6 @@
+services:
+  umio_admin_area.vacancies_closed:
+    class: Drupal\umio_admin_area\Service\VacanciesClosedService
+    arguments: [
+      "@entity_type.manager"
+    ]

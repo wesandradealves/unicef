@@ -1,0 +1,86 @@
+{#
+/**
+ * @file
+ * Theme override to display a menu.
+ *
+ * Available variables:
+ * - subtitle: Subtitle for the page.
+ * - vacancies: Data for this content type.
+ * - courses: Data for this content type.
+ */
+#}
+
+{% set col_classes = [
+  'col-12',
+  'col-md-6',
+  'col-lg-3',
+  'col-xl-2',
+  'mb-3'
+]%}
+
+{% set title_classes = [
+  'd-flex',
+  'align-items-center',
+  'text-primary',
+  'fw-bold mb-3'
+]%}
+
+<div class='ta-dashboard layout-content py-5'>
+  <div class="py-3 vacancies">
+    <h2 class="{{ title_classes|join(' ') }}">
+      <i class="ph-suitcase-bold me-3"></i>{{ 'Vacancies'|t }}
+    </h2>
+    <div class="row py-4">
+      <div class="{{ col_classes|join(' ') }}">
+        {% if vacancies.in_approval is not null %}
+          {% include '@admin/components/dashboard-card.html.twig' with { title: vacancies.in_approval, text: ('Sended'|t) } %}
+        {% endif %}
+      </div>
+      <div class="{{ col_classes|join(' ') }}">
+        {% if vacancies.published is not null %}
+          {% include '@admin/components/dashboard-card.html.twig' with { title: vacancies.published, text: ('Published'|t({}, {'context' : 'Vacancy'})) } %}
+        {% endif %}
+      </div>
+      <div class="{{ col_classes|join(' ') }}">
+        {% if vacancies.count is not null %}
+          {% include '@admin/components/dashboard-card.html.twig' with { title: vacancies.count, text: ('Views'|t({}, {'context' : 'Dashboard'})) } %}
+        {% endif %}
+      </div>
+      {% if 'company_manager' in user.getroles(true) %}
+        <div class="{{ col_classes|join(' ') }}">
+          {{ drupal_view('company_manager', 'vacancies_closed', user.id) }}
+        </div>
+      {% else %}
+        <div class="{{ col_classes|join(' ') }}">
+          {{ drupal_view('talent_acquisition', 'vacancies_closed', user.id) }}
+        </div>
+      {% endif %}
+    </div>
+    {% if 'partner_talent_acquisition' in user.getroles(true) %}
+      <div class="row py-4">
+        <div class="col-12 col-xl-8">
+          <div class="dashboard-card px-3 px-sm-5 py-4">
+            {{ drupal_form('Drupal\\umio_admin_area\\Form\\VacanciesClosedForm') }}
+          </div>
+        </div>
+      </div>
+    {% endif %}
+  </div>
+  <div class="py-3 courses">
+    <h2 class="{{ title_classes|join(' ') }}">
+      <i class="ph-graduation-cap-bold me-3"></i>{{ 'Courses'|t }}
+    </h2>
+    <div class="row py-4">
+      <div class="{{ col_classes|join(' ') }}">
+        {% if courses.published is not null %}
+          {% include '@admin/components/dashboard-card.html.twig' with { title: courses.published, text: ('Published'|t({}, {'context' : 'Course'})) } %}
+        {% endif %}
+      </div>
+      <div class="{{ col_classes|join(' ') }}">
+        {% if courses.count is not null %}
+          {% include '@admin/components/dashboard-card.html.twig' with { title: courses.count, text: ('Views'|t({}, {'context' : 'Dashboard'})) } %}
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>

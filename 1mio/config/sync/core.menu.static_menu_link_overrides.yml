@@ -1,0 +1,52 @@
+_core:
+  default_config_hash: o4bYR9ZupWb3AsOIizTUG4g-nu1mdJqA59UB7QT-ifQ
+langcode: pt-br
+definitions:
+  node__add_page:
+    menu_name: tools
+    parent: ''
+    weight: 0
+    expanded: false
+    enabled: false
+  standard__front_page:
+    menu_name: main
+    parent: ''
+    weight: -50
+    expanded: false
+    enabled: false
+  vacancy__create:
+    menu_name: main
+    parent: ''
+    weight: -49
+    expanded: false
+    enabled: false
+  company__view_list:
+    menu_name: main
+    parent: ''
+    weight: -47
+    expanded: false
+    enabled: false
+  umio_user__view_list:
+    menu_name: main
+    parent: ''
+    weight: -48
+    expanded: false
+    enabled: false
+  course__create:
+    menu_name: main
+    parent: ''
+    weight: -42
+    expanded: false
+    enabled: true
+  contact__site_page:
+    menu_name: footer
+    parent: ''
+    weight: -43
+    expanded: false
+    enabled: false
+  user__page:
+    menu_name: account
+    parent: ''
+    weight: -10
+    expanded: false
+    enabled: false

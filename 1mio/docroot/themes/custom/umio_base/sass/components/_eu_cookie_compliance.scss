@@ -1,0 +1,78 @@
+.eu-cookie-compliance-content{
+  max-width: 90%;
+  @include media-breakpoint-up(md) {
+    max-width: 90%;
+    width: 90%;
+  }
+  @include media-breakpoint-up(lg) {
+    max-width: 65%;
+    width: 65%;
+  }
+  @include media-breakpoint-up(xl) {
+    max-width: 50%;
+    width: 50%;
+    padding-right: 1rem;
+    padding-left: 1rem;
+  }
+  padding: 2rem 0;
+  .eu-cookie-compliance-buttons {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    @include media-breakpoint-down(md) {
+      width: 100%;
+    }
+    @include media-breakpoint-up(lg) {
+      width: 40%;
+    }
+    button {
+      font-family: Nunito;
+      font-weight: 700;
+      line-height: 1rem;
+      letter-spacing: 0em;
+      border-radius: 2rem;
+      padding: 0.75rem 0;
+      text-decoration: none;
+      text-shadow: unset;
+      box-shadow: unset;
+      width: 45%;
+      @include media-breakpoint-up(md) {
+        width: 8rem;
+      }
+      &.eu-cookie-compliance-more-button-thank-you {
+        display: none;
+        width: 10rem !important;
+      }
+      &.eu-cookie-compliance-hide-button {
+        width: 100%;
+        @include media-breakpoint-up(md) {
+          width: 10rem;
+        }
+      }
+      &.eu-cookie-compliance-secondary-button,
+      &.eu-cookie-compliance-hide-button {
+        color: $gray-primary-10;
+        background-color: $blue-primary-main;
+        border: 2px solid $gray-primary-10;
+        background-image: unset;
+        &:hover, &:active {
+          color: $gray-primary-10;
+          background-color: $blue-primary-dark;
+          border: 2px solid $blue-primary-dark;
+        }
+      }
+      &.eu-cookie-compliance-default-button,
+      &.eu-cookie-compliance-more-button-thank-you {
+        color: $blue-primary-main;
+        background-color: $gray-primary-10;
+        border: 2px solid $gray-primary-10;
+        background-image: unset;
+        &:hover, &:active {
+          color: $gray-primary-10;
+          background-color: $blue-primary-dark;
+          border: 2px solid $blue-primary-dark;
+        }
+      }
+    }
+  }
+}

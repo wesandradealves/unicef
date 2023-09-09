@@ -1,0 +1,98 @@
+.btn {
+  height: 48px;
+  border-radius: 32px!important;
+  &-sm {
+    height: 32px;
+  }
+  &-lg {
+    height: 64px;
+  }
+  &:focus {
+    box-shadow: none !important;
+  }
+  &-primary {
+    @include make-primary-button();
+  }
+  &-outline-primary {
+    @include make-outline-primary-button();
+  }
+  &-success {
+    @include make-success-button();
+  }
+  &-danger {
+    @include make-danger-button();
+  }
+}
+
+.btn-green {
+  background-color: $green-piscine-primary-main;
+  border-color: $green-piscine-primary-main;
+  color: $gray-primary-10;
+  &:hover {
+    background-color: $green-piscine-primary-dark;
+    border-color: $green-piscine-primary-dark;
+    color: $gray-primary-10;
+  }
+  &:active {
+    background-color: $green-piscine-primary-light;
+    border-color: $green-piscine-primary-light;
+    color: $green-piscine-primary-dark;
+    color: $gray-primary-10;
+  }
+}
+
+.btn-outline-green {
+  color: $green-piscine-primary-main;
+  background-color: $gray-primary-10;
+  border: 2px solid $green-piscine-primary-main;
+  &:hover {
+    background-color: $green-piscine-primary-dark;
+    border-color: $green-piscine-primary-dark;
+    color: $gray-primary-10;
+  }
+  &:active {
+    background-color: $green-piscine-primary-light;
+    border-color: $green-piscine-primary-light;
+    color: $green-piscine-primary-dark;
+  }
+}
+
+.btn-purple {
+  background-color: $purple-primary-main;
+  border-color: $purple-primary-main;
+  color: $gray-primary-10;
+  &:hover {
+    background-color: $purple-primary-dark;
+    border-color: $purple-primary-dark;
+  }
+  &:active {
+    background-color: $purple-primary-light;
+    border-color: $purple-primary-light;
+    color: $purple-primary-dark;
+  }
+}
+
+.btn-outline-purple {
+  color: $purple-primary-main;
+  background-color: $gray-primary-10;
+  border: 2px solid $purple-primary-main;
+  &:hover {
+    background-color: $purple-primary-dark;
+    border-color: $purple-primary-dark;
+    color: $gray-primary-10;
+  }
+  &:active {
+    background-color: $purple-primary-light;
+    border-color: $purple-primary-light;
+    color: $purple-primary-dark;
+  }
+}
+
+a {
+  &.btn {
+    line-height: 2;
+    &-sm {
+      line-height: 1.5;
+    }
+  }
+}

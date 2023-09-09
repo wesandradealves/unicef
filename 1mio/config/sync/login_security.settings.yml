@@ -1,0 +1,22 @@
+_core:
+  default_config_hash: DftMffb4je4TYBtv6tAjHrXDtW3HBZ85hU9mCFJpCgM
+langcode: pt-br
+track_time: 3
+user_wrong_count: 0
+host_wrong_count: 6
+host_wrong_count_hard: 11
+activity_threshold: 0
+disable_core_login_error: 0
+notice_attempts_available: 0
+last_login_timestamp: 0
+last_access_timestamp: 0
+notice_attempts_message: 'Senha ou e-mail incorretos. Confira e tente novamente.'
+host_soft_banned: 'Você atingiu o máximo de tentativas de acesso. Por segurança, seu acesso ao 1MiO foi bloqueado. Solicite o desbloqueio ao e-mail contato@1mio.com.br'
+host_hard_banned: 'Para acessar este site novamente, entre em contato pelo e-mail contato@1mio.com.br'
+user_blocked: 'Para acessar este site novamente, entre em contato pelo e-mail contato@1mio.com.br'
+user_blocked_email_subject: 'Security action: The user @username has been blocked.'
+user_blocked_email_body: 'The user @username (@edit_uri) has been blocked at @site due to the amount of failed login attempts. Please check the logs for more information.'
+login_activity_email_subject: 'Security information: Unexpected login activity has been detected at @site.'
+login_activity_email_body: 'The configured threshold of @activity_threshold logins has been reached with a total of @tracking_current_count invalid login attempts. You should review your log information about login attempts at @site.'
+user_blocked_notification_emails: ''
+login_activity_notification_emails: ''

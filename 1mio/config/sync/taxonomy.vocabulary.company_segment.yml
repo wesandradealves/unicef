@@ -1,0 +1,8 @@
+uuid: 398e83f0-ccfe-4abd-a3c3-98053dda5e18
+langcode: pt-br
+status: true
+dependencies: {  }
+name: Segmento
+vid: company_segment
+description: ''
+weight: 0

@@ -1,0 +1,30 @@
+uuid: b3358f16-fe6b-435c-a6b7-601c1c7811f3
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.company_size
+id: taxonomy_term.company_size.default
+targetEntityType: taxonomy_term
+bundle: company_size
+mode: default
+content:
+  name:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  status:
+    type: boolean_checkbox
+    weight: 1
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+hidden:
+  description: true
+  langcode: true
+  path: true

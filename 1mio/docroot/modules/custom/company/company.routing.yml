@@ -1,0 +1,75 @@
+# Settings form the module
+company.settings:
+  path: '/admin/config/system/company'
+  defaults:
+    _form: '\Drupal\company\Form\SettingsForm'
+    _title: 'Company Settings'
+  requirements:
+    _role: 'administrator'
+
+company.register:
+  path: /register/company
+  defaults:
+    _title: 'Cadastro de Empresa'
+    _form: '\Drupal\company\Form\RegisterCompanyForm'
+  requirements:
+    _role: 'administrator+partner_talent_acquisition'
+
+company.branch_register:
+  path: /register/company/branch
+  defaults:
+    _title: 'Cadastro de Filial'
+    _form: '\Drupal\company\Form\RegisterCompanyBranchForm'
+  requirements:
+    _permission: 'access content'
+
+company.success_register:
+  path: /cadastro-empresa/sucesso
+  defaults:
+    _title: 'Registration sent!'
+    _controller: Drupal\company\Controller\CompanyRegisterController::successRegisterWithCommitmentTerm
+  requirements:
+    _role: 'administrator+partner_talent_acquisition'
+
+company.almost_success_register:
+  path: /cadastro-empresa/sucesso/envio-do-termo
+  defaults:
+    _title: 'Registration sent!'
+    _controller: Drupal\company\Controller\CompanyRegisterController::successRegisterWithoutCommitmentTerm
+  requirements:
+    _permission: 'access content'
+
+company.company_confirm_delete:
+  path: '/admin/node/{nid}/company-confirm-delete'
+  defaults:
+    _title: 'Company confirm delete'
+    _form: 'Drupal\company\Form\StatusDeleteForm'
+  requirements:
+    _role: 'administrator+company_manager'
+
+company.status_confirm:
+  path: '/admin/{nid}/status-confirm'
+  defaults:
+    _title: 'Status confirm'
+    _form: 'Drupal\company\Form\StatusApproveForm'
+  requirements:
+    _role: 'administrator+company_manager'
+
+company.status_reject:
+  path: '/admin/{nid}/status-reject'
+  defaults:
+    _title: 'Block company'
+    _form: 'Drupal\company\Form\StatusRejectForm'
+  requirements:
+    _role: 'administrator+company_manager'
+
+# City routes
+company.city_edit_form:
+  path: '/admin/municipio/{node}'
+  defaults:
+    _form: '\Drupal\company\Form\City\CityEditForm'
+    _title: 'Public Sector Edit Form'
+  requirements:
+    _role: 'administrator+company_manager'
+    _entity_bundles: 'node:company'
+    node: \d+

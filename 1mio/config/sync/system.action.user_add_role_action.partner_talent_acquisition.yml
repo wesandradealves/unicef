@@ -1,0 +1,14 @@
+uuid: 5320b195-35b5-492b-88f4-575a5b08d802
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - user.role.partner_talent_acquisition
+  module:
+    - user
+id: user_add_role_action.partner_talent_acquisition
+label: 'Adiciona o papel Parceiro para o(s) usuário(s) selecionado(s)'
+type: user
+plugin: user_add_role_action
+configuration:
+  rid: partner_talent_acquisition

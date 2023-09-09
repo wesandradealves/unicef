@@ -1,0 +1,50 @@
+_core:
+  default_config_hash: NG_nmfm3Msyfhl9gKNbrk-Z9qb32c9bSgtaZ4ZbxbRg
+langcode: pt-br
+encryption_profile: profile_fields_encrypt
+make_entities_uncacheable: true
+default_properties:
+  address: {  }
+  address_country: {  }
+  address_zone: {  }
+  boolean: {  }
+  comment: {  }
+  datetime: {  }
+  email:
+    - value
+  time: {  }
+  link:
+    - uri
+    - title
+  social_media_links_field: {  }
+  time_range: {  }
+  timestamp: {  }
+  list_integer: {  }
+  list_float: {  }
+  decimal: {  }
+  integer: {  }
+  float: {  }
+  telephone:
+    - value
+  'field_ui:entity_reference:node': {  }
+  entity_reference: {  }
+  'field_ui:entity_reference:taxonomy_term': {  }
+  'field_ui:entity_reference:user': {  }
+  file: {  }
+  image: {  }
+  'field_ui:entity_reference_revisions:paragraph': {  }
+  entity_reference_revisions: {  }
+  list_string:
+    - value
+  text:
+    - value
+  text_long:
+    - value
+  text_with_summary:
+    - value
+    - summary
+  string:
+    - value
+  string_long:
+    - value
+batch_size: 5

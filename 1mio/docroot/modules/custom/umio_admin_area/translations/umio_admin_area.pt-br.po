@@ -1,0 +1,150 @@
+msgid "Courses"
+msgstr "Cursos"
+
+msgid "My data"
+msgstr "Meus dados"
+
+msgid "Company data"
+msgstr "Dados da empresa"
+
+msgid "People from company"
+msgstr "Pessoas da empresa"
+
+msgid "Update Partner Cities"
+msgstr "Atualizar Cidades Parceiras"
+
+msgid "Update the join date of a city"
+msgstr "Atualiza a data de entrada das cidades parceiras"
+
+msgid "Vacancies"
+msgstr "Vagas"
+
+msgid "Perfomance data"
+msgstr "Dados de perfomance"
+
+msgid "My posts"
+msgstr "Meus posts"
+
+msgid "Can't change the CNPJ for the company."
+msgstr "Não é possível alterar o CNPJ da empresa."
+
+msgid "Sended"
+msgstr "Enviadas"
+
+msgid "Public Sector data"
+msgstr "Dados do Setor Público"
+
+msgid "Civil Society data"
+msgstr "Dados da Sociedade Civil"
+
+msgctxt "Vacancy"
+msgid "Published"
+msgstr "Publicadas"
+
+msgctxt "Course"
+msgid "Published"
+msgstr "Publicados"
+
+msgctxt "Dashboard"
+msgid "Views"
+msgstr "Visualizações"
+
+msgid "This date cannot be later than today."
+msgstr "Esta data não pode ser posterior ao dia de hoje."
+
+msgid "General interest"
+msgstr "Interesses gerais"
+
+msgid "Tell us about you, your interest, your dreams, and goals."
+msgstr "Conte sobre você, seus interesses, seus sonhos, suas metas."
+
+msgid "Tell about your formal work experience"
+msgstr "Conte sobre suas experiências profissionais"
+
+msgid "Volunteer Work"
+msgstr "Trabalho voluntário"
+
+msgid "Tell about your volunteer work experience"
+msgstr "Conte sobre seus trabalhos voluntários"
+
+msgid "Branches"
+msgstr "Filiais"
+
+msgid "Register branch"
+msgstr "Cadastrar Filial"
+
+msgid "Edit branch"
+msgstr "Editar Filial"
+
+msgid "Go to people panel"
+msgstr "Ver lista completa de pessoas"
+
+msgid "Go to branch panel"
+msgstr "Ver lista completa de filiais"
+
+msgid "Please enter a value greater than 0"
+msgstr "Por favor, informe um valor maior que 0"
+
+msgid "Closed vacancy"
+msgstr "Vagas fechadas"
+
+msgid "Closed vacancies"
+msgstr "Vagas fechadas"
+
+msgid "Enter the number of vacancies you have filled"
+msgstr "Informe a quantidade das vagas que você preencheu"
+
+msgctxt "Menu"
+msgid "Hello"
+msgstr "Olá"
+
+msgctxt "Menu"
+msgid "Logout"
+msgstr "Sair"
+
+msgctxt "Menu"
+msgid "Login"
+msgstr "Entrar"
+
+msgctxt "Menu"
+msgid "Register"
+msgstr "Cadastrar-se"
+
+msgctxt "Menu"
+msgid "who-we-are"
+msgstr "quem-somos"
+
+msgctxt "Menu"
+msgid "what-is-going-on-1mio"
+msgstr "o-que-tem-no-1mio"
+
+msgctxt "Menu"
+msgid "partnership"
+msgstr "parcerias"
+
+msgctxt "Menu"
+msgid "Who we are"
+msgstr "Quem somos"
+
+msgctxt "Menu"
+msgid "What is going on"
+msgstr "O que tem no 1MiO"
+
+msgctxt "Menu"
+msgid "Partnership"
+msgstr "Parcerias"
+
+msgid "Export complete. Download the file <a download href=":download_url" data-download-enabled="true" id="vde-automatic-download">here</a> if file is not automatically downloaded."
+msgstr "Exportação completa. Baixe o arquivo <a download href=":download_url" data-download-enabled="true" id="vde-automatic-download">aqui</a> se o download não for iniciado automaticamente."
+
+msgid "Add new partner from my team"
+msgstr "Adicionar pessoa da minha equipe"
+
+msgid "Insert the e-mail:"
+msgstr "Insira o email:"
+
+msgid "You're invite to join in 1mio platform"
+msgstr "Entre na plataforma 1MiO"
+
+msgid "The e-mail has been sent"
+msgstr "E-mail enviado!"

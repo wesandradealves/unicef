@@ -1,0 +1,19 @@
+uuid: d726b856-8e1f-4313-aca6-0f9f118b25b3
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_company_email
+    - node.type.company
+id: node.company.field_company_email
+field_name: field_company_email
+entity_type: node
+bundle: company
+label: E-mail
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: email

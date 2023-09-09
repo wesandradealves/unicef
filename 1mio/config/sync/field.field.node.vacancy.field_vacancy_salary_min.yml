@@ -1,0 +1,23 @@
+uuid: 334b13dc-c8f7-41ab-8d92-c618941bbc90
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_vacancy_salary_min
+    - node.type.vacancy
+id: node.vacancy.field_vacancy_salary_min
+field_name: field_vacancy_salary_min
+entity_type: node
+bundle: vacancy
+label: De
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: !!float 0
+  max: null
+  prefix: 'R$ '
+  suffix: ''
+field_type: decimal

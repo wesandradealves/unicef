@@ -1,0 +1,406 @@
+uuid: f43deff4-2c95-4440-8069-26338d273cd6
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_course_location
+    - field.storage.paragraph.field_paragraph_address
+    - field.storage.node.field_company_address
+    - field.storage.node.field_vacancy_company
+    - field.storage.node.body
+    - field.storage.node.field_company_type
+    - field.storage.node.field_course_amount
+    - field.storage.node.field_course_model
+    - field.storage.node.field_course_tags
+    - field.storage.node.field_course_type
+    - field.storage.node.field_social_post_image
+    - field.storage.node.field_social_post_media_type
+    - field.storage.node.field_social_post_video
+    - field.storage.node.field_vacancy_activities
+    - field.storage.node.field_vacancy_job_model
+    - field.storage.node.field_vacancy_priority_profiles
+    - field.storage.node.field_vacancy_quantity
+    - field.storage.node.field_vacancy_skills_match
+    - field.storage.node.field_vacancy_type
+    - field.storage.node.field_course_institution
+    - search_api.server.acquia_search_server
+  module:
+    - acquia_search
+    - search_api_solr
+    - paragraphs
+    - node
+    - taxonomy
+    - search_api
+third_party_settings:
+  acquia_search:
+    use_edismax: 1
+  search_api_solr:
+    finalize: false
+    commit_before_finalize: false
+    commit_after_finalize: false
+    highlighter:
+      maxAnalyzedChars: 51200
+      fragmenter: gap
+      usePhraseHighlighter: true
+      highlightMultiTerm: true
+      preserveMulti: false
+      regex:
+        slop: 0.5
+        pattern: blank
+        maxAnalyzedChars: 10000
+      highlight:
+        mergeContiguous: false
+        requireFieldMatch: false
+        snippets: 3
+        fragsize: 0
+    mlt:
+      mintf: 1
+      mindf: 1
+      maxdf: 0
+      maxdfpct: 0
+      minwl: 0
+      maxwl: 0
+      maxqt: 100
+      maxntp: 2000
+      boost: false
+      interestingTerms: none
+    term_modifiers:
+      slop: 3
+      fuzzy: 1
+    advanced:
+      index_prefix: ''
+      collection: ''
+      timezone: ''
+    multilingual:
+      limit_to_content_language: false
+      include_language_independent: true
+id: social_feed
+name: 'Social feed'
+description: ''
+read_only: false
+field_settings:
+  administrative_area_course_uf:
+    label: 'Curso » Endereco » UF'
+    datasource_id: 'entity:node'
+    property_path: 'field_course_location:entity:field_paragraph_address:administrative_area'
+    type: string
+    dependencies:
+      config:
+        - field.storage.node.field_course_location
+        - field.storage.paragraph.field_paragraph_address
+      module:
+        - paragraphs
+  administrative_area_course_uf_fulltext:
+    label: 'Empresas » Conteúdo » Endereco » Parágrafo » Endereco » The top-level administrative subdivision of the country'
+    datasource_id: 'entity:node'
+    property_path: 'field_vacancy_company:entity:field_vacancy_company:entity:field_company_address:entity:field_paragraph_address:administrative_area'
+    type: string
+    dependencies:
+      config:
+        - field.storage.node.field_company_address
+        - field.storage.node.field_vacancy_company
+        - field.storage.paragraph.field_paragraph_address
+      module:
+        - node
+        - paragraphs
+  administrative_area_vacancy_uf:
+    label: 'Vaga » Endereco » UF'
+    datasource_id: 'entity:node'
+    property_path: 'field_vacancy_company:entity:field_company_address:entity:field_paragraph_address:administrative_area'
+    type: string
+    dependencies:
+      config:
+        - field.storage.node.field_company_address
+        - field.storage.node.field_vacancy_company
+        - field.storage.paragraph.field_paragraph_address
+      module:
+        - node
+        - paragraphs
+  administrative_area_vacancy_uf_fulltext:
+    label: 'Local do curso » Parágrafo » Endereco » The top-level administrative subdivision of the country'
+    datasource_id: 'entity:node'
+    property_path: 'field_course_location:entity:field_paragraph_address:administrative_area'
+    type: string
+    dependencies:
+      config:
+        - field.storage.node.field_course_location
+        - field.storage.paragraph.field_paragraph_address
+      module:
+        - paragraphs
+  body:
+    label: Corpo
+    datasource_id: 'entity:node'
+    property_path: body
+    type: text
+    dependencies:
+      config:
+        - field.storage.node.body
+  body_1:
+    label: Corpo
+    datasource_id: 'entity:node'
+    property_path: body
+    type: text
+    dependencies:
+      config:
+        - field.storage.node.body
+  created:
+    label: 'Escrito em'
+    datasource_id: 'entity:node'
+    property_path: created
+    type: date
+    dependencies:
+      module:
+        - node
+  field_company_type:
+    label: 'Empresas » Conteúdo » Tipo da Organização'
+    datasource_id: 'entity:node'
+    property_path: 'field_vacancy_company:entity:field_company_type'
+    type: string
+    dependencies:
+      config:
+        - field.storage.node.field_company_type
+        - field.storage.node.field_vacancy_company
+      module:
+        - node
+  field_course_amount:
+    label: 'Curso » Número de vagas'
+    datasource_id: 'entity:node'
+    property_path: field_course_amount
+    type: integer
+    dependencies:
+      config:
+        - field.storage.node.field_course_amount
+  field_course_amount_1:
+    label: 'Número de vagas'
+    datasource_id: 'entity:node'
+    property_path: field_course_amount
+    type: integer
+    dependencies:
+      config:
+        - field.storage.node.field_course_amount
+  field_course_model:
+    label: 'Modelo do curso'
+    datasource_id: 'entity:node'
+    property_path: field_course_model
+    type: string
+    dependencies:
+      config:
+        - field.storage.node.field_course_model
+  field_course_tags:
+    label: 'Empresas » Conteúdo » Tags'
+    datasource_id: 'entity:node'
+    property_path: 'field_vacancy_company:entity:field_course_tags'
+    type: integer
+    dependencies:
+      config:
+        - field.storage.node.field_course_tags
+        - field.storage.node.field_vacancy_company
+      module:
+        - node
+  field_course_type:
+    label: 'Tipo do curso'
+    datasource_id: 'entity:node'
+    property_path: field_course_type
+    type: string
+    dependencies:
+      config:
+        - field.storage.node.field_course_type
+  field_social_post_image:
+    label: Imagem
+    datasource_id: 'entity:node'
+    property_path: field_social_post_image
+    type: integer
+    dependencies:
+      config:
+        - field.storage.node.field_social_post_image
+  field_social_post_media_type:
+    label: 'Tipo de mídia'
+    datasource_id: 'entity:node'
+    property_path: field_social_post_media_type
+    type: string
+    dependencies:
+      config:
+        - field.storage.node.field_social_post_media_type
+  field_social_post_video:
+    label: Vídeo
+    datasource_id: 'entity:node'
+    property_path: field_social_post_video
+    type: string
+    dependencies:
+      config:
+        - field.storage.node.field_social_post_video
+  field_vacancy_activities:
+    label: Atividades
+    datasource_id: 'entity:node'
+    property_path: field_vacancy_activities
+    type: text
+    dependencies:
+      config:
+        - field.storage.node.field_vacancy_activities
+  field_vacancy_job_model:
+    label: 'Modelo de trabalho'
+    datasource_id: 'entity:node'
+    property_path: field_vacancy_job_model
+    type: string
+    dependencies:
+      config:
+        - field.storage.node.field_vacancy_job_model
+  field_vacancy_priority_profiles_tid:
+    label: 'Perfis Prioritários » Termo de taxonomia » ID do termo'
+    datasource_id: 'entity:node'
+    property_path: 'field_vacancy_priority_profiles:entity:tid'
+    type: integer
+    dependencies:
+      config:
+        - field.storage.node.field_vacancy_priority_profiles
+      module:
+        - taxonomy
+  field_vacancy_quantity:
+    label: 'Quantidade de vagas'
+    datasource_id: 'entity:node'
+    property_path: field_vacancy_quantity
+    type: integer
+    dependencies:
+      config:
+        - field.storage.node.field_vacancy_quantity
+  field_vacancy_skills_match:
+    label: 'Habilidades valorizadas'
+    datasource_id: 'entity:node'
+    property_path: field_vacancy_skills_match
+    type: integer
+    dependencies:
+      config:
+        - field.storage.node.field_vacancy_skills_match
+  field_vacancy_type:
+    label: 'Tipo de vaga'
+    datasource_id: 'entity:node'
+    property_path: field_vacancy_type
+    type: string
+    dependencies:
+      config:
+        - field.storage.node.field_vacancy_type
+  locality_city_course:
+    label: 'Curso » Endereco » Cidade'
+    datasource_id: 'entity:node'
+    property_path: 'field_course_location:entity:field_paragraph_address:locality'
+    type: string
+    dependencies:
+      config:
+        - field.storage.node.field_course_location
+        - field.storage.paragraph.field_paragraph_address
+      module:
+        - paragraphs
+  locality_city_course_fulltext:
+    label: 'Empresas » Conteúdo » Endereco » Parágrafo » Endereco » The locality (i.e. city)'
+    datasource_id: 'entity:node'
+    property_path: 'field_vacancy_company:entity:field_vacancy_company:entity:field_company_address:entity:field_paragraph_address:locality'
+    type: string
+    dependencies:
+      config:
+        - field.storage.node.field_company_address
+        - field.storage.node.field_vacancy_company
+        - field.storage.paragraph.field_paragraph_address
+      module:
+        - node
+        - paragraphs
+  locality_city_vacancy:
+    label: 'Vaga » Endereco » Cidade'
+    datasource_id: 'entity:node'
+    property_path: 'field_vacancy_company:entity:field_company_address:entity:field_paragraph_address:locality'
+    type: string
+    dependencies:
+      config:
+        - field.storage.node.field_company_address
+        - field.storage.node.field_vacancy_company
+        - field.storage.paragraph.field_paragraph_address
+      module:
+        - node
+        - paragraphs
+  locality_city_vacancy_fulltext:
+    label: 'Local do curso » Parágrafo » Endereco » The locality (i.e. city)'
+    datasource_id: 'entity:node'
+    property_path: 'field_course_location:entity:field_paragraph_address:locality'
+    type: string
+    dependencies:
+      config:
+        - field.storage.node.field_course_location
+        - field.storage.paragraph.field_paragraph_address
+      module:
+        - paragraphs
+  status:
+    label: Publicado
+    datasource_id: 'entity:node'
+    property_path: status
+    type: boolean
+    dependencies:
+      module:
+        - node
+  title:
+    label: Título
+    datasource_id: 'entity:node'
+    property_path: title
+    type: string
+    dependencies:
+      module:
+        - node
+  title_company_course:
+    label: 'Curso » Empresa » Título'
+    datasource_id: 'entity:node'
+    property_path: 'field_course_institution:entity:title'
+    type: string
+    dependencies:
+      config:
+        - field.storage.node.field_course_institution
+      module:
+        - node
+  title_company_vacancy:
+    label: 'Vagas » Empresas » Título'
+    datasource_id: 'entity:node'
+    property_path: 'field_vacancy_company:entity:title'
+    type: string
+    dependencies:
+      config:
+        - field.storage.node.field_vacancy_company
+      module:
+        - node
+  type:
+    label: 'Content type'
+    datasource_id: 'entity:node'
+    property_path: type
+    type: string
+    dependencies:
+      module:
+        - node
+  uid:
+    label: 'Escrito por'
+    datasource_id: 'entity:node'
+    property_path: uid
+    type: integer
+    dependencies:
+      module:
+        - node
+datasource_settings:
+  'entity:node':
+    bundles:
+      default: false
+      selected:
+        - course
+        - social_post
+        - vacancy
+    languages:
+      default: true
+      selected: {  }
+processor_settings:
+  add_url: {  }
+  aggregated_field: {  }
+  language_with_fallback: {  }
+  rendered_item: {  }
+  solr_date_range: {  }
+tracker_settings:
+  default:
+    indexing_order: lifo
+options:
+  cron_limit: 50
+  index_directly: true
+  track_changes_in_references: true
+server: acquia_search_server

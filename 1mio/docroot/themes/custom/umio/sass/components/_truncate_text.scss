@@ -1,0 +1,18 @@
+.read-more--container {
+  .read-more--text {
+    --max-lines: 5;
+    display: -webkit-box;
+    -webkit-line-clamp: var(--max-lines);
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    margin-bottom: 1rem;
+    @include media-breakpoint-up(sm) {
+      --max-lines: 3;
+    }
+  }
+  .read-more--link {
+    font-size: 16px;
+    line-height: 24px;
+    text-decoration: none;
+  }
+}

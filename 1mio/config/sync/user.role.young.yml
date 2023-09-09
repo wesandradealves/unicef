@@ -1,0 +1,46 @@
+uuid: 1324bab9-33f5-49b7-a919-603d47343d27
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - filter.format.restricted_html
+  module:
+    - comment
+    - comment_notify
+    - eu_cookie_compliance
+    - filter
+    - like_and_dislike
+    - paragraphs_type_permissions
+id: young
+label: Jovem
+weight: 7
+is_admin: null
+permissions:
+  - 'add or remove like votes on comment of comment'
+  - 'add or remove like votes on social_post of node'
+  - 'cancel account'
+  - 'create paragraph content courses_and_abilities'
+  - 'create paragraph content curriculum'
+  - 'create paragraph content educational_formation'
+  - 'create paragraph content experience'
+  - 'create paragraph content paragraph_address'
+  - 'create paragraph content paragraph_social'
+  - 'delete paragraph content courses_and_abilities'
+  - 'delete paragraph content educational_formation'
+  - 'delete paragraph content experience'
+  - 'display eu cookie compliance popup'
+  - 'post comments'
+  - 'subscribe to comments'
+  - 'update paragraph content courses_and_abilities'
+  - 'update paragraph content curriculum'
+  - 'update paragraph content educational_formation'
+  - 'update paragraph content experience'
+  - 'update paragraph content paragraph_address'
+  - 'update paragraph content paragraph_social'
+  - 'use text format restricted_html'
+  - 'view paragraph content courses_and_abilities'
+  - 'view paragraph content curriculum'
+  - 'view paragraph content educational_formation'
+  - 'view paragraph content experience'
+  - 'view paragraph content paragraph_address'
+  - 'view paragraph content paragraph_social'

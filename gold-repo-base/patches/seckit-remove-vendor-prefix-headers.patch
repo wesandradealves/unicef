@@ -1,0 +1,109 @@
+diff --git a/src/EventSubscriber/SecKitEventSubscriber.php b/src/EventSubscriber/SecKitEventSubscriber.php
+index ff9b9ab..e81bc23 100644
+--- a/src/EventSubscriber/SecKitEventSubscriber.php
++++ b/src/EventSubscriber/SecKitEventSubscriber.php
+@@ -237,18 +237,10 @@ class SecKitEventSubscriber implements EventSubscriberInterface {
+         // Use report-only mode.
+         // Official name.
+         $this->response->headers->set('Content-Security-Policy-Report-Only', $directives);
+-        // Firefox and IE10.
+-        $this->response->headers->set('X-Content-Security-Policy-Report-Only', $directives);
+-        // Chrome and Safari.
+-        $this->response->headers->set('X-WebKit-CSP-Report-Only', $directives);
+       }
+       else {
+         // Official name.
+         $this->response->headers->set('Content-Security-Policy', $directives);
+-        // Firefox and IE10.
+-        $this->response->headers->set('X-Content-Security-Policy', $directives);
+-        // Chrome and Safari.
+-        $this->response->headers->set('X-WebKit-CSP', $directives);
+       }
+     }
+   }
+diff --git a/src/Tests/SecKitCSPCaseTest.php b/src/Tests/SecKitCSPCaseTest.php
+index bce6c32..80ce8a0 100644
+--- a/src/Tests/SecKitCSPCaseTest.php
++++ b/src/Tests/SecKitCSPCaseTest.php
+@@ -84,8 +84,6 @@ class SecKitCSPCaseTest extends WebTestBase {
+     $this->drupalPostForm('admin/config/system/seckit', $form, t('Save configuration'));
+     $expected = 'default-src *; script-src *; object-src *; style-src *; img-src *; media-src *; frame-src *; frame-ancestors *; child-src *; font-src *; connect-src *; report-uri ' . base_path() . $this->reportPath;
+     $this->assertEqual($expected, $this->drupalGetHeader('Content-Security-Policy'), t('Content-Security-Policy has all the directves (Official).'));
+-    $this->assertEqual($expected, $this->drupalGetHeader('X-Content-Security-Policy'), t('X-Content-Security-Policy has all the directves (Mozilla and IE10).'));
+-    $this->assertEqual($expected, $this->drupalGetHeader('X-WebKit-CSP'), t('X-WebKit-CSP has all the directves (Chrome and Safari).'));
+   }
+ 
+   /**
+@@ -116,11 +114,6 @@ class SecKitCSPCaseTest extends WebTestBase {
+   $this->assertEqual($expected,
+   $this->drupalGetHeader('Content-Security-Policy'),
+   t('Content-Security-Policy has only policy-uri (Official).'));
+-  $this->assertEqual($expected,
+-  $this->drupalGetHeader('X-Content-Security-Policy'),
+-  t('X-Content-Security-Policy has only policy-uri (Mozilla and IE10).'));
+-  $this->assertEqual($expected, $this->drupalGetHeader('X-WebKit-CSP'),
+-  t('X-WebKit-CSP has only policy-uri(Chrome and Safari).'));
+   }
+    */
+ 
+@@ -149,8 +142,6 @@ class SecKitCSPCaseTest extends WebTestBase {
+     $this->drupalPostForm('admin/config/system/seckit', $form, t('Save configuration'));
+     $expected = "default-src self; report-uri " . base_path() . $this->reportPath;
+     $this->assertEqual($expected, $this->drupalGetHeader('Content-Security-Policy'), t('Content-Security-Policy has default directive (Official).'));
+-    $this->assertEqual($expected, $this->drupalGetHeader('X-Content-Security-Policy'), t('X-Content-Security-Policy has default directive (Mozilla and IE10).'));
+-    $this->assertEqual($expected, $this->drupalGetHeader('X-WebKit-CSP'), t('X-WebKit-CSP has default directive (Chrome and Safari).'));
+   }
+ 
+ }
+diff --git a/src/Tests/SecKitTestCaseTest.php b/src/Tests/SecKitTestCaseTest.php
+index 8c070f4..ba35373 100644
+--- a/src/Tests/SecKitTestCaseTest.php
++++ b/src/Tests/SecKitTestCaseTest.php
+@@ -69,8 +69,6 @@ class SecKitTestCaseTest extends WebTestBase {
+     $form['seckit_xss[csp][checkbox]'] = FALSE;
+     $this->drupalPostForm('admin/config/system/seckit', $form, t('Save configuration'));
+     $this->assertFalse($this->drupalGetHeader('Content-Security-Policy'), t('Content Security Policy is disabled (Official).'));
+-    $this->assertFalse($this->drupalGetHeader('X-Content-Security-Policy'), t('Content Security Policy is disabled (Mozilla and IE10).'));
+-    $this->assertFalse($this->drupalGetHeader('X-WebKit-CSP'), t('Content Security Policy is disabled (Chrome and Safari).'));
+   }
+ 
+   /**
+@@ -95,8 +93,6 @@ class SecKitTestCaseTest extends WebTestBase {
+     $this->drupalPostForm('admin/config/system/seckit', $form, t('Save configuration'));
+     $expected = 'default-src *; script-src *; object-src *; style-src *; img-src *; media-src *; frame-src *; frame-ancestors *; child-src *; font-src *; connect-src *; report-uri ' . base_path() . $this->reportPath;
+     $this->assertEqual($expected, $this->drupalGetHeader('Content-Security-Policy'), t('Content-Security-Policy has all the directives (Official).'));
+-    $this->assertEqual($expected, $this->drupalGetHeader('X-Content-Security-Policy'), t('X-Content-Security-Policy has all the directives (Mozilla and IE10).'));
+-    $this->assertEqual($expected, $this->drupalGetHeader('X-WebKit-CSP'), t('X-WebKit-CSP has all the directives (Chrome and Safari).'));
+   }
+ 
+   /**
+@@ -127,11 +123,6 @@ class SecKitTestCaseTest extends WebTestBase {
+   $this->assertEqual($expected,
+   $this->drupalGetHeader('Content-Security-Policy'),
+   t('Content-Security-Policy has only policy-uri (Official).'));
+-  $this->assertEqual($expected,
+-  $this->drupalGetHeader('X-Content-Security-Policy'),
+-  t('X-Content-Security-Policy has only policy-uri (Mozilla and IE10).'));
+-  $this->assertEqual($expected, $this->drupalGetHeader('X-WebKit-CSP'),
+-  t('X-WebKit-CSP has only policy-uri(Chrome and Safari).'));
+   } */
+ 
+   /**
+@@ -159,8 +150,6 @@ class SecKitTestCaseTest extends WebTestBase {
+     $this->drupalPostForm('admin/config/system/seckit', $form, t('Save configuration'));
+     $expected = "default-src self; report-uri " . base_path() . $this->reportPath;
+     $this->assertEqual($expected, $this->drupalGetHeader('Content-Security-Policy'), t('Content-Security-Policy has default directive (Official).'));
+-    $this->assertEqual($expected, $this->drupalGetHeader('X-Content-Security-Policy'), t('X-Content-Security-Policy has default directive (Mozilla and IE10).'));
+-    $this->assertEqual($expected, $this->drupalGetHeader('X-WebKit-CSP'), t('X-WebKit-CSP has default directive (Chrome and Safari).'));
+   }
+ 
+   /**
+@@ -171,8 +160,6 @@ class SecKitTestCaseTest extends WebTestBase {
+     $form['seckit_xss[csp][report-only]'] = TRUE;
+     $this->drupalPostForm('admin/config/system/seckit', $form, t('Save configuration'));
+     $this->assertTrue($this->drupalGetHeader('Content-Security-Policy-Report-Only'), t('Content Security Policy is in report-only mode (Official).'));
+-    $this->assertTrue($this->drupalGetHeader('X-Content-Security-Policy-Report-Only'), t('Content Security Policy is in report-only mode (Mozilla and IE10).'));
+-    $this->assertTrue($this->drupalGetHeader('X-WebKit-CSP-Report-Only'), t('Content Security Policy is in report-only mode (Chrome and Safari).'));
+   }
+ 
+   /**

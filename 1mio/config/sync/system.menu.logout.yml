@@ -1,0 +1,8 @@
+uuid: 57b4f811-f318-4e96-8b37-2732b478ef52
+langcode: pt-br
+status: true
+dependencies: {  }
+id: logout
+label: Logout
+description: ''
+locked: false

@@ -1,0 +1,109 @@
+.illustration-partners {
+  position: relative;
+  height: 1350px;
+  width: 100%;
+  background: linear-gradient(
+    110deg,
+    $orange-gradient-start,
+    $pink-gradient-end
+  );
+  display: flex;
+  justify-content: center;
+  padding-top: 6rem;
+  box-shadow: inset -8px 8px 16px -7px black;
+
+  .illustration-partner--partners-container {
+    background-color: $gray-primary-15;
+    height: 485px;
+    width: 272px;
+    margin-top: -70px;
+    border-radius: 38px;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .illustration-partner--participate-container {
+    position: absolute;
+    height: 775px;
+    padding: 155px 5px 0 5px;
+    width: 330px;
+    top: 340px;
+    left: calc(50% - 165px);
+    border-style: solid;
+    border-color: $gray-primary-15;
+    border-width: 2px;
+    border-radius: 16px;
+    background-color: transparent;
+    z-index: 1;
+  }
+  .illustration-partner--astronaut-animation {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 200px;
+    width: 100%;
+  }
+}
+
+// 768px
+@include media-breakpoint-up(md) {
+  .illustration-partners {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 865px;
+    .illustration-partner--partners-container {
+      width: 92%;
+      height: 125px;
+      flex-direction: row;
+    }
+    .illustration-partner--participate-container {
+      height: 490px;
+      width: 549px;
+      top: 105px;
+      left: calc(58% - 360px);
+      padding: 50px 40px 0px 13px;
+    }
+    .illustration-partner--astronaut-animation {
+      position: relative;
+      height: 100%;
+      width: 100%;
+    }
+  }
+}
+
+@media (min-width: 840px) {
+  .illustration-partners {
+    height: 530px;
+    .illustration-partner--participate-container {
+      top: 100px;
+      left: calc(49% - 360px);
+      height: 385px;
+    }
+  }
+}
+// 996px
+@include media-breakpoint-up(lg){
+  .illustration-partners {
+    height: 535px;
+  }
+}
+@media (min-width: 1200px){.illustration-partners{height:545px ;}}
+// 1400px
+@include media-breakpoint-up(xl) {
+  .illustration-partners {
+    .illustration-partner--partners-container {
+      width: 75%;
+      height: 132px;
+    }
+    .illustration-partner--participate-container {
+      left: calc(46% - 360px);
+      top: 120px;
+      height: 385px;
+      width: 600px;
+    }
+  }
+}

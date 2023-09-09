@@ -1,0 +1,24 @@
+diff --git a/src/DiffEntityComparison.php b/src/DiffEntityComparison.php
+index 4017402..89cda8d 100644
+--- a/src/DiffEntityComparison.php
++++ b/src/DiffEntityComparison.php
+@@ -9,6 +9,7 @@ use Drupal\Core\Entity\ContentEntityInterface;
+ use Drupal\Component\Diff\Diff;
+ use Drupal\Core\Entity\RevisionLogInterface;
+ use Drupal\Component\Utility\Xss;
++use Drupal\Core\Language\LanguageInterface;
+ 
+ /**
+  * Entity comparison service that prepares a diff of a pair of entities.
+@@ -339,6 +340,11 @@ class DiffEntityComparison {
+    *   Returns the label of the moderation state, if available, otherwise FALSE.
+    */
+   protected function getModerationState(ContentEntityInterface $entity) {
++    $language = \Drupal::languageManager()->getCurrentLanguage(LanguageInterface::TYPE_CONTENT);
++    if ($entity->language()->getId() != $language->getId() && $entity->hasTranslation($language->getId())) {
++      $entity = $entity->getTranslation($language->getId());
++    }
++
+     if ($this->moderationInformation && $this->moderationInformation->isModeratedEntity($entity)) {
+       if ($state = $entity->moderation_state->value) {
+         $workflow = $this->moderationInformation->getWorkflowForEntity($entity);

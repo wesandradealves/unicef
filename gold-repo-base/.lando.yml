@@ -1,0 +1,61 @@
+name: newuniceforg
+recipe: drupal9
+proxy:
+  appserver:
+    - local.unicefplatform.com
+config:
+  webroot: docroot
+services:
+  appserver:
+    type: php:7.4
+    xdebug: true
+    build_as_root:
+      - echo "Installing node..." && curl -sL https://deb.nodesource.com/setup_12.x | bash -
+      - apt-get install -y nodejs
+      - echo "Installing gulp-cli..." && npm install gulp-cli -g
+      # Installing chrome and chromedrive
+      - curl -sS -o - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add 
+      - bash -c "echo 'deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main' >> /etc/apt/sources.list.d/google-chrome.list"
+      - apt -y update
+      - apt -y install google-chrome-stable
+      - wget https://chromedriver.storage.googleapis.com/94.0.4606.61/chromedriver_linux64.zip
+      - unzip chromedriver_linux64.zip
+      - mv chromedriver /usr
+    run:
+      - echo "Composer install..." && composer install
+      - echo "Building UNICEF theme..." && cd /app/docroot/themes/custom/unicef_base && npm install && npm rebuild node-sass && composer generate
+      - echo "Clearing Drupal's cache..." && drush cr
+  index:
+    type: solr:8.2
+    portforward: true
+    core: lando
+    config:
+      dir: docroot/modules/contrib/search_api_solr/jump-start/solr8/config-set
+tooling:
+  behat:
+    service: appserver
+    description: Run behat test cases.
+    cmd:
+      - vendor/bin/blt -n tests:behat:run -D behat.paths=${PWD}/docroot/tests/behat/features/ContentModel.feature
+      - vendor/bin/blt -n tests:behat:run -D behat.paths=${PWD}/docroot/tests/behat/features/UserRolesAndPermissions.feature
+      # - vendor/bin/blt -n tests:behat:run -D behat.paths=${PWD}/docroot/tests/behat/features/Saml.feature
+      # - vendor/bin/blt tests:behat:run -D behat.paths=${PWD}/docroot/tests/behat/features/Search.feature
+      # - vendor/bin/blt tests:behat:run -D behat.paths=${PWD}/docroot/tests/behat/features/AccessCheck.feature
+  node:
+    service: appserver
+    description: Run node.
+    cmd: node
+  gulp:
+    service: appserver
+    description: Run gulp.
+    cmd: gulp
+  npm:
+    service: appserver
+    description: Run npm.
+    cmd: npm
+  build:
+    service: appserver
+    description: Run Gulp to generate CSS Prod file.
+    cmd:
+      - cd /app/docroot/themes/custom/unicef_base && npm install && composer generate
+      - drush cr

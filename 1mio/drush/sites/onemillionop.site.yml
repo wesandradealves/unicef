@@ -1,0 +1,48 @@
+# Application 'onemillionop', environment 'dev'.
+dev:
+  root: /var/www/html/onemillionop.dev/docroot
+  ac-site: onemillionop
+  ac-env: dev
+  ac-realm: devcloud
+  uri: onemillionopvwvfpugkif.devcloud.acquia-sites.com
+  dev.livedev:
+    parent: '@onemillionop.dev'
+    root: /mnt/gfs/onemillionop.dev/livedev/docroot
+  host: onemillionopvwvfpugkif.ssh.devcloud.acquia-sites.com
+  user: onemillionop.dev
+  paths:
+    drush-script: drush9
+
+
+# Application 'onemillionop', environment 'prod'.
+prod:
+  root: /var/www/html/onemillionop.prod/docroot
+  ac-site: onemillionop
+  ac-env: prod
+  ac-realm: devcloud
+  uri: onemillionopliruqfvgug.devcloud.acquia-sites.com
+  prod.livedev:
+    parent: '@onemillionop.prod'
+    root: /mnt/gfs/onemillionop.prod/livedev/docroot
+  host: onemillionopliruqfvgug.ssh.devcloud.acquia-sites.com
+  user: onemillionop.prod
+  paths:
+    drush-script: drush9
+
+
+# Application 'onemillionop', environment 'test'.
+test:
+  root: /var/www/html/onemillionop.test/docroot
+  ac-site: onemillionop
+  ac-env: test
+  ac-realm: devcloud
+  uri: onemillionopzgcpwyvtyw.devcloud.acquia-sites.com
+  test.livedev:
+    parent: '@onemillionop.test'
+    root: /mnt/gfs/onemillionop.test/livedev/docroot
+  host: onemillionopzgcpwyvtyw.ssh.devcloud.acquia-sites.com
+  user: onemillionop.test
+  paths:
+    drush-script: drush9
+
+

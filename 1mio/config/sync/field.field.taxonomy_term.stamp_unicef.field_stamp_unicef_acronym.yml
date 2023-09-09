@@ -1,0 +1,19 @@
+uuid: cb919af6-3b0c-4f26-b737-79961ea71c37
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_stamp_unicef_acronym
+    - taxonomy.vocabulary.stamp_unicef
+id: taxonomy_term.stamp_unicef.field_stamp_unicef_acronym
+field_name: field_stamp_unicef_acronym
+entity_type: taxonomy_term
+bundle: stamp_unicef
+label: Sigla
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

@@ -1,0 +1,56 @@
+uuid: 64cf01b7-763d-4acc-9eff-8605095bba4e
+langcode: pt-br
+status: false
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.course.field_course_amount
+    - field.field.node.course.field_course_details
+    - field.field.node.course.field_course_duration
+    - field.field.node.course.field_course_end_date
+    - field.field.node.course.field_course_end_time
+    - field.field.node.course.field_course_expiration_day
+    - field.field.node.course.field_course_has_certification
+    - field.field.node.course.field_course_image
+    - field.field.node.course.field_course_institution
+    - field.field.node.course.field_course_location
+    - field.field.node.course.field_course_model
+    - field.field.node.course.field_course_qr_code
+    - field.field.node.course.field_course_start_date
+    - field.field.node.course.field_course_start_time
+    - field.field.node.course.field_course_subscription_url
+    - field.field.node.course.field_course_tags
+    - field.field.node.course.field_course_type
+    - node.type.course
+  module:
+    - user
+id: node.course.teaser
+targetEntityType: node
+bundle: course
+mode: teaser
+content:
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  field_course_amount: true
+  field_course_details: true
+  field_course_duration: true
+  field_course_end_date: true
+  field_course_end_time: true
+  field_course_expiration_day: true
+  field_course_has_certification: true
+  field_course_image: true
+  field_course_institution: true
+  field_course_location: true
+  field_course_model: true
+  field_course_qr_code: true
+  field_course_start_date: true
+  field_course_start_time: true
+  field_course_subscription_url: true
+  field_course_tags: true
+  field_course_type: true
+  langcode: true
+  search_api_excerpt: true

@@ -1,0 +1,24 @@
+diff --git a/src/Plugin/search_api/backend/SearchApiSolrBackend.php b/src/Plugin/search_api/backend/SearchApiSolrBackend.php
+index 181ecd1..c446179 100644
+--- a/src/Plugin/search_api/backend/SearchApiSolrBackend.php
++++ b/src/Plugin/search_api/backend/SearchApiSolrBackend.php
+@@ -1544,6 +1544,19 @@ class SearchApiSolrBackend extends BackendPluginBase implements SolrBackendInter
+       $language_ids[] = LanguageInterface::LANGCODE_NOT_APPLICABLE;
+     }
+ 
++    $search_type = \Drupal::request()->query->get('unicef_solr_site');
++    if ($search_type == 'federated') {
++      $non_configured_languages = [
++        'ar', 'az', 'be', 'bg', 'bn', 'bs', 'cnr', 'de', 'dv', 'en', 'es', 'fa',
++        'fr', 'hi','hr', 'hy', 'id', 'ja', 'ka', 'kk', 'km', 'ky', 'mk', 'mn',
++        'ms', 'my', 'nd', 'ne', 'nl', 'prs', 'ps', 'pt-br', 'pt-pt', 'qu', 'ru',
++        'ro', 'rom', 'rum', 'rw', 'shp', 'si', 'sn', 'sq', 'sr', 'sw', 'ta',
++        'tdt', 'tq', 'th', 'tr', 'uk', 'ur', 'uz', 'vi', 'zh-hans'
++      ];
++
++      $language_ids = array_merge($language_ids, $non_configured_languages);
++    }
++
+     $query->setLanguages($language_ids);
+     return $language_ids;
+   }

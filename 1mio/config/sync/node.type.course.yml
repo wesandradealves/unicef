@@ -1,0 +1,18 @@
+uuid: 6170f3d8-c601-422b-84e5-6698375420ff
+langcode: pt-br
+status: true
+dependencies:
+  module:
+    - menu_ui
+third_party_settings:
+  menu_ui:
+    available_menus:
+      - main
+    parent: 'main:'
+name: Curso
+type: course
+description: 'Cursos a serem publicados no 1Mio.'
+help: ''
+new_revision: true
+preview_mode: 1
+display_submitted: false

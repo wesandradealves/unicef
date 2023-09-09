@@ -1,0 +1,23 @@
+uuid: 8c3525b2-08d2-430e-b722-2497efca07e9
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_disabilities_youngs
+    - paragraphs.paragraphs_type.counter_priority_profiles
+id: paragraph.counter_priority_profiles.field_disabilities_youngs
+field_name: field_disabilities_youngs
+entity_type: paragraph
+bundle: counter_priority_profiles
+label: 'Adolescentes e jovens com deficiência'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: 0
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

@@ -1,0 +1,13 @@
+.young-profile {
+  .hero {
+    background-size: auto 100% !important;
+    background-position: center 20px !important;
+  }
+
+  @media (min-width: 768px) {
+    .hero {
+      padding: 55px 0;
+      background-position: 5% 20px !important;
+    }
+  }
+}

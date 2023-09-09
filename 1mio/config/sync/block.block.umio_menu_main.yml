@@ -1,0 +1,40 @@
+uuid: 34284949-8e9a-4d62-89d3-352726b13006
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - system.menu.main
+  module:
+    - blocache
+    - system
+  theme:
+    - umio
+third_party_settings:
+  blocache:
+    overridden: true
+    metadata:
+      max-age: -1
+      contexts:
+        - user
+        - 'languages:language_interface'
+      tags:
+        - 'config:block.block.umio_menu_main'
+id: umio_menu_main
+theme: umio
+region: header
+weight: -7
+provider: null
+plugin: 'system_menu_block:main'
+settings:
+  id: 'system_menu_block:main'
+  label: 'Navegação principal'
+  label_display: '0'
+  provider: system
+  level: 1
+  depth: 0
+  expand_all_items: false
+visibility:
+  request_path:
+    id: request_path
+    negate: true
+    pages: /register/manager/aditional

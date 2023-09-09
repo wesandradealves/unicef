@@ -1,0 +1,61 @@
+{#
+/**
+ * @file
+ * Theme override to display a region.
+ *
+ * Available variables:
+ * - content: The content for this region, typically blocks.
+ * - attributes: HTML attributes for the region <div>.
+ * - region: The name of the region variable as defined in the theme's
+ *   .info.yml file.
+ *
+ * @see template_preprocess_region()
+ */
+#}
+
+{# Hero Banner oppotunities #}
+{{
+  include('@umio/components/hero_banner_solid_color.html.twig', {
+    title: ('Edit Profile'|t),
+    font_color: 'white',
+    color: '#08A3B3',
+  })
+}}
+
+{%
+  set classes = [
+    'region',
+    'region-' ~ region|clean_class,
+    'col-12',
+    'col-xl-6',
+    'offset-xl-3',
+    'mt-3',
+    'px-3',
+    'mb-5',
+  ]
+%}
+{% if content %}
+  <div{{ attributes.addClass(classes) }}>
+    {{ content }}
+
+    {# Card Highlights Profile #}
+    <div>
+      {{
+        include('@umio/components/card_highlights_profile_edit.html.twig', {
+          image_card: '/' ~ directory ~ '/images/card-highlights-profile.png',
+          title: ('Highlight your profile on 1Mio'|t),
+          description: {
+            textOne: ('Complete your profile by replying to the '|t),
+            textTwo: ('Self-declaration form'|t),
+            textThree: (' and to '|t),
+            textFour: ('Skill Test'|t),
+            textFive: ('With these results, we can target opportunities for you with more chances of success!'|t),
+          },
+          logged_in_uid: user.id,
+        })
+      }}
+
+      {{ btn_cancel_link_profile }}
+    <div>
+  </div>
+{% endif %}

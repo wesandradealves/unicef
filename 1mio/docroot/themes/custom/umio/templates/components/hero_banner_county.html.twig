@@ -1,0 +1,45 @@
+{#
+/**
+ * @file
+ * Default theme implementation for a region.
+ *
+ * Available variables:
+ * - content: The content for this region, typically blocks.
+ * - attributes: Remaining HTML attributes for the element, including:
+ *   - class: HTML classes that can be used to style contextually through CSS.
+ *
+ * @see template_preprocess_region()
+ *
+ * @ingroup themeable
+ */
+#}
+
+<style>
+  .banner--county--container {
+    background-image: none ;
+  }
+
+  @media (min-width: 768px) {
+    .banner--county--container {
+      background-image: url({{ image_banner_medium }});
+    }
+  }
+
+  @media (min-width: 992px) {
+    .banner--county--container {
+      background-image: url({{ image_banner }});
+    }
+  }
+}
+</style>
+
+<section class="hero-banner-county px-md-0">
+  <div class="row m-0">
+    <div class="col-12 col-md-10 offset-md-1 col-xl-6 offset-xl-3 hero-column banner--county--container">
+      <div class="banner--county--content d-flex">
+        <span class="banner--county--logo d-block" style="background-image: url({{ image_logo }})"></span>
+        <h1>{{ title }}</h1>
+      </div>
+    </div>
+  </div>
+</section>

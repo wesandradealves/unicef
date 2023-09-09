@@ -1,0 +1,56 @@
+{#
+/**
+ * @file
+ * Theme override to display a block.
+ *
+ * Available variables:
+ * - plugin_id: The ID of the block implementation.
+ * - label: The configured label of the block if visible.
+ * - configuration: A list of the block's configuration values.
+ *   - label: The configured label for the block.
+ *   - label_display: The display settings for the label.
+ *   - provider: The module or other provider that provided this block plugin.
+ *   - Block plugin specific settings will also be stored here.
+ * - content: The content of this block.
+ * - attributes: array of HTML attributes populated by modules, intended to
+ *   be added to the main container tag of this template.
+ *   - id: A valid HTML ID and guaranteed unique.
+ * - title_attributes: Same as attributes, except applied to the main title
+ *   tag that appears in the template.
+ * - title_prefix: Additional output populated by modules, intended to be
+ *   displayed in front of the main title tag that appears in the template.
+ * - title_suffix: Additional output populated by modules, intended to be
+ *   displayed after the main title tag that appears in the template.
+ *
+ * @see template_preprocess_block()
+ */
+#}
+{% if skills is not empty %}
+  {{
+    include('@umio/components/opportunities-waiting.html.twig', {
+      image_card: '/' ~ directory ~ '/images/opportunities_waiting.png',
+      text: ('We are still looking for opportunities and ideas for you. Keep an eye!'|t),
+    })
+  }}
+{% elseif skills is not null %}
+  {{
+    include('@umio/components/card_highlights_profile_edit.html.twig', {
+      image_card: '/' ~ directory ~ '/images/card-highlights-profile.png',
+      title: ('Highlight your profile on 1Mio'|t),
+      description: {
+        textOne: ('Complete your profile by replying to the '|t),
+        textTwo: ('Self-declaration form'|t),
+        textThree: (' and to '|t),
+        textFour: ('Skill Test'|t),
+        textFive: ('With these results, we can target opportunities for you with more chances of success!'|t),
+      },
+      logged_in_uid: user.id,
+    })
+  }}
+{% else %}
+  {{
+    include('@umio/components/opportunities-nofound.html.twig', {
+      text: ('No opportunities found.'|t),
+    })
+  }}
+{% endif %}

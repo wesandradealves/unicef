@@ -1,0 +1,8 @@
+uuid: cb2b1485-d1d7-4b6f-becb-85ff4eb40e6c
+langcode: pt-br
+status: true
+dependencies: {  }
+name: 'Abrangência de atuação da empresa'
+vid: company_scope_operation
+description: ''
+weight: 0

@@ -1,0 +1,37 @@
+{#
+/**
+ * @file
+ * Theme override for a 'form' element.
+ *
+ * Available variables
+ * - attributes: A list of HTML attributes for the wrapper element.
+ * - children: The child elements of the form.
+ *
+ * @see template_preprocess_form()
+ */
+#}
+<div id="quiz-form-page">
+  <div class="container">
+    <div class="page-header row flex-wrap">
+      <div class="banner-container d-flex justify-content-center col-12">
+        <img src="/{{ directory }}/images/banner-skills-quiz.png"
+          class="hero-banner" />
+      </div>
+      <div class="header-description-container d-flex align-items-center col-12">
+        <h1>
+          {{
+            'What are the skills that represent you best? Pick 4 options that suits you the most and find out what makes you stand out!'|t
+          }}
+        </h1>
+      </div>
+    </div>
+    <form {{ attributes }}>
+      {{ children }}
+      {% if 'error' in element['#attributes']['class'] %}
+        <p class="error">
+          {{ element.skills['#errors'] }}
+        </p>
+      {% endif %}
+    </form>
+  </div>
+</div>

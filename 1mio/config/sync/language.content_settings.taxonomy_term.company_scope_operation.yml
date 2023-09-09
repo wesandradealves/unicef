@@ -1,0 +1,11 @@
+uuid: e85eceac-2b39-4c07-9e7a-b6bd5172b6f5
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.company_scope_operation
+id: taxonomy_term.company_scope_operation
+target_entity_type_id: taxonomy_term
+target_bundle: company_scope_operation
+default_langcode: site_default
+language_alterable: false

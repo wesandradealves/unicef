@@ -1,0 +1,28 @@
+uuid: 21357f68-d9ea-49d8-95a0-e9cb9fbab18c
+langcode: pt-br
+status: true
+dependencies:
+  module:
+    - system
+    - user
+  theme:
+    - admin
+id: admin_breadcrumbs
+theme: admin
+region: breadcrumb
+weight: -5
+provider: null
+plugin: system_breadcrumb_block
+settings:
+  id: system_breadcrumb_block
+  label: Breadcrumbs
+  label_display: '0'
+  provider: system
+visibility:
+  user_role:
+    id: user_role
+    negate: false
+    context_mapping:
+      user: '@user.current_user_context:current_user'
+    roles:
+      administrator: administrator

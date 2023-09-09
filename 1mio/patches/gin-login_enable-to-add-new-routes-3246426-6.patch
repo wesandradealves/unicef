@@ -1,0 +1,308 @@
+From 2abe7fd5601adadaadbbdb1cd86741b816a17cca Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Anton=C3=ADn=20Slej=C5=A1ka?=
+ <antoninslejska@2498328.no-reply.drupal.org>
+Date: Fri, 29 Oct 2021 09:19:28 +0000
+Subject: [PATCH 1/5] Enable to add new routes (pages).
+
+---
+ gin_login.module                      | 31 ++++++++-------------
+ gin_login.services.yml                |  2 ++
+ src/Services/GinLoginRouteService.php | 39 +++++++++++++++++++++++++++
+ src/Theme/ThemeNegotiator.php         |  8 +++---
+ 4 files changed, 55 insertions(+), 25 deletions(-)
+ create mode 100644 src/Services/GinLoginRouteService.php
+
+diff --git a/gin_login.module b/gin_login.module
+index f019b19..9c6a0d1 100644
+--- a/gin_login.module
++++ b/gin_login.module
+@@ -146,18 +146,14 @@ function gin_login_form_alter(&$form, $form_state, $form_id) {
+  */
+ function gin_login_theme() {
+   // Page.
+-  $theme['page__user__login'] = [
+-    'template' => 'page--user--login',
+-    'preprocess functions' => ['gin_login_preprocess_ginlogin'],
+-  ];
+-  $theme['page__user__password'] = [
+-    'template' => 'page--user--password',
+-    'preprocess functions' => ['gin_login_preprocess_ginlogin'],
+-  ];
+-  $theme['page__user__register'] = [
+-    'template' => 'page--user--register',
+-    'preprocess functions' => ['gin_login_preprocess_ginlogin'],
+-  ];
++  $route_definitions = \Drupal::service('gin_login.route')->getLoginRouteDefinitions();
++
++  foreach ($route_definitions as $route_definition) {
++    $theme[$route_definition['page']] = [
++      'template' => $route_definition['template'],
++      'preprocess functions' => $route_definition['preprocess functions'],
++    ];
++  }
+ 
+   return $theme;
+ }
+@@ -225,17 +221,12 @@ function gin_login_preprocess_ginlogin(&$variables) {
+ function _gin_login__check_path() {
+   // Get path from Route.
+   $route = \Drupal::routeMatch()->getRouteName();
++  $route_definitions = \Drupal::service('gin_login.route')->getLoginRouteDefinitions();
+ 
+-  if (
+-    $route == 'user.login' ||
+-    $route == 'user.pass' ||
+-    $route == 'user.register'
+-  ) {
++  if (array_key_exists($route, $route_definitions)) {
+     return true;
+   }
+-  else {
+-    return FALSE;
+-  }
++  return FALSE;
+ }
+ 
+ /**
+diff --git a/gin_login.services.yml b/gin_login.services.yml
+index 146b76e..cdb99f6 100644
+--- a/gin_login.services.yml
++++ b/gin_login.services.yml
+@@ -5,3 +5,5 @@ services:
+       - '@config.factory'
+     tags:
+       - { name: theme_negotiator, priority: 1000 }
++  gin_login.route:
++    class: Drupal\gin_login\Services\GinLoginRouteService
+diff --git a/src/Services/GinLoginRouteService.php b/src/Services/GinLoginRouteService.php
+new file mode 100644
+index 0000000..7591a2c
+--- /dev/null
++++ b/src/Services/GinLoginRouteService.php
+@@ -0,0 +1,39 @@
++<?php
++
++namespace Drupal\gin_login\Services;
++
++/**
++* Class GinLoginRouteService.
++*/
++class GinLoginRouteService {
++
++  /**
++   * Get route definitions.
++   *
++   * @return array
++   */
++  public static function getLoginRouteDefinitions() {
++    $route_definitions = [
++      'user.login' => [
++        'page' => 'page__user__login',
++        'template' => 'page--user--login',
++        'preprocess functions' => ['gin_login_preprocess_ginlogin'],
++      ],
++      'user.pass' => [
++        'page' => 'page__user__password',
++        'template' => 'page--user--password',
++        'preprocess functions' => ['gin_login_preprocess_ginlogin'],
++      ],
++      'user.register' => [
++        'page' => 'page__user__register',
++        'template' => 'page--user--register',
++        'preprocess functions' => ['gin_login_preprocess_ginlogin'],
++      ],
++    ];
++
++    \Drupal::moduleHandler()->alter('gin_login_route_definitions', $route_definitions);
++
++    return $route_definitions;
++  }
++
++}
+diff --git a/src/Theme/ThemeNegotiator.php b/src/Theme/ThemeNegotiator.php
+index 841f74f..29391b0 100644
+--- a/src/Theme/ThemeNegotiator.php
++++ b/src/Theme/ThemeNegotiator.php
+@@ -45,11 +45,9 @@ class ThemeNegotiator implements ThemeNegotiatorInterface {
+    * @return bool|string
+    */
+   private function negotiateRoute(RouteMatchInterface $route_match) {
+-    if (
+-        $route_match->getRouteName() == 'user.login' ||
+-        $route_match->getRouteName() == 'user.pass' ||
+-        $route_match->getRouteName() == 'user.register'
+-      ) {
++    $route_definitions = \Drupal::service('gin_login.route')->getLoginRouteDefinitions();
++
++    if (array_key_exists($route_match->getRouteName(), $route_definitions)) {
+       return $this->configFactory->get('system.theme')->get('admin');
+     }
+ 
+-- 
+GitLab
+
+
+From 88653cbbb0ebcc21f214821a55ae7666d59fe0f0 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Anton=C3=ADn=20Slej=C5=A1ka?=
+ <antoninslejska@2498328.no-reply.drupal.org>
+Date: Fri, 29 Oct 2021 09:44:54 +0000
+Subject: [PATCH 2/5] Add the general template.
+
+---
+ templates/page--user--general.html.twig | 5 +++++
+ 1 file changed, 5 insertions(+)
+ create mode 100644 templates/page--user--general.html.twig
+
+diff --git a/templates/page--user--general.html.twig b/templates/page--user--general.html.twig
+new file mode 100644
+index 0000000..5012e0b
+--- /dev/null
++++ b/templates/page--user--general.html.twig
+@@ -0,0 +1,5 @@
++{% extends '@gin_login/page--user--login.html.twig' %}
++
++{% block title %}
++  <h1 class="page-title user-form-page__page-title">{{ drupal_title() }}</h1>
++{% endblock %}
+-- 
+GitLab
+
+
+From 17b95f7902047762c65893cc9b5c386e9147fba0 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Anton=C3=ADn=20Slej=C5=A1ka?=
+ <antoninslejska@2498328.no-reply.drupal.org>
+Date: Fri, 29 Oct 2021 11:10:36 +0000
+Subject: [PATCH 3/5] Implement dependency injection for the module handler.
+
+---
+ gin_login.services.yml                |  2 ++
+ src/Services/GinLoginRouteService.php | 36 +++++++++++++++++++++++++--
+ 2 files changed, 36 insertions(+), 2 deletions(-)
+
+diff --git a/gin_login.services.yml b/gin_login.services.yml
+index cdb99f6..548b077 100644
+--- a/gin_login.services.yml
++++ b/gin_login.services.yml
+@@ -7,3 +7,5 @@ services:
+       - { name: theme_negotiator, priority: 1000 }
+   gin_login.route:
+     class: Drupal\gin_login\Services\GinLoginRouteService
++    arguments:
++      - '@module_handler'
+diff --git a/src/Services/GinLoginRouteService.php b/src/Services/GinLoginRouteService.php
+index 7591a2c..5a4ff41 100644
+--- a/src/Services/GinLoginRouteService.php
++++ b/src/Services/GinLoginRouteService.php
+@@ -2,17 +2,49 @@
+ 
+ namespace Drupal\gin_login\Services;
+ 
++use Drupal\Core\Extension\ModuleHandlerInterface;
++use Symfony\Component\DependencyInjection\ContainerInterface;
++
+ /**
+ * Class GinLoginRouteService.
+ */
+ class GinLoginRouteService {
+ 
++  /**
++   * The module handler service.
++   *
++   * @var \Drupal\Core\Extension\ModuleHandlerInterface
++   */
++  protected $moduleHandler;
++
++  /**
++   * Constructs a GinLoginRouteService object.
++   *
++   * @param \Drupal\Core\Extension\ModuleHandlerInterface $module_handler
++   *   The module handler service.
++   */
++  public function __construct(ModuleHandlerInterface $module_handler) {
++    $this->moduleHandler = $module_handler;
++  }
++
++  /**
++   * Instantiates a new instance of this class.
++   *
++   * @param \Symfony\Component\DependencyInjection\ContainerInterface $container
++   *   The service container this instance should use.
++   */
++  public static function create(ContainerInterface $container) {
++    return new static(
++      $container->get('module_handler')
++    );
++  }
++
+   /**
+    * Get route definitions.
+    *
+    * @return array
+    */
+-  public static function getLoginRouteDefinitions() {
++  public function getLoginRouteDefinitions() {
+     $route_definitions = [
+       'user.login' => [
+         'page' => 'page__user__login',
+@@ -31,7 +63,7 @@ class GinLoginRouteService {
+       ],
+     ];
+ 
+-    \Drupal::moduleHandler()->alter('gin_login_route_definitions', $route_definitions);
++    $this->moduleHandler->alter('gin_login_route_definitions', $route_definitions);
+ 
+     return $route_definitions;
+   }
+-- 
+GitLab
+
+
+From 3a275acc11d9a3836a153733de8758703bd10b28 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Anton=C3=ADn=20Slej=C5=A1ka?=
+ <antoninslejska@2498328.no-reply.drupal.org>
+Date: Fri, 5 Nov 2021 20:57:42 +0000
+Subject: [PATCH 4/5] Solve the error "Unknown drupal_title function.".
+
+---
+ templates/page--user--general.html.twig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/templates/page--user--general.html.twig b/templates/page--user--general.html.twig
+index 5012e0b..9b6f093 100644
+--- a/templates/page--user--general.html.twig
++++ b/templates/page--user--general.html.twig
+@@ -1,5 +1,5 @@
+ {% extends '@gin_login/page--user--login.html.twig' %}
+ 
+ {% block title %}
+-  <h1 class="page-title user-form-page__page-title">{{ drupal_title() }}</h1>
++  <h1 class="page-title user-form-page__page-title">{{ context.page.title }}</h1>
+ {% endblock %}
+-- 
+GitLab
+
+
+From 95846adea7147dda55da55d26f88fb4177df1239 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Anton=C3=ADn=20Slej=C5=A1ka?=
+ <antoninslejska@2498328.no-reply.drupal.org>
+Date: Fri, 5 Nov 2021 21:41:40 +0000
+Subject: [PATCH 5/5] Improve the display of the page's title.
+
+---
+ templates/page--user--general.html.twig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/templates/page--user--general.html.twig b/templates/page--user--general.html.twig
+index 9b6f093..a17cc0f 100644
+--- a/templates/page--user--general.html.twig
++++ b/templates/page--user--general.html.twig
+@@ -1,5 +1,5 @@
+ {% extends '@gin_login/page--user--login.html.twig' %}
+ 
+ {% block title %}
+-  <h1 class="page-title user-form-page__page-title">{{ context.page.title }}</h1>
++  <h1 class="page-title user-form-page__page-title">{{ page['#title'] }}</h1>
+ {% endblock %}
+-- 
+GitLab
+

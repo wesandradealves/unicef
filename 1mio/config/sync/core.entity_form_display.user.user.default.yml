@@ -1,0 +1,222 @@
+uuid: 805eb607-a1ab-41cd-b72a-e49f5c7d99a5
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - field.field.user.user.field_flag_public_sector
+    - field.field.user.user.field_flag_singup
+    - field.field.user.user.field_last_password_reset
+    - field.field.user.user.field_password_expiration
+    - field.field.user.user.field_pending_expire_sent
+    - field.field.user.user.field_user_accepted_term_data
+    - field.field.user.user.field_user_address
+    - field.field.user.user.field_user_birth_date
+    - field.field.user.user.field_user_company
+    - field.field.user.user.field_user_company_role
+    - field.field.user.user.field_user_company_role_started
+    - field.field.user.user.field_user_cpf
+    - field.field.user.user.field_user_curriculum
+    - field.field.user.user.field_user_gender
+    - field.field.user.user.field_user_name
+    - field.field.user.user.field_user_phone
+    - field.field.user.user.field_user_professional_traject
+    - field.field.user.user.field_user_profile_picture
+    - field.field.user.user.field_user_public_profile
+    - field.field.user.user.field_user_social
+    - field.field.user.user.field_user_status
+    - field.field.user.user.field_user_telephone
+    - field.field.user.user.field_user_telephone_extension
+    - field.field.user.user.field_user_vacancies_closed
+    - field.field.user.user.field_younger_skills
+    - image.style.thumbnail
+  module:
+    - datetime
+    - image
+    - paragraphs
+    - select_or_other
+    - telephone
+    - user
+_core:
+  default_config_hash: K-1rBM8mTIkFp9RqOC2tMRUukOQ1xbRCfSKK8dEddnA
+id: user.user.default
+targetEntityType: user
+bundle: user
+mode: default
+content:
+  account:
+    weight: 2
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_flag_public_sector:
+    type: boolean_checkbox
+    weight: 11
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  field_last_password_reset:
+    type: datetime_default
+    weight: 5
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_password_expiration:
+    type: boolean_checkbox
+    weight: 3
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  field_user_accepted_term_data:
+    type: datetime_default
+    weight: 14
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_user_address:
+    type: entity_reference_paragraphs
+    weight: 10
+    region: content
+    settings:
+      title: Endereço
+      title_plural: Endereços
+      edit_mode: open
+      add_mode: dropdown
+      form_display_mode: default
+      default_paragraph_type: paragraph_address
+    third_party_settings: {  }
+  field_user_birth_date:
+    type: datetime_default
+    weight: 13
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_user_company:
+    type: entity_reference_autocomplete_tags
+    weight: 7
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_user_company_role_started:
+    type: datetime_default
+    weight: 12
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_user_cpf:
+    type: string_textfield
+    weight: 6
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_user_curriculum:
+    type: entity_reference_paragraphs
+    weight: 15
+    region: content
+    settings:
+      title: Parágrafo
+      title_plural: Parágrafos
+      edit_mode: open
+      add_mode: dropdown
+      form_display_mode: default
+      default_paragraph_type: ''
+    third_party_settings:
+      conditional_fields: {  }
+  field_user_gender:
+    type: select_or_other_list
+    weight: 4
+    region: content
+    settings:
+      select_element_type: select_or_other_select
+      sort_options: ASC
+      add_other_value_to_allowed_values: false
+    third_party_settings: {  }
+  field_user_name:
+    type: string_textfield
+    weight: 1
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_user_phone:
+    type: telephone_default
+    weight: 8
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_user_professional_traject:
+    type: entity_reference_paragraphs
+    weight: 19
+    region: content
+    settings:
+      title: Parágrafo
+      title_plural: Parágrafos
+      edit_mode: open
+      add_mode: dropdown
+      form_display_mode: default
+      default_paragraph_type: ''
+    third_party_settings: {  }
+  field_user_profile_picture:
+    type: image_image
+    weight: 0
+    region: content
+    settings:
+      progress_indicator: throbber
+      preview_image_style: thumbnail
+    third_party_settings: {  }
+  field_user_public_profile:
+    type: entity_reference_autocomplete
+    weight: 17
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_user_social:
+    type: entity_reference_paragraphs
+    weight: 16
+    region: content
+    settings:
+      title: Parágrafo
+      title_plural: Parágrafos
+      edit_mode: open
+      add_mode: dropdown
+      form_display_mode: default
+      default_paragraph_type: ''
+    third_party_settings: {  }
+  field_user_status:
+    type: options_select
+    weight: 9
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_younger_skills:
+    type: options_buttons
+    weight: 18
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  comment_notify_settings: true
+  contact: true
+  field_flag_singup: true
+  field_pending_expire_sent: true
+  field_user_company_role: true
+  field_user_telephone: true
+  field_user_telephone_extension: true
+  field_user_vacancies_closed: true
+  langcode: true
+  language: true
+  path: true
+  timezone: true

@@ -1,0 +1,48 @@
+diff --git a/src/Robo/Commands/Deploy/DeployCommand.php b/src/Robo/Commands/Deploy/DeployCommand.php
+index a6b1def..af57032 100644
+--- a/src/Robo/Commands/Deploy/DeployCommand.php
++++ b/src/Robo/Commands/Deploy/DeployCommand.php
+@@ -422,14 +422,14 @@ protected function composerInstall() {
+       ->run();
+     $this->taskFilesystemStack()
+       ->copy($this->getConfigValue('repo.root') . '/composer.json', $this->deployDir . '/composer.json', TRUE)
+-      ->copy($this->getConfigValue('repo.root') . '/composer.lock', $this->deployDir . '/composer.lock', TRUE)
++      ->copy($this->getConfigValue('repo.root') . '/composer-backup.lock', $this->deployDir . '/composer.lock', TRUE)
+       ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_VERBOSE)
+       ->run();
+     $command = 'composer install --no-dev --no-interaction --optimize-autoloader';
+     if ($this->ignorePlatformReqs) {
+       $command .= ' --ignore-platform-reqs';
+     }
+-    $this->taskExecStack()->exec($command)
++    $this->taskExecStack()->exec($command)->exec('COMPOSER_MEMORY_LIMIT=-1 composer update --no-dev --lock --no-interaction --optimize-autoloader')
+       ->stopOnFail()
+       ->dir($this->deployDir)
+       ->run();
+@@ -658,7 +658,12 @@ public function updateAll() {
+     $this->config->set('drush.alias', '');
+ 
+     foreach ($this->getConfigValue('multisites') as $multisite) {
+-      $this->updateSite($multisite);
++      try {
++        $this->updateSite($multisite);
++      }
++      catch (BltException $e) {
++        echo 'Exception on site ' . $multisite . ': ', $e->getMessage(), "\n";
++      }
+     }
+   }
+ 
+diff --git a/src/Robo/Commands/Setup/ConfigCommand.php b/src/Robo/Commands/Setup/ConfigCommand.php
+index 4ad613e..10920b6 100644
+--- a/src/Robo/Commands/Setup/ConfigCommand.php
++++ b/src/Robo/Commands/Setup/ConfigCommand.php
+@@ -108,7 +108,7 @@ public function import() {
+     $task->drush("cache-rebuild");
+     $result = $task->run();
+     if (!$result->wasSuccessful()) {
+-      throw new BltException("Failed to import configuration!");
++      echo 'cache-rebuild: Failed to import configuration', "\n";
+     }
+
+     $this->checkConfigOverrides();

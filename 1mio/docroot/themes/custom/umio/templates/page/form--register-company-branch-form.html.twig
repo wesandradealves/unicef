@@ -1,0 +1,23 @@
+{% extends "@umio/components/page_two_columns.html.twig" %}
+
+{% block sidebar %}
+  {% include '@umio/components/sidebar_register.html.twig' with {
+    title: ('Register Branch'|t),
+    steps: {
+      1: {
+        'icon': 'ph-hard-drives',
+        'text': ('Branch data'|t)
+      },
+      2: {
+        'icon': 'ph-map-pin',
+        'text': ('Region'|t)
+      },
+    }
+  } %}
+{% endblock %}
+
+{% block content%}
+  <form{{ attributes }}>
+    {{ children }}
+  </form>
+{% endblock %}

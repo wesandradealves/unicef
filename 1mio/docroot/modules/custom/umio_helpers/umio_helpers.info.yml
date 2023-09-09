@@ -1,0 +1,8 @@
+name: 1MIO Helpers
+type: module
+package: 'Custom'
+description: "Custom module to reuse code and functions in other modules."
+core_version_requirement: "^9"
+
+'interface translation project': umio_helpers
+'interface translation server pattern': modules/custom/umio_helpers/translations/umio_helpers.%language.po

@@ -1,0 +1,14 @@
+diff --git a/src/Plugin/migrate_plus/data_parser/Xml.php b/src/Plugin/migrate_plus/data_parser/Xml.php
+index ead0591..9f4179e 100644
+--- a/src/Plugin/migrate_plus/data_parser/Xml.php
++++ b/src/Plugin/migrate_plus/data_parser/Xml.php
+@@ -160,6 +160,9 @@ class Xml extends DataParserPluginBase {
+    * {@inheritdoc}
+    */
+   protected function openSourceUrl($url): bool {
++    if (empty($url)) {
++      $url = 'file:///dev/null';
++    }
+     // (Re)open the provided URL.
+     $this->reader->close();
+ 

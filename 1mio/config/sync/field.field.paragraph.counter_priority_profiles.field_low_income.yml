@@ -1,0 +1,23 @@
+uuid: 43206293-d7a3-4b91-8347-9d98848f8efe
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_low_income
+    - paragraphs.paragraphs_type.counter_priority_profiles
+id: paragraph.counter_priority_profiles.field_low_income
+field_name: field_low_income
+entity_type: paragraph
+bundle: counter_priority_profiles
+label: 'Renda (adolescentes e jovens sem renda ou renda per capita familiar de até R$ 150 mensais)'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: 0
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

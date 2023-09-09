@@ -1,0 +1,13 @@
+diff --git a/js/autologout.js b/js/autologout.js
+index c2f3d67..1f2676e 100644
+--- a/js/autologout.js
++++ b/js/autologout.js
+@@ -177,7 +177,7 @@
+               window.location = localSettings.redirect_url;
+             },
+             error: function (XMLHttpRequest, textStatus) {
+-              if (XMLHttpRequest.status === 403 || XMLHttpRequest.status === 404) {
++              if (XMLHttpRequest.status === 403 || XMLHttpRequest.status === 404 || XMLHttpRequest.status === 0) {
+                 window.location = localSettings.redirect_url;
+               }
+             }

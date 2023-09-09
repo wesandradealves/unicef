@@ -1,0 +1,31 @@
+uuid: 28bf616b-e35d-484c-aeb8-b62104950c5c
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_course_location
+    - node.type.course
+    - paragraphs.paragraphs_type.paragraph_address
+  module:
+    - entity_reference_revisions
+id: node.course.field_course_location
+field_name: field_course_location
+entity_type: node
+bundle: course
+label: 'Local do curso'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    target_bundles:
+      paragraph_address: paragraph_address
+    negate: 0
+    target_bundles_drag_drop:
+      paragraph_address:
+        weight: 2
+        enabled: true
+field_type: entity_reference_revisions

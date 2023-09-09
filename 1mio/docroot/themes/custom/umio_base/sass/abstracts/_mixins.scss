@@ -1,0 +1,104 @@
+@mixin generate-icon($icon-content) {
+  font-family: "Phosphor" !important;
+  font-style: normal !important;
+  font-weight: normal !important;
+  content: $icon-content;
+}
+
+@mixin make-container-boostrap() {
+  @include make-container();
+  @include media-breakpoint-up(sm) {
+    max-width: 540px;
+  }
+  @include media-breakpoint-up(md) {
+    max-width: 720px;
+  }
+  @include media-breakpoint-up(lg) {
+    max-width: 960px;
+  }
+  @include media-breakpoint-up(xl) {
+    max-width: 1140px;
+  }
+  @include media-breakpoint-up(xxl) {
+    max-width: 1320px;
+  }
+}
+
+@mixin make-layout-content() {
+  padding-left: 1rem;
+  padding-right: 1rem;
+  @include media-breakpoint-up(sm) {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+  @include media-breakpoint-up(md) {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+  @include media-breakpoint-up(lg) {
+    padding-left: 3rem;
+    padding-right: 3rem;
+  }
+  @include media-breakpoint-up(xl) {
+    padding-left: 4rem;
+    padding-right: 4rem;
+  }
+}
+
+@mixin make-primary-button() {
+  color: $gray-primary-10;
+  background-color: $blue-primary-main;
+  border-color: $blue-primary-main;
+  &:hover {
+    color: $gray-primary-10;
+    background-color: $blue-primary-dark;
+    border-color: $blue-primary-dark;
+  }
+  &:active,
+  &:focus {
+    color: $gray-primary-10;
+  }
+}
+
+@mixin make-outline-primary-button() {
+  color: $blue-primary-main;
+  border-color: $blue-primary-main;
+  background-color: $gray-primary-10;
+  &:hover,
+  &:active,
+  &:focus {
+    color: $gray-primary-10;
+    background-color: $blue-primary-main;
+    border-color: $blue-primary-main;
+  }
+}
+
+@mixin make-success-button() {
+  color: $gray-primary-10;
+  background-color: $green-primary-main;
+  border-color: $green-primary-main;
+  &:hover {
+    color: $gray-primary-10;
+    background-color: $green-primary-dark;
+    border-color: $green-primary-dark;
+  }
+  &:active,
+  &:focus {
+    color: $gray-primary-10;
+  }
+}
+
+@mixin make-danger-button() {
+  color: $gray-primary-10;
+  background-color: $alert-red-50;
+  border-color: $alert-red-50;
+  &:hover {
+    color: $gray-primary-10;
+    background-color: $alert-red-75;
+    border-color: $alert-red-75;
+  }
+  &:active,
+  &:focus {
+    color: $gray-primary-10;
+  }
+}

@@ -1,0 +1,66 @@
+.profile-printer {
+  display: none;
+}
+
+@media print {
+  .young-profile {
+    section {
+      padding: 0 0 30px !important;
+    }
+  }
+  .about-me {
+    border-bottom: 1px solid $gray-primary-75;
+    padding-bottom: 30px;
+    margin-bottom: 40px;
+  }
+  .site-logo {
+    display: none;
+  }
+  #block-umio-local-tasks {
+    nav{
+      display: none;
+    }
+  }
+  .profile-printer{
+    width: 100%;
+    h3 {
+      font-weight: 800;
+      display: flex;
+      justify-content: center;
+    }
+    h6 {
+      color: $gray-primary-50;
+      font-weight: 700;
+      display: flex;
+      justify-content: center;
+    }
+  }
+  .title-description{
+    h2 {
+      color: $gray-primary-75 !important;
+      margin-bottom: 8px !important;
+    }
+    p {
+      color: $gray-primary-50;
+    }
+  }
+  .profile-experiences{
+    page-break-inside: avoid;
+    visibility: visible;
+    .container {
+      background-color: $gray-primary-10 !important;
+      border: 1px solid $gray-primary-50;
+      h2 {
+        color: $gray-primary-50;
+      }
+    }
+  }
+  .address {
+    color: $gray-primary-50;
+    display: flex;
+    justify-content: center;
+    span {
+      margin: 0 .25rem;
+    }
+  }
+}

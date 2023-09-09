@@ -1,0 +1,50 @@
+company_manager.register:
+  path: /register/manager
+  defaults:
+    _title: 'Criar conta'
+    _form: '\Drupal\company_manager\Form\RegisterCompanyManagerForm'
+  requirements:
+    _role: 'anonymous+administrator'
+
+company_manager.register_aditional:
+  path: /register/manager/aditional
+  defaults:
+    _title: 'Criar conta'
+    _form: '\Drupal\company_manager\Form\RegisterCompanyManagerAdditionalForm'
+  requirements:
+    _role: 'administrator+partner_talent_acquisition'
+
+company_manager.success_register:
+  path: /cadastro/sucesso
+  defaults:
+    _controller: Drupal\company_manager\Controller\CompanyManagerRegisterController::successRegister
+  requirements:
+    _permission: 'access content'
+
+company_manager.register_city_manager:
+  path: /register/city-manager
+  defaults:
+    _title: 'Criar conta'
+    _form: 'Drupal\company_manager\Form\RegisterCityManagerForm'
+  requirements:
+    _permission: 'access content'
+
+company_manager.register_city_manager_additional:
+  path: '/register/city-manager/additional'
+  defaults:
+    _title: 'Register city manager additional'
+    _form: 'Drupal\company_manager\Form\RegisterCityManagerAdditionalForm'
+  requirements:
+    _role: 'administrator+partner_talent_acquisition'
+
+company_manager.success_register_city_manager:
+  path: '/register/city-manager/success/{node}'
+  defaults:
+    _title: 'Pronto! Cadastro de munícipio enviado.'
+    _controller: Drupal\company_manager\Controller\CompanyManagerRegisterController::successCityManagerRegister
+  requirements:
+    _permission: 'access content'
+  options:
+    parameters:
+      node:
+        type: entity:node

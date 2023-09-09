@@ -1,0 +1,68 @@
+diff --git a/src/SharethisManager.php b/src/SharethisManager.php
+index d6d2d67..7a69580 100644
+--- a/src/SharethisManager.php
++++ b/src/SharethisManager.php
+@@ -10,6 +10,7 @@ use Drupal\Component\Utility\Html;
+ use Drupal\Component\Serialization\Json;
+ use Drupal\Core\Controller\TitleResolverInterface;
+ use Symfony\Component\HttpFoundation\RequestStack;
++use Drupal\Core\Language\LanguageInterface;
+
+ /**
+  * Defines an SharethisManager service.
+@@ -210,6 +211,24 @@ class SharethisManager implements SharethisManagerInterface {
+     }
+   }
+
++  /**
++   * Returns language specific twitter handle.
++   */
++  public function getTwitterHandle()
++  {
++    $st_twitter_handle_config = $this->configFactory->get('unicef_site.settings');
++    $st_twitter_handle = $st_twitter_handle_config->get('twitter_handle');
++    if ($st_twitter_handle) {
++      $langcode = \Drupal::languageManager()->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)->getId();
++      $langcode_default = \Drupal::languageManager()->getDefaultLanguage()->getId();
++      if ($st_twitter_handle[$langcode]) {
++        return isset($st_twitter_handle[$langcode]) ? $st_twitter_handle[$langcode] : '';
++      } else {
++        return isset($st_twitter_handle[$langcode_default]) ? $st_twitter_handle[$langcode_default] : '';
++      }
++    }
++  }
++
+   /**
+    * {@inheritdoc}
+    */
+@@ -236,12 +255,20 @@ class SharethisManager implements SharethisManagerInterface {
+
+       // Find the service code name.
+       $service_code_name = mb_substr($service[1], 0, -1);
++      $mtitle_modified = $mtitle;
++
++      if ($service_code_name == 'twitter') {
++        $twitter_handle_lang_specific = $this->getTwitterHandle();
++      }
+
+       // Switch the title on a per-service basis if required.
+       // $mtitle = $mtitle;.
+       switch ($service_code_name) {
+         case 'twitter':
+-          $mtitle = empty($data_options['twitter_suffix']) ? Html::escape($mtitle) : Html::escape($mtitle) . ' ' . Html::escape($data_options['twitter_suffix']);
++          $mtitle_modified = empty($data_options['twitter_suffix']) ? $mtitle : $mtitle . ' ' . Html::escape($data_options['twitter_suffix']);
++          if ($twitter_handle_lang_specific) {
++            $mtitle_modified = $mtitle . ' ' . Html::escape($twitter_handle_lang_specific);
++          }
+           break;
+       }
+
+@@ -251,7 +278,7 @@ class SharethisManager implements SharethisManagerInterface {
+       // Put together the span attributes.
+       $attributes = [
+         'st_url' => $mpath,
+-        'st_title' => $mtitle,
++        'st_title' => $mtitle_modified,
+         'class' => 'st_' . $display . $type,
+       ];
+       if ($service_code_name == 'twitter') {

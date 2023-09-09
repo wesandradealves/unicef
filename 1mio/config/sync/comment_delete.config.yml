@@ -1,0 +1,9 @@
+_core:
+  default_config_hash: vEPndvhqefNVi3WCdXNayGQ7sJPfvodfMMiXQ6OoTuk
+langcode: pt-br
+default_selection: '0'
+soft: '0'
+soft_mode: unset_values
+soft_user: '1'
+threshold: '0'
+message: 'Comentário deletado com sucesso'

@@ -1,0 +1,23 @@
+uuid: 39b5df12-b49f-4d02-a336-73939859d23c
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.paragraph_social.field_paragraph_networks
+    - paragraphs.paragraphs_type.paragraph_social
+  module:
+    - social_media_links_field
+id: paragraph.paragraph_social.default
+targetEntityType: paragraph
+bundle: paragraph_social
+mode: default
+content:
+  field_paragraph_networks:
+    type: social_media_links_field_default
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  created: true
+  status: true

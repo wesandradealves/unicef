@@ -1,0 +1,43 @@
+uuid: bbdce92c-d794-42cd-8e6f-296dc2d5c0db
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_paragraph_experience
+    - paragraphs.paragraphs_type.curriculum
+    - paragraphs.paragraphs_type.experience
+  module:
+    - entity_reference_revisions
+id: paragraph.curriculum.field_paragraph_experience
+field_name: field_paragraph_experience
+entity_type: paragraph
+bundle: curriculum
+label: Experiência
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    target_bundles:
+      experience: experience
+    negate: 0
+    target_bundles_drag_drop:
+      courses_and_abilities:
+        weight: 6
+        enabled: false
+      curriculum:
+        weight: 7
+        enabled: false
+      educational_formation:
+        weight: 8
+        enabled: false
+      experience:
+        weight: 9
+        enabled: true
+      paragraph_address:
+        weight: 10
+        enabled: false
+field_type: entity_reference_revisions

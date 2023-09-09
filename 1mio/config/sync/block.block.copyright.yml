@@ -1,0 +1,25 @@
+uuid: 1f2bb581-6a3f-4755-9091-236eac073ce8
+langcode: pt-br
+status: true
+dependencies:
+  content:
+    - 'block_content:basic:c97b644b-900a-47d2-a8a2-7a51519f133e'
+  module:
+    - block_content
+  theme:
+    - umio
+id: copyright
+theme: umio
+region: footer_right
+weight: -5
+provider: null
+plugin: 'block_content:c97b644b-900a-47d2-a8a2-7a51519f133e'
+settings:
+  id: 'block_content:c97b644b-900a-47d2-a8a2-7a51519f133e'
+  label: Copyright
+  label_display: '0'
+  provider: block_content
+  status: true
+  info: ''
+  view_mode: full
+visibility: {  }

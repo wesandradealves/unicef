@@ -1,0 +1,5 @@
+services:
+  views_filter_customization.ajax_subscriber:
+    class: Drupal\umio_front_area\EventSubscriber\ViewFilterAjaxResponseSubscriber
+    tags:
+      - { name: event_subscriber }

@@ -1,0 +1,87 @@
+.ui-dialog {
+  padding: 12px 0;
+  box-shadow: 8px 4px 40px rgb(0 0 0 / 8%);
+  .ui-dialog-titlebar {
+    display: flex;
+    align-items: center;
+    padding: 24px;
+    .ui-button {
+      position: relative;
+      top: 0;
+      right: 0;
+    }
+  }
+  .ui-widget-content.ui-dialog-buttonpane {
+    .button {
+      font-weight: bold;
+      margin-top: 0;
+      margin-bottom: 0;
+      border-radius: 32px;
+      display: flex;
+      align-items: center;
+      &:focus {
+        box-shadow: none;
+      }
+    }
+    .button--danger {
+      @include make-danger-button();
+      &:hover {
+        border: 1px solid $alert-red-75 !important;
+      }
+    }
+  }
+  .ui-button-icon {
+    background: $gray-primary-75 !important;
+  }
+  .ui-dialog-title {
+    color: $gray-primary-75;
+  }
+  .ui-dialog-titlebar  {
+    background-color: $gray-primary-10;
+    border-bottom: 2px solid $gray-primary-20;
+    justify-content: space-between;
+    &.ui-helper-clearfix{
+      &::before, &::after {
+        content: none;
+      }
+    }
+    .ui-dialog-titlebar-close {
+      &::before {
+        @include generate-icon("\f759");
+        font-size: 32px;
+      }
+    }
+  }
+  .ui-dialog-buttonpane {
+    background-color: $gray-primary-10 !important;
+    border-top: none !important;
+    .ui-dialog-buttonset {
+      display: flex;
+      flex-direction: row-reverse;
+      justify-content: end;
+      .button {
+        &:first-of-type {
+          @include make-primary-button();
+          &:active,
+          &:focus {
+            border-color: $blue-primary-main !important;
+          }
+        }
+      }
+    }
+  }
+  .ui-widget-content{
+    color: $gray-primary-50;
+    font-weight: bold;
+    span {
+      color:$blue-primary-main;
+    }
+  }
+}
+
+
+.views-ui-dialog.views-ui-dialog-scroll {
+  .ui-dialog-titlebar {
+    border-bottom: 2px solid $gray-primary-25;
+  }
+}

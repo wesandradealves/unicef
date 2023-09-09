@@ -1,0 +1,25 @@
+uuid: e4e387b7-ed60-4a22-96dc-e62dc155bb7a
+langcode: pt-br
+status: true
+dependencies:
+  module:
+    - field_encrypt
+    - telephone
+    - user
+third_party_settings:
+  field_encrypt:
+    encrypt: true
+    properties:
+      value: value
+id: user.field_user_phone
+field_name: field_user_phone
+entity_type: user
+type: telephone
+settings: {  }
+module: telephone
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

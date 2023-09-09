@@ -1,0 +1,20 @@
+uuid: b70f7170-a048-4f45-9ba8-ffc3f54af114
+langcode: pt-br
+status: true
+dependencies:
+  module:
+    - node
+    - taxonomy
+id: node.field_company_size
+field_name: field_company_size
+entity_type: node
+type: entity_reference
+settings:
+  target_type: taxonomy_term
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

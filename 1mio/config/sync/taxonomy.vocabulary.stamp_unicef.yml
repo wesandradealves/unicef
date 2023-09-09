@@ -1,0 +1,8 @@
+uuid: 02788a1c-f53b-43e9-8541-2c36d9f38c81
+langcode: pt-br
+status: true
+dependencies: {  }
+name: 'Selo Unicef'
+vid: stamp_unicef
+description: ''
+weight: 0

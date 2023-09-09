@@ -1,0 +1,8 @@
+type: module
+name: 'Search API Solr Balancer'
+description: 'An extension for Search API Solr to be able to do load balancing between two Solr instances.'
+# core: 8.x
+package: UNICEF-Custom-GR
+core_version_requirement: ^8.8 || ^9
+dependencies:
+ - drupal:search_api_solr

@@ -1,0 +1,18 @@
+uuid: d5c34681-0bdf-4125-a7d4-5c553eba1a9b
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - node.type.social_post
+id: node.social_post.title
+field_name: title
+entity_type: node
+bundle: social_post
+label: 'Título Administrativo'
+description: ''
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

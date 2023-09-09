@@ -1,0 +1,18 @@
+uuid: 70ed9b93-4ec7-4ce6-ae06-f274ddb97f9e
+langcode: pt-br
+status: true
+dependencies:
+  module:
+    - paragraphs
+id: paragraph.field_course_current
+field_name: field_course_current
+entity_type: paragraph
+type: boolean
+settings: {  }
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

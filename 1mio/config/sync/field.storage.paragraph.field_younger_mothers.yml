@@ -1,0 +1,20 @@
+uuid: 2c91f497-1667-465f-b690-1905a1ae7a74
+langcode: pt-br
+status: true
+dependencies:
+  module:
+    - paragraphs
+id: paragraph.field_younger_mothers
+field_name: field_younger_mothers
+entity_type: paragraph
+type: integer
+settings:
+  unsigned: false
+  size: normal
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

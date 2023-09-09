@@ -1,0 +1,10 @@
+drush:
+  uri: 'default'
+  aliases:
+    local: unicefplatform.local.SITE_NAME
+    remote: unicefv4.dev.SITE_NAME
+  alias: unicefplatform.local.SITE_NAME
+  default_alias: unicefplatform.local.SITE_NAME
+unicefplatform:
+  path:
+    prefix: null

@@ -1,0 +1,15 @@
+form[id^="node-vacancy-edit-form"],
+#node-vacancy-edit-form {
+  .footerContent {
+    border: 1px solid $gray-primary-20;
+    border-radius: 8px;
+  }
+  .footerCreated {
+    color: $gray-primary-25;
+  }
+  .btn-delete {
+    color: $alert-red-50;
+    font-weight: 700;
+    text-decoration: underline;
+  }
+}

@@ -1,0 +1,26 @@
+uuid: 8af3fbff-054a-4ec8-9850-815649156ccb
+langcode: pt-br
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - admin
+_core:
+  default_config_hash: 7rR9chwXvdM2H8OYMAYx9Zj3GGlPMrZp_M3ZA4thYTk
+id: admin_page_title
+theme: admin
+region: pre_content
+weight: -4
+provider: null
+plugin: page_title_block
+settings:
+  id: page_title_block
+  label: 'Título da página'
+  label_display: '0'
+  provider: core
+visibility:
+  request_path:
+    id: request_path
+    negate: true
+    pages: /cadastro

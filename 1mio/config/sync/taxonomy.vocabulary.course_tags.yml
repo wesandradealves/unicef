@@ -1,0 +1,8 @@
+uuid: 7d59190f-2051-4392-ab6a-95d77d9976a3
+langcode: pt-br
+status: true
+dependencies: {  }
+name: 'Tags de Curso'
+vid: course_tags
+description: 'Tags para o content type curso.'
+weight: 0

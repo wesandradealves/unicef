@@ -1,0 +1,39 @@
+uuid: 6f6297d1-a295-4455-88d5-34acb7a26400
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.paragraph_volunteer_work.field_volunteer_work_begin
+    - field.field.paragraph.paragraph_volunteer_work.field_volunteer_work_end
+    - field.field.paragraph.paragraph_volunteer_work.field_volunteer_work_title
+    - paragraphs.paragraphs_type.paragraph_volunteer_work
+  module:
+    - datetime
+id: paragraph.paragraph_volunteer_work.default
+targetEntityType: paragraph
+bundle: paragraph_volunteer_work
+mode: default
+content:
+  field_volunteer_work_begin:
+    type: datetime_default
+    weight: 1
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_volunteer_work_end:
+    type: datetime_default
+    weight: 2
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_volunteer_work_title:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  created: true
+  status: true

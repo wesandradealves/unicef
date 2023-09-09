@@ -1,0 +1,21 @@
+uuid: c3e19030-9839-4f50-b7c5-dcef468b3a9b
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_vacancy_qr_code
+    - node.type.vacancy
+  module:
+    - endroid_qr_code
+id: node.vacancy.field_vacancy_qr_code
+field_name: field_vacancy_qr_code
+entity_type: node
+bundle: vacancy
+label: 'QR Code de Acesso'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: endroid_qr_code

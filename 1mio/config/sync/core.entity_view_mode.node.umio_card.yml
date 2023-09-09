@@ -1,0 +1,10 @@
+uuid: 78e0b418-354d-46cc-89bd-64368ffaf11b
+langcode: pt-br
+status: true
+dependencies:
+  module:
+    - node
+id: node.umio_card
+label: Card
+targetEntityType: node
+cache: true

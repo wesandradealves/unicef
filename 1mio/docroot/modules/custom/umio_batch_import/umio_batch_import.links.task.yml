@@ -1,0 +1,25 @@
+# Settings forms
+umio_batch_import.vacancy_menu:
+  route_name: umio_batch_import.vacancy_settings
+  title: Vacancy
+  base_route: umio_batch_import.vacancy_settings
+  weight: 1
+
+umio_batch_import.city_stamp_menu:
+  route_name: umio_batch_import.city_stamp_settings
+  title: City stamp
+  base_route: umio_batch_import.vacancy_settings
+  weight: 2
+
+# Forms
+umio_batch_import.vacancy_form_menu:
+  route_name: umio_batch_import.vacancy_batch_import
+  title: Vacancy
+  base_route: umio_batch_import.vacancy
+  weight: 1
+
+umio_batch_import.city_stamp_form_menu:
+  route_name: umio_batch_import.city_stamp_batch_import
+  title: City stamp
+  base_route: umio_batch_import.vacancy
+  weight: 2

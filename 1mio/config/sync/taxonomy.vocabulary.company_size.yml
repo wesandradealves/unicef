@@ -1,0 +1,8 @@
+uuid: d98c8c56-2f06-4c97-aef4-5375cb70150c
+langcode: pt-br
+status: true
+dependencies: {  }
+name: 'Porte da empresa'
+vid: company_size
+description: ''
+weight: 0

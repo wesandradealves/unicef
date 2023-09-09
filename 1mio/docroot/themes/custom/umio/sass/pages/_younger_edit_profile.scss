@@ -1,0 +1,518 @@
+.hero-banner-solid-color-container {
+  .container--form-print {
+    width: 56px;
+    height: 56px;
+    background-color: $gray-primary-10;
+    border-radius: 50%;
+
+    a {
+      text-decoration: none;
+      height: 1.8rem;
+      i {
+        font-size: 1.8rem;
+        color: $green-piscine-primary-main;
+      }
+    }
+  }
+
+  h1 {
+    font-size: 2.25rem;
+    font-weight: 700;
+    margin-bottom: 0;
+    @include media-breakpoint-only(xs) {
+      width: 215px;
+    }
+  }
+}
+
+.hero-banner--edit-profile-row {
+  padding: 2.5rem 0;
+}
+
+.edit-young-form-region-content {
+  @include media-breakpoint-up(md) {
+    @include make-col(10);
+    @include make-col-offset(1);
+  }
+
+  @include media-breakpoint-up(xl) {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .cancel_link_profile {
+    background-color: initial;
+    color: $alert-red-50;
+    text-decoration: none;
+    opacity: .6;
+
+    &:hover {
+      text-decoration: underline;
+      opacity: 1;
+    }
+  }
+}
+
+#block-umio-content {
+  form[id="edit-young-form"],
+  form[id^="edit-young-form"] {
+
+    div:not(.field--type-datetime) > h4.label,
+    table[id^="field-paragraph-education-values"] h4.label:not(.form-required),
+    table[id^="field-paragraph-experience-values"] h4.label:not(.form-required),
+    table[id^="field-paragraph-courses-values"] h4.label:not(.form-required),
+    #edit-field-user-social-0-top,
+    #edit-field-user-address-0-top,
+    #edit-field-user-curriculum-0-top,
+    .form-item-field-user-address-0-subform-field-paragraph-address-0-address-address-line1,
+    .form-item-field-user-address-0-subform-field-paragraph-address-0-address-address-line2,
+    .form-item-field-user-address-0-subform-field-paragraph-address-0-address-dependent-locality,
+    .form-item-field-user-address-0-subform-field-paragraph-address-0-address-postal-code,
+    label[for^="edit-field-user-curriculum"]:not([for*="field-paragraph-courses"]):not([for*="field-paragraph-experience"]):not([for*="field-paragraph-education"]) {
+      display: none;
+    }
+
+
+    .address-container-inline {
+      @include media-breakpoint-up(md) {
+        display: flex;
+        justify-content: space-between;
+      }
+      .js-form-type-select {
+        margin: 0;
+        width: 100%;
+        @include media-breakpoint-up(md) {
+          width: 45%;
+        }
+        &:first-of-type {
+          @include media-breakpoint-only(xs) {
+            margin-bottom: 12px !important;
+          }
+        }
+        .locality {
+          margin-top: 0;
+        }
+      }
+    }
+
+    .js-form-type-select {
+      margin-top: 0;
+      select,
+      .select2 {
+        height: 3.5rem;
+        border-radius: .5rem;
+        font-size: 1rem;
+        color: $gray-primary-75;
+      }
+      .select2 {
+        .select2-selection {
+          height: 100%;
+        }
+      }
+    }
+
+    .field--name-field-experience-begin,
+    .field--name-field-experience-end,
+    .field--name-field-experience-current,
+
+    .field--name-field-education-begin,
+    .field--name-field-education-end,
+    .field--name-field-education-current,
+
+    .field--name-field-course-begin,
+    .field--name-field-course-end,
+    .field--name-field-course-current {
+      width: 100%;
+      @include media-breakpoint-up(md) {
+        width: 33%;
+      }
+    }
+
+    .field--name-field-experience-current,
+    .field--name-field-education-current,
+    .field--name-field-course-current {
+      display: flex;
+      justify-content: center;
+    }
+
+    .paragraphs-subform {
+      details {
+        border: unset;
+        .details-wrapper {
+          padding: 0.5em 0;
+        }
+        summary {
+          display: none;
+        }
+      }
+    }
+
+    .tabledrag-toggle-weight-wrapper,
+    .paragraph-type-title {
+      display: none;
+    }
+
+    .field--widget-entity-reference-paragraphs {
+      .field-multiple-table{
+        width: 100%;
+      }
+    }
+
+    .field-multiple-drag {
+      width: 0%;
+      .tabledrag-handle {
+        display: none;
+      }
+    }
+
+    .field--name-field-user-social {
+      .form-item {
+        display: flex;
+        flex-direction: column-reverse;
+        .umio-edit-profile-social-icon {
+          width: 2rem;
+          height: 2rem;
+          font-size: 2rem;
+          margin-right: 2rem;
+        }
+        .description {
+          margin-left: 64px;
+        }
+      }
+    }
+
+    .edit-young--form--group--title {
+      display: block;
+      width: 100%;
+
+      h3.edit-young--form--group--title--text {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: $green-piscine-primary-main;
+        margin: 2rem 0;
+      }
+
+      h4.edit-young--form--group--title--text {
+        font-size: 1rem;
+        color: $gray-primary-50;
+        font-weight: 700;
+        padding: 0;
+        font-size: inherit;
+        line-height: 1.6;
+        margin: 3rem 0 0 0;
+      }
+
+      p.edit-young--form--group--title--text {
+        font-size: 1rem;
+        color: $gray-primary-50;
+        font-weight: 700;
+        padding: 0;
+        font-size: inherit;
+        margin: 3rem 0 0 0;
+        border-bottom: 1px solid $gray-primary-20;
+        padding-bottom: 30px;
+        margin-bottom: 50px;
+      }
+
+    }
+
+    input:not(.form-checkbox) {
+      height: 3.5rem;
+      border-radius: 0.5rem;
+      font-size: 1rem;
+      color: $gray-primary-75;
+    }
+
+    .image-preview {
+      display: flex;
+      height: 5rem;
+      background-color: $gray-primary-12;
+      border-radius: 1.75em;
+      margin: 4.375rem 0;
+
+      .form-control-file-image-preview {
+        width: 30%;
+        height: 5rem;
+        border-radius: 50%;
+        filter: drop-shadow(0 0 4px rgba(0, 0, 0, 0.12));
+        @include media-breakpoint-up(md) {
+          width: 5rem;
+        }
+      }
+
+      img.form-control--profile-picture--default {
+        background-image: url("../images/profile-placeholder.png");
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: contain;
+      }
+
+      .form-control--profile-picture--default,
+      img {
+        width: 5rem;
+        height: 5rem;
+        border-radius: 50%;
+        object-fit: cover;
+        background-color: $gray-primary-12;
+      }
+
+      .upload-profile-picture {
+        display: flex;
+        align-content: center;
+        justify-content: center;
+        align-items: center;
+        height: 5rem;
+        width: 100%;
+        cursor: pointer;
+        p, i{
+          display: flex;
+          align-content: center;
+          margin: 0;
+          padding-left: 0.5rem;
+          height: 28px;
+          color: $green-piscine-primary-main;
+          font-weight: 700;
+        }
+      }
+
+      input[name="field_user_profile_picture_remove_button"] {
+        height: 5rem;
+        align-content: center;
+        align-self: center;
+        display: flex;
+        width: 80%;
+        background-color: transparent;
+        color: $green-piscine-primary-main;
+        height: 28px;
+        font-weight: 700;
+        border: none;
+        margin: 0;
+      }
+    }
+
+    .form-control-managed-file-wrapper {
+      position: inherit;
+      overflow: visible;
+      height: 5rem;
+      width: 100%;
+      z-index: 10;
+
+      border: none;
+      box-sizing: border-box;
+      border-radius: 8px;
+      display: flex;
+
+      & > input[type="file"].form-control-managed-file {
+        cursor: pointer;
+        height: 5rem;
+        width: 100%;
+        opacity: 0;
+        z-index: 15;
+      }
+    }
+
+    .form-group,
+    .form-wrapper {
+      label,
+      .label {
+        font-weight: 700;
+        font-size: 1rem;
+        color: $gray-primary-50;
+        margin-bottom: .25rem;
+      }
+
+      input {
+        &.form-text {
+          margin-top: 0;
+          font-weight: 400;
+        }
+        &.form-tel, &.form-date {
+          font-weight: 400;
+        }
+      }
+    }
+
+    .button-form {
+      .button {
+        width: 50%;
+        margin: 10px 0;
+      }
+
+      #edit-save {
+        background-color: $green-piscine-primary-main;
+        border-color: $green-piscine-primary-main;
+        color: $gray-primary-10;
+      }
+
+      #edit-preview {
+        background-color: $gray-primary-12;
+        color: $green-piscine-primary-main;
+        width: 50%;
+      }
+    }
+
+    .paragraphs-dropbutton-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: baseline;
+      width: 100%;
+      input {
+        background-color: initial;
+        border: none;
+        color: $green-piscine-primary-main;
+        text-decoration: underline;
+        margin-top: 0;
+      }
+    }
+
+    .edit--young--add-more-button {
+      font-weight: 700;
+      align-items: center;
+      color: $green-piscine-primary-main;
+    }
+
+    div[id^="field-user-curriculum-0-subform-field-paragraph-experience"],
+    div[id^="field-user-curriculum-0-subform-field-paragraph-education"],
+    div[id^="field-user-curriculum-0-subform-field-paragraph-courses"] {
+
+      div[id^="edit-field-user-curriculum-0-subform-field-paragraph-experience"]:not(.container-inline),
+      div[id^="edit-field-user-curriculum-0-subform-field-paragraph-education"]:not(.container-inline),
+      div[id^="edit-field-user-curriculum-0-subform-field-paragraph-courses"]:not(.container-inline) {
+
+        background-color: $gray-primary-12;
+        padding: 14px 12px;
+        border-radius: 40px;
+
+        @include media-breakpoint-only(xs) {
+          padding: 7px 6px;
+        }
+
+        .field--name-field-experience-current,
+        .field--name-field-education-current,
+        .field--name-field-course-current {
+          height: 75px;
+          align-items: flex-end;
+        }
+
+        strong {
+          padding: 10px;
+          display: block;
+        }
+
+        strong[data-drupal-selector="edit-field-user-curriculum-0-subform-field-paragraph-experience-title"],
+        strong[data-drupal-selector="edit-field-user-curriculum-0-subform-field-paragraph-education-title"],
+        strong[data-drupal-selector="edit-field-user-curriculum-0-subform-field-paragraph-courses-title"] {
+          display: none;
+        }
+      }
+    }
+
+    #field-user-curriculum-0-subform-field-paragraph-experience-add-more-wrapper,
+    #field-user-curriculum-0-subform-field-paragraph-education-add-more-wrapper,
+    #field-user-curriculum-0-subform-field-paragraph-courses-add-more-wrapper {
+      margin-top: 20px;
+      margin-bottom: 30px;
+    }
+
+    #edit-field-user-curriculum-0-subform-field-achievements-wrapper {
+      border-bottom: 1px solid $gray-primary-20;
+      padding-bottom: 30px;
+      margin-bottom: 40px;
+    }
+
+    #edit-field-user-curriculum-wrapper + .edit-young--form--group--title {
+      margin-bottom: 0;
+    }
+
+    .form-item-field-user-curriculum-0-subform-field-what-do-you-search-0-value {
+      margin-bottom: 50px;
+    }
+
+    .form-item-field-user-social-0-subform-field-paragraph-networks-0-platform-values-instagram-value {
+      margin-top: 0;
+    }
+
+    div[id^="field-user-curriculum-0-subform-field-paragraph-experience-0-item-wrapper"],
+    div[id^="field-user-curriculum-0-subform-field-paragraph-education-0-item-wrapper"],
+    div[id^="field-user-curriculum-0-subform-field-paragraph-courses-0-item-wrapper"] {
+      max-width: 100% !important;
+
+      div[id^="edit-field-user-curriculum-0-subform-field-paragraph-experience"],
+      div[id^="edit-field-user-curriculum-0-subform-field-paragraph-education"],
+      div[id^="edit-field-user-curriculum-0-subform-field-paragraph-courses"] {
+        margin-top: 0 !important;
+      }
+    }
+
+    div[id^="edit-field-user-curriculum-0-subform-field-paragraph-experience-text"],
+    div[id^="edit-field-user-curriculum-0-subform-field-paragraph-education-text"],
+    div[id^="edit-field-user-curriculum-0-subform-field-paragraph-courses-text"] {
+      display: none;
+    }
+
+    div[id^="edit-field-user-curriculum-0-subform-field-paragraph-experience"],
+    div[id^="edit-field-user-curriculum-0-subform-field-paragraph-education"],
+    div[id^="edit-field-user-curriculum-0-subform-field-paragraph-courses"] {
+      margin-top: .25rem;
+    }
+
+    div[id^="field-user-curriculum-0-subform-field-paragraph-experience"] > div[id^="edit-field-user-curriculum-0-subform-field-paragraph-experience"],
+    div[id^="field-user-curriculum-0-subform-field-paragraph-education"] > div[id^="edit-field-user-curriculum-0-subform-field-paragraph-education"],
+    div[id^="field-user-curriculum-0-subform-field-paragraph-courses"] > div[id^="edit-field-user-curriculum-0-subform-field-paragraph-courses"] {
+      display: flex;
+      flex-direction: column-reverse;
+    }
+
+    .field--name-field-experience-end,
+    .field--name-field-education-end,
+    .field--name-field-course-end {
+      align-self: end;
+    }
+
+    .paragraph-type-top {
+      &.edit-field-user-curriculum-0-subform-field-paragraph-courses {
+        background-color: crimson;
+      }
+    }
+
+    .form-element--type-textarea {
+      font-family: "Nunito", sans-serif;
+      font-style: normal;
+      font-weight: 400;
+      color: $gray-primary-50;
+      font-size: 1rem;
+    }
+
+    .field--widget-entity-reference-paragraphs td {
+      &.has-multiple-fields-remove-button {
+        padding-right: 0!important;
+      }
+      padding: 0 0 10px;
+    }
+
+    .field--name-field-paragraph-experience,
+    .field--name-field-paragraph-education,
+    .field--name-field-paragraph-courses {
+      margin-top: 20px !important;
+    }
+  }
+}
+
+.edit-young-form {
+  &.cancel_link_profile {
+    text-decoration: none;
+    color: $gray-primary-25;
+    padding: .375rem .75rem;
+    background-color: $gray-primary-20;
+    height: 48px;
+    border-radius: 32px;
+    width: 50%;
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+
+    &:hover {
+      color: $alert-red-50;
+    }
+  }
+}

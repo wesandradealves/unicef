@@ -1,0 +1,19 @@
+uuid: eb94951b-d9f0-49fa-aa3b-72b15a71e578
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_volunteer_work_title
+    - paragraphs.paragraphs_type.paragraph_volunteer_work
+id: paragraph.paragraph_volunteer_work.field_volunteer_work_title
+field_name: field_volunteer_work_title
+entity_type: paragraph
+bundle: paragraph_volunteer_work
+label: Título
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

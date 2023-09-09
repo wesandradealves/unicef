@@ -1,0 +1,113 @@
+uuid: d167215a-9491-4229-aa41-6c809d2d0eed
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.counter_priority_profiles.field_child_labor_victims
+    - field.field.paragraph.counter_priority_profiles.field_disabilities_youngs
+    - field.field.paragraph.counter_priority_profiles.field_ethnic_racial_equity
+    - field.field.paragraph.counter_priority_profiles.field_girls_science
+    - field.field.paragraph.counter_priority_profiles.field_lgbtia
+    - field.field.paragraph.counter_priority_profiles.field_location
+    - field.field.paragraph.counter_priority_profiles.field_low_income
+    - field.field.paragraph.counter_priority_profiles.field_originating_populations
+    - field.field.paragraph.counter_priority_profiles.field_socio_educational_system
+    - field.field.paragraph.counter_priority_profiles.field_younger_mothers
+    - paragraphs.paragraphs_type.counter_priority_profiles
+id: paragraph.counter_priority_profiles.default
+targetEntityType: paragraph
+bundle: counter_priority_profiles
+mode: default
+content:
+  field_child_labor_victims:
+    type: number_integer
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 9
+    region: content
+  field_disabilities_youngs:
+    type: number_integer
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_ethnic_racial_equity:
+    type: number_integer
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 3
+    region: content
+  field_girls_science:
+    type: number_integer
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 6
+    region: content
+  field_lgbtia:
+    type: number_integer
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 4
+    region: content
+  field_location:
+    type: number_integer
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 5
+    region: content
+  field_low_income:
+    type: number_integer
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 8
+    region: content
+  field_originating_populations:
+    type: number_integer
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 7
+    region: content
+  field_socio_educational_system:
+    type: number_integer
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  field_younger_mothers:
+    type: number_integer
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 1
+    region: content
+hidden:
+  search_api_excerpt: true

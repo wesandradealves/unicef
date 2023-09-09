@@ -1,0 +1,43 @@
+.menu--account,
+.menu--logout {
+  box-shadow: none;
+
+  .container {
+    padding: 0;
+  }
+
+  .navbar-nav {
+    display: flex;
+    align-items: center;
+
+    li[class^="menu-icon-"] .nav-link {
+      background-position: right center;
+      padding-right: 30px !important;
+    }
+
+    .menu-item .nav-link {
+      color: $gray-primary-75;
+      font-weight: 700;
+      font-size: 16px;
+      margin: 0 20px;
+      padding: 10px 0;
+
+      &:hover {
+        background-color: initial;
+      }
+
+      &.highlighted {
+        background-color: $blue-primary-main;
+        border-radius: 100px;
+        color: $gray-primary-10;
+        padding: 6px 25px;
+        display: flex;
+        align-items: center;
+      }
+    }
+
+    &:last-child .nav-link {
+      margin-right: 0;
+    }
+  }
+}

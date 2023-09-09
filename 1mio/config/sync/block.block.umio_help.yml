@@ -1,0 +1,22 @@
+uuid: 4ec3065a-b293-4d98-9392-e70e266b2416
+langcode: pt-br
+status: true
+dependencies:
+  module:
+    - help
+  theme:
+    - umio
+_core:
+  default_config_hash: 8I8iACSa0sKO3k3jlvUG1ge52rfcKX7USJAQYnzuBgg
+id: umio_help
+theme: umio
+region: content
+weight: -5
+provider: null
+plugin: help_block
+settings:
+  id: help_block
+  label: Ajuda
+  label_display: '0'
+  provider: help
+visibility: {  }

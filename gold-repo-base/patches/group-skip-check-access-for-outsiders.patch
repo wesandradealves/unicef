@@ -1,0 +1,25 @@
+diff --git a/group.module b/group.module
+index 595f4dc..06a63b5 100644
+--- a/group.module
++++ b/group.module
+@@ -320,6 +320,20 @@ function group_entity_access(EntityInterface $entity, $operation, AccountInterfa
+     ->getStorage('group_content')
+     ->loadByEntity($entity);
+
++  // If user isn't in any groups, let's exit.
++  $in_group = false;
++  foreach ($group_contents as $group_content) {
++    $group = $group_content->getGroup();
++    // Check access only if user is a member of group.
++    if ($group->getMember($account)) {
++      $in_group = true;
++    }
++  }
++  if (!$in_group) {
++    return AccessResult::neutral();
++  }
++  // End patch.
++
+   // If the entity does not belong to any group, we have nothing to say.
+   //
+   // @todo There is a slight performance boost to be had here. If we have a

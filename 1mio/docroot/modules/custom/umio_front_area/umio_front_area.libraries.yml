@@ -1,0 +1,35 @@
+umio_front_area.filters:
+  js:
+    js/filters.js: {}
+    js/print_specifications.js: {}
+  dependencies:
+    - core/jquery
+    - core/jquery.once
+
+umio_front_area.view_customization:
+  js:
+    js/umio_view_customization.js: {}
+  dependencies:
+    - core/jquery
+    - core/jquery.once
+
+umio_front_area.anonymous-menu:
+  js:
+    js/anonymous_menu.js: {}
+  dependencies:
+    - core/jquery
+    - core/jquery.once
+
+umio_front_area.read_more_truncate:
+  js:
+    js/read_more_truncate.js: {}
+  dependencies:
+    - core/jquery
+    - core/jquery.once
+
+umio_front_area.partner_cities_behaviour:
+  js:
+    js/partner_cities_behaviour.js: {}
+  dependencies:
+    - core/jquery
+    - core/jquery.once

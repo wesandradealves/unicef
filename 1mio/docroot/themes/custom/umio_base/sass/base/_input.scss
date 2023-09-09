@@ -1,0 +1,56 @@
+.form-group,
+.form-item {
+  color: $gray-primary-50;
+  // Change color in focus within except in this classes
+  &:focus-within:not(.form-wrapper):not(.form-no-label):not(.form-type--password-confirm):not(.form-item--multiple):not(.form-type--vertical-tabs) {
+    .form-control:not(.form-type--radio):not(.form-radio),
+    .form-element {
+      border: 1px solid $blue-primary-main;
+    }
+    .form-item__label,
+    label:not(.error) {
+      color: $blue-primary-main;
+    }
+  }
+  label,
+  .form-item__label {
+    color: $gray-primary-50;
+  }
+  // Form radio has different CSS
+  .form-control:not(.form-type--radio):not(.form-radio),
+  .form-element {
+    border-radius: 8px;
+    border: 1px solid $gray-primary-20;
+    box-shadow: none;
+    outline: none;
+    &:hover {
+      border: 1px solid $gray-primary-25;
+      box-shadow: none;
+    }
+    &:hover:focus {
+      border: 1px solid $blue-primary-main;
+    }
+    &.error {
+      border: 1px solid $alert-red-50;
+    }
+  }
+  .form-control.error {
+    border: 1px solid $alert-red-50;
+  }
+  label.error,
+  .form-item--error-message {
+    color: $alert-red-50;
+    font-weight: normal;
+    strong {
+      font-weight: normal;
+    }
+    &:before {
+      display: none;
+    }
+  }
+}
+
+.form-check-input:checked {
+  background-color: $blue-primary-main;
+  border-color: $blue-primary-main;
+}

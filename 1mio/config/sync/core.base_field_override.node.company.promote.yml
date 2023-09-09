@@ -1,0 +1,22 @@
+uuid: e401ab1b-dab0-4113-93f8-3223cf495072
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - node.type.company
+id: node.company.promote
+field_name: promote
+entity_type: node
+bundle: company
+label: 'Promovido para a página inicial'
+description: ''
+required: false
+translatable: true
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: Habilitado
+  off_label: Desligado
+field_type: boolean

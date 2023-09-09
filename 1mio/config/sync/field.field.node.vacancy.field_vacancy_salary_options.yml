@@ -1,0 +1,23 @@
+uuid: 779e3487-0a23-4e08-b818-53c5adad6679
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_vacancy_salary_options
+    - node.type.vacancy
+  module:
+    - options
+id: node.vacancy.field_vacancy_salary_options
+field_name: field_vacancy_salary_options
+entity_type: node
+bundle: vacancy
+label: Salário
+description: ''
+required: true
+translatable: false
+default_value:
+  -
+    value: unique
+default_value_callback: ''
+settings: {  }
+field_type: list_string

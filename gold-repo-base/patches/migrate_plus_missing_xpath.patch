@@ -1,0 +1,17 @@
+diff --git a/src/Plugin/migrate_plus/data_parser/Xml.php b/src/Plugin/migrate_plus/data_parser/Xml.php
+index c27922a..a9eb234 100644
+--- a/src/Plugin/migrate_plus/data_parser/Xml.php
++++ b/src/Plugin/migrate_plus/data_parser/Xml.php
+@@ -228,7 +228,11 @@ class Xml extends DataParserPluginBase implements ContainerFactoryPluginInterfac
+     // currentId with its data.
+     if ($target_element !== FALSE && !is_null($target_element)) {
+       foreach ($this->fieldSelectors() as $field_name => $xpath) {
+-        foreach ($target_element->xpath($xpath) as $value) {
++        $xpath_result = $target_element->xpath($xpath);
++        if (!$xpath_result) {
++          continue;
++        }
++        foreach ($xpath_result as $value) {
+           $this->currentItem[$field_name][] = (string) $value;
+         }
+       }

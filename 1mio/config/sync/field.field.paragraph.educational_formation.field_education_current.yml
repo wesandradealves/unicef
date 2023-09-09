@@ -1,0 +1,23 @@
+uuid: e5c54029-dc20-4ace-a092-884f5f41fb1b
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_education_current
+    - paragraphs.paragraphs_type.educational_formation
+id: paragraph.educational_formation.field_education_current
+field_name: field_education_current
+entity_type: paragraph
+bundle: educational_formation
+label: Atual
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: Habilitado
+  off_label: Desligado
+field_type: boolean

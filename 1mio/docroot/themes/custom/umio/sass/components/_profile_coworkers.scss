@@ -1,0 +1,31 @@
+#profile-coworkers {
+  .view-talent-acquisition {
+    padding: 0 12px;
+    .view-content {
+      width: 100%;
+    }
+    .row-2 {
+      margin-top: 1rem;
+    }
+    .views-col {
+      display: flex;
+      a {
+        text-decoration: none;
+      }
+      img {
+        object-fit: cover;
+        border-radius: 50%;
+        width: 56px;
+        height: 56px;
+      }
+    }
+    @include media-breakpoint-up(sm) {
+      .row-2 {
+        margin-top: 0rem;
+      }
+      .views-view-grid {
+        display: flex;
+      }
+    }
+  }
+}

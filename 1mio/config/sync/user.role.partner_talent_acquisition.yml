@@ -1,0 +1,86 @@
+uuid: af985f54-caa8-4e93-8dbe-42fe8bd999c8
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - node.type.company
+    - node.type.course
+    - node.type.social_post
+    - node.type.vacancy
+    - workflows.workflow.vacancy_workflow
+  module:
+    - comment
+    - comment_notify
+    - content_moderation
+    - eu_cookie_compliance
+    - like_and_dislike
+    - node
+    - paragraphs_type_permissions
+    - system
+    - tfa
+id: partner_talent_acquisition
+label: Parceiro
+weight: 6
+is_admin: null
+permissions:
+  - 'access administration pages'
+  - 'access user profiles'
+  - 'add or remove like votes on comment of comment'
+  - 'add or remove like votes on social_post of node'
+  - 'cancel account'
+  - 'create company content'
+  - 'create course content'
+  - 'create paragraph content courses_and_abilities'
+  - 'create paragraph content educational_formation'
+  - 'create paragraph content experience'
+  - 'create paragraph content paragraph_address'
+  - 'create paragraph content paragraph_social'
+  - 'create paragraph content paragraph_trajectory'
+  - 'create paragraph content paragraph_volunteer_work'
+  - 'create social_post content'
+  - 'create vacancy content'
+  - 'delete own social_post content'
+  - 'delete paragraph content courses_and_abilities'
+  - 'delete paragraph content educational_formation'
+  - 'delete paragraph content experience'
+  - 'delete paragraph content paragraph_address'
+  - 'delete paragraph content paragraph_social'
+  - 'delete paragraph content paragraph_trajectory'
+  - 'delete paragraph content paragraph_volunteer_work'
+  - 'disable own tfa'
+  - 'display eu cookie compliance popup'
+  - 'edit any company content'
+  - 'edit any course content'
+  - 'edit any vacancy content'
+  - 'edit own company content'
+  - 'edit own course content'
+  - 'edit own social_post content'
+  - 'edit own vacancy content'
+  - 'post comments'
+  - 'revert social_post revisions'
+  - 'revert vacancy revisions'
+  - 'setup own tfa'
+  - 'subscribe to comments'
+  - 'update paragraph content courses_and_abilities'
+  - 'update paragraph content educational_formation'
+  - 'update paragraph content experience'
+  - 'update paragraph content paragraph_address'
+  - 'update paragraph content paragraph_social'
+  - 'update paragraph content paragraph_trajectory'
+  - 'update paragraph content paragraph_volunteer_work'
+  - 'use vacancy_workflow transition cancel_vacancy'
+  - 'use vacancy_workflow transition creating_vacancy'
+  - 'view any unpublished content'
+  - 'view own unpublished content'
+  - 'view paragraph content courses_and_abilities'
+  - 'view paragraph content curriculum'
+  - 'view paragraph content educational_formation'
+  - 'view paragraph content experience'
+  - 'view paragraph content paragraph_address'
+  - 'view paragraph content paragraph_social'
+  - 'view paragraph content paragraph_trajectory'
+  - 'view paragraph content paragraph_volunteer_work'
+  - 'view social_post revisions'
+  - 'view the administration theme'
+  - 'view user email addresses'
+  - 'view vacancy revisions'

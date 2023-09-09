@@ -1,0 +1,19 @@
+uuid: b85b71c1-afcb-40ba-9299-3a253b7057c9
+langcode: pt-br
+status: true
+dependencies:
+  module:
+    - paragraphs
+id: paragraph.field_achievements
+field_name: field_achievements
+entity_type: paragraph
+type: string_long
+settings:
+  case_sensitive: false
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

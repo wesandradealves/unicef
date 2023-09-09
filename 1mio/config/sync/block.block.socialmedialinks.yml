@@ -1,0 +1,139 @@
+uuid: fdb3ac4c-eecc-4357-8342-89ebecf2aaf1
+langcode: pt-br
+status: true
+dependencies:
+  module:
+    - social_media_links
+  theme:
+    - umio
+id: socialmedialinks
+theme: umio
+region: footer_right
+weight: -7
+provider: null
+plugin: social_media_links_block
+settings:
+  id: social_media_links_block
+  label: 'Redes Sociais'
+  label_display: visible
+  provider: social_media_links
+  platforms:
+    facebook:
+      value: 1MiOportunidades
+      description: ''
+      weight: '-35'
+    instagram:
+      value: 1mioportunidades
+      description: ''
+      weight: '-34'
+    linkedin:
+      value: company/1mio/
+      description: ''
+      weight: '-33'
+    tiktok:
+      value: '@1mi_oportunidades'
+      description: ''
+      weight: '-32'
+    twitter:
+      value: ''
+      description: ''
+      weight: '-31'
+    drupal:
+      value: ''
+      description: ''
+      weight: '-30'
+    vkontakte:
+      value: ''
+      description: ''
+      weight: '-29'
+    email:
+      value: ''
+      description: ''
+      weight: '-28'
+    googleplus:
+      value: ''
+      description: ''
+      weight: '-27'
+    behance:
+      value: ''
+      description: ''
+      weight: '-26'
+    tumblr:
+      value: ''
+      description: ''
+      weight: '-25'
+    pinterest:
+      value: ''
+      description: ''
+      weight: '-24'
+    bitbucket:
+      value: ''
+      description: ''
+      weight: '-23'
+    website:
+      value: ''
+      description: ''
+      weight: '-22'
+    gitlab:
+      value: ''
+      description: ''
+      weight: '-21'
+    xing:
+      value: ''
+      description: ''
+      weight: '-20'
+    github:
+      value: ''
+      description: ''
+      weight: '-19'
+    vimeo:
+      value: ''
+      description: ''
+      weight: '-18'
+    slideshare:
+      value: ''
+      description: ''
+      weight: '-17'
+    youtube_channel:
+      value: ''
+      description: ''
+      weight: '-16'
+    youtube:
+      value: ''
+      description: ''
+      weight: '-15'
+    flickr:
+      value: ''
+      description: ''
+      weight: '-14'
+    whatsapp:
+      value: ''
+      description: ''
+      weight: '-13'
+    contact:
+      value: ''
+      description: ''
+      weight: '-12'
+    rss:
+      value: ''
+      description: ''
+      weight: '-11'
+    discord:
+      value: invite/neyfmr2BHd
+      description: ''
+      weight: '-10'
+  appearance:
+    orientation: h
+    show_name: 0
+    suggestion: ''
+  link_attributes:
+    target: _blank
+    rel: '<none>'
+  iconset:
+    style: 'phosphor:2x'
+    installed_iconsets:
+      fontawesome:
+        examples: ''
+      phosphor:
+        examples: ''
+visibility: {  }

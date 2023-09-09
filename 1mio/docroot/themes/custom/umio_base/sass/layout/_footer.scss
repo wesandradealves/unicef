@@ -1,0 +1,79 @@
+footer {
+  background-color: $gray-primary-12;
+  padding: 90px 0;
+
+  .region-footer-left {
+    display: flex;
+    align-items: center;
+    margin-bottom: 50px;
+  }
+
+  .region-footer-right {
+    display: flex;
+    flex-direction: column;
+
+    h2 {
+      font-size: 15px;
+      color: $gray-primary-75;
+      font-weight: 700;
+      margin-bottom: 25px;
+    }
+
+    .block {
+      margin-bottom: 50px;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    .social-media-links--platforms {
+      li {
+        padding: 0;
+        margin-right: 20px;
+
+        a {
+          color: $gray-primary-50;
+          text-decoration: none;
+          &:hover {
+            color: $gray-primary-25;
+          }
+          &:visited {
+            color: $gray-primary-75;
+          }
+          i.ph-2x {
+            font-size: 1.5em;
+          }
+        }
+      }
+    }
+
+    #block-informacoesparacontato {
+      p {
+        font-size: 14px;
+        color: $gray-primary-50;
+        font-weight: 400;
+        a,
+        a:hover {
+          cursor: pointer;
+          color: $gray-primary-50;
+          text-decoration: none;
+        }
+
+        a[x-apple-data-detectors] {
+          color: $gray-primary-50;
+          text-decoration: none !important;
+          font-size: inherit !important;
+          font-family: inherit !important;
+          font-weight: inherit !important;
+          line-height: inherit !important;
+        }
+      }
+    }
+
+    #block-copyright p {
+      color: $gray-primary-50;
+      margin-bottom: 0;
+    }
+  }
+}

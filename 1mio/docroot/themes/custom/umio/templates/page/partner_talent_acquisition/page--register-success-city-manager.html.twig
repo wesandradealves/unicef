@@ -1,0 +1,79 @@
+{#
+/**
+ * @file
+ * Default theme implementation for a region.
+ *
+ * Available variables:
+ * - content: The content for this region, typically blocks.
+ * - attributes: Remaining HTML attributes for the element, including:
+ *   - class: HTML classes that can be used to style contextually through CSS.
+ *
+ * @see template_preprocess_region()
+ *
+ * @ingroup themeable
+ */
+#}
+
+{% extends '@umio/components/page_two_columns.html.twig' %}
+
+{% set fixedSteps = {
+    1: {
+      'active': 'true',
+      'done': 'true',
+      'icon': 'ph-user-circle',
+      'text': ('Account type'|t)
+    },
+    2: {
+      'active': 'true',
+      'done': 'true',
+      'icon': 'ph-key',
+      'text': ('Access data'|t)
+    },
+    3: {
+      'active': 'true',
+      'done': 'true',
+      'icon': 'ph-user',
+      'text': ('Personal data'|t)
+    },
+    4: {
+      'active': 'true',
+      'done': 'true',
+      'icon': 'ph-hard-drives',
+      'text': ('Company data'|t)
+    },
+    5: {
+      'active': 'true',
+      'done': 'true',
+      'icon': 'ph-image',
+      'text': ('Pictures'|t)
+    },
+  }
+%}
+
+{% set variantStep = {  6: {
+      'active': 'true',
+      'done': 'true',
+      'icon': 'ph-file-text',
+      'text': ('Commitment term'|t)
+    },
+  }
+%}
+
+{% set finalSteps = hasUnicefStamp ? fixedSteps : fixedSteps|merge(variantStep)%}
+
+{% block sidebar %}
+  {% include '@umio/components/sidebar_register.html.twig' with {
+    title: ('Created account'|t),
+    steps: finalSteps,
+  } %}
+{% endblock %}
+
+{% block content %}
+  <div class="side-form-by-step side-form-by-step-four">
+    {% include '@umio/components/card-with-cta.html.twig' with {
+      title: title,
+      content: content,
+      cta: cta
+    }%}
+  </div>
+{% endblock %}

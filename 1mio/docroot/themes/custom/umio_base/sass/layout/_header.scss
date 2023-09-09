@@ -1,0 +1,92 @@
+header {
+  background-color: $gray-primary-10;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  .region-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 10px;
+    @include media-breakpoint-up(md) {
+      padding: 12px 30px;
+    }
+    .site-logo img {
+      width: 58px;
+    }
+    .offcanvas-toggle,.offcanvas-show {
+      background-color: $gray-primary-10;
+      border: none;
+      color: $gray-primary-75;
+      text-decoration: none;
+      i {
+        font-size: 32px;
+      }
+    }
+    .offcanvas {
+      border: none;
+      padding: 32px 24px;
+      z-index: 1260;
+      .offcanvas-toggle,.offcanvas-show {
+        i {
+          float: right;
+        }
+      }
+      .offcanvas-header,
+      .offcanvas-body {
+        padding: 0;
+      }
+      .offcanvas-header {
+        flex-direction: column;
+        align-items: flex-start;
+        padding-bottom: 2rem;
+        @include media-breakpoint-up(md) {
+          padding-bottom: 4rem;
+        }
+        .offcanvas-header--link {
+          color: $gray-primary-75;
+          text-decoration: none;
+          display: flex;
+          flex-direction: column;
+          gap: 0.5rem;
+          width: 100%;
+          &:hover {
+            color: $blue-primary-main;
+          }
+          .offcanvas-title {
+            font-size: 24px;
+            font-weight: bold;
+          }
+          .profile-details--picture {
+            display: block;
+            width: 45px;
+            height: 45px;
+            border-radius: 100%;
+            background-size: cover;
+            background-position: center;
+          }
+        }
+      }
+      .link-item-profile {
+        text-decoration: none;
+      }
+      .offcanvas-body {
+        display: flex;
+        flex-direction: column;
+        .link-item-logout {
+          color: $gray-primary-75;
+          font-size: 14px;
+          font-weight: bold;
+          margin-top: 3rem;
+          text-decoration: none;
+          @include media-breakpoint-up(md) {
+            margin-top: 4rem;
+          }
+          &:hover {
+            color: $blue-primary-main;
+          }
+        }
+      }
+    }
+  }
+}

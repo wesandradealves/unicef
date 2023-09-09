@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+
+set -ev
+
+blt blt:telemetry:disable --no-interaction
+blt validate --no-interaction || { set +v && return 1; }
+
+# This below customizaton runs the frontend:build for all non-default sites (the
+# default site frontend:build command happens above `blt setup` command)
+#
+# In future when we want to setup and test every site, we can move both the `blt setup`
+# and `blt tests:all` commands to be in the loop and remove `blt frontend:build`, and
+# delete the `if != default` conditional
+cd ${TRAVIS_BUILD_DIR}/docroot/sites || exit
+
+for f in *; do
+    # Will not run if no directories are available
+    if [ -d ${f} ]; then
+      setup_flag=0
+      # Don't want it running on default site twice
+      if ! [[ "$f" ==  "settings" || "$f" =~ "unicef.org." ]]; then
+        setup_flag=1
+      elif [[ "$f" ==  "unicef.org.eca" ]]; then
+        setup_flag=1
+      fi
+
+      if [ $setup_flag == 1 ]; then
+        echo "This site is: $f"
+        travis_wait blt setup --define drush.alias='${drush.aliases.ci}' --environment=ci --no-interaction --verbose --site=$f || { set +v && return 1; }
+        blt tests --define drush.alias='${drush.aliases.ci}' --define tests.run-server=true --environment=ci --no-interaction --verbose --site=$f
+        # Run any frontend:build commands for each sites
+        # blt frontend:build --define drush.alias='${drush.aliases.ci}' --define tests.run-server=true --environment=ci --no-interaction --verbose  --site=$f
+      fi
+    fi
+done
+# End of customizatons
+
+cd ${TRAVIS_BUILD_DIR} || exit
+
+set +v

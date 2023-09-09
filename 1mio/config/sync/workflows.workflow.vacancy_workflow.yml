@@ -1,0 +1,71 @@
+uuid: 903fe332-b850-4269-83ea-6b27527f0e56
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - node.type.vacancy
+  module:
+    - content_moderation
+id: vacancy_workflow
+label: 'Fluxo de vaga'
+type: content_moderation
+type_settings:
+  states:
+    canceled:
+      label: Cancelada
+      weight: 1
+      published: false
+      default_revision: true
+    draft:
+      label: 'Aguardando aprovação'
+      weight: -2
+      published: false
+      default_revision: false
+    not_approved:
+      label: 'Nao aprovado'
+      weight: 0
+      published: false
+      default_revision: false
+    published:
+      label: Aprovado
+      weight: -1
+      published: true
+      default_revision: true
+  transitions:
+    cancel_vacancy:
+      label: 'Exclusão da vaga'
+      from:
+        - canceled
+        - draft
+        - not_approved
+        - published
+      to: canceled
+      weight: 1
+    change_vacancy:
+      label: 'Alterou vaga'
+      from:
+        - published
+      to: draft
+      weight: 0
+    creating_vacancy:
+      label: 'Criação de conteúdo'
+      from:
+        - draft
+      to: draft
+      weight: -3
+    publish:
+      label: 'Aprovar vaga'
+      from:
+        - draft
+      to: published
+      weight: -2
+    reject_vacancy:
+      label: 'Reprovar vaga'
+      from:
+        - draft
+      to: not_approved
+      weight: -1
+  entity_types:
+    node:
+      - vacancy
+  default_moderation_state: draft

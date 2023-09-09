@@ -1,0 +1,13 @@
+name: 'Company Manager'
+type: module
+description: 'Module for make changes in User Registration Webform'
+core_version_requirement: ^9
+package: 'Custom'
+
+dependencies:
+  - 'drupal:user'
+  - 'custom:company'
+  - 'custom:umio_helpers'
+
+'interface translation project': company_manager
+'interface translation server pattern': modules/custom/company_manager/translations/company_manager.%language.po

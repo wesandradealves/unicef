@@ -1,0 +1,21 @@
+uuid: 4400d797-c50c-422e-996e-9038ca08c6ee
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - field.storage.user.field_younger_skills
+  module:
+    - options
+    - user
+id: user.user.field_younger_skills
+field_name: field_younger_skills
+entity_type: user
+bundle: user
+label: Habilidades
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_integer

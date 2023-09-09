@@ -1,0 +1,17 @@
+features:
+  node_user_picture: true
+  comment_user_picture: true
+  comment_user_verification: 1
+  favicon: 1
+favicon:
+  use_default: 1
+enable_darkmode: 0
+preset_accent_color: custom
+accent_color: '#0794ff'
+preset_focus_color: accent
+focus_color: '#0794ff'
+high_contrast_mode: 0
+classic_toolbar: classic
+icon_default: 1
+icon_upload: ''
+show_user_theme_settings: 0

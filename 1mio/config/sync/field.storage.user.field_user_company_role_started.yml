@@ -1,0 +1,20 @@
+uuid: 32e62ce4-afd2-40b9-a1e9-a79b9908a5ff
+langcode: pt-br
+status: true
+dependencies:
+  module:
+    - datetime
+    - user
+id: user.field_user_company_role_started
+field_name: field_user_company_role_started
+entity_type: user
+type: datetime
+settings:
+  datetime_type: date
+module: datetime
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

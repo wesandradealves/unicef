@@ -1,0 +1,36 @@
+{#
+/**
+ * @file
+ * Theme override to display a region.
+ *
+ * Available variables:
+ * - content: The content for this region, typically blocks.
+ * - attributes: HTML attributes for the region <div>.
+ * - region: The name of the region variable as defined in the theme's
+ *   .info.yml file.
+ *
+ * @see template_preprocess_region()
+ */
+#}
+
+{# Hero Banner county #}
+{{
+  include('@umio/components/hero_banner_county.html.twig', {
+    image_logo: '/' ~ directory ~ '/images/logo-stamp-unicef.svg',
+    title: ('Municípios parceiros do Selo UNICEF'|t),
+    image_banner: '/' ~ directory ~ '/images/banner-cloud.svg',
+    image_banner_medium: '/' ~ directory ~ '/images/banner-cloud-medium.svg',
+  })
+}}
+
+{%
+  set classes = [
+    'region',
+    'region-' ~ region|clean_class,
+  ]
+%}
+{% if content %}
+  <div{{ attributes.addClass(classes) }}>
+    {{ content }}
+  </div>
+{% endif %}

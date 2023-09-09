@@ -1,0 +1,8 @@
+uuid: 95fdc40c-0cf2-4cbb-856e-e7a3ea330469
+langcode: pt-br
+status: true
+dependencies: {  }
+id: field_pattern_small_date
+label: 'Small Date'
+locked: false
+pattern: d/m/Y

@@ -1,0 +1,274 @@
+#views-exposed-form-feeds-jovens-feed-general {
+  .js-form-item-field-vacancy-state.form-item-field-vacancy-state,
+  .js-form-item-field-vacancy-city.form-item-field-vacancy-city {
+    display: none;
+  }
+}
+
+.views-filter--feed {
+  .form-group {
+    width: 100%;
+    label {
+      color: $gray-primary-10;
+      font-weight: bold;
+    }
+    .form-control {
+      border-radius: 35px !important;
+      color: $gray-primary-25;
+    }
+    &:focus-within {
+      label {
+        color: $gray-primary-10 !important;
+      }
+    }
+    &.form-item:not(.form-item-search-api-fulltext)::after {
+      content: none;
+    }
+  }
+  @include media-breakpoint-down(md) {
+    #edit-search-field-wrapper{
+      .filter--open-button,
+      .filter--print-button,
+      .filter--clear-button {
+        padding: 0.1rem;
+
+        & > p,
+        & > a > p {
+          font-size: 0.8rem;
+          white-space: nowrap;
+        }
+      }
+    }
+  }
+  .filter--keywords {
+    display: grid;
+    grid-template-areas:
+    "input input input input input input input input input"
+    "items items items items items items items items items"
+    "reset . . . . . . filter print"
+    ;
+    margin-bottom: 24px;
+    .form-item {
+      margin: 0;
+      grid-area: input;
+      position: relative;
+      &::after {
+        position: absolute;
+        top: 50%;
+        transform: translate(0, -50%);
+        @include generate-icon("\f5e6");
+        font-size: $font-size-base;
+        padding-left: 20px;
+      }
+      input {
+        padding-left: 48px;
+      }
+    }
+    .filters--container {
+      align-items: center;
+      display: flex;
+      margin: 1.5rem 0;
+      grid-area: items;
+    }
+    .filter--open-button {
+      align-items: center;
+      display: flex;
+      margin: 1.5rem 0;
+      grid-area: filter;
+      justify-self: end;
+      i {
+        font-size: $font-size-xl;
+        margin-right: .5rem;
+      }
+      p {
+        margin-bottom: unset;
+      }
+    }
+    .filter--print-button {
+      align-items: center;
+      display: flex;
+      margin: 1.5rem 0;
+      grid-area: print;
+      justify-self: end;
+      i {
+        font-size: $font-size-xl;
+        margin-right: .5rem;
+      }
+
+      p {
+        margin-bottom: unset;
+      }
+    }
+  }
+  .filter--clear-button {
+    font-size: $font-size-xs;
+    line-height: 18px;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin-top: 25px;
+    grid-area: reset;
+    color: white;
+    text-decoration: none;
+    white-space: nowrap;
+    &.filter--clear-button-outside {
+      a {
+        display: flex;
+        flex-wrap: nowrap;
+        color: $gray-primary-25;
+        text-decoration: none;
+        & > p {
+          font-weight: bold;
+          font-size: 1rem;
+        }
+      }
+      i {
+        color: $blue-primary-main;
+        margin-right: .5rem;
+      }
+    }
+    i {
+      width: 100%;
+      font-size: $font-size-xl;
+      line-height: 18px;
+      color: $gray-primary-10;
+      margin-right: .5rem;
+    }
+    a {
+      display: flex;
+      flex-wrap: nowrap;
+      font-size: $font-size-xs;
+      color: white;
+      padding: 0;
+      height: auto;
+      background: unset;
+      border: none;
+      text-decoration: none;
+      & > p {
+        font-size: 1rem;
+      }
+    }
+  }
+  .filters--container {
+    border-radius: 24px;
+    padding: 24px;
+    margin: 0;
+    width: 100%;
+    .filter--close-button {
+      background: unset;
+      border: none;
+      i {
+        font-size: $font-size-2xl;
+      }
+    }
+    .form-group {
+      @include make-col-ready();
+      @include make-col(12);
+      @include media-breakpoint-up(md) {
+        @include make-col(6);
+      }
+      margin-right: 0;
+      &:first-of-type {
+        padding-left: 0;
+      }
+      &:last-of-type {
+        padding-right: 0;
+      }
+      .form-control {
+        border: none !important;
+      }
+    }
+    .form-actions {
+      display: flex;
+      flex-direction: row-reverse;
+      margin-bottom: 0;
+      @include make-col-ready();
+      @include make-col(12);
+      #edit-submit-feeds-jovens {
+        border-radius: 24px;
+        border: 2px solid $gray-primary-10;
+        padding: 0 25px;
+        font-weight: bold;
+        line-height: 12px;
+        color: $gray-primary-10;
+
+        &:active {
+          background-color: $blue-primary-light;
+          color: $blue-primary-dark;
+        }
+      }
+      .filter--clear-button {
+        margin: 0;
+        & > a > p {
+          font-size: 1rem;
+          font-weight: bold;
+        }
+      }
+    }
+  }
+
+  .form-group.form-type-select {
+    margin: 1rem 0 1.5rem;
+    .select2-container {
+      border: none;
+      .select2-selection {
+        border-radius: 35px;
+      }
+      .select2-selection__rendered {
+        color: $gray-primary-25;
+        .select2-selection__arrow {
+          color: $gray-primary-25;
+        }
+      }
+    }
+    label {
+      padding-bottom: 8px;
+    }
+  }
+  .filter--submit-umio-filter {
+    .button {
+      border: 1px solid $gray-primary-10 !important;
+    }
+  }
+}
+
+.view-feeds-jovens {
+  nav {
+    &.tabs {
+      ul {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 1.5rem;
+        @include media-breakpoint-up(md) {
+          margin-bottom: 2rem;
+        }
+        li {
+          width: 49.3%;
+          text-align: center;
+          margin-right: 0;
+
+          a {
+            font-size: .875rem;
+            font-weight: 700;
+            color: $gray-primary-75;
+            background-color: initial;
+            padding: 0.75rem 0;
+            @include media-breakpoint-up(md) {
+              font-size: 1rem;
+            }
+          }
+
+          &.is-active {
+            a{
+              color: $blue-primary-main;
+              border-bottom: 2px solid $blue-primary-main;
+              &:hover {
+                background-color: initial;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

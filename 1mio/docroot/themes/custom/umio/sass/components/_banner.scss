@@ -1,0 +1,27 @@
+.hero-banner--text-icon {
+  border-radius: 0 0 40px 0;
+  padding-top: 79px;
+  padding-bottom: 92px;
+  margin: 0;
+
+  @include media-breakpoint-up(md) {
+    padding-top: 100px;
+    padding-bottom: 100px;
+    margin-bottom: 25px;
+  }
+
+  i {
+    font-size: 55px;
+    padding-right: 28px;
+    @include media-breakpoint-up(md) {
+      padding-right: 47px;
+    }
+  }
+  h1 {
+    font-size: 24px;
+    font-weight: bold;
+    @include media-breakpoint-up(md) {
+      font-size: 36px;
+    }
+  }
+}

@@ -1,0 +1,12 @@
+.cke_chrome {
+  border: 1px solid #d6d6d6 !important;
+}
+
+.cke-chrome:hover {
+  border: 1px solid #898989 !important;
+}
+
+.cke_chrome,
+.form-textarea-wrapper:focus {
+  box-shadow: unset !important;
+}

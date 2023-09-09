@@ -1,0 +1,37 @@
+.form-item {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.form-item--hide-title {
+  .form-item__label {
+    display: none;
+  }
+}
+
+.form-item--inline.form-wrapper {
+  .form-item {
+    display: grid;
+    grid-template:
+      "label input input"
+      "description description description";
+    label {
+      grid-area: label;
+      padding-right: 1rem;
+      min-width: 40px;
+    }
+    input {
+      grid-area: input;
+    }
+    .form-item__error-message,
+    label.error {
+      grid-area: description;
+    }
+  }
+}
+
+.paragraphs-dropbutton-wrapper {
+  .button--small {
+    float: initial;
+  }
+}

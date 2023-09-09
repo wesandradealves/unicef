@@ -1,0 +1,21 @@
+uuid: a5198e6f-e56b-4534-8d13-3b849b534fcd
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_course_expiration_day
+    - node.type.course
+  module:
+    - datetime
+id: node.course.field_course_expiration_day
+field_name: field_course_expiration_day
+entity_type: node
+bundle: course
+label: 'Manter publicação até o dia'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: datetime

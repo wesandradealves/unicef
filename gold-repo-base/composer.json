@@ -1,0 +1,358 @@
+{
+    "name": "unicef/unicefplatform",
+    "description": "Project template for Drupal 8 sites built with BLT.",
+    "type": "project",
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "require": {
+        "php": ">=7.3",
+        "acquia/blt": "^13.2.1",
+        "acquia/blt-behat": "^1.1",
+        "acquia/blt-drupal-test": "^1.0",
+        "acquia/blt-drupal-vm": "dev-master",
+        "acquia/blt-multisite": "^1.0",
+        "acquia/blt-simplesamlphp": "dev-master",
+        "acquia/blt-travis": "^1.0",
+        "acquia/http-hmac-php": "^6",
+        "acquia/memcache-settings": "dev-master",
+        "cweagans/composer-patches": "^1.7",
+        "drupal/access_unpublished": "^1.0",
+        "drupal/acquia_connector": "^3.0",
+        "drupal/acquia_purge": "^1.0@beta",
+        "drupal/addtoany": "^1.14",
+        "drupal/admin_toolbar": "^3.0",
+        "drupal/advagg": "^4.0",
+        "drupal/akamai": "^4.0",
+        "drupal/auto_entitylabel": "^3.0",
+        "drupal/autologout": "^1.0",
+        "drupal/bootstrap": "^3.21",
+        "drupal/chosen": "^3.0",
+        "drupal/coffee": "^1.0@beta",
+        "drupal/color_field": "^2.0",
+        "drupal/components": "^2.0",
+        "drupal/config_ignore": "^2.3",
+        "drupal/config_readonly": "^1.0@beta",
+        "drupal/config_split": "^1.5",
+        "drupal/config_update": "^1.6",
+        "drupal/console": "^1.9",
+        "drupal/consumers": "1.12",
+        "drupal/contextual_range_filter": "^1.0",
+        "drupal/core": "^9.2",
+        "drupal/core-composer-scaffold": "^9.2",
+        "drupal/core-recommended": "^9.2",
+        "drupal/ctools": "^3.7",
+        "drupal/datalayer": "^1.0@beta",
+        "drupal/devel": "^4.1",
+        "drupal/entity": "^1.1",
+        "drupal/entity_block": "1.0",
+        "drupal/entity_share": "^3.0@beta",
+        "drupal/entity_share_cron": "^3.0",
+        "drupal/environment_indicator": "^4.0",
+        "drupal/eu_cookie_compliance": "^1.5",
+        "drupal/eva": "^2.0",
+        "drupal/externalauth": "^1",
+        "drupal/extlink": "^1.5",
+        "drupal/facets": "^2",
+        "drupal/feeds": "^3.0",
+        "drupal/feeds_ex": "^1.0",
+        "drupal/feeds_tamper": "^2.0",
+        "drupal/field_group": "^3.0",
+        "drupal/file_entity": "^2.0",
+        "drupal/google_tag": "^1.3",
+        "drupal/group": "^1.2",
+        "drupal/groupmedia": "^2.0",
+        "drupal/iframe": "^2.8",
+        "drupal/libraries": "^3.0",
+        "drupal/lightning_core": "5.9",
+        "drupal/lightning_media": "^4.1",
+        "drupal/lightning_workflow": "^3.15",
+        "drupal/machine_name": "1.x-dev",
+        "drupal/media_entity_download": "^2.0",
+        "drupal/memcache": "^2.1",
+        "drupal/menu_block": "^1.6",
+        "drupal/menu_link_attributes": "^1.0@beta",
+        "drupal/menu_multilingual": "^1.0@alpha",
+        "drupal/migrate_plus": "^6.0",
+        "drupal/migrate_source_csv": "^3.2",
+        "drupal/migrate_tools": "^6.0",
+        "drupal/multiple_fields_remove_button": "^1.0@alpha",
+        "drupal/override_node_options": "^2.4",
+        "drupal/paragraphs": "^1.10",
+        "drupal/password_policy": "^3.0@beta",
+        "drupal/pathauto": "^1.6",
+        "drupal/pathologic": "^1.0",
+        "drupal/readonlymode": "^1.1",
+        "drupal/recaptcha": "^3.0",
+        "drupal/redirect": "^1.5",
+        "drupal/robotstxt": "^1.1",
+        "drupal/role_delegation": "^1.0",
+        "drupal/search_api_attachments": "^9",
+        "drupal/search_api_autocomplete": "^1.4",
+        "drupal/seckit": "^2.0",
+        "drupal/sharethis": "^2.0@beta",
+        "drupal/shield": "^1.4",
+        "drupal/simple_block": "^1.3",
+        "drupal/simple_sitemap": "^4",
+        "drupal/simplesamlphp_auth": "^3.0",
+        "drupal/smtp": "^1.0",
+        "drupal/stage_file_proxy": "^1.2",
+        "drupal/svg_image": "^1.15",
+        "drupal/svg_image_field": "^2.1",
+        "drupal/taxonomy_access_fix": "^3.0",
+        "drupal/url_embed": "^1.0",
+        "drupal/views_custom_cache_tag": "^1.0",
+        "drupal/views_googlenews": "^1.0",
+        "drush/drush": "^11.0",
+        "endroid/qr-code": "^4.0",
+        "mnsami/composer-custom-directory-installer": "^2.0",
+        "npm-asset/jquery-match-height": "^0.7.2",
+        "wikimedia/composer-merge-plugin": "2.0.1"
+    },
+    "require-dev": {
+        "acquia/blt-phpcs": "^1.0",
+        "behat/gherkin": "^4.6",
+        "behat/mink": "~1.7",
+        "behat/mink-selenium2-driver": "^1.3",
+        "drupal/coder": "^8.3",
+        "drupal/console": "^1.9",
+        "geerlingguy/drupal-vm": "^6.0",
+        "traviscarden/behat-table-comparison": "^0.3.0"
+    },
+    "repositories": {
+        "drupal": {
+            "type": "composer",
+            "url": "https://packages.drupal.org/8"
+        },
+        "asset-packagist": {
+            "type": "composer",
+            "url": "https://asset-packagist.org"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Drupal\\Tests\\PHPUnit\\": "tests/phpunit/src/"
+        }
+    },
+    "extra": {
+        "blt": {
+            "update": true
+        },
+        "drupal-scaffold": {
+            "locations": {
+                "web-root": "docroot/"
+            },
+            "file-mapping": {
+                "[web-root]/.htaccess": false
+            }
+        },
+        "enable-patching": true,
+        "installer-paths": {
+            "docroot/core": [
+                "type:drupal-core"
+            ],
+            "docroot/modules/contrib/{$name}": [
+                "type:drupal-module"
+            ],
+            "docroot/modules/custom/{$name}": [
+                "type:drupal-custom-module"
+            ],
+            "docroot/profiles/contrib/{$name}": [
+                "type:drupal-profile"
+            ],
+            "docroot/profiles/custom/{$name}": [
+                "type:drupal-custom-profile"
+            ],
+            "docroot/themes/contrib/{$name}": [
+                "type:drupal-theme"
+            ],
+            "docroot/themes/custom/{$name}": [
+                "type:drupal-custom-theme"
+            ],
+            "docroot/libraries/{$name}": [
+                "type:drupal-library",
+                "type:bower-asset",
+                "type:npm-asset",
+                "harvesthq/chosen"
+            ],
+            "drush/Commands/{$name}": [
+                "type:drupal-drush"
+            ]
+        },
+        "patches": {
+            "acquia/blt": {
+                "Fix continue update multisite on failure": "./patches/acquia-blt/fix-continue-update-multisite-on-failure_2.patch"
+            },
+            "drupal/core": {
+                "Fix cookie to be secure and http only": "./patches/drupal-core/patch-user-cookie-secure-only.patch",
+                "Rolling back translated entities": "https://www.drupal.org/files/issues/Migrate_does_not_rollback_default_translation-2828410-11.patch",
+                "Allow menu items which link to unpublished nodes to be selected in the parent item selector": "https://www.drupal.org/files/issues/2021-07-09/2807629-45.patch",
+                "Fixes content translation configuration null issue": "./patches/drupal-core/drupal-content-translation-config-null-is-enabled.patch",
+                "config sync error on import after removing base field and it's core.base_field_override* 2999487": "https://www.drupal.org/files/issues/2019-05-13/delete_base_field_overwrites-3043741-16.patch",
+                "Taxonomy Index for unpublished entities": "https://www.drupal.org/files/issues/2021-07-20/962664-drupal-add-unpublished-nodes-to-taxonomy-index-172.patch",
+                "Add Term langcode": "./patches/drupal-core/langcode_term_2889486-9-3.patch",
+                "Validation of PathWidget for new node translations": "https://www.drupal.org/files/issues/2020-02-12/translations_not_save_invalid_path-3101344-20.patch",
+                "Add hook_entity_translate_access": "https://www.drupal.org/files/issues/2020-12-16/2918354-16.patch",
+                "Call to a member function isTranslatable() on null in SqlContentEntityStorage": "https://www.drupal.org/files/issues/2019-12-05/2928108-49.patch",
+                "JSON API entity reference revision access bypass": "./patches/drupal-core/json-api-entity-reference-revision.patch",
+                "Draft translation issue due to content moderation module bug": "https://www.drupal.org/files/issues/2020-06-09/3088790-10.patch",
+                "TypeError EntityViewsData::mapFieldDefinition() null given": "https://www.drupal.org/files/issues/2020-06-09/EntityViewsData_MapDefinition_Null-3150368-1.patch",
+                "Call to a member function getColumns() on boolean": "https://www.drupal.org/files/issues/2020-10-29/2893747-33.patch",
+                "Addon feature to import PO files": "https://www.drupal.org/files/issues/2021-07-26/drupal-po-files-import-3218890-5.patch",
+                "Entity queries querying the latest revision very slow with lots of revisions": "./patches/drupal9/entity-slow-query-lots-of-revision.patch",
+                "JS aggregation should account for 'defer' and 'async' attributes": "https://www.drupal.org/files/issues/2020-10-08/d8-js-aggregation-all-attributes-1587536-51.patch",
+                "Create and save a custom color set when customizing the theme's color scheme": "./patches/drupal-core/color-set-profile-name-88683.patch",
+                "Nested paragraph field support for inline form errors module": "https://www.drupal.org/files/issues/2021-12-16/nested_paragraph_field_support_3254758_1.patch",
+                "JSON:API is typehinting LatestRevisionCheck because there is no Entity Revision Access API yet, remove that typehint once such an API exists": "https://www.drupal.org/files/issues/2021-12-28/3035113-33.patch",
+                "Stop stripping whitespace from passwords 1921576": "./patches/drupal-core/stop-stripping-whitespace-password_2.patch"
+            },
+            "drupal/sharethis": {
+                "Fix allow twitter handle to be multilingual": "./patches/sharethis-twitter-handle-lang-specific_2.patch",
+                "Fix conflict jquery ui dialog with bootstrap modal": "./patches/sharethis-conflict-bootstrap-modal.patch"
+            },
+            "drupal/page_manager": {
+                "page_variant entity type does not exist when installing or enabling": "https://www.drupal.org/files/issues/2876880-page-varient-cache-2.patch"
+            },
+            "drupal/paragrphs": {
+                "Add upgrade path for sites that have existing base field overrides for moderation_state field": "https://www.drupal.org/files/issues/2018-11-01/paragraphs-remove_update_hook-3005263-13.patch"
+            },
+            "drupal/migrate_plus": {
+                "Handles lack of source URLs case": "./patches/migrate_plus_no_url.patch",
+                "Handles lack of source URLs": "./patches/migrate_plus_empty_url_read.patch"
+            },
+            "drupal/redirect": {
+                "Redirect robustly to language prefixed paths": "https://www.drupal.org/files/issues/redirect_another_language-2845245-11.patch"
+            },
+            "drupal/pathauto": {
+                "Pathauto should have an extra.drush.services section in its composer.json": "https://www.drupal.org/files/issues/2019-07-16/3056567-4.patch"
+            },
+            "drupal/simplesamlphp_auth": {
+                "Remove persistent cookie": "https://www.drupal.org/files/issues/2019-08-24/simplesamlphp-auth-persistent-cookie-issue-3076982-3.patch"
+            },
+            "drupal/externalauth": {
+                "Autname update issue": "https://www.drupal.org/files/issues/2020-07-02/2910506_externalauth_-authname-update-10.patch"
+            },
+            "drupal/akamai": {
+                "Add a cache-tag prefix": "https://www.drupal.org/files/issues/2020-07-01/akamai_tag_prefix.patch",
+                "Allow support for non-ascii chars": "https://www.drupal.org/files/issues/2021-06-09/fix_akamai_non_ascii_chars-3218172-2.patch"
+            },
+            "drupal/search_api": {
+                "Avoid node loads if not explicitly enabled": "https://www.drupal.org/files/issues/2019-08-05/search_api-3017964-entity-load-8.patch",
+                "Add access control handler for server and index entity": "https://www.drupal.org/files/issues/2019-07-18/3066144-search-api-add-access-control-handler-10.patch"
+            },
+            "drupal/facets": {
+                "never hide selected items": "https://www.drupal.org/files/issues/2018-10-25/2978248_4.patch"
+            },
+            "drupal/autologout": {
+                "Redirect to login page for SSO users": "./patches/fix-autologout-redirect-cors.patch"
+            },
+            "drupal/diff": {
+                "Translation support for status on revision page": "./patches/diff-revision-status-translation-support.patch"
+            },
+            "drupal/pathologic": {
+                "Internal URL handling (Aliases, language prefixes, base://, ...)": "https://www.drupal.org/files/issues/2022-04-07/pathologic-2418369-41.patch"
+            },
+            "drupal/group": {
+                "Group-Permission to translate content": "https://www.drupal.org/files/issues/2020-07-30/group-translate_content_permission-2864721-20.patch",
+                "Content moderation integration: transition permissions and latest version access": "https://www.drupal.org/files/issues/2020-06-09/group-content_moderation-2906085-74.patch",
+                "Skip group content access check for outsiders": "./patches/group-skip-check-access-for-outsiders.patch",
+                "Deleting a node deletes the linked group_content entities which then resaves the node": "https://www.drupal.org/files/issues/2019-12-10/group-3029355-13.patch"
+            },
+            "drupal/lightning_workflow": {
+                "Scheduled transition dates not preserved when coming back from node preview.": "./patches/rerolled_scheduled_transitions_3068420-2.patch",
+                "Workflow scheduling time limits": "./patches/min-lightning-scheduler-update.patch",
+                "Schedule publish translatons - TransitionManager": "https://www.drupal.org/files/issues/2019-09-16/lightning_workflow-TransitionManager-3003907-18.patch",
+                "Schedule publish translatons - ModerationStateWidget": "./patches/lightning_workflow-ModerationStateWidget-3003907-20200710.patch",
+                "Fix revisions dates": "./patches/lightning_workflow_3176759_2.patch",
+                "Send notifications on unpublished transition": "./patches/lightning_schedule-unpublished-notifications.patch",
+                "Scheduler needs to maintain its base fields properly": "https://www.drupal.org/files/issues/2021-06-23/3126343-18.patch"
+            },
+            "drupal/multiple_fields_remove_button": {
+                "Support multiple groups of fields": "./patches/multiple_fields_remove_button_multiple_groups.patch"
+            },
+            "drupal/embed": {
+                "Use file path for icon opposed to UUID": "https://www.drupal.org/files/issues/2019-12-30/embed-allow-non-managed-button-icon-files--2824110-39_0.patch"
+            },
+            "drupal/entity_browser": {
+                "Problems with multilingual entities issue-2721665": "https://www.drupal.org/files/issues/2019-12-07/entity_browser-problems-with-multilingual-2721665-51.patch"
+            },
+            "embed/embed": {
+                "Fix instagram embeds": "./patches/instagram_embed.patch"
+            },
+            "drupal/readonlymode": {
+                "Got fatal error when running this module": "https://www.drupal.org/files/issues/2020-02-21/readonlymode-string_not_array-3115119-2.patch"
+            },
+            "drupal/groupmedia": {
+                "Fix group_media missing plugin error": "https://www.drupal.org/files/issues/2020-08-17/groupmedia-content-plugin-error-3165547-2.patch"
+            },
+            "drupal/lightning_media": {
+                "Group module support for file upload entity browser plugin": "./patches/lightning-media-file-upload-group-suppport.patch"
+            },
+            "drupal/datalayer": {
+                "Exception page because of incorrect path.alias_manager service name": "https://www.drupal.org/files/issues/2020-09-18/3171896-path_alias-manager.patch"
+            },
+            "acquia/blt-drupal-vm": {
+                "BLT VM missing functions": "./patches/vendors/acquia-blt-drupal-vm.patch"
+            }
+        },
+        "installer-types": [
+            "bower-asset",
+            "npm-asset",
+            "component",
+            "drupal-library"
+        ],
+        "merge-plugin": {
+            "include": [
+                "docroot/sites/*/composer.json"
+            ],
+            "recurse": true,
+            "replace": false,
+            "ignore-duplicates": false,
+            "merge-extra": true,
+            "merge-extra-deep": true,
+            "merge-scripts": false
+        },
+        "composer-exit-on-patch-failure": true,
+        "patchLevel": {
+            "drupal/core": "-p2"
+        }
+    },
+    "config": {
+        "sort-packages": true,
+        "discard-changes": true,
+        "allow-plugins": {
+            "simplesamlphp/composer-module-installer": true,
+            "composer/installers": true,
+            "cweagans/composer-patches": true,
+            "drupal/core-composer-scaffold": true,
+            "acquia/blt": true,
+            "drupal/console-extend-plugin": true,
+            "oomphinc/composer-installers-extender": true,
+            "wikimedia/composer-merge-plugin": true,
+            "dealerdirect/phpcodesniffer-composer-installer": true,
+            "acquia/blt-phpcs": true,
+            "mnsami/composer-custom-directory-installer": true
+        }
+    },
+    "scripts": {
+        "blt-alias": "blt install-alias -Dcreate_alias=true",
+        "drupal-scaffold": "DrupalComposer\\DrupalScaffold\\Plugin::scaffold",
+        "nuke": [
+            "rm -rf vendor docroot/core docroot/modules/contrib docroot/profiles/contrib docroot/themes/contrib",
+            "@composer clearcache --ansi",
+            "@composer install --ansi",
+            "COMPOSER_MEMORY_LIMIT=-1 @composer update --lock"
+        ],
+        "post-install-cmd": [
+            "chmod -f u+x ./docroot/scripts/setup_docroot_init_git_hooks || exit 0",
+            "./docroot/scripts/setup_docroot_init_git_hooks || exit 0"
+        ],
+        "post-create-project-cmd": [
+            "blt internal:create-project:init-repo"
+        ]
+    },
+    "autoload": {
+        "psr-4": {
+            "Example\\": "blt/src/"
+        }
+    }
+}

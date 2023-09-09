@@ -1,0 +1,21 @@
+.theme-umio {
+  .layout-container {
+    background-color: $gray-primary-12;
+    .page-content {
+      padding-bottom: 48px;
+      border-bottom-right-radius: 40px;
+      background-color: $gray-primary-10;
+    }
+  }
+}
+
+main {
+	.page__4xx {
+		#block-umio-content {
+			font-size: 2rem;
+			font-weight: bold;
+			text-align: center;
+			padding: 5rem;
+		}
+	}
+}

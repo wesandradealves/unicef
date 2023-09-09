@@ -1,0 +1,27 @@
+uuid: a01990d9-2808-4f92-8238-3a4e4a7a072c
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_vacancy_video
+    - node.type.vacancy
+  module:
+    - file
+id: node.vacancy.field_vacancy_video
+field_name: field_vacancy_video
+entity_type: node
+bundle: vacancy
+label: Vídeo
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:file'
+  handler_settings: {  }
+  file_directory: '[date:custom:Y]-[date:custom:m]'
+  file_extensions: txt
+  max_filesize: ''
+  description_field: false
+field_type: file

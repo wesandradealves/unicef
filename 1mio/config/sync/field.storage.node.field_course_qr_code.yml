@@ -1,0 +1,19 @@
+uuid: 05d95258-6e70-402e-8b51-af3a6a9d16a9
+langcode: pt-br
+status: true
+dependencies:
+  module:
+    - endroid_qr_code
+    - node
+id: node.field_course_qr_code
+field_name: field_course_qr_code
+entity_type: node
+type: endroid_qr_code
+settings: {  }
+module: endroid_qr_code
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

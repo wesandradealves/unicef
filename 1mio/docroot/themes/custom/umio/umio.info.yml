@@ -1,0 +1,17 @@
+name: Umio
+type: theme
+description: "1Mio Custom Theme"
+package: Custom
+core_version_requirement: 9.x
+
+base theme: umio_base
+
+libraries:
+  - umio/global-styling
+  - umio_base/global-styling
+
+regions:
+  header: Header
+  content: Content
+  footer_left: Footer Left
+  footer_right: Footer Right

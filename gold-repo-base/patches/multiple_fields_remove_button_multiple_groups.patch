@@ -1,0 +1,46 @@
+diff --git a/multiple_fields_remove_button.module b/multiple_fields_remove_button.module
+index 36d3c0f..29aa7b3 100644
+--- a/multiple_fields_remove_button.module
++++ b/multiple_fields_remove_button.module
+@@ -107,6 +107,15 @@ function multiple_fields_remove_button_process_container(&$element) {
+  * Implements hook_field_widget_form_alter().
+  */
+ function multiple_fields_remove_button_field_widget_form_alter(&$element, FormStateInterface $form_state, $context) {
++
++  // If there are multiple groups of fields, values are inside 'target_id' for some reason.
++  if (isset($element['target_id'])) {
++    $real_element = $element['target_id'];
++  }
++  else {
++    $real_element = $element;
++  }
++
+   // Add remove button for the following field types.
+   $fieldTypes = [
+     'addressfield_standard',
+@@ -157,7 +166,7 @@ function multiple_fields_remove_button_field_widget_form_alter(&$element, FormSt
+   // Allow other modules extends the list.
+   \Drupal::moduleHandler()
+     ->alter('multiple_field_remove_button_skip_types', $skipTypes);
+-  $elementType = isset($element['#type']) ? $element['#type'] : [];
++  $elementType = isset($real_element['#type']) ? $real_element['#type'] : [];
+
+   // Don't add 'Remove' button to some widget types - issue #2925978.
+   $skipWidgets = [
+@@ -185,13 +194,13 @@ function multiple_fields_remove_button_field_widget_form_alter(&$element, FormSt
+     !in_array($element_widget, $skipWidgets)
+   ) {
+
+-    $field_parents = isset($element['#field_parents']) ? $element['#field_parents'] : [];
++    $field_parents = isset($real_element['#field_parents']) ? $real_element['#field_parents'] : [];
+     $field_name = $fieldDefinition->getName();
+     if (!empty($includedFields) && !in_array($field_name, $includedFields)) {
+       return;
+     }
+-    $language = isset($element['#language']) ? $element['#language'] : Language::LANGCODE_NOT_SPECIFIED;
+-    $delta = _multiple_fields_remove_button_get_delta($element);
++    $language = isset($real_element['#language']) ? $real_element['#language'] : Language::LANGCODE_NOT_SPECIFIED;
++    $delta = _multiple_fields_remove_button_get_delta($real_element);
+
+     // Get parent which will we use into Remove Button Element.
+     $parents = array_merge($field_parents, [

@@ -1,0 +1,340 @@
+<?php
+
+/**
+ * @file
+ * Functions to support theming in the admin theme.
+ */
+
+use Drupal\Component\Serialization\Json;
+use Drupal\Core\Asset\AttachedAssetsInterface;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Link;
+use Drupal\Core\Url;
+
+/**
+ * Implements hook_form_alter().
+ */
+function admin_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $route = \Drupal::routeMatch()->getRouteName();
+  // Forms to alter.
+  if (
+    ($route == 'node.add' ||
+      $route == 'entity.node.content_translation_add' ||
+      $route == 'quick_node_clone.node.quick_clone' ||
+      $route == 'entity.node.edit_form' ||
+      ($route == 'entity.group_content.create_form' && strpos($form_id, 'group_node') === FALSE)) &&
+    strpos($form_id, 'views_form_media_library_widget_') === FALSE
+  ) {
+    if (isset($form['gin_sticky'])) {
+      $form['gin_sticky']['#attributes']['class'] = [];
+    }
+  }
+}
+
+/**
+ * Implements hook_css_alter().
+ */
+function admin_css_alter(&$css, AttachedAssetsInterface $assets) {
+  if (isset($css['themes/contrib/gin/dist/css/gin.css'])) {
+    $css['themes/contrib/gin/dist/css/gin.css']['group'] = CSS_THEME;
+    $css['themes/contrib/gin/dist/css/gin.css']['weight'] = 200;
+  }
+  if (isset($css['themes/custom/umio_base/css/main.css'])) {
+    $css['themes/custom/umio_base/css/main.css']['group'] = CSS_THEME;
+    $css['themes/custom/umio_base/css/main.css']['weight'] = 201;
+  }
+  if (isset($css['themes/custom/admin/css/main.css'])) {
+    $css['themes/custom/admin/css/main.css']['group'] = CSS_THEME;
+    $css['themes/custom/admin/css/main.css']['weight'] = 202;
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function admin_theme() {
+  return [
+    'greetings_block' => [
+      'variables' => [
+        'company_logo' => [],
+        'user_name' => [],
+      ],
+    ],
+    'views__view_admin_area' => [
+      'template' => 'views/views--view-admin-area',
+      'base hook' => 'views_view',
+    ],
+    'form_workflow' => [
+      'render element' => 'form',
+      'template' => 'node/node--edit-form--workflow',
+    ],
+    'page__tfa_entry_form' => [
+      'template' => 'page/page--user--login',
+      'base hook' => 'page',
+      'preprocess functions' => [
+        'gin_login_preprocess_ginlogin',
+      ],
+    ],
+  ];
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function admin_preprocess_block(array &$variables): void {
+  $routeMatch = \Drupal::routeMatch();
+  $route_name = $routeMatch->getRouteName();
+  $back_options = [];
+
+  // Define the request variable to get the url query.
+  $from_request = \Drupal::request()->query->all();
+  $from_page = isset($from_request['back']) ? $from_request['back'] : FALSE;
+
+  if ($variables['attributes']['id'] == "block-admin-page-title") {
+    switch ($route_name) {
+      case "umio_user.people_profile":
+        $url = Link::createFromRoute('', 'umio_admin_area.ta_admin.company_people')->getUrl()->toString();
+        $back_options = [
+          'title' => t('Go to people panel'),
+          'url' => $url,
+        ];
+        break;
+
+      case "umio_admin_area.company.branches.form":
+        $url = Link::createFromRoute('', 'umio_admin_area.ta_admin.company.branches')->getUrl()->toString();
+        $back_options = [
+          'title' => t('Go back'),
+          'url' => $url,
+        ];
+        break;
+
+      case "entity.node.edit_form":
+        /** @var \Drupal\Core\Entity\ContentEntityInterface $node */
+        $node = $routeMatch->getParameters('node')->get('node');
+        $nodeType = $node->type->getValue()[0]['target_id'];
+        switch ($nodeType) {
+          case "vacancy":
+
+            switch ($from_page) {
+              case 'vacancy_management':
+                $url = Link::createFromRoute('', 'umio_admin_area.ta_admin.vacancies')->getUrl()->toString();
+                break;
+
+              default:
+                $url = Link::createFromRoute('', 'view.consultancy_vacancy.page_1')->getUrl()->toString();
+                break;
+            }
+
+            $back_options = [
+              'title' => t('Go to vacancy panel'),
+              'url' => $url,
+            ];
+            break;
+
+          case "company":
+            $url = Link::createFromRoute('', 'view.view_company.company_list')->getUrl()->toString();
+
+            $back_options = [
+              'title' => t('Go to company panel'),
+              'url' => $url,
+            ];
+            break;
+        }
+
+        break;
+    }
+
+    $variables['back_options'] = $back_options;
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function admin_preprocess_page_title(array &$variables): void {
+  $routeMatch = \Drupal::routeMatch();
+  $route_name = $routeMatch->getRouteName();
+  $page_title_icon = "";
+
+  switch ($route_name) {
+    case "umio_user.people_profile":
+    case "umio_admin_area.ta_admin.company_people":
+      $page_title_icon = 'ph-users-three';
+      break;
+
+    case "view.view_company.company_list":
+    case "umio_admin_area.ta_admin.company":
+    case "company.city_edit_form":
+    case "umio_admin_area.ta_admin.company.branches":
+    case "umio_admin_area.company.branches.form":
+      $page_title_icon = 'ph-buildings';
+      break;
+
+    case "view.consultancy_vacancy.page_1":
+    case "umio_admin_area.ta_admin.vacancies":
+      $page_title_icon = 'ph-suitcase';
+      break;
+
+    case "view.consultancy_courses.page_1":
+    case "umio_admin_area.ta_admin.courses":
+      $page_title_icon = 'ph-graduation-cap';
+      break;
+
+    case "umio_admin_area.ta_admin.dashboard":
+    case "umio_admin_area.dashboard":
+      $page_title_icon = 'ph-chart-line';
+      break;
+
+    case "umio_admin_area.ta_admin.my_account":
+      $page_title_icon = 'ph-user';
+      break;
+
+    case "view.view_company.cities":
+      $page_title_icon = 'ph-bank';
+      break;
+
+    case "tfa.overview":
+    case "tfa.disable":
+    case "tfa.validation.setup":
+      $page_title_icon = 'ph-shield';
+      break;
+
+    case "entity.node.edit_form":
+      /** @var \Drupal\Core\Entity\ContentEntityInterface $node */
+      $node = \Drupal::routeMatch()->getParameters('node')->get('node');
+      $nodeType = $node->type->getValue()[0]['target_id'];
+
+      switch ($nodeType) {
+        case "company":
+          $page_title_icon = 'ph-buildings';
+          break;
+
+        case "vacancy":
+          $page_title_icon = 'ph-suitcase';
+          break;
+
+        case "course":
+          $page_title_icon = 'ph-graduation-cap';
+          break;
+      }
+
+      break;
+  }
+
+  if ($page_title_icon != '') {
+    $variables['icon'] = $page_title_icon;
+  }
+
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function admin_preprocess_views_view(array &$variables): void {
+  $routeMatch = \Drupal::routeMatch();
+  $route_name = $routeMatch->getRouteName();
+
+  $viewActions = [];
+  switch ($route_name) {
+    case "umio_admin_area.ta_admin.company.branches":
+      $url = Url::fromRoute('umio_admin_area.company.branches.form', ['company' => 'new']);
+      $viewActions = [
+        '#type' => 'link',
+        '#title' => t('Register branch'),
+        '#route_name' => 'umio_admin_area.company.branches.form',
+        '#url' => $url,
+        "#weight" => 100,
+        '#attributes' => [
+          'class' => [
+            'text-bold',
+            'btn',
+            'btn-primary',
+          ],
+        ],
+      ];
+      break;
+
+    case "umio_admin_area.ta_admin.vacancies":
+      $url = Url::fromRoute('umio_vacancy.index');
+      $viewActions = [
+        '#type' => 'link',
+        '#title' => t('New Vacancy'),
+        '#route_name' => 'umio_vacancy.index',
+        '#url' => $url,
+        "#weight" => 100,
+        '#attributes' => [
+          'class' => [
+            'text-bold',
+            'btn',
+            'btn-primary',
+          ],
+        ],
+      ];
+      break;
+
+    case "umio_admin_area.ta_admin.company_people":
+      $url = Url::fromRoute('umio_admin_area.talent_acquisition_invite');
+      $viewActions = [
+        '#type' => 'modal_form_link',
+        '#title' => t('Add new partner from my team'),
+        '#route_name' => 'umio_admin_area.talent_acquisition_invite',
+        '#url' => $url,
+        "#weight" => 100,
+        '#attributes' => [
+          'class' => [
+            'text-bold',
+            'btn',
+            'btn-primary',
+          ],
+          'data-query-parameters' => Json::encode([
+            'name' => 'umio_admin_area.ta_admin.company_people',
+            'display' => 'umio_admin_area.ta_admin.company_people',
+          ]),
+          'data-dialog-options' => Json::encode([
+            'dialogClass' => 'modal--views-save',
+            'width' => '500px',
+          ]),
+        ],
+      ];
+      break;
+
+    case "umio_admin_area.ta_admin.courses":
+      $url = Url::fromRoute('node.add', ['node_type' => 'course']);
+      $viewActions = [
+        '#type' => 'link',
+        '#title' => t('New Course'),
+        '#route_name' => 'node.add',
+        '#url' => $url,
+        "#weight" => 100,
+        '#attributes' => [
+          'class' => [
+            'text-bold',
+            'btn',
+            'btn-primary',
+          ],
+        ],
+      ];
+      break;
+  }
+  if ($viewActions) {
+    $variables['viewActions'] = $viewActions;
+  }
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK_alter().
+ */
+function admin_theme_suggestions_views_view_alter(&$suggestions, $variables) {
+
+  $admin_area_views = [
+    'course_management',
+    'vacancy_management',
+    'company_branches_management',
+    'people_management',
+  ];
+
+  if (in_array($variables['view']->id(), $admin_area_views)) {
+    $suggestions[] = 'views__view_admin_area';
+  }
+
+}

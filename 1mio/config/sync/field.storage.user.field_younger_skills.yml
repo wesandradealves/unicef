@@ -1,0 +1,33 @@
+uuid: e6013f14-1fa9-40a9-941d-634b63c66cfd
+langcode: pt-br
+status: true
+dependencies:
+  module:
+    - options
+    - user
+id: user.field_younger_skills
+field_name: field_younger_skills
+entity_type: user
+type: list_integer
+settings:
+  allowed_values:
+    -
+      value: 1
+      label: 'Determinação e criatividade'
+    -
+      value: 2
+      label: 'Liderança e colaboração'
+    -
+      value: 3
+      label: 'Proatividade e comunicação'
+    -
+      value: 4
+      label: 'Aprendizagem e adaptabilidade'
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 2
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

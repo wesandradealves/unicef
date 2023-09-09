@@ -1,0 +1,47 @@
+{#
+/**
+ * @file
+ * Default theme implementation for a region.
+ *
+ * Available variables:
+ * - content: The content for this region, typically blocks.
+ * - attributes: Remaining HTML attributes for the element, including:
+ *   - class: HTML classes that can be used to style contextually through CSS.
+ *
+ * @see template_preprocess_region()
+ *
+ * @ingroup themeable
+ */
+#}
+
+{% for counter in counters %}
+    <div class='session-container'>
+      <div class='session-number color-{{ loop.index }}'>{{ counter.total }}</div>
+      <div class='session-text'>{{ counter.text }}</div>
+    </div>
+    {% if loop.index != 5 %}
+      <div class='session-line'></div>
+    {% endif %}
+{% endfor %}
+
+{# <div class="hero-banner-landing-page--number-counter-background-color">
+  <div class="px-md-0">
+    <div class="hero-banner-landing-page--number-counter">
+      <div class="row m-0">
+        <div class="col-12 col-xl-6 offset-xl-3 container-illustration-number-counter">
+          <div class="landing-page--number-counter-container">
+             Aqui ta a imagem do boneco/astronauta
+            <div class="number-counter--illustration">
+              <img src="{{ base_path ~ directory }}/images/image-landing-page--number-counter-illustration.png" alt="" />
+            </div>
+            Aqui provavelmente estão os pills
+            <div class="number-counter--container-session">
+            <div class="number-counter--session">
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> #}

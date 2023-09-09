@@ -1,0 +1,29 @@
+uuid: 307cff21-949b-4d79-a67d-116be2f92c8d
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_vacancy_benefits
+    - node.type.vacancy
+    - taxonomy.vocabulary.vacancy_benefits
+id: node.vacancy.field_vacancy_benefits
+field_name: field_vacancy_benefits
+entity_type: node
+bundle: vacancy
+label: Benefícios
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      vacancy_benefits: vacancy_benefits
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

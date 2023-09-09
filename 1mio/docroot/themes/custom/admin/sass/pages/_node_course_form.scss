@@ -1,0 +1,51 @@
+.node-course-form {
+  fieldset {
+    border: none;
+    padding-top: 0;
+    // Bootstrap padding row
+    padding-right: calc(var(--bs-gutter-x) * .5);
+    padding-left: calc(var(--bs-gutter-x) * .5);
+    &.form-item {
+      margin: 0;
+    }
+    .fieldset__wrapper {
+      margin: 0;
+      .form-wrapper:first-of-type {
+        .form-item {
+          margin-top: 0;
+        }
+      }
+    }
+  }
+  .form-item--multiple {
+    .tabledrag-toggle-weight-wrapper {
+      display: none;
+    }
+  }
+
+  .form-actions {
+    .course-tags-content {
+      position: relative;
+      i {
+        color: $green-piscine-primary-main;
+        font-weight: 700;
+        position: absolute;
+        top: 15px;
+        left: 5px;
+      }
+      .btn-primary {
+        background-color: initial;
+        border-color: $gray-primary-10;
+        color: $green-piscine-primary-main;
+        font-weight: 700;
+        padding-left: 25px;
+        font-size: 1rem;
+      }
+    }
+  }
+}
+
+.course-registration-company-image {
+  width: 80px;
+  height: 80px;
+}

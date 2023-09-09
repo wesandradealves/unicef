@@ -1,0 +1,20 @@
+uuid: 7bd3bd5b-95e0-4479-b665-d2ba6b6a3351
+langcode: pt-br
+status: true
+dependencies:
+  module:
+    - datetime
+    - paragraphs
+id: paragraph.field_experience_begin
+field_name: field_experience_begin
+entity_type: paragraph
+type: datetime
+settings:
+  datetime_type: date
+module: datetime
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

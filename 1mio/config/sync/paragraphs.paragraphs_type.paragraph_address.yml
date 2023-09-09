@@ -1,0 +1,10 @@
+uuid: 155ae6e9-aac3-436d-9045-db29137a1391
+langcode: pt-br
+status: true
+dependencies: {  }
+id: paragraph_address
+label: Endereco
+icon_uuid: null
+icon_default: null
+description: 'Endereço para ser reutilizado nos content types'
+behavior_plugins: {  }

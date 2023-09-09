@@ -1,0 +1,199 @@
+diff --git a/core/core.services.yml b/core/core.services.yml
+index 9e82af7d4b..79a1b97e65 100644
+--- a/core/core.services.yml
++++ b/core/core.services.yml
+@@ -4,6 +4,7 @@ parameters:
+     gc_divisor: 100
+     gc_maxlifetime: 200000
+     cookie_lifetime: 2000000
++    cookie_domain_bc_mode: false
+   twig.config:
+     debug: false
+     auto_reload: null
+diff --git a/core/lib/Drupal/Core/CoreServiceProvider.php b/core/lib/Drupal/Core/CoreServiceProvider.php
+index e07046ae0a..b39da577de 100644
+--- a/core/lib/Drupal/Core/CoreServiceProvider.php
++++ b/core/lib/Drupal/Core/CoreServiceProvider.php
+@@ -116,6 +116,14 @@ public function alter(ContainerBuilder $container) {
+     elseif (function_exists('com_create_guid')) {
+       $uuid_service->setClass('Drupal\Component\Uuid\Com');
+     }
++
++    // If 'cookie_domain_bc_mode' is not set then set it to TRUE to provide
++    // a backward-compatible cookie domain.
++    $session_storage_options = $container->getParameter('session.storage.options');
++    if (!isset($session_storage_options['cookie_domain_bc_mode'])) {
++      $session_storage_options['cookie_domain_bc_mode'] = TRUE;
++      $container->setParameter('session.storage.options', $session_storage_options);
++    }
+   }
+
+   /**
+diff --git a/core/lib/Drupal/Core/Session/SessionConfiguration.php b/core/lib/Drupal/Core/Session/SessionConfiguration.php
+index 49dc63e915..47989dfca3 100644
+--- a/core/lib/Drupal/Core/Session/SessionConfiguration.php
++++ b/core/lib/Drupal/Core/Session/SessionConfiguration.php
+@@ -41,7 +41,7 @@ public function getOptions(Request $request) {
+     $options = $this->options;
+
+     // Generate / validate the cookie domain.
+-    $options['cookie_domain'] = $this->getCookieDomain($request) ?: '';
++    $options['cookie_domain'] = $this->getCookieDomain($request);
+
+     // If the site is accessed via SSL, ensure that the session cookie is
+     // issued with the secure flag.
+@@ -119,10 +119,11 @@ protected function getUnprefixedName(Request $request) {
+    *   The session cookie domain.
+    */
+   protected function getCookieDomain(Request $request) {
++    $cookie_domain = '';
+     if (isset($this->options['cookie_domain'])) {
+       $cookie_domain = $this->options['cookie_domain'];
+     }
+-    else {
++    elseif (isset($this->options['cookie_domain_bc_mode']) && $this->options['cookie_domain_bc_mode'] === TRUE) {
+       $host = $request->getHost();
+       // To maximize compatibility and normalize the behavior across user
+       // agents, the cookie domain should start with a dot.
+@@ -133,9 +134,11 @@ protected function getCookieDomain(Request $request) {
+     // agents in order to defeat malicious websites attempting to set cookies
+     // for top-level domains. Also IP addresses may not be used in the domain
+     // attribute of a Set-Cookie header.
+-    if (count(explode('.', $cookie_domain)) > 2 && !is_numeric(str_replace('.', '', $cookie_domain))) {
+-      return $cookie_domain;
++    if ($cookie_domain !== '' && (strpos($cookie_domain, '.') === FALSE || is_numeric(str_replace('.', '', $cookie_domain)))) {
++      $cookie_domain = '';
+     }
++
++    return $cookie_domain;
+   }
+
+   /**
+diff --git a/core/tests/Drupal/KernelTests/Core/Session/CookieDomainBcModeTest.php b/core/tests/Drupal/KernelTests/Core/Session/CookieDomainBcModeTest.php
+new file mode 100644
+index 0000000000..09a9cf74ea
+--- /dev/null
++++ b/core/tests/Drupal/KernelTests/Core/Session/CookieDomainBcModeTest.php
+@@ -0,0 +1,33 @@
++<?php
++
++namespace Drupal\KernelTests\Core\Session;
++
++use Drupal\Core\DependencyInjection\ContainerBuilder;
++use Drupal\KernelTests\KernelTestBase;
++
++/**
++ * Test case for 'cookie_domain_bc_mode' setting before 8.6.0.
++ *
++ * @group Session
++ */
++class CookieDomainBcModeTest extends KernelTestBase {
++
++  /**
++   * Tests 'cookie_domain_bc_mode' setting.
++   */
++  public function testCookieDomainBcMode() {
++    $this->assertTrue($this->container->getParameter('session.storage.options')['cookie_domain_bc_mode']);
++  }
++
++  /**
++   * {@inheritdoc}
++   */
++  public function register(ContainerBuilder $container) {
++    // Remove the 'cookie_domain_bc_mode' setting to simulate a site built prior
++    // to 8.6.0.
++    $options = $container->getParameter('session.storage.options');
++    unset($options['cookie_domain_bc_mode']);
++    $container->setParameter('session.storage.options', $options);
++  }
++
++}
+diff --git a/core/tests/Drupal/KernelTests/Core/Session/DefaultCookieDomainBcModeTest.php b/core/tests/Drupal/KernelTests/Core/Session/DefaultCookieDomainBcModeTest.php
+new file mode 100644
+index 0000000000..06a5aab2d9
+--- /dev/null
++++ b/core/tests/Drupal/KernelTests/Core/Session/DefaultCookieDomainBcModeTest.php
+@@ -0,0 +1,21 @@
++<?php
++
++namespace Drupal\KernelTests\Core\Session;
++
++use Drupal\KernelTests\KernelTestBase;
++
++/**
++ * Test case for default 'cookie_domain_bc_mode' setting since 8.6.0.
++ *
++ * @group Session
++ */
++class DefaultCookieDomainBcModeTest extends KernelTestBase {
++
++  /**
++   * Tests 'cookie_domain_bc_mode' setting.
++   */
++  public function testCookieDomainBcMode() {
++    $this->assertFalse($this->container->getParameter('session.storage.options')['cookie_domain_bc_mode']);
++  }
++
++}
+diff --git a/core/tests/Drupal/Tests/Core/Session/SessionConfigurationTest.php b/core/tests/Drupal/Tests/Core/Session/SessionConfigurationTest.php
+index 38ee14fbd5..6904c21530 100644
+--- a/core/tests/Drupal/Tests/Core/Session/SessionConfigurationTest.php
++++ b/core/tests/Drupal/Tests/Core/Session/SessionConfigurationTest.php
+@@ -27,8 +27,8 @@ protected function createSessionConfiguration($options = []) {
+    *
+    * @dataProvider providerTestGeneratedCookieDomain
+    */
+-  public function testGeneratedCookieDomain($uri, $expected_domain) {
+-    $config = $this->createSessionConfiguration();
++  public function testGeneratedCookieDomain($uri, $expected_domain, $bc_mode = FALSE) {
++    $config = $this->createSessionConfiguration(['cookie_domain_bc_mode' => $bc_mode]);
+
+     $request = Request::create($uri);
+     $options = $config->getOptions($request);
+@@ -44,11 +44,16 @@ public function testGeneratedCookieDomain($uri, $expected_domain) {
+    */
+   public function providerTestGeneratedCookieDomain() {
+     return [
+-      ['http://example.com/path/index.php', '.example.com'],
+-      ['http://www.example.com/path/index.php', '.www.example.com'],
+-      ['http://subdomain.example.com/path/index.php', '.subdomain.example.com'],
+-      ['http://example.com:8080/path/index.php', '.example.com'],
+-      ['https://example.com/path/index.php', '.example.com'],
++      ['http://example.com/path/index.php', '.example.com', TRUE],
++      ['http://www.example.com/path/index.php', '.www.example.com', TRUE],
++      ['http://subdomain.example.com/path/index.php', '.subdomain.example.com', TRUE],
++      ['http://example.com:8080/path/index.php', '.example.com', TRUE],
++      ['https://example.com/path/index.php', '.example.com', TRUE],
++      ['http://example.com/path/index.php', ''],
++      ['http://www.example.com/path/index.php', ''],
++      ['http://subdomain.example.com/path/index.php', ''],
++      ['http://example.com:8080/path/index.php', ''],
++      ['https://example.com/path/index.php', ''],
+       ['http://localhost/path/index.php', ''],
+       ['http://127.0.0.1/path/index.php', ''],
+       ['http://127.0.0.1:8888/path/index.php', ''],
+@@ -66,8 +71,11 @@ public function providerTestGeneratedCookieDomain() {
+    *
+    * @dataProvider providerTestEnforcedCookieDomain
+    */
+-  public function testEnforcedCookieDomain($uri, $expected_domain) {
+-    $config = $this->createSessionConfiguration(['cookie_domain' => '.example.com']);
++  public function testEnforcedCookieDomain($uri, $expected_domain, $bc_mode = FALSE) {
++    $config = $this->createSessionConfiguration([
++      'cookie_domain' => '.example.com',
++      'cookie_domain_bc_mode' => $bc_mode,
++    ]);
+
+     $request = Request::create($uri);
+     $options = $config->getOptions($request);
+@@ -83,8 +91,10 @@ public function testEnforcedCookieDomain($uri, $expected_domain) {
+    */
+   public function providerTestEnforcedCookieDomain() {
+     return [
++      ['http://example.com/path/index.php', '.example.com', TRUE],
+       ['http://example.com/path/index.php', '.example.com'],
+       ['http://www.example.com/path/index.php', '.example.com'],
++      ['http://subdomain.example.com/path/index.php', '.example.com', TRUE],
+       ['http://subdomain.example.com/path/index.php', '.example.com'],
+       ['http://example.com:8080/path/index.php', '.example.com'],
+       ['https://example.com/path/index.php', '.example.com'],

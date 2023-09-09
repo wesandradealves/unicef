@@ -1,0 +1,27 @@
+diff --git a/core/includes/pager.inc b/core/includes/pager.inc
+index 62e8278ed2..08a1b26eb3 100644
+--- a/core/includes/pager.inc
++++ b/core/includes/pager.inc
+@@ -26,12 +26,17 @@
+  * @see pager_default_initialize()
+  */
+ function pager_find_page($element = 0) {
+-  $page = \Drupal::request()->query->get('page', '');
+-  $page_array = explode(',', $page);
+-  if (!isset($page_array[$element])) {
+-    $page_array[$element] = 0;
++  global $pager_page_array;
++  if (empty($pager_page_array)) {
++    $page = \Drupal::request()->query->get('page', '');
++    $pager_page_array = explode(',', $page);
++  }
++
++  if (!isset($pager_page_array[$element])) {
++    $pager_page_array[$element] = 0;
+   }
+-  return (int) $page_array[$element];
++
++  return (int) $pager_page_array[$element];
+ }
+ 
+ /**

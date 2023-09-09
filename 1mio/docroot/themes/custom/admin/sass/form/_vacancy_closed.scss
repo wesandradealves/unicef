@@ -1,0 +1,32 @@
+.vacancies-closed-form {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  padding-top: 70px;
+  @include media-breakpoint-up(sm) {
+    padding-left: 40px;
+    padding-top: 0;
+  }
+  &::before {
+    color: $blue-primary-main;
+    font-size: 24px;
+    left: 0;
+    margin-top: 1rem;
+    position: absolute;
+    right: 0;
+    text-align: center;
+    top: 0;
+    @include generate-icon("\f60a");
+    @include media-breakpoint-up(sm) {
+      right: unset;
+      text-align: left;
+    }
+  }
+  .form-submit {
+    max-width: 100px;
+    align-self: end;
+  }
+  .form-item__description {
+    margin-bottom: .75rem;
+  }
+}

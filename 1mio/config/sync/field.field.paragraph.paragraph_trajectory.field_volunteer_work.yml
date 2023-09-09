@@ -1,0 +1,52 @@
+uuid: 54d6d4ec-ac2d-49c0-ac19-648d00cd864e
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_volunteer_work
+    - paragraphs.paragraphs_type.paragraph_trajectory
+    - paragraphs.paragraphs_type.paragraph_volunteer_work
+  module:
+    - entity_reference_revisions
+id: paragraph.paragraph_trajectory.field_volunteer_work
+field_name: field_volunteer_work
+entity_type: paragraph
+bundle: paragraph_trajectory
+label: 'Trabalhos voluntários'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    target_bundles:
+      paragraph_volunteer_work: paragraph_volunteer_work
+    negate: 0
+    target_bundles_drag_drop:
+      courses_and_abilities:
+        weight: 9
+        enabled: false
+      curriculum:
+        weight: 10
+        enabled: false
+      educational_formation:
+        weight: 11
+        enabled: false
+      experience:
+        weight: 12
+        enabled: false
+      paragraph_address:
+        weight: 13
+        enabled: false
+      paragraph_social:
+        weight: 14
+        enabled: false
+      paragraph_trajectory:
+        weight: 15
+        enabled: false
+      paragraph_volunteer_work:
+        weight: 16
+        enabled: true
+field_type: entity_reference_revisions

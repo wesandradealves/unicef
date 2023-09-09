@@ -1,0 +1,22 @@
+umio_vacancy.display:
+  js:
+    js/display.js: {}
+  dependencies:
+    - core/jquery
+    - core/jquery.once
+
+umio_vacancy.form:
+  js:
+    js/form.js: {}
+  dependencies:
+    - core/jquery
+    - core/jquery.once
+    - umio_helpers/umio_helpers.custom_validator
+    - umio_helpers/umio_helpers.mask
+
+umio_vacancy.index_page:
+  js:
+    js/index_page.js: {}
+  dependencies:
+    - core/jquery
+    - core/jquery.once

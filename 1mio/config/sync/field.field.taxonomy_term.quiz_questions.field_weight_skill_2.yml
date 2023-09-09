@@ -1,0 +1,25 @@
+uuid: 4397fd43-ed78-4d51-9a83-7216592621be
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_weight_skill_2
+    - taxonomy.vocabulary.quiz_questions
+id: taxonomy_term.quiz_questions.field_weight_skill_2
+field_name: field_weight_skill_2
+entity_type: taxonomy_term
+bundle: quiz_questions
+label: 'Peso da Habilidade "Liderança e colaboração"'
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  min: 0
+  max: 100
+  prefix: ''
+  suffix: ''
+field_type: integer

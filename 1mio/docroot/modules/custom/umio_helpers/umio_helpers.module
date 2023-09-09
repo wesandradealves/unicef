@@ -1,0 +1,84 @@
+<?php
+
+/**
+ * @file
+ */
+
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\editor\Entity\Editor;
+use Drupal\umio_helpers\PreRenderSelect2;
+
+/**
+ * Implements hook_help().
+ */
+function umio_helpers_help(string $route_name, RouteMatchInterface $route_match): string {
+  switch ($route_name) {
+    // Main module help for the user module.
+    case 'help.page.user':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('Custom module to reuse code and functions in other modules.') . '</p>';
+      return $output;
+
+    default:
+  }
+
+  return '';
+}
+
+/**
+ * Implements hook_element_info_alter().
+ */
+function umio_helpers_element_info_alter(array &$info): void {
+  if (isset($info['address'])) {
+    $info['address']['#process'][] = 'umio_helpers_address_customization';
+  }
+  if (isset($info['select2'])) {
+    $info["select2"]["#pre_render"][] = [
+      PreRenderSelect2::class,
+      'preRender',
+    ];
+  }
+}
+
+/**
+ * Process callback for address element.
+ */
+function umio_helpers_address_customization(array &$element, FormStateInterface $form_state, array &$complete_form): array {
+  $element['#attached']['library'][] = 'umio_helpers/umio_helpers.address_customization';
+
+  $element['country_code']['#attributes']['class'] = ['d-none'];
+  $element['postal_code']['#attributes']['class'] = ['postal-code-mask'];
+
+  $element['address_line2']['#title'] = t('Complement');
+  $element['address_line2']['#title_display'] = 'before';
+
+  // Change order administrative_area and locality
+  $element['administrative_area']['#weight'] = -5;
+  $element['locality']['#weight'] = -4;
+
+  return $element;
+}
+
+
+/**
+ * Implements hook_ckeditor_css_alter().
+ */
+function umio_helpers_ckeditor_css_alter(array &$css, Editor $editor): void {
+  if (!$editor->hasAssociatedFilterFormat()) {
+    return;
+  }
+
+  $known_formats = [
+    'basic_html',
+    'full_html',
+  ];
+
+  if (in_array($editor->getFilterFormat()->id(), $known_formats)) {
+    /** @var \Drupal\Core\Extension\ExtensionPathResolver $pathResolver */
+    $pathResolver = \Drupal::service('extension.path.resolver');
+    $css[] = $pathResolver->getPath('theme', 'umio_base') . '/css/main.css';
+    $css[] = $pathResolver->getPath('theme', 'umio') . '/css/main.css';
+  }
+}

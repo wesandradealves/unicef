@@ -1,0 +1,39 @@
+umio_vacancy.index:
+  path: "/vagas"
+  defaults:
+    _title: "Cadastre sua vaga"
+    _controller: '\Drupal\umio_vacancy\Controller\VacancyController::index'
+  requirements:
+    _role: administrator+company_manager+partner_talent_acquisition
+  options:
+    _admin_route: true
+
+umio_vacancy.vacancy_confirm:
+  path: "/vagas/{nid}/vagas-aprovar"
+  defaults:
+    _title: "Aprovar a vaga"
+    _form: 'Drupal\umio_vacancy\Form\VacancyApproveForm'
+  requirements:
+    _role: administrator+company_manager
+  options:
+    _admin_route: true
+
+umio_vacancy.vacancy_reject:
+  path: "/vagas/{nid}/vagas-rejeitar"
+  defaults:
+    _title: "Rejeitar a vaga"
+    _form: 'Drupal\umio_vacancy\Form\VacancyRejectForm'
+  requirements:
+    _role: administrator+company_manager
+  options:
+    _admin_route: true
+
+umio_vacancy.vacancy_delete:
+  path: "/vagas/{nid}/vagas-deletar"
+  defaults:
+    _title: "Deletar vaga"
+    _form: 'Drupal\umio_vacancy\Form\VacancyDeleteForm'
+  requirements:
+    _role: administrator+company_manager+partner_talent_acquisition
+  options:
+    _admin_route: true

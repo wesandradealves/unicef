@@ -1,0 +1,638 @@
+<?php
+
+/**
+ * @file
+ * Primary module hooks for Umio Front Area module.
+ *
+ * @DCG
+ * This file is no longer required in Drupal 8.
+ * @see https://www.drupal.org/node/2217931
+ */
+
+use Drupal\Component\Serialization\Json;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Render\Markup;
+use Drupal\Core\Url;
+use Drupal\node\Entity\Node;
+use Drupal\views\Views;
+
+define('UMIO_FRONT_AREA_FROM_STATUS_CLOSED', FALSE);
+define('UMIO_FRONT_AREA_FROM_STATUS_OPEN', true);
+
+/**
+ * This function aims to define the fields Weights.
+ *
+ * @param array $form
+ */
+function defineFieldsWeights(array &$form) : void {
+  $weigth = 0;
+  $form['search_field_wrapper']['groups']['search_wrapper']['search_api_fulltext']['#weight'] = ++$weigth;
+  $form['search_field_wrapper']['groups']['field_group']['reset']['#weight'] = ++$weigth;
+  $form['search_field_wrapper']['groups']['field_group']['title']['#weight'] = ++$weigth;
+
+  // Base filter fileds.
+  $form['search_field_wrapper']['groups']['field_group']['field_vacancy_job_model']['#weight'] = -1;
+  $form['search_field_wrapper']['groups']['field_group']['field_course_model']['#weight'] = -1;
+  $form['search_field_wrapper']['groups']['field_group']['administrative_area_course_uf']['#weight'] = -1;
+  $form['search_field_wrapper']['groups']['field_group']['locality_city_course']['#weight'] = -1;
+  $form['search_field_wrapper']['groups']['field_group']['administrative_area_vacancy_uf']['#weight'] = -1;
+  $form['search_field_wrapper']['groups']['field_group']['locality_city_vacancy']['#weight'] = -1;
+
+  $form['search_field_wrapper']['groups']['field_group']['type']['#weight'] = 100;
+  $form['search_field_wrapper']['groups']['field_group']['field_vacancy_type']['#weight'] = 100;
+  $form['search_field_wrapper']['groups']['field_group']['field_course_type']['#weight'] = 100;
+  $form['search_field_wrapper']['groups']['field_group']['umio__search_api_fulltext_requested']['#weight'] = 100;
+
+  // New filter fields.
+  $form['search_field_wrapper']['groups']['field_group']['umio__feeds__opportunities_type']['#weight'] = ++$weigth;
+  $form['search_field_wrapper']['groups']['field_group']['umio__feeds__opportunities']['#weight'] = ++$weigth;
+  $form['search_field_wrapper']['groups']['field_group']['umio__feeds__opportunities_course']['#weight'] = ++$weigth;
+  $form['search_field_wrapper']['groups']['field_group']['umio__feeds__opportunities_vacancy']['#weight'] = ++$weigth;
+
+  $form['search_field_wrapper']['groups']['field_group']['umio__feeds__opportunity_model']['#weight'] = ++$weigth;
+  $form['search_field_wrapper']['groups']['field_group']['umio__feeds__opportunity_locality']['#weight'] = ++$weigth;
+
+  $form['search_field_wrapper']['groups']['actions_group']['actions']['#weight'] = ++$weigth;
+  $form['search_field_wrapper']['groups']['actions_group']['actions']['submit']['#weight'] = ++$weigth;
+  $form['search_field_wrapper']['groups']['actions_group']['actions']['reset']['#weight'] = ++$weigth;
+
+}
+
+/**
+ * This function return the used_cities view as array of content.
+ */
+function getOpportunitiesLocality() : array {
+  $available_cities = [];
+  // Load the view with content.
+  $view = Views::getView('used_cities');
+  $vacancy_cities = Views::getView('vacancy_cities');
+  $view->setDisplay('default');
+  $view->execute();
+
+  $vacancy_cities->setDisplay('default');
+  $vacancy_cities->execute();
+
+  if (isset($vacancy_cities->result)) {
+    foreach ($vacancy_cities->result as $row) {
+      $state = isset($row->_entity->field_vacancy_state) ? $row->_entity->field_vacancy_state->getString() : array();
+      $city =  isset($row->_entity->field_vacancy_city) ? $row->_entity->field_vacancy_city->getString() : array(); 
+      $value = $city.' - '.$state;
+      
+      if(!in_array($value, $available_cities)){
+        if($city && $state) {
+          array_push($available_cities, $value);
+        }
+        $rows[] = $row;
+      }
+    }
+  }
+
+  return $available_cities;
+
+}
+
+/**
+ * This function aims to define the customized filters of the page.
+ *
+ * @param array $form
+ */
+function addFilterFields(array &$form) : void {
+  // Define the 'All' option into a variable.
+  $all_option = $form['search_field_wrapper']['groups']['field_group']['field_vacancy_type']['#options']['All'];
+
+  $form['search_field_wrapper']['groups']['field_group']['umio__search_api_fulltext_requested']["#type"] = "textfield";
+  $form['search_field_wrapper']['groups']['field_group']['umio__search_api_fulltext_requested']["#default_value"] = "";
+
+  $course_options = $form['search_field_wrapper']['groups']['field_group']['field_course_type']['#options'];
+  $vacancy_options = $form['search_field_wrapper']['groups']['field_group']['field_vacancy_type']['#options'];
+  unset($course_options['All']);
+  unset($vacancy_options['All']);
+
+  $all_opportunities = array_merge(['All' => $all_option], [(string) t('Courses') => $course_options, (string) t('Vacancies') => $vacancy_options]);
+
+  // Define the cities array
+  $available_cities = getOpportunitiesLocality();
+  
+  $fields_to_add = [
+    'umio__feeds__opportunities_type' => [
+      'label' => t("Type"),
+      'base_data' => [
+        '#type' => 'select',
+        '#options' => array_merge(['All' => $all_option], [
+          'course' => t('Courses'),
+          'vacancy' => t('Vacancies'),
+        ]),
+        "#default_value" => "All",
+        "#size" => NULL,
+      ],
+      'class' => ['select2-without-search'],
+      'style' => [],
+    ],
+    'umio__feeds__opportunities' => [
+      'label' => t("Opportunity"),
+      'base_data' => [
+        '#type' => 'select',
+        '#options' => $all_opportunities,
+        "#default_value" => "All",
+        "#size" => NULL,
+      ],
+      'class' => ['select2-without-search'],
+      'style' => [],
+    ],
+    'umio__feeds__opportunities_course' => [
+      'label' => t("Opportunity"),
+      'base_data' => [
+        '#type' => 'select',
+        '#options' => $form['search_field_wrapper']['groups']['field_group']['field_course_type']['#options'],
+        "#default_value" => "All",
+        "#size" => NULL,
+        '#wrapper_attributes' => ['class' => ['d-none']],
+      ],
+      'class' => ['select2-without-search'],
+      'style' => [],
+    ],
+    'umio__feeds__opportunities_vacancy' => [
+      'label' => t("Opportunity"),
+      'base_data' => [
+        '#type' => 'select',
+        '#options' => $form['search_field_wrapper']['groups']['field_group']['field_vacancy_type']['#options'],
+        "#default_value" => "All",
+        "#size" => NULL,
+        '#wrapper_attributes' => ['class' => ['d-none']],
+      ],
+      'class' => ['select2-without-search'],
+      'style' => [],
+    ],
+    'umio__feeds__opportunity_model' => [
+      'label' => t("Opportunity model"),
+      'base_data' => $form['search_field_wrapper']['groups']['field_group']['field_vacancy_job_model'],
+      'class' => ['select2-without-search'],
+      'style' => [],
+    ],
+    'umio__feeds__opportunity_locality' => [
+      'label' => t("Opportunity locality"),
+      'base_data' => [
+        '#type' => 'select',
+        '#options' => array_merge(['All' => $all_option], $available_cities),
+        "#default_value" => "All",
+        "#size" => NULL,
+      ],
+      'class' => ['select2-without-allow-clear'],
+      'style' => [],
+    ],
+  ];
+
+  foreach ($fields_to_add as $field_name => $properties) {
+    $form['#info']['filter-' . $field_name] = [
+      "operator" => "{$field_name}_op",
+      "value" => "{$field_name}",
+      "label" => $properties['label'],
+      "description" => "",
+    ];
+
+    // Define field base
+    $form['search_field_wrapper']['groups']['field_group'][$field_name] = $properties['base_data'];
+    $form['search_field_wrapper']['groups']['field_group'][$field_name]['#attributes']['class'] = $properties['class'];
+    $form['search_field_wrapper']['groups']['field_group'][$field_name]['#attributes']['style'] = $properties['style'];
+  }
+}
+
+/**
+ * This functions aims to apply to the filter a customized style.
+ *
+ * @param array $form
+ */
+function setFilterFormLabels(array &$form) : void {
+
+  $form['search_field_wrapper']['groups']['field_group']['umio__feeds__opportunity_model'] += [
+    '#title' => $form['#info']['filter-umio__feeds__opportunity_model']['label'],
+  ];
+  $form['search_field_wrapper']['groups']['field_group']['umio__feeds__opportunities_type'] += [
+    '#title' => $form['#info']['filter-umio__feeds__opportunities_type']['label'],
+  ];
+
+  $title_opportunities = [
+    '',
+    '_course',
+    '_vacancy',
+  ];
+  foreach ($title_opportunities as $field_suffix) {
+    $form['search_field_wrapper']['groups']['field_group']['umio__feeds__opportunities' . $field_suffix] += [
+      '#title' => $form['#info']['filter-umio__feeds__opportunities']['label'],
+    ];
+  }
+
+  $form['search_field_wrapper']['groups']['field_group']['umio__feeds__opportunity_locality'] += [
+    '#title' => $form['#info']['filter-umio__feeds__opportunity_locality']['label'],
+  ];
+
+  $form['#info'] = [];
+
+}
+
+/**
+ * This functions aims to apply to the filter a customized style.
+ *
+ * @param array $form
+ */
+function customizeFilterFormAppareance(array &$form) : void {
+  $form['#attached']['library'][] = 'umio_front_area/umio_front_area.filters';
+  $form['#attached']['library'][] = 'umio_helpers/umio_helpers.select2_customization';
+  $form['#attributes']['class'] = [
+    'views-exposed-form',
+    'views-filter--feed',
+    'd-print-none',
+  ];
+
+  // Set the placeholder to the search field.
+  $form['search_api_fulltext']['#placeholder'] = t('Search by keywords');
+  $formStatus = UMIO_FRONT_AREA_FROM_STATUS_CLOSED;
+  if (isset($form['reset']['#access']) && $form['reset']['#access']) {
+    $formStatus = UMIO_FRONT_AREA_FROM_STATUS_OPEN;
+  }
+  $filterText = t('Filter');
+  $filter_button = [
+    '#type' => 'container',
+    '#attributes' => [
+      'class' => [
+        'filter--open-button',
+        'js-filter--open-button',
+        'text-primary',
+        'cursor-pointer',
+        'filter--open-button-bold',
+        'd-none',
+      ],
+    ],
+    'icon_and_text' => [
+      '#type' => 'markup',
+      '#markup' => Markup::create("<i class='ph-faders-horizontal-bold'></i><p>{$filterText}</p>"),
+    ],
+  ];
+
+  $printText = t('Print panel');
+  $print_button = [
+    '#type' => 'container',
+    '#attributes' => [
+      'class' => [
+        'filter--print-button',
+        'js-filter--print-button',
+        'text-primary',
+        'cursor-pointer',
+        'filter--print-button-bold',
+        'd-none',
+      ],
+      'onClick' => "window.print(); return FALSE;",
+    ],
+    'icon_and_text' => [
+      '#type' => 'markup',
+      '#markup' => Markup::create("<i class='ph-printer-bold'></i><p>{$printText}</p>"),
+    ],
+  ];
+
+  $form['search_field_wrapper'] = [
+    '#type' => 'container',
+    '#attributes' => [
+      'class' => [
+        'filter--keywords',
+      ],
+    ],
+    'search_api_fulltext' => array_specific_shift($form, 'search_api_fulltext'),
+  ];
+
+  $form['search_field_wrapper']['groups'] = [
+    '#type' => 'container',
+    '#attributes' => [
+      'class' => [
+        "filters--container",
+        "js-filters--container",
+        "bg-primary",
+        "row",
+        "d-none",
+      ],
+    ],
+    'internal' => [
+      '#type' => 'container',
+      '#attributes' => [
+        'class' => [
+          "d-flex ",
+          "justify-content-between ",
+          "col-12",
+        ],
+      ],
+      'text' => [
+        '#type' => 'markup',
+        '#markup' => Markup::create("<h6 class=\"text-white fw-bold d-flex align-items-center\"><i class=\"ph-faders-horizontal-bold me-2\"></i>{$filterText}</h6>"),
+      ],
+      'icon_wrapper' => [
+        '#type' => 'markup',
+        '#markup' => Markup::create("<div class=\"filter--close-button js-filter--close-button text-white\"><i class=\"ph-x-bold cursor-pointer\"></i></div>"),
+      ],
+    ],
+  ];
+
+  // Set the reset button to always appear but hidden.
+  $reset = $form['actions']['reset'];
+  $reseText = (string) t('Clear filters');
+  $reset = [
+    '#title' => Markup::create("<i class='ph-x-circle-bold'></i><p>{$reseText}</p>"),
+    '#type' => 'link',
+    '#url' => Url::fromRoute('view.feeds_jovens.feed_general'),
+    '#weight' => '10',
+    '#access' => true,
+    '#attributes' => [
+      'class' => [],
+    ],
+  ];
+  $form['search_field_wrapper']['reset_wrapper'] = [
+    '#type' => 'container',
+    '#attributes' => [
+      'class' => [
+        'filter--clear-button',
+        'filter--clear-button-outside',
+        'd-none',
+      ],
+    ],
+    'reset' => $reset,
+  ];
+  $form['search_field_wrapper']['groups']['field_group'] = [
+    'type' => array_specific_shift($form, 'type'),
+    'field_vacancy_type' => array_specific_shift($form, 'field_vacancy_type'),
+    'field_course_type' => array_specific_shift($form, 'field_course_type'),
+    'field_course_model' => array_specific_shift($form, 'field_course_model'),
+    'field_vacancy_job_model' => array_specific_shift($form, 'field_vacancy_job_model'),
+    'administrative_area_course_uf' => array_specific_shift($form, 'administrative_area_course_uf'),
+    'locality_city_course' => array_specific_shift($form, 'locality_city_course'),
+    'administrative_area_vacancy_uf' => array_specific_shift($form, 'administrative_area_vacancy_uf'),
+    'locality_city_vacancy' => array_specific_shift($form, 'locality_city_vacancy'),
+    'umio__search_api_fulltext_requested' => array_specific_shift($form, 'umio__search_api_fulltext_requested'),
+  ];
+  $form['actions']['submit_wrapper'] = [
+    '#type' => 'container',
+    '#attributes' => [
+      'class' => [
+        'filter--submit-umio-filter',
+      ],
+    ],
+    'submit' => array_specific_shift($form['actions'], 'submit'),
+  ];
+  $form['actions']['reset'] = $reset;
+  $form['actions']['search_field_wrapper']['reset_wrapper'] = [
+    '#type' => 'container',
+    '#attributes' => [
+      'class' => [
+        'filter--clear-button',
+        'd-none',
+      ],
+    ],
+    'reset' => array_specific_shift($form['actions'], 'reset'),
+  ];
+
+  if ($formStatus === UMIO_FRONT_AREA_FROM_STATUS_CLOSED) {
+    $form['search_field_wrapper']['filter_button'] = $filter_button;
+    $form['search_field_wrapper']['print_button'] = $print_button;
+  }
+  else {
+    $form['search_field_wrapper']['groups']['reset_wrapper']['filter_button'] = $filter_button;
+    $form['search_field_wrapper']['groups']['reset_wrapper']['print_button'] = $print_button;
+  }
+  $form['search_field_wrapper']['groups']['actions_group'] = [
+    'actions' => array_specific_shift($form, 'actions'),
+  ];
+
+  // Hiding the base filter fields.
+  $form['search_field_wrapper']['groups']['field_group']['type']['#wrapper_attributes']['style'][] = 'display: none';
+  $form['search_field_wrapper']['groups']['field_group']['field_vacancy_type']['#attributes']['style'][] = 'display: none';
+  $form['search_field_wrapper']['groups']['field_group']['field_course_type']['#attributes']['style'][] = 'display: none';
+  $form['search_field_wrapper']['groups']['field_group']['umio__search_api_fulltext_requested']['#attributes']['style'][] = 'display: none';
+  $form['search_field_wrapper']['groups']['field_group']['field_vacancy_job_model']['#attributes']['style'][] = 'display: none';
+  $form['search_field_wrapper']['groups']['field_group']['field_course_model']['#attributes']['style'][] = 'display: none';
+  $form['search_field_wrapper']['groups']['field_group']['administrative_area_course_uf']['#attributes']['style'][] = 'display: none';
+  $form['search_field_wrapper']['groups']['field_group']['locality_city_course']['#attributes']['style'][] = 'display: none';
+  $form['search_field_wrapper']['groups']['field_group']['administrative_area_vacancy_uf']['#attributes']['style'][] = 'display: none';
+  $form['search_field_wrapper']['groups']['field_group']['locality_city_vacancy']['#attributes']['style'][] = 'display: none';
+
+}
+
+/**
+ * This functions aims to customize the filter form..
+ *
+ * @param array $form
+ *   Define the array that has the value to be popped out.
+ *
+ * @return array
+ *   Returns the popped value that can be mixed types.
+ */
+function array_specific_shift(array &$form, string $position): ?array {
+  $popped = NULL;
+  if (isset($form[$position])) {
+    $popped = $form[$position];
+    unset($form[$position]);
+  }
+  return $popped;
+}
+
+/**
+ * This functions aims to customize the filter form on the Feeds View.
+ *
+ * @param array $form
+ */
+function customizeFilterForm(array &$form) : void {
+  customizeFilterFormAppareance($form);
+  addFilterFields($form);
+  defineFieldsWeights($form);
+  setFilterFormLabels($form);
+
+  unset($form['actions']['reset']['action']);
+
+  $searchQuery = \Drupal::request()->attributes->get('arg_0');
+  if (isset($searchQuery) && $searchQuery !== NULL) {
+    if (is_numeric($searchQuery)) {
+      $company = Node::load($searchQuery);
+      if ($company instanceof Node) {
+        $form['search_field_wrapper']['groups']['field_group']['search_api_fulltext']['#default_value'] = $company->get('title')->getValue()[0]['value'];
+      }
+    }
+    else {
+      $form['search_field_wrapper']['groups']['field_group']['search_api_fulltext']['#default_value'] = $searchQuery;
+    }
+    $form['search_field_wrapper']['groups']['field_group']['umio__search_api_fulltext_requested']["#default_value"] = "filtered";
+  }
+}
+
+/**
+ * Implements hook_menu_local_tasks_alter().
+ */
+function umio_front_area_menu_local_tasks_alter(array &$data, string $route_name): void {
+  $route_name_path = explode('.', $route_name);
+  if (in_array('feeds_jovens', $route_name_path)) {
+    $menuLinks = &$data['tabs'][0];
+    $menuLinks['umio_younger.task_feed_general']['#link']['url'] = Url::fromRoute('view.feeds_jovens.feed_general');
+    $menuLinks['umio_younger.task_feed_skills']['#link']['url'] = Url::fromRoute('view.feeds_jovens.feed_skills');
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function umio_front_area_form_views_exposed_form_alter(array &$form, FormStateInterface $form_state, string $form_id): void {
+  $allowed_forms = [
+    'views-exposed-form-feeds-jovens-default',
+    'views-exposed-form-feeds-jovens-feed-general',
+    'views-exposed-form-feeds-jovens-feed-skills',
+  ];
+
+  if (in_array($form['#id'], $allowed_forms)) {
+    customizeFilterForm($form);
+  }
+
+  $allowed_forms = [
+    'views-exposed-form-partner-cities-default',
+  ];
+
+  if (in_array($form['#id'], $allowed_forms)) {
+    customizeFilterFormPartnerCities($form);
+    $form['#attached']['library'][] = 'umio_front_area/umio_front_area.partner_cities_behaviour';
+  }
+
+}
+
+/**
+ * This functions aims to customize the filter form on the PartnerCities View.
+ *
+ * @param array $form
+ */
+function customizeFilterFormPartnerCities(array &$form): void {
+  $cityStampService = \Drupal::service('company.city_stamp_service');
+
+  // Treat the regions
+  $regions = $cityStampService->getFormatedRegions();
+  $form["parent_target_id_1"] = $form["parent_target_id"];
+  $form["parent_target_id_1"]['#weight'] = 0;
+  $form["parent_target_id_1"]['#title'] = t('Region');
+  $form['parent_target_id_1']['#options'] = [];
+  $form['parent_target_id_1']['#options']['All'] = t('- Any -');
+  foreach ($regions as $region) {
+    $form["parent_target_id_1"]['#options'][$region['id']] = t($region['name']);
+  }
+
+  // Clone the state field to make two more options.
+  $arr = [
+    'parent_target_region_0' => [
+      'type' => '0',
+    ],
+    'parent_target_region_1' => [
+      'type' => '1',
+    ],
+  ];
+
+  $form["parent_target_id"]['#weight'] = 1;
+  $form["parent_target_id"]['#wrapper_attributes']['class'][] = 'd-none';
+
+  foreach ($arr as $item => $values) {
+    $states = [];
+    $form[$item] = $form["parent_target_id"];
+
+    $states = $cityStampService->getFormatedStatesByRegion($regions[$values['type']]['id']);
+    $mainFieldValues = $form['parent_target_id']['#options'];
+    foreach ($mainFieldValues as $key => $value) {
+      $mainFieldValues[$key] = (string) $value;
+    }
+
+    $form[$item]['#weight']++;
+    $form[$item]['#options'] = [];
+    $form[$item]['#options']['All'] = t('- Any -');
+    foreach ($states as $state) {
+      $occasionalId = array_search($state['name'], $mainFieldValues);
+      $form[$item]['#options'][$occasionalId] = t($state['name']);
+    }
+
+  }
+
+}
+
+/**
+ * Implements hook_preprocess_node__vacancy().
+ */
+function umio_front_area_preprocess_node(array &$variables) : void {
+  $allowed_bundles = [
+    'vacancy',
+    'course',
+  ];
+  $node = $variables["node"];
+  if (in_array($node->bundle(), $allowed_bundles)) {
+    $request = \Drupal::request();
+    $url = $request->getSchemeAndHttpHost() . $variables['url'];
+    $field_name = "field_" . $node->bundle() . "_qr_code";
+    $qrField = $node->get($field_name);
+    $qrField->setValue($url);
+    $variables["access_qr_code"] = $qrField->view();
+  }
+}
+
+/**
+ * Implements hook_page_attachments().
+ */
+function umio_front_area_page_attachments(array &$attachments): void {
+  $allowed_routes = [
+    'view.feeds_jovens.feed_general',
+    'view.feeds_jovens.feed_skills',
+  ];
+  $routeMatch = \Drupal::routeMatch();
+  $routeName = $routeMatch->getRouteName();
+
+  if (in_array($routeName, $allowed_routes)) {
+    $attachments['#attached']['library'][] = 'umio_front_area/umio_front_area.view_customization';
+  }
+
+  $allowed_routes = [
+    'view.social_feed.social_feed_display',
+  ];
+
+  if (in_array($routeName, $allowed_routes)) {
+    $attachments['#attached']['library'][] = 'umio_front_area/umio_front_area.read_more_truncate';
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function umio_front_area_theme(): array {
+  return [
+    'page_landing_page_anonymous' => [
+      'render element' => 'children',
+      'template' => 'page/page--landing-page-anonymous',
+      'variables' => [
+        'job_total' => NULL,
+        'vacancies_total' => NULL,
+        'courses_total' => NULL,
+        'vacancies_closed' => NULL,
+        'connectivity_inclusion' => NULL,
+      ],
+    ],
+  ];
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function umio_front_area_preprocess_html(array &$variables): void {
+  if ($variables['root_path'] === 'ta-admin') {
+    $variables['cancel_account'] = [
+      '#type' => 'link',
+      '#title' => t('Cancel account'),
+      '#route_name' => 'entity.user.cancel_form',
+      '#url' => Url::fromRoute('entity.user.cancel_form', ['user' => $variables['user']->id()]),
+      '#weight' => 100,
+      '#attributes' => [
+        'class' => ['d-block', 'use-ajax', 'umio-cancel-link'],
+        'data-dialog-type' => 'modal',
+        'data-dialog-options' => Json::encode([
+          'width' => '800',
+          'dialogClass' => 'modal-drupal-dialog',
+        ]),
+      ],
+      '#prefix' => '<div class="col-12 d-flex justify-content-center align-items-center button-form">',
+      '#suffix' => '</div>',
+    ];
+  }
+}

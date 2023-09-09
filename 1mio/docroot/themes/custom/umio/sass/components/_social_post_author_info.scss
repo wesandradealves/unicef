@@ -1,0 +1,148 @@
+.social-post-author-info--container,
+.social-post-author-placeholder {
+  display: flex;
+  justify-content: space-between;
+  .social-post-author-info--content {
+    display: flex;
+    align-items: center;
+    .compact {
+      display: grid;
+      grid-template-areas:
+        'image name'
+        'image company';
+    }
+
+    .profile-photo,
+    .content-placeholder,
+    .field--name-field-user-profile-picture {
+      grid-area: image;
+      width: 48px;
+      height: 48px;
+      background-color: $pink-primary-light;
+      border-radius: 48px;
+      margin-right: 8px;
+
+      img {
+        width: 48px;
+        height: 48px;
+        object-fit: cover;
+        border-radius: 48px;
+      }
+    }
+
+    .field--name-field-user-name {
+      grid-area: name;
+      padding-top: 6px;
+      color: $gray-primary-50;
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: $gray-primary-50;
+      margin-bottom: 0;
+    }
+
+    .field--name-field-user-company {
+      grid-area: company;
+      font-size: 0.875rem;
+      font-weight: 400;
+      color: $gray-primary-50;
+      margin-bottom: 0;
+    }
+
+    .content-placeholder {
+      justify-content: center;
+      align-items: center;
+      display: flex;
+      background-color: $gray-primary-10;
+      border: 2px solid $gray-primary-75;
+
+      i {
+        color: $gray-primary-75;
+        font-size: 1.5rem;
+      }
+    }
+  }
+
+  .profile-edit-time {
+    display: flex;
+    align-items: center;
+    span {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: $gray-primary-50;
+    }
+
+    i {
+      color: $gray-primary-50;
+      font-size: 20px;
+      font-weight: 600;
+      margin-left: 12px;
+      &:hover {
+        color: $blue-primary-main;
+      }
+    }
+
+    a {
+      display: flex;
+      text-decoration: none;
+    }
+  }
+}
+
+.social-post--container--post {
+  .field__item {
+    img {
+      width: 100%;
+      height: auto;
+      max-width: 100%;
+    }
+  }
+
+  .social-post--image {
+    display: flex;
+    justify-content: center;
+    .umio-post-image,
+    .umio-post-video {
+      max-width: 100%;
+    }
+
+    .umio-post-video {
+      width: 100%;
+      iframe {
+        max-width: 100%;
+        width: 100%;
+      }
+    }
+  }
+}
+
+.social-post-feed--author-info {
+  padding: 0 32px;
+}
+
+.social-post--social-interactions {
+  display: flex;
+  justify-content: space-around;
+  color: $gray-primary-50;
+  font-size: 0.875rem;
+  font-weight: 700;
+  padding: 24px 0;
+  .social-post--comments {
+    display: flex;
+    align-items: center;
+    a {
+      color: $gray-primary-50;
+      text-decoration: none;
+      margin: 0 8px;
+      &:hover {
+        color: $blue-primary-main;
+      }
+    }
+    i {
+      font-size: 1rem;
+    }
+  }
+
+  .social-post--like {
+    display: flex;
+  }
+}

@@ -1,0 +1,30 @@
+/* VARIABLES */
+
+@import '../../../umio_base/sass/abstracts/variables';
+
+body:not(.gin-inactive),
+:root {
+  --colorGinAppBackground: #{$gray-primary-15} !important;
+  --colorGinSwitch: #{$blue-primary-main} !important;
+
+  // Primary
+  --colorGinPrimary: #{$blue-primary-main} !important;
+  --colorGinPrimaryHover: #{$blue-primary-dark} !important;
+
+  // Warning
+  --colorGinWarning: #{$yellow-primary-20} !important;
+  --colorGinWarningLight: #{$yellow-primary-10} !important;
+  --colorGinWarningBackground: #{$yellow-primary-15} !important;
+
+  // Danger
+  --colorGinDanger: #{$alert-red-50} !important;
+  --colorGinDangerLightest: #{$alert-red-25} !important;
+  --colorGinDangerLight: #{$alert-red-25} !important;
+  --colorGinDangerBackground: #{$alert-red-75} !important;
+
+  // Success
+  --colorGinGreen: #{$green-primary-main} !important;
+  --colorGinGreenLight: #{$green-primary-light} !important;
+  --colorGinGreenLightest: #{$green-primary-light};
+  --colorGinGreenBackground: #{$green-primary-main} !important;
+}

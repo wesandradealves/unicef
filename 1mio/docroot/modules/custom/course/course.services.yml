@@ -1,0 +1,6 @@
+services:
+  course.form_validator:
+    class: Drupal\course\Service\CourseFormValidator
+    arguments: [
+      "@umio_helpers.form_validator"
+    ]

@@ -1,0 +1,57 @@
+.hero-banner-priority-profile {
+  height: 223px;
+  background-color: $orange-primary-main;
+  border-radius: 0px 0px 40px 0px;
+  margin: 0 !important;
+
+  background-repeat: no-repeat;
+  background-position-y: -33px;
+  background-position-x: 160px;
+  background-size: 90% 370%;
+
+  @include media-breakpoint-up(md) {
+    background-position-y: -15px;
+    background-position-x: right;
+    background-size: 45% 360%;
+  }
+
+  @include media-breakpoint-up(xl) {
+    background-position-y: -15px;
+    background-position-x: 75%;
+    background-size: 22% 360%;
+  }
+
+  .hero-column {
+    padding-right: 0px;
+    padding-left: 24px;
+  }
+
+  .banner--priority--container {
+    h1 {
+      display: flex;
+      align-items: center;
+      font-size: 2.25rem;
+      color: $gray-primary-10;
+      font-weight: 700;
+      width: 50%;
+      line-height: 3.375rem;
+      height: 215px;
+
+      @include media-breakpoint-only(xs) {
+        font-size: 1.3rem;
+        line-height: 2.25rem;
+        height: 223px;
+      }
+    }
+
+    .banner--priority--image {
+      display: block;
+      width: 269px;
+      height: 223px;
+
+      @include media-breakpoint-down(md) {
+        display: none;
+      }
+    }
+  }
+}

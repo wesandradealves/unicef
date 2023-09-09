@@ -1,0 +1,16 @@
+.ta-profile {
+  padding-bottom: 64px;
+  @include media-breakpoint-up(md) {
+    padding-bottom: 136px;
+  }
+  @include media-breakpoint-up(lg) {
+    padding-bottom: 144px;
+  }
+  .hero {
+    background-size: auto 63% !important;
+    background-position: center 0px !important;
+    @include media-breakpoint-up(md) {
+      padding: 55px 0;
+    }
+  }
+}

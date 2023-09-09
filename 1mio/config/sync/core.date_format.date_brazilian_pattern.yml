@@ -1,0 +1,8 @@
+uuid: 6ac7bdc7-2ebb-4e5a-a1e6-ee26a550e1c7
+langcode: pt-br
+status: true
+dependencies: {  }
+id: date_brazilian_pattern
+label: 'Data - Padrão Brasil'
+locked: false
+pattern: 'd M Y'

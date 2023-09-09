@@ -1,0 +1,10 @@
+uuid: 088c652a-54d1-45da-954f-49a74c223bf4
+langcode: pt-br
+status: true
+dependencies:
+  module:
+    - user
+id: user.public_profile
+label: 'Perfis prioritários'
+targetEntityType: user
+cache: true

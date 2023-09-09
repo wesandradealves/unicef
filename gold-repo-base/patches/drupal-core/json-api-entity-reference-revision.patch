@@ -1,0 +1,12 @@
+diff -ruN a/core/modules/jsonapi/src/Access/EntityAccessChecker.php b/core/modules/jsonapi/src/Access/EntityAccessChecker.php
+--- a/core/modules/jsonapi/src/Access/EntityAccessChecker.php	2020-12-23 10:59:41.602435000 +0530
++++ a/core/modules/jsonapi/src/Access/EntityAccessChecker.php	2020-12-23 19:28:03.651749000 +0530
+@@ -216,7 +216,7 @@
+     $access = $entity->access($operation, $account, TRUE);
+     if ($entity->getEntityType()->isRevisionable()) {
+       $access = AccessResult::neutral()->addCacheContexts(['url.query_args:' . JsonApiSpec::VERSION_QUERY_PARAMETER])->orIf($access);
+-      if (!$entity->isDefaultRevision()) {
++      if (!$entity->isDefaultRevision() && $entity->getEntityTypeId() != 'paragraph') {
+         assert($operation === 'view', 'JSON:API does not yet support mutable operations on revisions.');
+         $revision_access = $this->checkRevisionViewAccess($entity, $account);
+         $access = $access->andIf($revision_access);

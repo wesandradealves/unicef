@@ -1,0 +1,19 @@
+uuid: 433cc775-9b22-4806-8b50-d4ccb6d97a00
+langcode: pt-br
+status: true
+dependencies:
+  module:
+    - link
+    - node
+id: node.field_course_subscription_url
+field_name: field_course_subscription_url
+entity_type: node
+type: link
+settings: {  }
+module: link
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

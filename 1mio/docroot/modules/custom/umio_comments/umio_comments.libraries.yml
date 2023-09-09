@@ -1,0 +1,6 @@
+umio_comments.comment_customization:
+  js:
+    js/comment_customization.js: {}
+  dependencies:
+    - core/jquery
+    - core/jquery.once

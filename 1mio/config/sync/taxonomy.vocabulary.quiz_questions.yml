@@ -1,0 +1,8 @@
+uuid: f3fdf501-ebeb-4f28-a88d-af35aba12dbc
+langcode: pt-br
+status: true
+dependencies: {  }
+name: 'Teste Vocacional'
+vid: quiz_questions
+description: 'Perguntas para o teste vocacional do Jovem'
+weight: 0

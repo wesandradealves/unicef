@@ -1,0 +1,19 @@
+uuid: 1c2b2337-1571-48c6-9528-bdca5429a621
+langcode: pt-br
+status: true
+dependencies:
+  module:
+    - paragraphs
+    - social_media_links_field
+id: paragraph.field_paragraph_networks
+field_name: field_paragraph_networks
+entity_type: paragraph
+type: social_media_links_field
+settings: {  }
+module: social_media_links_field
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

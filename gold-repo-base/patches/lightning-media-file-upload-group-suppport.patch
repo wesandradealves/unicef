@@ -1,0 +1,147 @@
+diff --git a/src/Plugin/EntityBrowser/Widget/EntityFormProxy.php b/src/Plugin/EntityBrowser/Widget/EntityFormProxy.php
+index a070e56..c9999c8 100644
+--- a/src/Plugin/EntityBrowser/Widget/EntityFormProxy.php
++++ b/src/Plugin/EntityBrowser/Widget/EntityFormProxy.php
+@@ -12,11 +12,80 @@ use Drupal\entity_browser\WidgetBase;
+ use Drupal\inline_entity_form\ElementSubmit;
+ use Drupal\lightning_media\InputMatchInterface;
+ use Drupal\media\MediaTypeInterface;
++use Drupal\entity_browser\WidgetValidationManager;
++use Drupal\Core\Session\AccountInterface;
++use Drupal\Core\Entity\EntityTypeManagerInterface;
++use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
++use Symfony\Component\DependencyInjection\ContainerInterface;
++use Symfony\Component\EventDispatcher\EventDispatcherInterface;
++use Drupal\group\GroupMembershipLoader;
++use Drupal\group\Entity\GroupInterface;
++use Drupal\unicef_core\Entity\Node;
++use Drupal\group\Entity\GroupContentTypeInterface;
++use Drupal\Component\Utility\UrlHelper;
++use Drupal\group\Entity\GroupContent;
+
+ /**
+  * Base class for EB widgets which wrap around an (inline) entity form.
+  */
+-abstract class EntityFormProxy extends WidgetBase {
++abstract class EntityFormProxy extends WidgetBase implements ContainerFactoryPluginInterface {
++
++  /**
++   * The currently logged in account.
++   *
++   * @var \Drupal\Core\Session\AccountInterface
++   */
++  protected $account;
++
++  /**
++   * Group membership loader service.
++   *
++   * @var \Drupal\group\GroupMembershipLoader
++   */
++  protected $groupMembershipLoader;
++
++  /**
++   * WidgetBase constructor.
++   *
++   * @param array $configuration
++   *   A configuration array containing information about the plugin instance.
++   * @param string $plugin_id
++   *   The plugin_id for the plugin instance.
++   * @param mixed $plugin_definition
++   *   The plugin implementation definition.
++   * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $event_dispatcher
++   *   Event dispatcher service.
++   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
++   *   The entity type manager service.
++   * @param \Drupal\entity_browser\WidgetValidationManager $validation_manager
++   *   The Widget Validation Manager service.
++   * @param \Drupal\Core\Session\AccountInterface $account
++   *   The currently logged in account.
++   * @param \Drupal\group\GroupMembershipLoader $group_membership_service
++   *   The group membership loader service.
++   */
++  public function __construct(array $configuration, $plugin_id, $plugin_definition, EventDispatcherInterface $event_dispatcher, EntityTypeManagerInterface $entity_type_manager, WidgetValidationManager $validation_manager, AccountInterface $account, GroupMembershipLoader $group_membership_service) {
++    parent::__construct($configuration, $plugin_id, $plugin_definition, $event_dispatcher, $entity_type_manager, $validation_manager);
++    $this->account = $account;
++    $this->groupMembershipLoader = $group_membership_service;
++    $this->setConfiguration($configuration);
++  }
++
++  /**
++   * {@inheritdoc}
++   */
++  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
++    return new static(
++      $configuration,
++      $plugin_id,
++      $plugin_definition,
++      $container->get('event_dispatcher'),
++      $container->get('entity_type.manager'),
++      $container->get('plugin.manager.entity_browser.widget_validation'),
++      $container->get('current_user'),
++      $container->get('group.membership_loader')
++    );
++  }
+
+   /**
+    * {@inheritdoc}
+@@ -253,9 +322,59 @@ abstract class EntityFormProxy extends WidgetBase {
+    *   TRUE if the media type can be used, FALSE otherwise.
+    */
+   protected function isAllowedType(MediaTypeInterface $media_type) {
+-    return $this->entityTypeManager
++    $return_flag = $this->entityTypeManager
+       ->getAccessControlHandler('media')
+       ->createAccess($media_type->id());
++
++    // Check if current user is a group user.
++    $roles = $this->account->getRoles();
++    if (!$this->account->hasPermission('bypass node access') && in_array('groups', $roles)) {
++      // Get group object from path.
++      $current_path = \Drupal::request()->getRequestUri();
++      $parsed_url = UrlHelper::parse($current_path);
++
++      if (isset($parsed_url['query']['original_path']) && ($parsed_url['query']['original_path']) ) {
++        $original_path = explode('/', $parsed_url['query']['original_path']);
++        if (isset($original_path[2]) && is_numeric($original_path[2]) && in_array($original_path[1], ['node', 'group'])) {
++          $group = NULL;
++          if ($original_path[1] == 'node') {
++            $nid = $original_path[2];
++            $node = $this->entityTypeManager->getStorage('node')->load($nid);
++            if ($node instanceof Node) {
++              $group_content = array_values(GroupContent::loadByEntity($node));
++              if (isset($group_content[0]) && $group_content[0]->hasField('gid')) {
++                $gid = $group_content[0]->gid->target_id;
++                $group = $this->entityTypeManager->getStorage('group')->load($gid);
++              }
++            }
++          }
++          elseif ($original_path['1'] == 'group') {
++            $group_id = $original_path[2];
++            $group = $this->entityTypeManager->getStorage('group')->load($group_id);
++          }
++
++          // Check if login user is member of group.
++          if ($group instanceof GroupInterface) {
++            $is_member = $group->getMember($this->account);
++            if ($is_member) {
++              $media_type_id = $media_type->id();
++              $plugin_id = "group_media:$media_type_id";
++              $group_media_type = array_values($this->entityTypeManager
++                ->getStorage('group_content_type')
++                ->loadByContentPluginId($plugin_id));
++
++              if (isset($group_media_type[0]) && ($group_media_type[0] instanceof GroupContentTypeInterface)) {
++                $return_flag = $this->entityTypeManager
++                  ->getAccessControlHandler('group_content')
++                  ->createAccess($group_media_type[0]->id(), $this->account, ['group' => $group]);
++              }
++            }
++          }
++        }
++      }
++    }
++
++    return $return_flag;
+   }
+
+   /**

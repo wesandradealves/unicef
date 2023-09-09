@@ -1,0 +1,308 @@
+msgid "First select state"
+msgstr "Primeiro selecione o estado"
+
+msgid "Branch company"
+msgstr "Filial"
+
+msgid "About"
+msgstr "Sobre"
+
+msgid "An error occurred trying save the @company_object."
+msgstr "Ocorreu um erro ao tentar salvar @company_object."
+
+msgid "Module for make changes in Company content type"
+msgstr "Módulo para realizar modificações no tipo de conteúdo Empresa"
+
+msgid "Delete"
+msgstr "Deletar"
+
+msgid "Approve"
+msgstr "Aprovar"
+
+msgid "Are you sure you want to do this?"
+msgstr "Você tem certeza de que quer fazer isso?"
+
+msgid "All the information has been removed!"
+msgstr "Todas as informações foram removidas!"
+
+msgid "Do you want to approve?"
+msgstr "Deseja aprovar?"
+
+msgid "Change status."
+msgstr "Modificar status."
+
+msgid "It is impossible to change the Company status without the commitment term."
+msgstr "É impossível alterar o status da empresa sem o termo de compromisso."
+
+msgid "Commitment term"
+msgstr "Termo de compromisso"
+
+msgid "Successfully updated!"
+msgstr "Atualizado com sucesso!"
+
+msgid "Justify the rejection."
+msgstr "Justificativa da rejeição"
+
+msgid "Do you confirm the company's block?"
+msgstr "Você confirma o bloqueio da empresa?"
+
+msgid "Do you confirm the city block?"
+msgstr "Você confirma o bloqueio do município?"
+
+msgid "This field must be either a company, city or a civil society."
+msgstr "Este campo deve ser uma empresa, município ou uma sociedade civil."
+
+msgid "This field must be different than null."
+msgstr "Este campo não pode ser vazio."
+
+msgid "This field must be a valid CNPJ."
+msgstr "Este campo deve possuir um CNPJ válido."
+
+msgid "Duplicate CNPJ are not allowed."
+msgstr "CNPJ já cadastrado."
+
+msgid "Invalid Email."
+msgstr "Email inválido."
+
+msgid "Email already in use."
+msgstr "Email já cadastrado."
+
+msgid "Field corporate name is required."
+msgstr "Nome corporativo é obrigatório."
+
+msgid "This field must be the civil society name."
+msgstr "Nome da sociedade civil é obrigatório."
+
+msgid "Email is a required field."
+msgstr "Campo email é obrigatório."
+
+msgid "Email already in use."
+msgstr "Email já cadastrado."
+
+msgid "The company type is required."
+msgstr "Tipo da empresa é obrigatório."
+
+msgid "The company cover is required."
+msgstr "A foto de capa é obrigatória."
+
+msgid "The company logo is required."
+msgstr "A foto de perfil é obrigatória."
+
+msgid "The Company name is required."
+msgstr "O nome da empresa é obrigatório."
+
+msgid "The CNPJ is required."
+msgstr "O CNPJ é obrigatório."
+
+msgid "The Organization name is required."
+msgstr "O nome da organização é obrigatório."
+
+msgid "The company public is required."
+msgstr "É necessário selecionar ao menos um público."
+
+msgid "This field must be a valid CNPJ."
+msgstr "Este campo deve conter um CNPJ válido."
+
+msgid "This CNPJ is already registrated."
+msgstr "Este CNPJ já está registrado."
+
+msgid "This field must be the company name."
+msgstr "Esse campo deve conter o nome da empresa."
+
+msgid "This field must be selected."
+msgstr "Esse campo tem que ser selecionado."
+
+msgid "This field must be a valid e-mail."
+msgstr "Este campo deve conter um e-mail válido."
+
+msgid "This e-mail is already registrated."
+msgstr "Este e-mail já está registrado."
+
+msgid "This field must be a valid telephone."
+msgstr "Esse campo deve conter um telefone válido."
+
+msgid "This field must be a valid telephone extension."
+msgstr "Esse campo deve conter um ramal válido."
+
+msgid "This field must be a valid phone."
+msgstr "Esse campo deve conter um telefone-fixo válido."
+
+msgid "Profile picture"
+msgstr "Foto de perfil"
+
+msgid "Allowed extensions: @extensions"
+msgstr "Extensões permitidas: @extensions"
+
+msgid "Cover picture"
+msgstr "Foto de capa"
+
+msgid "Organization Type"
+msgstr "Tipo de Organização"
+
+msgid "Company name"
+msgstr "Nome da empresa (Fantasia)"
+
+msgid "Alternative e-mail"
+msgstr "Email alternativo"
+
+msgid "CNPJ"
+msgstr "CNPJ"
+
+msgid "Corporate name"
+msgstr "Razão social"
+
+msgid "Segment"
+msgstr "Segmento"
+
+msgid "Activity area"
+msgstr "Área de atuação"
+
+msgid "Company size"
+msgstr "Tamanho da empresa"
+
+msgid "Organization name"
+msgstr "Nome da organização"
+
+msgid "Start date of activities"
+msgstr "Data de Início das Atividades"
+
+msgid "Company scope"
+msgstr "Abrangência de Atuação"
+
+msgid "Which of the profiles below match the organization?"
+msgstr "A organização corresponde a qual dos perfis abaixo?"
+
+msgid "Does the initiative serve one or more public audiences below?"
+msgstr "A iniciativa atende a um ou mais desses públicos?"
+
+msgid "Mission"
+msgstr "Missão"
+
+msgid "Values"
+msgstr "Valores"
+
+msgid "Civil society"
+msgstr "Sociedade civil"
+
+msgid "Company"
+msgstr "Empresa"
+
+msgid "Commitment Term"
+msgstr "Termo de Compromisso"
+
+msgid "Download Commitment Term"
+msgstr "Baixar Termo de Compromisso"
+
+msgid "Remove one"
+msgstr "Remover último"
+
+msgid "This CNPJ is the same of the main company."
+msgstr "O CNPJ é o mesmo da matriz."
+
+msgid "The company e-mail is required."
+msgstr "O email principal é obrigatório."
+
+msgid "Company settings"
+msgstr "Configurações empresa"
+
+msgid "Ready! Registration of the County sent."
+msgstr "Pronto! Cadastro de Município enviado."
+
+msgid "Ready! Registration of the State sent."
+msgstr "Pronto! Cadastro de Estado enviado."
+
+msgid "You can follow your account confirmation here on the platform. And just enter your access data."
+msgstr "Você pode acompanhar a confirmação da sua conta aqui na plataforma. É só entrar com seus dados de acesso."
+
+msgid "Your organization registration request has been sent!"
+msgstr "Seu pedido de cadastramento de organização foi enviado!"
+
+msgid "If you've already submitted the signed term of commitment, you'll soon receive notification as soon as we review the registered organization's information."
+msgstr "Se você já enviou o termo de compromisso assinado, logo vai receber uma notificação assim que analisarmos as informações da organização cadastrada."
+
+msgid "Your registration with full access to 1MIO will be released as soon as we confirm your link with the company informed, ok?"
+msgstr "Seu cadastro com acesso total ao 1MIO será liberado assim que a gente confirmar o seu vínculo com a empresa informada, ok?"
+
+msgid "Register Company"
+msgstr "Cadastrar Empresa"
+
+msgid "Pictures"
+msgstr "Imagens"
+
+msgid "Company data"
+msgstr "Dados da Empresa"
+
+msgid "Region"
+msgstr "Local"
+
+msgid "Block company"
+msgstr "Bloquear empresa"
+
+msgid "Block city"
+msgstr "Bloquear município"
+
+msgid "Disapprove"
+msgstr "Não aprovar"
+
+msgid "Posted in:"
+msgstr "Enviado em: "
+
+msgid "See term of commitment"
+msgstr "Ver termo de compromisso"
+
+msgid "Awaiting submission of the term of commitment"
+msgstr "Aguardando envio do termo de compromisso"
+
+msgid "City Edit Form"
+msgstr "Edição de Município"
+
+msgid "Register Branch"
+msgstr "Cadastrar Filial"
+
+msgid "Branch"
+msgstr "Filial"
+
+msgid "Branch data"
+msgstr "Dados da filial"
+
+msgid "Cool! lets take some information about the branch."
+msgstr "Legal! Agora vamos para os dados da sua filial."
+
+msgid "And where is the branch located?"
+msgstr "E onde fica a sua filial?"
+
+msgid "Public Sector Edit Form"
+msgstr "Edição de Setor Público"
+
+msgid "County"
+msgstr "Município"
+
+msgid "Include current user"
+msgstr "Incluir o usuário logado"
+
+msgid "Your company aren't registrated yet? you can:"
+msgstr "Sua empresa não está cadastrada? Você pode:"
+
+msgid "Your company aren't registrated yet? you can:"
+msgstr "Sua empresa não está cadastrada? Você pode:"
+
+msgid "Do you confirm the company approval?"
+msgstr "Você confirma a aprovação da empresa?"
+
+msgid "Do you confirm the city approval?"
+msgstr "Você confirma a aprovação do município?"
+
+msgid "Approve company"
+msgstr "Aprovar empresa"
+
+msgid "Approve city"
+msgstr "Aprovar município"
+
+msgid "Type of Company"
+msgstr "Tipo de Empresa"
+
+msgid "No results found"
+msgstr "Nenhum resultado encontrado"
+
+msgid "What is the reason for blocking?"
+msgstr "Qual o motivo do bloqueio?"

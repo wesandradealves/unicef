@@ -1,0 +1,8 @@
+name: Course
+type: module
+description: 'Custom module to make changes in Course content type.'
+package: Custom
+core_version_requirement: ^8 || ^9
+
+'interface translation project': course
+'interface translation server pattern': modules/custom/course/translations/course.%language.po

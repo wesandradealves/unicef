@@ -1,0 +1,26 @@
+uuid: 41fd9635-f3f4-497a-90ea-85b87039f798
+langcode: pt-br
+status: true
+dependencies:
+  module:
+    - field_encrypt
+    - user
+third_party_settings:
+  field_encrypt:
+    encrypt: true
+    properties:
+      value: value
+id: user.field_user_telephone_extension
+field_name: field_user_telephone_extension
+entity_type: user
+type: integer
+settings:
+  unsigned: false
+  size: normal
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

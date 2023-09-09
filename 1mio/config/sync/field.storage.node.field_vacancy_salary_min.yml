@@ -1,0 +1,20 @@
+uuid: 7b43d0a4-2a86-4409-88c7-c4456915cdf1
+langcode: pt-br
+status: true
+dependencies:
+  module:
+    - node
+id: node.field_vacancy_salary_min
+field_name: field_vacancy_salary_min
+entity_type: node
+type: decimal
+settings:
+  precision: 10
+  scale: 2
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

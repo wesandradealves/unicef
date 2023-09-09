@@ -1,0 +1,25 @@
+uuid: f6ca7b51-76cf-4dcf-be71-5885207ebf93
+langcode: pt-br
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - umio
+_core:
+  default_config_hash: NDwadleLD3YVSbDUaakxyYZyINYtkFtOVGShfq4kWy8
+id: umio_branding
+theme: umio
+region: header
+weight: -8
+provider: null
+plugin: system_branding_block
+settings:
+  id: system_branding_block
+  label: Logo
+  label_display: '0'
+  provider: system
+  use_site_logo: true
+  use_site_name: false
+  use_site_slogan: false
+visibility: {  }

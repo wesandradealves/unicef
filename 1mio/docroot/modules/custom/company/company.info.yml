@@ -1,0 +1,12 @@
+name: 'Company'
+type: module
+description: 'Module for make changes in Company content type'
+core_version_requirement: ^9
+package: 'Custom'
+
+dependencies:
+  - 'custom:umio_helpers'
+  - 'custom:umio_user'
+
+'interface translation project': company
+'interface translation server pattern': modules/custom/company/translations/company.%language.po

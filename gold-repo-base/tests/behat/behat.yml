@@ -1,0 +1,33 @@
+default:
+  suites:
+    default:
+      paths:
+        - '%paths.base%/features'
+  extensions:
+    Behat\MinkExtension:
+      default_session: goutte
+      javascript_session: selenium2
+      goutte: ~
+      files_path: "%paths.base%/media"
+    Drupal\DrupalExtension:
+      blackbox: ~
+      region_map:
+        html: 'html'
+        top: '.region-header'
+        navigation_collapsible: '.region-navigation-collapsible'
+        navigation: '.region-navigation'
+        content : '.region-content'
+        bottom: '.region-bottom'
+        footer_left: '.footer--left'
+        footer_right: '.footer--right'
+        mosaic: '.container--mosaic'
+        listview: '.list-view'
+      api_driver: "drupal"
+    jarnaiz\JUnitFormatter\JUnitFormatterExtension:
+        filename: report.xml
+        outputDir: '%paths.base%/build/tests'
+    Bex\Behat\ScreenshotExtension:
+      screenshot_taking_mode: failed_steps
+      image_drivers:
+        local:
+          screenshot_directory: /tmp

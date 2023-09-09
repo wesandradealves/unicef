@@ -1,0 +1,15 @@
+diff --git a/src/Behat/Gherkin/Node/TableNode.php b/src/Behat/Gherkin/Node/TableNode.php
+index 735e688..eb9c94f 100644
+--- a/src/Behat/Gherkin/Node/TableNode.php
++++ b/src/Behat/Gherkin/Node/TableNode.php
+@@ -66,10 +66,6 @@ class TableNode implements ArgumentInterface, IteratorAggregate
+                     $this->maxLineLength[$column] = 0;
+                 }
+ 
+-                if (!is_scalar($string)) {
+-                    throw new NodeException('Table is not two-dimensional.');
+-                }
+-
+                 $this->maxLineLength[$column] = max($this->maxLineLength[$column], mb_strlen($string, 'utf8'));
+             }
+         }

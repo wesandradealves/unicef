@@ -1,0 +1,50 @@
+diff --git a/core/modules/content_translation/src/ContentTranslationManager.php b/core/modules/content_translation/src/ContentTranslationManager.php
+index 45e831928d..1de4a2a7b8 100644
+--- a/core/modules/content_translation/src/ContentTranslationManager.php
++++ b/core/modules/content_translation/src/ContentTranslationManager.php
+@@ -70,8 +70,9 @@ class ContentTranslationManager implements ContentTranslationManagerInterface, B
+    * {@inheritdoc}
+    */
+   public function setEnabled($entity_type_id, $bundle, $value) {
+-    $config = $this->loadContentLanguageSettings($entity_type_id, $bundle);
+-    $config->setThirdPartySetting('content_translation', 'enabled', $value)->save();
++    if ($config = $this->loadContentLanguageSettings($entity_type_id, $bundle)) {
++      $config->setThirdPartySetting('content_translation', 'enabled', $value)->save();
++    }
+   }
+ 
+   /**
+@@ -84,7 +85,7 @@ class ContentTranslationManager implements ContentTranslationManagerInterface, B
+       $bundles = !empty($bundle) ? [$bundle] : array_keys($this->entityManager->getBundleInfo($entity_type_id));
+       foreach ($bundles as $bundle) {
+         $config = $this->loadContentLanguageSettings($entity_type_id, $bundle);
+-        if ($config->getThirdPartySetting('content_translation', 'enabled', FALSE)) {
++        if ($config && $config->getThirdPartySetting('content_translation', 'enabled', FALSE)) {
+           $enabled = TRUE;
+           break;
+         }
+@@ -99,8 +100,11 @@ class ContentTranslationManager implements ContentTranslationManagerInterface, B
+    */
+   public function setBundleTranslationSettings($entity_type_id, $bundle, array $settings) {
+     $config = $this->loadContentLanguageSettings($entity_type_id, $bundle);
+-    $config->setThirdPartySetting('content_translation', 'bundle_settings', $settings)
++    if ($config) {
++      $config->setThirdPartySetting('content_translation', 'bundle_settings', $settings)
+       ->save();
++    }
++    return [];
+   }
+ 
+   /**
+@@ -108,7 +112,10 @@ class ContentTranslationManager implements ContentTranslationManagerInterface, B
+    */
+   public function getBundleTranslationSettings($entity_type_id, $bundle) {
+     $config = $this->loadContentLanguageSettings($entity_type_id, $bundle);
+-    return $config->getThirdPartySetting('content_translation', 'bundle_settings', []);
++    if ($config) {
++      return $config->getThirdPartySetting('content_translation', 'bundle_settings', []);
++    }
++    return [];
+   }
+ 
+   /**

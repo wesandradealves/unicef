@@ -1,0 +1,21 @@
+uuid: 6e83ceb0-25ae-45d5-83df-46672691df43
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_course_begin
+    - paragraphs.paragraphs_type.courses_and_abilities
+  module:
+    - datetime
+id: paragraph.courses_and_abilities.field_course_begin
+field_name: field_course_begin
+entity_type: paragraph
+bundle: courses_and_abilities
+label: Início
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: datetime

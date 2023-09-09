@@ -1,0 +1,26 @@
+diff --git a/core/modules/color/color.es6.js b/core/modules/color/color.es6.js
+index 40270959..9831b9ff 100644
+--- a/core/modules/color/color.es6.js
++++ b/core/modules/color/color.es6.js
+@@ -57,6 +57,8 @@
+         form.find('#edit-scheme').each(function () {
+           this.selectedIndex = this.options.length - 1;
+         });
++        form.find('.js-form-item-save-as-new-color-set').removeAttr('style');
++        form.find('.js-form-item-unicef-color-scheme-name').removeAttr('style');
+       }
+
+       /**
+diff --git a/core/modules/color/color.js b/core/modules/color/color.js
+index 233d0b0e..a9c7aac6 100644
+--- a/core/modules/color/color.js
++++ b/core/modules/color/color.js
+@@ -38,6 +38,8 @@
+         form.find('#edit-scheme').each(function () {
+           this.selectedIndex = this.options.length - 1;
+         });
++        form.find('.js-form-item-save-as-new-color-set').removeAttr('style');
++        form.find('.js-form-item-unicef-color-scheme-name').removeAttr('style');
+       }
+
+       function shiftColor(given, ref1, ref2) {

@@ -1,0 +1,31 @@
+diff --git a/seckit/src/EventSubscriber/SecKitEventSubscriber.php b/seckit/src/EventSubscriber/SecKitEventSubscriber.php
+index 999e57b..d9f29c9 100644
+--- a/seckit/src/EventSubscriber/SecKitEventSubscriber.php
++++ b/seckit/src/EventSubscriber/SecKitEventSubscriber.php
+@@ -111,7 +111,7 @@ class SecKitEventSubscriber implements EventSubscriberInterface {
+ 
+     $whitelist = explode(',', $this->config->get('seckit_csrf.origin_whitelist'));
+     // Default origin is always allowed.
+-    $whitelist[] = $base_url;
++    $whitelist[] = $base_root;
+     if (in_array($origin, $whitelist, TRUE)) {
+       return;
+       // n.b. RFC 6454 allows Origins to have more than one value (each
+diff --git a/seckit/src/Tests/SecKitTestCaseTest.php b/seckit/src/Tests/SecKitTestCaseTest.php
+index e501393..1fb9253 100644
+--- a/seckit/src/Tests/SecKitTestCaseTest.php
++++ b/seckit/src/Tests/SecKitTestCaseTest.php
+@@ -240,11 +240,11 @@ class SecKitTestCaseTest extends WebTestBase {
+    * Tests HTTP Origin allows requests from the site.
+    */
+   public function testOriginAllowsSite() {
+-    global $base_url;
++    global $base_root;
+     $form['seckit_csrf[origin]'] = TRUE;
+     $this->drupalPostForm('admin/config/system/seckit', $form, t('Save configuration'));
+     $this->drupalPostForm('admin/config/system/seckit', $form, t('Save configuration'),
+-      array(), array('Origin: ' . $base_url));
++      array(), array('Origin: ' . $base_root));
+     $this->assertResponse(200,
+       t('Request is allowed.'));
+   }

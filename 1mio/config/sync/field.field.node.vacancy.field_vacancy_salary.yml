@@ -1,0 +1,23 @@
+uuid: 2a4c4b2a-3456-42f1-92c9-91d3674f5189
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_vacancy_salary
+    - node.type.vacancy
+id: node.vacancy.field_vacancy_salary
+field_name: field_vacancy_salary
+entity_type: node
+bundle: vacancy
+label: Salário
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: !!float 0
+  max: null
+  prefix: 'R$ '
+  suffix: ''
+field_type: decimal

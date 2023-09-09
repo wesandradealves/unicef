@@ -1,0 +1,74 @@
+uuid: 01514dfb-6475-4d16-a72e-00b3f1b36c5c
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.courses_and_abilities.field_course_begin
+    - field.field.paragraph.courses_and_abilities.field_course_current
+    - field.field.paragraph.courses_and_abilities.field_course_end
+    - field.field.paragraph.courses_and_abilities.field_course_learned
+    - field.field.paragraph.courses_and_abilities.field_course_title
+    - paragraphs.paragraphs_type.courses_and_abilities
+  module:
+    - conditional_fields
+    - datetime
+id: paragraph.courses_and_abilities.default
+targetEntityType: paragraph
+bundle: courses_and_abilities
+mode: default
+content:
+  field_course_begin:
+    type: datetime_default
+    weight: 2
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_course_current:
+    type: boolean_checkbox
+    weight: 4
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  field_course_end:
+    type: datetime_default
+    weight: 3
+    region: content
+    settings: {  }
+    third_party_settings:
+      conditional_fields:
+        0b884ffc-4a9e-426c-906a-25de56ca93b2:
+          entity_type: paragraph
+          bundle: courses_and_abilities
+          dependee: field_course_current
+          settings:
+            state: required
+            condition: '!checked'
+            grouping: AND
+            values_set: 1
+            value: ''
+            values: {  }
+            value_form:
+              value: false
+            effect: show
+            effect_options: {  }
+            selector: ''
+  field_course_learned:
+    type: string_textfield
+    weight: 1
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_course_title:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  created: true
+  status: true

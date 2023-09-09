@@ -1,0 +1,18 @@
+uuid: e45187f3-863a-4495-bedc-b793adb6e7bd
+langcode: pt-br
+status: true
+dependencies:
+  theme:
+    - admin
+id: admin_local_actions
+theme: admin
+region: content
+weight: -5
+provider: null
+plugin: local_actions_block
+settings:
+  id: local_actions_block
+  label: 'Ações Primárias'
+  label_display: '0'
+  provider: core
+visibility: {  }

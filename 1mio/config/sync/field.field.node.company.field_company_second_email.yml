@@ -1,0 +1,19 @@
+uuid: e0586427-afd5-4082-abbc-e5ac836c71e8
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_company_second_email
+    - node.type.company
+id: node.company.field_company_second_email
+field_name: field_company_second_email
+entity_type: node
+bundle: company
+label: 'E-mail alternativo'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: email

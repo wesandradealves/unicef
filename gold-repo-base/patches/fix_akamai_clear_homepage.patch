@@ -1,0 +1,37 @@
+diff --git a/akamai/src/Form/CacheControlForm.php b/akamai/src/Form/CacheControlForm.php
+index b1c1333..c8a37ef 100644
+--- a/akamai/src/Form/CacheControlForm.php
++++ b/akamai/src/Form/CacheControlForm.php
+@@ -75,7 +75,7 @@ class CacheControlForm extends FormBase {
+       'Enter one URL or CPCode per line. URL entries should be relative to the basepath
+       (e.g. node/1, content/pretty-title, sites/default/files/some/image.png).
+       Your basepath for Akamai is set as :basepath. If you would like to change
+-      it, you can do so at @settings.',
++      it, you can do so at @settings. To clear the homepage, enter just a forward slash (/)',
+       [
+         ':basepath' => $config->get('basepath'),
+         '@settings' => $settings_link,
+@@ -143,6 +143,13 @@ class CacheControlForm extends FormBase {
+
+     if ($method == 'url') {
+       foreach ($objects as $path) {
++
++        // If clearing homepage, break.
++        if ($path == "/") {
++          $paths_to_clear[] = "";
++          break;
++        }
++
+         // Remove any leading slashes so we can control them later.
+         if ($path[0] === '/') {
+           $path = ltrim($path, '/');
+@@ -198,6 +205,9 @@ class CacheControlForm extends FormBase {
+
+     if ($method == 'url') {
+       foreach ($objects as $path) {
++        if ($path == "/") {
++          $path = "";
++        }
+         $urls_to_clear[] = trim('/' . $path);
+       }
+     }

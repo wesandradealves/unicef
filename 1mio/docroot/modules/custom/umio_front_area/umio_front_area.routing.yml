@@ -1,0 +1,25 @@
+umio_front_area.landing_page:
+  path: '/home'
+  defaults:
+    _title: 'Home page'
+    _controller: '\Drupal\umio_front_area\Controller\LandingPageController::build'
+  requirements:
+    _permission: 'access content'
+
+umio_front_area.partners_cities:
+  path: '/cidades-parceiras'
+  defaults:
+    _title: 'Partner Cities'
+    _controller: '\Drupal\umio_front_area\Controller\PartnersCityPanelViewController::build'
+  requirements:
+    _permission: 'access content'
+
+umio_front_area.umio_counters_form:
+  path: '/admin/config/umio_front_area/counters_config'
+  defaults:
+    _form: '\Drupal\umio_front_area\Form\UmioCounterConfigForm'
+    _title: 'Counter 1MiO'
+  requirements:
+    _role: "administrator"
+  options:
+    _admin_route: true

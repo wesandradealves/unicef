@@ -1,0 +1,22 @@
+uuid: a8a9f6cd-2023-4770-8c0a-be2204f7b84e
+langcode: pt-br
+status: true
+dependencies:
+  module:
+    - node
+id: path_courses
+label: Cursos
+type: 'canonical_entities:node'
+pattern: '/cursos/[node:nid]'
+selection_criteria:
+  985e7f6e-1d0e-4f3c-82f8-ae48486b2bf8:
+    id: node_type
+    negate: false
+    uuid: 985e7f6e-1d0e-4f3c-82f8-ae48486b2bf8
+    context_mapping:
+      node: node
+    bundles:
+      course: course
+selection_logic: and
+weight: -10
+relationships: {  }

@@ -1,0 +1,23 @@
+uuid: 24641f24-4ba2-4ef6-934a-aa677870969a
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_course_current
+    - paragraphs.paragraphs_type.courses_and_abilities
+id: paragraph.courses_and_abilities.field_course_current
+field_name: field_course_current
+entity_type: paragraph
+bundle: courses_and_abilities
+label: Atual
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: Habilitado
+  off_label: Desligado
+field_type: boolean

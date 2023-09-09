@@ -1,0 +1,10 @@
+uuid: 09c49036-0715-48a4-8159-4d21b0501fe5
+langcode: pt-br
+status: true
+dependencies: {  }
+id: experience
+label: Experiência
+icon_uuid: null
+icon_default: null
+description: ''
+behavior_plugins: {  }

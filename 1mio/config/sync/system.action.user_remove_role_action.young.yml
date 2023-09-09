@@ -1,0 +1,14 @@
+uuid: 61f6a1c7-bbb9-4d78-a3be-fefe1d9b52f5
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - user.role.young
+  module:
+    - user
+id: user_remove_role_action.young
+label: 'Remover o papel Jovem dos usuários selecionados'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: young

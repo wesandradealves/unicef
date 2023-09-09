@@ -1,0 +1,23 @@
+uuid: 84cc077b-5a44-4445-9169-e59a513c9e8f
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_company_phone_extension
+    - node.type.company
+id: node.company.field_company_phone_extension
+field_name: field_company_phone_extension
+entity_type: node
+bundle: company
+label: Ramal
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: 1
+  max: 9999
+  prefix: ''
+  suffix: ''
+field_type: integer

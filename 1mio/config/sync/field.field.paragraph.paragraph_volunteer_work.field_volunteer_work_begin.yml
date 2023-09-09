@@ -1,0 +1,21 @@
+uuid: d1ef83c6-5f42-4a3f-b44b-72f534bca86f
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_volunteer_work_begin
+    - paragraphs.paragraphs_type.paragraph_volunteer_work
+  module:
+    - datetime
+id: paragraph.paragraph_volunteer_work.field_volunteer_work_begin
+field_name: field_volunteer_work_begin
+entity_type: paragraph
+bundle: paragraph_volunteer_work
+label: Início
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: datetime

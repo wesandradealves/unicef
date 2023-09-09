@@ -1,0 +1,194 @@
+{
+    "name": "drupal-composer/drupal-project",
+    "description": "Project template for Drupal 9 projects with composer following drupal/drupal layout",
+    "type": "project",
+    "license": "GPL-2.0-or-later",
+    "homepage": "https://www.drupal.org/project/drupal",
+    "support": {
+        "docs": "https://www.drupal.org/docs/user_guide/en/index.html",
+        "chat": "https://www.drupal.org/node/314178"
+    },
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://packages.drupal.org/8"
+        },
+        {
+            "type": "composer",
+            "url": "https://asset-packagist.org"
+        }
+    ],
+    "require": {
+        "composer/installers": "^1.9",
+        "cweagans/composer-patches": "^1.7",
+        "drupal/acquia_connector": "^3.0",
+        "drupal/acquia_search": "^3.0",
+        "drupal/address": "^1.9",
+        "drupal/admin_toolbar": "^3.0",
+        "drupal/blocache": "^1.1",
+        "drupal/block_inactive_users": "^1.5",
+        "drupal/clientside_validation": "^3.0@RC",
+        "drupal/comment_delete": "^1.2",
+        "drupal/comment_notify": "^1.3",
+        "drupal/conditional_fields": "^4.0@alpha",
+        "drupal/config_ignore": "^2.3",
+        "drupal/console": "~1.0",
+        "drupal/core-composer-scaffold": "^9.2",
+        "drupal/core-project-message": "^9.2",
+        "drupal/core-recommended": "^9.2",
+        "drupal/core-vendor-hardening": "^9.2",
+        "drupal/dbee": "^2.3",
+        "drupal/email_registration": "^1.1",
+        "drupal/endroid_qr_code": "^3.0",
+        "drupal/entityreference_filter": "^1.4",
+        "drupal/eu_cookie_compliance": "^1.19",
+        "drupal/field_encrypt": "^3.0",
+        "drupal/field_group": "^3.1",
+        "drupal/ga_login": "^1.0@alpha",
+        "drupal/gin": "^3.0@alpha",
+        "drupal/gin_login": "^1.0",
+        "drupal/gin_toolbar": "^1.0@beta",
+        "drupal/imce": "^2.4",
+        "drupal/like_and_dislike": "^1.0@beta",
+        "drupal/linkit": "^6.0@beta",
+        "drupal/login_security": "^2.0",
+        "drupal/maxlength": "^1.0@RC",
+        "drupal/menu_item_role_access": "^2.0",
+        "drupal/menu_link_attributes": "^1.2",
+        "drupal/modal_form": "^1.2",
+        "drupal/multiple_fields_remove_button": "^1.0@alpha",
+        "drupal/node_title_validation": "^1.22",
+        "drupal/nodeviewcount": "^1.0@alpha",
+        "drupal/paragraphs": "^1.12",
+        "drupal/password_policy": "^3.0",
+        "drupal/pathauto": "^1.8",
+        "drupal/real_aes": "^2.3",
+        "drupal/redirect_after_login": "^2.7",
+        "drupal/select2": "^1.13",
+        "drupal/select_or_other": "^4.0",
+        "drupal/shield": "^1.4",
+        "drupal/simple_pass_reset": "^1.1",
+        "drupal/social_media_links": "^2.8",
+        "drupal/structure_sync": "^2.0",
+        "drupal/subpathauto": "^1.1",
+        "drupal/tfa": "^1.0@alpha",
+        "drupal/time_field": "^2.0",
+        "drupal/twig_tweak": "^3.1",
+        "drupal/user_registrationpassword": "^1.0@alpha",
+        "drupal/view_password": "^6.0",
+        "drupal/views_bulk_operations": "^4.0",
+        "drupal/views_conditional": "^1.4",
+        "drupal/views_data_export": "^1.0",
+        "drupal/views_infinite_scroll": "^1.9",
+        "drupal/views_random_seed": "^1.0",
+        "drupal/xls_serialization": "^1.2",
+        "drupal/youtube": "^1.2",
+        "drush/drush": "^10.5",
+        "kint-php/kint": "^3.3",
+        "npm-asset/select2": "^4.0",
+        "oomphinc/composer-installers-extender": "^2.0",
+        "phpoffice/phpspreadsheet": "^1.18"
+    },
+    "conflict": {
+        "drupal/drupal": "*"
+    },
+    "minimum-stability": "alpha",
+    "prefer-stable": true,
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "composer/installers": true,
+            "endroid/installer": true,
+            "drupal/console-extend-plugin": true,
+            "cweagans/composer-patches": true,
+            "drupal/core-composer-scaffold": true,
+            "drupal/core-project-message": true,
+            "drupal/core-vendor-hardening": true,
+            "oomphinc/composer-installers-extender": true,
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
+    },
+    "extra": {
+        "drupal-scaffold": {
+            "locations": {
+                "web-root": "docroot"
+            },
+            "file-mapping": {
+                "[web-root]/sites/development.services.yml": false,
+                "[web-root]/sites/example.settings.local.php": false
+            }
+        },
+        "installer-types": [
+            "bower-asset",
+            "npm-asset"
+        ],
+        "installer-paths": {
+            "docroot/core": [
+                "type:drupal-core"
+            ],
+            "docroot/libraries/{$name}": [
+                "type:drupal-library",
+                "type:bower-asset",
+                "type:npm-asset"
+            ],
+            "docroot/modules/contrib/{$name}": [
+                "type:drupal-module"
+            ],
+            "docroot/profiles/contrib/{$name}": [
+                "type:drupal-profile"
+            ],
+            "docroot/themes/contrib/{$name}": [
+                "type:drupal-theme"
+            ],
+            "docroot/drush/Commands/contrib/{$name}": [
+                "type:drupal-drush"
+            ],
+            "docroot/modules/custom/{$name}": [
+                "type:drupal-custom-module"
+            ],
+            "docroot/profiles/custom/{$name}": [
+                "type:drupal-custom-profile"
+            ],
+            "docroot/themes/custom/{$name}": [
+                "type:drupal-custom-theme"
+            ]
+        },
+        "patches": {
+            "drupal/redirect_after_login": {
+                "Correction for can't login": "https://www.drupal.org/files/issues/2021-06-20/3214949.patch"
+            },
+            "drupal/view_password": {
+                "Selector previous input password error": "https://www.drupal.org/files/issues/2021-08-18/3228830-2.patch"
+            },
+            "drupal/core": {
+                "Undefined index: #parents FormState.php": "https://www.drupal.org/files/issues/2021-07-14/drupal-undefined_index_parents-3027240-fixed.patch",
+                "Undefined index: #type in FormHelper.php": "https://www.drupal.org/files/issues/2021-05-12/2700667-133b.patch"
+            },
+            "drupal/paragraphs": {
+                "Column 'langcode' cannot be null when saving a paragraph item": "https://www.drupal.org/files/issues/2021-05-03/paragraphs-2901390-82-withtests.patch"
+            },
+            "drupal/dbee": {
+                "Exception thrown while installing via cli": "https://www.drupal.org/files/issues/2020-10-22/3178364-exception-thrown-while-installing-via-drush.patch"
+            },
+            "drupal/gin_login": {
+                "Enable to add new routes": "patches/gin-login_enable-to-add-new-routes-3246426-6.patch"
+            },
+            "drupal/comment_notify": {
+                "Entire comments form can be hidden by Comment Notify's JavaScript": "patches/entire-comments-form-can-be-hidden-3215875-5.patch"
+            },
+            "drupal/menu_item_role_access": {
+                "Call to a member function hasField() on null": "https://www.drupal.org/files/issues/2021-02-09/hasField-on-null-3197539-2.patch"
+            }
+        }
+    },
+    "require-dev": {
+        "drupal/coder": "^8.3",
+        "drupal/core-dev": "^9.2",
+        "drupal/devel": "^4.1",
+        "drupal/maillog": "^1.0@beta",
+        "drupal/twig_vardumper": "^3.0",
+        "mglaman/phpstan-drupal": "^0.12.12",
+        "phpspec/prophecy-phpunit": "^2.0",
+        "phpstan/phpstan-deprecation-rules": "^0.12.6"
+    }
+}

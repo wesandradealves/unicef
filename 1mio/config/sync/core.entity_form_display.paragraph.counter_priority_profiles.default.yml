@@ -1,0 +1,94 @@
+uuid: 9896fa86-8ede-4c9b-9b71-b8312ad582ad
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.counter_priority_profiles.field_child_labor_victims
+    - field.field.paragraph.counter_priority_profiles.field_disabilities_youngs
+    - field.field.paragraph.counter_priority_profiles.field_ethnic_racial_equity
+    - field.field.paragraph.counter_priority_profiles.field_girls_science
+    - field.field.paragraph.counter_priority_profiles.field_lgbtia
+    - field.field.paragraph.counter_priority_profiles.field_location
+    - field.field.paragraph.counter_priority_profiles.field_low_income
+    - field.field.paragraph.counter_priority_profiles.field_originating_populations
+    - field.field.paragraph.counter_priority_profiles.field_socio_educational_system
+    - field.field.paragraph.counter_priority_profiles.field_younger_mothers
+    - paragraphs.paragraphs_type.counter_priority_profiles
+id: paragraph.counter_priority_profiles.default
+targetEntityType: paragraph
+bundle: counter_priority_profiles
+mode: default
+content:
+  field_child_labor_victims:
+    type: number
+    weight: 9
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_disabilities_youngs:
+    type: number
+    weight: 0
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_ethnic_racial_equity:
+    type: number
+    weight: 3
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_girls_science:
+    type: number
+    weight: 6
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_lgbtia:
+    type: number
+    weight: 4
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_location:
+    type: number
+    weight: 5
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_low_income:
+    type: number
+    weight: 8
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_originating_populations:
+    type: number
+    weight: 7
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_socio_educational_system:
+    type: number
+    weight: 2
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_younger_mothers:
+    type: number
+    weight: 1
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  created: true
+  status: true

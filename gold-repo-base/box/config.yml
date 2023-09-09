@@ -1,0 +1,660 @@
+# Update the hostname to the local development environment hostname.
+vagrant_hostname: local.unicefplatform.com
+vagrant_machine_name: unicefplatform
+# Set the IP address so it doesn't conflict with other Drupal VM instances.
+vagrant_ip: 192.168.3.132
+# Use Ubuntu 16.04 LTS to match Acquia Cloud environments.
+#vagrant_box: geerlingguy/ubuntu1604
+vagrant_box: geerlingguy/drupal-vm
+workspace: /root
+# Set drupal_site_name to the project's human-readable name.
+drupal_site_name: 'UNICEF Platform'
+vagrant_nfs_fix_enabled: true
+# Provide the path to the project root to Vagrant.
+vagrant_synced_folders:
+    -
+        local_path: .
+        destination: /var/www/unicefplatform
+        type: nfs
+# Toggling this to `true` would invoke `composer install` with the
+# projects own `composer.json` successfully.
+drupal_build_composer_project: false
+drupal_build_composer: false
+drupal_composer_path: false
+drupal_composer_install_dir: /var/www/unicefplatform
+drupal_core_path: /var/www/unicefplatform/docroot
+ssh_home: /var/www/unicefplatform
+pre_provision_tasks_dir: "../../../../box/pre-provision/*"
+# Multisite installations should configure additional domains here.
+apache_vhosts:
+    -
+        servername: '{{ drupal_domain }}'
+        serveralias: 'www.{{ drupal_domain }}'
+        documentroot: '{{ drupal_core_path }}'
+        extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+        certificate_file: "/etc/ssl/certs/unicef-root-CA.crt"
+        certificate_key_file: "/etc/ssl/certs/unicef-root-CA.key"
+    -
+        servername: 'dashboard.{{ drupal_domain }}'
+        serveralias: 'www.dashboard.{{ drupal_domain }}'
+        documentroot: /var/www/dashboard
+        extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+    -
+        servername: 'adminer.{{ drupal_domain }}'
+        documentroot: '{{ adminer_install_dir }}'
+        extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+    -
+        servername: local.unicef.org
+        documentroot: '{{ drupal_core_path }}'
+        extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+    -
+        servername: local.genunlimited.org
+        documentroot: '{{ drupal_core_path }}'
+        extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+#  - servername: "local.second-drupal-site.com"
+#    documentroot: "{{ drupal_core_path }}"
+#    extra_parameters: "{{ apache_vhost_php_fpm_parameters }}"
+apache_vhosts_ssl:
+    -
+        servername: '{{ drupal_domain }}'
+        serveralias: 'www.{{ drupal_domain }}'
+        documentroot: '{{ drupal_core_path }}'
+        extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+        certificate_file: "/etc/ssl/certs/unicef-root-CA.crt"
+        certificate_key_file: "/etc/ssl/certs/unicef-root-CA.key"
+mysql_users:
+    -
+        name: drupal
+        host: '%'
+        password: drupal
+        priv: '*.*:ALL'
+# Multisite installations should configure additional databases here.
+# It's recommended to prefix database names with 'drupal'. Otherwise,
+# you'll need to add additional users in the 'mysql_users' section.
+mysql_databases:
+    -
+        name: drupal
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_eca
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_kyrgyzstan
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_mongolia
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_afghanistan
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_lac
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_mena
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_mexico
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_rosa
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_uganda
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_liberia
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_angola
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_egypt
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_wca
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_eap
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_argentina
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_algeria
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_djibouti
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_iran
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_iraq
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_jordan
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_lebanon
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_libya
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_morocco
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_oman
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_sudan
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_syria
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_tunisia
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_yemen
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_vietnam
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_albania
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_armenia
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_azerbaijan
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_belarus
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_bih
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_bulgaria
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_croatia
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_georgia
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_kazakhstan
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_kosovoprogramme
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_tfyrmacedonia
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_moldova
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_montenegro
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_romania
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_serbia
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_tajikistan
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_turkey
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_turkmenistan
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_ukraine
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_uzbekistan
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_training
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_sop
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_demo
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_cambodia
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_china
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_dprk
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_indonesia
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_laos
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_malaysia
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_myanmar
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_pacificislands
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_png
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_philippines
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_thailand
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_timorleste
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_bangladesh
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_bhutan
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_india
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_maldives
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_nepal
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_pakistan
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_srilanka
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_bfa
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_cameroon
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_car
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_equatorialguinea
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_gambia
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_ghana
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_guineabissau
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_nigeria
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_esa
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_ethiopia
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_lesotho
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_malawi
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_southafrica
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_southsudan
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_tanzania
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_zambia
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_saotomeandprincipe
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_rwanda
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_kenya
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_drcongo
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_guinea
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_niger
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_togo
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_madagascar
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_mozambique
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_zimbabwe
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_cotedivoire
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_senegal
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_easterncaribbean
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_belize
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_bolivia
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_brazil
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_cuba
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_ecuador
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_elsalvador
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_guatemala
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_honduras
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_dominicanrepublic
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_uruguay
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_chile
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_colombia
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_costarica
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_venezuela
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_jamaica
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_nicaragua
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_panama
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_paraguay
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_haiti
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_guyanasuriname
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_peru
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_innovation
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_testing
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_pageup
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_micrositetest
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_parenting
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_supply
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_careers
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_genunlimited
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_chad
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_congo
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: unicef_org_mali
+        encoding: utf8
+        collation: utf8_general_ci
+
+drupal_install_site: false
+configure_drush_aliases: false
+nodejs_version: 14.x
+nodejs_npm_global_packages:
+    -
+        name: bower
+    -
+        name: gulp-cli
+    -
+        name: yarn
+nodejs_install_npm_user: '{{ drupalvm_user }}'
+npm_config_prefix: '/home/{{ drupalvm_user }}/.npm-global'
+installed_extras:
+    - adminer
+    - selenium
+    - drush
+    - java
+    - solr
+    - mailhog
+    - memcached
+    - nodejs
+    - xdebug
+php_version: '7.4'
+php_packages_extra:
+    - 'php{{ php_version }}-bz2'
+    - 'php{{ php_version }}-imagick'
+    - 'php{{ php_version }}-yaml'
+    - imagemagick
+php_xdebug_version: 2.9.5
+php_xdebug_default_enable: 0
+php_xdebug_coverage_enable: 0
+php_xdebug_cli_disable: 'yes'
+php_xdebug_remote_enable: 1
+php_xdebug_remote_connect_back: 1
+php_xdebug_idekey: PHPSTORM
+php_xdebug_max_nesting_level: 256
+php_xdebug_remote_port: '9000'
+php_maximum_execution_time: 3600
+php_memory_limit: "512M"
+php_upload_max_filesize: 128M
+php_post_max_size: 128M
+solr_version: "8.2.0"
+solr_install_dir: "/optsolr"
+solr_install_path: "/optsolr/solr"
+solr_home: "/data/solr"
+java_packages:
+    - openjdk-8-jdk
+pre_provision_scripts:
+  - ../../../../blt/scripts/drupal-vm/make-solr-dir.sh
+  - ../../../../blt/scripts/drupal-vm/self-signed-ssl.sh
+post_provision_scripts:
+  - ../../../../blt/scripts/drupal-vm/configure-solr.sh
+  - "../../../acquia/blt-drupal-vm/scripts/drupal-vm/post-provision.sh"

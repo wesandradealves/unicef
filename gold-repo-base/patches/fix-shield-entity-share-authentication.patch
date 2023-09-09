@@ -1,0 +1,48 @@
+diff --git a/shield.services.yml b/shield.services.yml
+index 8780ed0..c1b8a3c 100644
+--- a/shield.services.yml
++++ b/shield.services.yml
+@@ -1,7 +1,7 @@
+ services:
+   shield.middleware:
+     class: Drupal\shield\ShieldMiddleware
+-    arguments: ['@config.factory']
++    arguments: ['@config.factory', '@module_handler']
+     tags:
+       # Ensure to come before page caching, so you don't serve cached pages to
+       # banned users.
+diff --git a/src/ShieldMiddleware.php b/src/ShieldMiddleware.php
+index ae2f8da..9bc1b6f 100644
+--- a/src/ShieldMiddleware.php
++++ b/src/ShieldMiddleware.php
+@@ -28,6 +28,13 @@ class ShieldMiddleware implements HttpKernelInterface {
+   protected $configFactory;
+ 
+   /**
++   * The module handler
++   *
++   * @var \Drupal\Core\Extension\ModuleHandlerInterface
++   */
++  protected $moduleHandler;
++
++  /**
+    * Constructs a BanMiddleware object.
+    *
+    * @param \Symfony\Component\HttpKernel\HttpKernelInterface $http_kernel
+@@ -38,6 +45,7 @@ class ShieldMiddleware implements HttpKernelInterface {
+   public function __construct(HttpKernelInterface $http_kernel, ConfigFactoryInterface $config_factory) {
+     $this->httpKernel = $http_kernel;
+     $this->configFactory = $config_factory;
++    $this->moduleHandler = \Drupal::moduleHandler();
+   }
+ 
+   /**
+@@ -76,7 +84,7 @@ class ShieldMiddleware implements HttpKernelInterface {
+         break;
+     }
+ 
+-    if ($type != self::MASTER_REQUEST || !$user || (PHP_SAPI === 'cli' && $allow_cli)) {
++    if ($type != self::MASTER_REQUEST || !$user || (PHP_SAPI === 'cli' && $allow_cli) || $this->moduleHandler->moduleExists('entity_share_client')) {
+       // Bypass:
+       // 1. Subrequests
+       // 2. Empty username

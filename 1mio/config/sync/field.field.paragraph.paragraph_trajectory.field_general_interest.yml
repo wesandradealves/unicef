@@ -1,0 +1,19 @@
+uuid: 680124ee-649e-45c5-b533-24622323a339
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_general_interest
+    - paragraphs.paragraphs_type.paragraph_trajectory
+id: paragraph.paragraph_trajectory.field_general_interest
+field_name: field_general_interest
+entity_type: paragraph
+bundle: paragraph_trajectory
+label: 'Interesses gerais'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string_long

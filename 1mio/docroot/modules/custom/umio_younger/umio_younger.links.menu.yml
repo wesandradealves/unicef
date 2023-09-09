@@ -1,0 +1,6 @@
+umio_younger.skills_config_form:
+  title: 'Skills 1MiO Config Form'
+  route_name: umio_younger.skills_config_form
+  description: 'Image and the texts for the vocacional test results.'
+  parent: system.admin_content
+  weight: 99

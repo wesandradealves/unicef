@@ -1,0 +1,11 @@
+UNICEF SSO (2019-05-02) :
+--------------------------------------------
+- #27478 by dksdev01 - remove docroot reference
+
+UNICEF SSO (2019-07-30) :
+--------------------------------------------
+- #34457 by dksdev01 - fix php comment issue in custom modules [BASE-PR-94]
+
+UNICEF SSO (2019-09-06) :
+--------------------------------------------
+- #37190 by dksdev01 - cleanup PHP warnings

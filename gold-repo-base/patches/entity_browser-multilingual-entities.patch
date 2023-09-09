@@ -1,0 +1,37 @@
+diff --git a/src/Controllers/EntityBrowserController.php b/src/Controllers/EntityBrowserController.php
+index c378880..44c44c1 100644
+--- a/src/Controllers/EntityBrowserController.php
++++ b/src/Controllers/EntityBrowserController.php
+@@ -10,6 +10,8 @@ use Drupal\Core\Form\FormState;
+ use Drupal\Core\Entity\EntityInterface;
+ use Drupal\entity_browser\Ajax\ValueUpdatedCommand;
+ use Symfony\Component\HttpFoundation\Request;
++use Drupal\Core\Entity\TranslatableInterface;
++use Drupal\Core\Language\LanguageInterface;
+ 
+ /**
+  * Returns responses for entity browser routes.
+@@ -39,10 +41,22 @@ class EntityBrowserController extends ControllerBase {
+ 
+     // Build the entity edit form.
+     $form_object = $this->entityTypeManager()->getFormObject($entity->getEntityTypeId(), $operation);
+-    $form_object->setEntity($entity);
+     $form_state = (new FormState())
+       ->setFormObject($form_object)
+       ->disableRedirect();
++
++    // Prepare an entity translation in the current content language.
++    if ($entity instanceof TranslatableInterface && $entity->isTranslatable()) {
++      $langcode = $this->languageManager()->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)->getId();
++      $form_state->set('langcode', $langcode);
++
++      if (!$entity->hasTranslation($langcode)) {
++        $entity = $entity->addTranslation($langcode, $entity->toArray());
++      }
++    }
++
++    $form_object->setEntity($entity);
++
+     // Building the form also submits.
+     $form = $this->formBuilder()->buildForm($form_object, $form_state);
+ 

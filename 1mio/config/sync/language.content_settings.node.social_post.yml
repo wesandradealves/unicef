@@ -1,0 +1,11 @@
+uuid: 350ef465-b47a-4eb2-9a12-6f4d86a0d787
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - node.type.social_post
+id: node.social_post
+target_entity_type_id: node
+target_bundle: social_post
+default_langcode: site_default
+language_alterable: false

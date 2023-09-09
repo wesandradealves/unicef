@@ -1,0 +1,92 @@
+.umio-card {
+  height: 252px;
+  max-height: 252px;
+
+  &.umio-card--vacancy {
+    border-radius: 0 0 80px 0;
+  }
+
+  a {
+    text-decoration: none;
+  }
+
+  .umio-card--company {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: $gray-primary-10;
+  }
+
+  .umio-card--title,
+  .umio-card--company--details {
+    h2,
+    h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: $gray-primary-10;
+      word-wrap: break-word;
+
+      max-width: 40ch;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+
+      @media (min-width: 768px) {
+        white-space: initial;
+      }
+
+      &.umio-card--highlight-font {
+        font-size: 1.5rem;
+      }
+    }
+  }
+
+  .umio-card--card-info--details {
+    font-size: 1rem;
+    font-weight: 400;
+    color: $gray-primary-10;
+  }
+
+  .umio-card--card-info--salary--details {
+    font-size: 1rem;
+    font-weight: 800;
+    color: $gray-primary-10;
+    & > span {
+      float: left;
+    }
+  }
+
+  .umio-card--see-details-link {
+    border: 1px solid $gray-primary-10;
+    border-radius: 32px;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    width: 160px;
+    padding: 5px 0;
+    right: 16px;
+    top: 180px;
+
+    @include media-breakpoint-up(md) {
+      right: 96px;
+    }
+
+    &:hover {
+      opacity: .7;
+    }
+
+    span {
+      font-weight: 700;
+      font-size: 1rem;
+      color: $gray-primary-10;
+    }
+  }
+}
+
+.view-feeds-jovens {
+  .umio-card {
+    .umio-card--see-details-link{
+      display: none;
+    }
+  }
+}
+

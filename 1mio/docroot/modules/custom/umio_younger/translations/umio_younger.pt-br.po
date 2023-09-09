@@ -1,0 +1,379 @@
+msgid "Select..."
+msgstr "Selecione..."
+
+msgctxt "Address label"
+msgid "Administrative area"
+msgstr "Estado"
+
+msgctxt "Address label"
+msgid "City"
+msgstr "Cidade"
+
+msgid "Phone for contact"
+msgstr "Telefone para contato"
+
+msgid "How do you want to be called"
+msgstr "Como quer que lhe chame"
+
+msgid "Sign up"
+msgstr "Cadastrar"
+
+msgid "The CPF is required."
+msgstr "O CPF é obrigatório."
+
+msgid "The phone is required."
+msgstr "O Telefone é obrigatório."
+
+msgid "The administrative area is required."
+msgstr " O Estado é obrigatório."
+
+msgid "The locality is required."
+msgstr "A cidade é obrigatória."
+
+msgid "This field must be a valid CPF."
+msgstr "O CPF não é válido"
+
+msgid "This field must be a valid phone."
+msgstr "O telefone não é válido"
+
+msgid "The name field is required."
+msgstr "O nome é obrigatório"
+
+msgid "This name already exists."
+msgstr " O nome já existe"
+
+msgid "The email field is required."
+msgstr "O email é obrigatório"
+
+msgid "This field must be a valid e-mail."
+msgstr "O campo de e-mail não é válido"
+
+msgid "This e-mail already exists."
+msgstr "O e-mail já existe"
+
+msgid "Gender"
+msgstr "Gênero"
+
+msgid "Male"
+msgstr "Homem"
+
+msgid "Female"
+msgstr "Mulher"
+
+msgid "Non binary"
+msgstr "Não binário"
+
+msgid "Other: please specify here"
+msgstr "Outro: por favor, especifique"
+
+msgid "Enter your account access data:"
+msgstr "Informe seus dados de acesso à conta:"
+
+msgid "vacancies for"
+msgstr "vagas para"
+
+msgid "in"
+msgstr "na"
+
+msgid "1 Milion opportunities"
+msgstr "1 Milhão de Oportunidades"
+
+msgid "I want to apply"
+msgstr "Quero me cadastrar"
+
+msgid "Edit Profile"
+msgstr "Editar Perfil"
+
+msgid "Preview Profile"
+msgstr "Ver Perfil"
+
+msgid "Personal Data"
+msgstr "Dados Pessoais"
+
+msgid "Your Curriculum"
+msgstr "Seu Currículo"
+
+msgid "Socials Networks"
+msgstr "Redes Sociais"
+
+msgid "Insert here your @social user"
+msgstr "Insira aqui o seu usuário do @social"
+
+msgid "Upload profile picture"
+msgstr "Carregar foto de perfil"
+
+msgid "Cancel account"
+msgstr "Excluir conta"
+
+msgid "dateTo"
+msgstr "À"
+
+msgid "Since"
+msgstr "Desde"
+
+msgid "About me"
+msgstr "Sobre"
+
+msgid "About you"
+msgstr "Sobre você"
+
+msgid "What I'm searching professionally"
+msgstr "O que busco profissionalmente"
+
+msgid "Tell us about you, your dreams, and goals."
+msgstr "Conte sobre você, seus sonhos e objetivos."
+
+msgid "What are you looking professionally?"
+msgstr "O que você busca profissionalmente?"
+
+msgid "Talk about the areas you want to work on."
+msgstr "Fale sobre áreas que deseja trabalhar."
+
+msgid "Work experiences"
+msgstr "Experiências de trabalho"
+
+msgid "Works with a formal contract, volunteer work, ventures, and work experiences in family businesses or in the community."
+msgstr "Trabalhos com carteira assinada (CLT) e autônomos (PJ), trabalhos voluntários, empreendimentos e experiências de trabalho em negócios de família ou na comunidade."
+
+msgid "Courses and Skills"
+msgstr "Cursos e habilidades"
+
+msgid "Educational training"
+msgstr "Formação educacional"
+
+msgid "Inform your degree, including technical courses."
+msgstr "Informe seu nível de escolaridade, incluindo cursos técnicos."
+
+msgid "My Coworkers"
+msgstr "Meus colegas de trabalho"
+
+msgid "General Interests"
+msgstr "Interesses gerais"
+
+msgid "In addition to courses with a certificate, inform other forms of learning that contribute to the work. Ex: workshops, hackathons, online courses, and even what you learned independently."
+msgstr "Além dos cursos com certificado, informe outras formas de aprendizado que contribuam para o trabalho. Ex: oficinas, hackathons, cursos online e até o que você aprendeu de forma independente."
+
+msgid "My projects and voluntary work"
+msgstr "Projetos e trabalhos voluntários"
+
+msgid "My Background"
+msgstr "Minha formação"
+
+msgid "My Journey"
+msgstr "Minha trajetória"
+
+msgid "Achievements"
+msgstr "Conquistas"
+
+msgid "Would you like to share a moment that you consider an important achievement?."
+msgstr "Gostaria de compartilhar algum momento que você considere uma conquista importante?."
+
+msgid "Birth date"
+msgstr "Data de nascimento"
+
+msgid "I am under 18 years old and I declare that my parents are aware of my registration on the platform, and that I can register for employability and professional training opportunities aimed at young people aged 16 and over"
+msgstr "Sou menor de 18 anos e declaro que meus pais estão cientes de meu cadastro na plataforma, e de que posso me candidatar em oportunidades de empregabilidade e formação profissional voltadas a jovens a partir de 16 anos"
+
+msgid "Read and agreed with the"
+msgstr "Li e concordo com "
+
+msgid "1MIO user policy"
+msgstr "as Políticas de Uso do 1MiO"
+
+msgid "Skills 1MIO"
+msgstr "Habilidades 1MIO"
+
+msgid "Skills 1MiO Config Form"
+msgstr "Formulário de Configuração das Habilidades 1MiO"
+
+msgid "Skills 1MiO Config"
+msgstr "Configuração das Habilidades 1MiO"
+
+msgid "Image and the texts for the vocacional test results."
+msgstr "Imagem e textos para exibição no resultado do teste vocacional."
+
+msgid "Please select 4 options from those listed below."
+msgstr "Por favor, selecione 4 opções das listadas abaixo."
+
+msgid "Skill @id"
+msgstr "Habilidade @id"
+
+msgid "Skill description @id"
+msgstr "Descrição da habilidade @id"
+
+msgid "Skill image @id"
+msgstr "Imagem da habilidade @id"
+
+msgid "Vocational quiz"
+msgstr "Teste vocacional"
+
+msgid "Vocational quiz result"
+msgstr "Resultado do teste vocacional"
+
+msgid "This information is not shared and is not required to respond. But they help us to direct you with priority to some vacancies."
+msgstr "Essas informações não são compartilhadas e nem obrigatórias para responder. Mas ajudam a gente a te direcionar com prioridade para algumas vagas."
+
+msgid "Select the alternatives that declare yourself"
+msgstr "Selecione as alternativas que você se identifica"
+
+msgid "Save answers"
+msgstr "Salvar respostas"
+
+msgid "Submitted Successfully!"
+msgstr "Salvo com sucesso!"
+
+msgid "It's a Draw!"
+msgstr "Deu empate!"
+
+msgid "What are the skills that represent you best? Pick 4 options that suits you the most and find out what makes you stand out!"
+msgstr "Quais as habilidades que mais te representam? Escolha até 4 opções que tenha mais a ver com você e descubra o seu diferencial."
+
+msgid "The 1MiO skills that represent you are"
+msgstr "As habilidades 1MiO que te representam"
+
+msgid "Start Test"
+msgstr "Iniciar Teste"
+
+msgid "Retake Test"
+msgstr "Refazer Teste"
+
+msgid "Highlight your profile on 1Mio"
+msgstr "Destaque seu perfil no 1Mio"
+
+msgid "Complete your profile by replying to the "
+msgstr "Complete seu perfil respondendo ao "
+
+msgid "Self-declaration form"
+msgstr "Formulário de autodeclaração"
+
+msgid " and to "
+msgstr " e ao "
+
+msgid "Skill Test"
+msgstr "Teste de Habilidades"
+
+msgid "With these results, we can target opportunities for you with more chances of success!"
+msgstr "Com esses resultados, podemos direcionar oportunidades para você com mais chances de sucesso!"
+
+msgid "If you need to change the blocked data, please contact us by email contato@1mio.com.br"
+msgstr "Se precisar alterar os dados bloqueados, entre em contato pelo e-mail contato@1mio.com.br"
+
+msgid "Recommended vacancies for me"
+msgstr "Vagas recomendadas para mim"
+
+msgid "General opportunities"
+msgstr "Oportunidades gerais"
+
+msgid "My opportunities"
+msgstr "Minhas oportunidades"
+
+msgid "We are still looking for opportunities and ideas for you. Keep an eye!"
+msgstr "A gente continua na busca por oportunidades ideais pra você. Fique de olho!"
+
+msgid "Form Submitted Successfully"
+msgstr "Salvo com sucesso"
+
+msgid "Confirm removal"
+msgstr "Confirmar"
+
+msgid "General interest"
+msgstr "Interesses gerais"
+
+msgid "Tell us about you, your interest, your dreams, and goals."
+msgstr "Conte-nos sobre você, seu interesse, seus sonhos e objetivos."
+
+msgid "Tell about your formal work experience."
+msgstr "Fale sobre sua experiência de trabalho formal."
+
+msgid "Informe seu nível de escolaridade, incluindo cursos técnicos."
+msgstr "Informe seu nível de escolaridade, incluindo cursos técnicos."
+
+msgid "Tell about your formal work experience."
+msgstr "Fale sobre sua experiência de trabalho formal."
+
+msgid "Tell about your volunteer work experience."
+msgstr "Conte sobre sua experiência de trabalho voluntário."
+
+msgid "Volunteer Work"
+msgstr "Trabalho voluntário"
+
+msgid "No opportunities found."
+msgstr "Nenhuma oportunidade encontrada."
+
+msgid "An error ocurred trying to save the image."
+msgstr "Ocorreu um erro ao tentar salvar a imagem."
+
+msgid "My Publications"
+msgstr "Minhas Publicações"
+
+msgid "Comments"
+msgstr "Comentários"
+
+msgid "1 million opportunities for young people in Brazil"
+msgstr "1 milhão de oportunidades para jovens do Brasil"
+
+msgid "Access to the world of work, quality education and digital inclusion"
+msgstr "Acesso ao mundo do trabalho, educação de qualidade e inclusão digital"
+
+msgid "Meet 1MiO"
+msgstr "Conheça o 1MiO"
+
+#: tomara que funcione
+msgid "I want to access opportunities"
+msgstr "Quero acessar oportunidades"
+
+msgid "Has a real course, decent job vacancy and commitment to education and diversity"
+msgstr "Tem curso real, vaga de trampo decente e compromisso com a educação e diversidade"
+
+msgid "Plataform to give a boost in your future"
+msgstr "Plataforma para dar um gás no futuro"
+
+#: fim do que eu quero que funcione
+
+msgid "Participate in 1MiO"
+msgstr "Participe do 1MiO"
+
+msgid "Landing page phrase 1"
+msgstr "A iniciativa Um Milhão de Oportunidades (1MiO) é a maior articulação do Brasil pela inclusão produtiva de adolescentes e jovens no mundo do trabalho decente."
+
+msgid "Landing page phrase 2"
+msgstr "Liderada pelo Fundo das Nações Unidas para a Infância (UNICEF), ela reúne mais de 2.000 parceiros do setor privado, sociedade civil, governos e jovens comprometidos em gerar oportunidades para uma transição positiva da juventude da escola para o trabalho."
+
+msgid "Join us and be part of this transformation!"
+msgstr "Junte-se à nós e faça parte dessa transformação!"
+
+#: Vou adicionar essa linha apenas para que essa
+#: bagaça veja que o arquivo esta sendo alterado.
+
+msgid "Companies"
+msgstr "Empresas"
+
+msgid "Civil Society"
+msgstr "Sociedade Civil"
+
+msgid "Governments"
+msgstr "Governos"
+
+msgid "Be a partner of 1MiO"
+msgstr "Seja parceiro do 1MiO"
+
+msgid "Job opportunities generated by 1MiO"
+msgstr "Oportunidades de trabalho geradas pelo 1MiO"
+
+msgid "Job opportunities filled by 1MiO"
+msgstr "Oportunidades de trabalho preenchidas pelo 1MiO"
+
+msgid "Job opportunities available on 1MiO"
+msgstr "Oportunidades de trabalho disponíveis no 1MiO"
+
+msgid "Opportunities for professional development of young people"
+msgstr "Oportunidades para desenvolvimento profissional de jovens"
+
+msgid "Connectivity and Digital Inclusion Opportunities"
+msgstr "Oportunidades de conectividade e inclusão digital"
+
+msgid "Read more"
+msgstr "Leia mais"
+
+msgid "Enter your profile username"
+msgstr "Digite o nome de usuário do seu perfil"

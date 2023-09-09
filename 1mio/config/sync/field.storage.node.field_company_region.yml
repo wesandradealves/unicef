@@ -1,0 +1,20 @@
+uuid: a7a7fdeb-9880-43ff-931a-ca11dd8965a1
+langcode: pt-br
+status: true
+dependencies:
+  module:
+    - node
+    - taxonomy
+id: node.field_company_region
+field_name: field_company_region
+entity_type: node
+type: entity_reference
+settings:
+  target_type: taxonomy_term
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

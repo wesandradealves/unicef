@@ -1,0 +1,24 @@
+uuid: 26f9c0eb-a1c2-49b1-a1af-78bdef8f0f5c
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.course_tags
+id: taxonomy_term.course_tags.default
+targetEntityType: taxonomy_term
+bundle: course_tags
+mode: default
+content:
+  name:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  description: true
+  langcode: true
+  path: true
+  status: true

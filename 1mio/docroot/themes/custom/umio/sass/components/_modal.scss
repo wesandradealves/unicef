@@ -1,0 +1,127 @@
+.ui-dialog {
+  background-color: $gray-primary-10 !important;
+  border-radius: 4px;
+
+  .ui-dialog-titlebar {
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+    background-color: $gray-primary-10 !important;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+
+    @include media-breakpoint-up(sm) {
+      font-size: 1.5rem;
+    }
+    .ui-dialog-title {
+      white-space: unset;
+    }
+    .ui-button {
+      position: absolute;
+      right: 10px;
+    }
+    .ui-dialog-titlebar-close {
+      &::before {
+        font-size: 32px;
+        color: $gray-primary-75;
+      }
+    }
+  }
+  .ui-widget-content.ui-dialog-buttonpane {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+
+    .button {
+      font-weight: bold;
+      margin-top: 0;
+      margin-bottom: 0;
+      border-radius: 32px;
+      display: flex;
+      align-items: center;
+      &:focus {
+        box-shadow: none;
+      }
+    }
+    .button--danger {
+      @include make-danger-button();
+      &:hover {
+        border: 1px solid $alert-red-75 !important;
+      }
+    }
+  }
+
+  .ui-dialog-buttonpane {
+    background-color: $gray-primary-10 !important;
+    display: flex;
+    justify-content: center;
+    border-width: 0;
+    justify-content: center;
+
+    .ui-dialog-buttonset {
+      .button {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+      }
+    }
+  }
+}
+
+.modal-drupal-dialog {
+  padding: 3rem;
+  border-radius: 2rem;
+  .ui-dialog-title {
+    color: $gray-primary-75;
+  }
+  .ui-dialog-titlebar  {
+    background-color: $gray-primary-10;
+    border-bottom: 1px solid $gray-primary-15;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+
+    & > span#ui-id-1 {
+      margin-bottom: 1rem;
+    }
+
+    &.ui-helper-clearfix{
+      &::before, &::after {
+        content: none;
+      }
+    }
+  }
+  .ui-dialog-buttonpane {
+    background-color: $gray-primary-10 !important;
+    border-top: none !important;
+    .ui-dialog-buttonset {
+      display: flex;
+      flex-direction: row-reverse;
+      justify-content: end;
+      padding: 0 3rem;
+      .button {
+        &:first-of-type {
+          @include make-primary-button();
+          &:active,
+          &:focus {
+            border-color: $blue-primary-main !important;
+          }
+        }
+        &:last-of-type:not(.custom-cancel) {
+          @include make-danger-button();
+          border-color: $alert-red-50 !important;
+          &:hover {
+            border-color: $alert-red-75 !important;
+          }
+        }
+      }
+    }
+  }
+  .ui-widget-content{
+    color: $gray-primary-50;
+    span {
+      color:$blue-primary-main;
+    }
+  }
+}
+
+

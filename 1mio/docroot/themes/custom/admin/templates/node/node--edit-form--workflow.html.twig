@@ -1,0 +1,52 @@
+{#
+/**
+ * @file
+ * Theme override for a node edit form.
+ *
+ * Two column template for the node add/edit form.
+ *
+ * This template will be used when a node edit form specifies 'node_edit_form'
+ * as its #theme callback.  Otherwise, by default, node add/edit forms will be
+ * themed by form.html.twig.
+ *
+ * Available variables:
+ * - form: The node add/edit form.
+ *
+ * @see claro_form_node_form_alter()
+ */
+#}
+
+<div>
+  <div class="row d-flex mb-2 align-items-center container-edit-form">
+    <div class="d-flex align-items-start justify-content-start col-5 col-md-2 col-lg-2 col-xl-1 text-center logo-container">
+      {% if form.company_logo %}
+        <div class="logo-content-form">
+          {{ form.company_logo }}
+        </div>
+      {% endif %}
+    </div>
+    <div class="align-items-center col-7 col-md-4 col-lg-4 col-xl-5">
+      {% if form.description %}
+        {{ form.description }}
+      {% endif %}
+    </div>
+    <div class="d-block col-12 col-md-6 col-lg-6 mt-4 mt-md-0">
+      <div class="d-flex flex-column flex-md-row gap-3 justify-content-end">
+        {% if form.header_actions %}
+          {{ form.header_actions }}
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  <div class="col-12 col-lg-6 pt-4">
+    <div class="row">
+      {{ form|without('company_logo', 'description', 'footer_actions', 'header_actions') }}
+    </div>
+  </div>
+  <div class="col-12 d-md-flex px-md-3 pt-3 pb-3 mt-4 mb-4 edit-form-footer">
+    {% if form.footer_actions %}
+      <div class="col-12 col-md-6 d-flex flex-column flex-md-row justify-md-content-start ">{{ form.footer_actions.moderation_state }}</div>
+      <div class="col-12 col-md-6 d-flex flex-column flex-md-row justify-content-end align-items-center">{{ form.footer_actions|without('moderation_state') }}</div>
+    {% endif %}
+  </div>
+</div>

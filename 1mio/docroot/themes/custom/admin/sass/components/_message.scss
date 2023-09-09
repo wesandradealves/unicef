@@ -1,0 +1,41 @@
+.messages-list {
+  margin-bottom: 0;
+}
+
+.messages {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  &.messages--status {
+    color: $gray-primary-10;
+    .messages__header {
+      &:before {
+        @include generate-icon("\f0e8");
+        mask-image: unset;
+        -webkit-mask-image: unset;
+        background-color: unset;
+      }
+    }
+  }
+  &.messages--error {
+    color: $gray-primary-10;
+    .messages__header {
+      &:before {
+        @include generate-icon("\f36e");
+        mask-image: unset;
+        -webkit-mask-image: unset;
+        background-color: unset;
+      }
+    }
+  }
+  .messages__header {
+    &:before {
+      font-size: 24px;
+      color: $gray-primary-10;
+    }
+  }
+  .button {
+    &.button--dismiss {
+      box-shadow: none;
+    }
+  }
+}

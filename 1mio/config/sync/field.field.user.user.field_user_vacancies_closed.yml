@@ -1,0 +1,24 @@
+uuid: b403a933-02af-4514-a4a7-9170465af7f9
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - field.storage.user.field_user_vacancies_closed
+  module:
+    - user
+id: user.user.field_user_vacancies_closed
+field_name: field_user_vacancies_closed
+entity_type: user
+bundle: user
+label: 'Vagas fechadas'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: 0
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

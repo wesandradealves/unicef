@@ -1,0 +1,140 @@
+uuid: b6796714-1a1d-4b48-a35d-a2d4f635b29c
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.umio_card
+    - field.field.node.vacancy.field_vacancy_activities
+    - field.field.node.vacancy.field_vacancy_audio
+    - field.field.node.vacancy.field_vacancy_benefits
+    - field.field.node.vacancy.field_vacancy_city
+    - field.field.node.vacancy.field_vacancy_closing_date
+    - field.field.node.vacancy.field_vacancy_company
+    - field.field.node.vacancy.field_vacancy_job_model
+    - field.field.node.vacancy.field_vacancy_justify
+    - field.field.node.vacancy.field_vacancy_priority_profiles
+    - field.field.node.vacancy.field_vacancy_qr_code
+    - field.field.node.vacancy.field_vacancy_quantity
+    - field.field.node.vacancy.field_vacancy_salary
+    - field.field.node.vacancy.field_vacancy_salary_max
+    - field.field.node.vacancy.field_vacancy_salary_min
+    - field.field.node.vacancy.field_vacancy_salary_options
+    - field.field.node.vacancy.field_vacancy_skills_match
+    - field.field.node.vacancy.field_vacancy_state
+    - field.field.node.vacancy.field_vacancy_subscription_url
+    - field.field.node.vacancy.field_vacancy_type
+    - field.field.node.vacancy.field_vacancy_video
+    - node.type.vacancy
+  module:
+    - field_group
+    - options
+    - user
+third_party_settings:
+  field_group:
+    group_range_vacancy_salary:
+      children:
+        - field_vacancy_salary_min
+        - field_vacancy_salary_max
+      label: Salário
+      parent_name: ''
+      region: content
+      weight: 3
+      format_type: fieldset
+      format_settings:
+        classes: row
+        show_empty_fields: false
+        id: ''
+        description: ''
+id: node.vacancy.umio_card
+targetEntityType: node
+bundle: vacancy
+mode: umio_card
+content:
+  field_vacancy_company:
+    type: entity_reference_label
+    label: hidden
+    settings:
+      link: false
+    third_party_settings: {  }
+    weight: 9
+    region: content
+  field_vacancy_job_model:
+    type: list_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_vacancy_quantity:
+    type: number_integer
+    label: hidden
+    settings:
+      thousand_separator: .
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  field_vacancy_salary:
+    type: number_decimal
+    label: hidden
+    settings:
+      thousand_separator: .
+      decimal_separator: ','
+      scale: 2
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 4
+    region: content
+  field_vacancy_salary_max:
+    type: number_decimal
+    label: hidden
+    settings:
+      thousand_separator: .
+      decimal_separator: ','
+      scale: 2
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 5
+    region: content
+  field_vacancy_salary_min:
+    type: number_decimal
+    label: hidden
+    settings:
+      thousand_separator: .
+      decimal_separator: ','
+      scale: 2
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 3
+    region: content
+  field_vacancy_salary_options:
+    type: list_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 12
+    region: content
+  field_vacancy_type:
+    type: list_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  content_moderation_control: true
+  field_vacancy_activities: true
+  field_vacancy_audio: true
+  field_vacancy_benefits: true
+  field_vacancy_city: true
+  field_vacancy_closing_date: true
+  field_vacancy_justify: true
+  field_vacancy_priority_profiles: true
+  field_vacancy_qr_code: true
+  field_vacancy_skills_match: true
+  field_vacancy_state: true
+  field_vacancy_subscription_url: true
+  field_vacancy_video: true
+  langcode: true
+  links: true
+  search_api_excerpt: true

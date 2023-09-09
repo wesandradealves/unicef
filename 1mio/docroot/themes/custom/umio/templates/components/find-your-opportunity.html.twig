@@ -1,0 +1,43 @@
+<div class="row m-0 find-your-opportunity">
+  <div class="find-your-opportunity-container">
+    <div class="find-your-opportunity-content">
+
+    {# Button mobile version #}
+    <div class="find-your-opportunity-button-container">
+      <a class="btn btn-large find-your-opportunity-button" href="{{ url('umio_user.register') }}">
+        <img class='user-icon-mobile' src={{button_ico_mobile}} alt="usr_ico">
+        {{ button_text }}
+      </a>
+    </div>
+
+      {# Content Body #}
+      <div class="d-flex flex-column justify-content-between find-your-opportunity-body">
+        {# Content Head #}
+        <div class='content-header-container'>
+          {# Texts #}
+          <p class="card-title">{{ title_text }}</p>
+          <p class="card-subtitle">{{ subtitle_text }}</p>
+
+          {# Button "Crie sua conta" Desktop version #}
+          <a class="btn btn-large find-your-opportunity-button-desk" href="{{ url('umio_user.register') }}">
+            <img class='user-icon-desk' src={{button_ico_desk}} alt="usr_ico">
+            {{ button_text }}
+          </a>
+        </div>
+
+        {# Pills mobile version #}
+        {% for description in descriptions %}
+          {% include '@umio/components/card-content-list.html.twig' with {
+            card_description: description,
+            index: loop.index
+          }
+          %}
+        {% endfor %}
+
+        {# Pills desktop version (bg image) #}
+        <div class='infographic'></div>
+      </div>
+
+    </div>
+  </div>
+</div>

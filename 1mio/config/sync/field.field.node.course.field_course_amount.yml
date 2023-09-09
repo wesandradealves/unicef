@@ -1,0 +1,23 @@
+uuid: e4f676fa-21ec-48e5-b62e-3480ef460725
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_course_amount
+    - node.type.course
+id: node.course.field_course_amount
+field_name: field_course_amount
+entity_type: node
+bundle: course
+label: 'Número de vagas'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: 1
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

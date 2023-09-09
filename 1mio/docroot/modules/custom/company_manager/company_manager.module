@@ -1,0 +1,105 @@
+<?php
+
+/**
+ * @file
+ * Contains company_manager.module.
+ */
+
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function company_manager_help(string $route_name, RouteMatchInterface $route_match): string {
+  switch ($route_name) {
+    // Main module help for the user module.
+    case 'help.page.user':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('Module for make changes in User content type') . '</p>';
+      return $output;
+
+    default:
+  }
+
+  return '';
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function company_manager_form_alter(array &$form, FormStateInterface $form_state, string $form_id): void {
+  $forms = [
+    'register_company_manager_additional_form',
+    'company_manager_edit_talent_acquisition',
+    'company_manager_register_city_manager',
+    'register_city_manager_additional_form',
+  ];
+  if (in_array($form_id, $forms)) {
+    $form['#attached']['library'][] = 'umio_user/umio_user.user_register';
+    $form['#attached']['library'][] = 'umio_helpers/umio_helpers.handle_steps_form';
+    $form['#attached']['library'][] = 'umio_helpers/umio_helpers.address_customization';
+    $form['#attached']['library'][] = 'umio_helpers/umio_helpers.mask';
+    $form['elements']['field_address']['#after_build'][] = 'company_manager_customize_address';
+  }
+}
+
+/**
+ * Function to change order of address fields.
+ *
+ * @var array $element
+ * @var \Drupal\Core\Form\FormStateInterface $form_state
+ */
+function company_manager_customize_address(array $element, FormStateInterface $form_state): array {
+
+  $element['field_address']['administrative_area']['#weight'] = -5;
+  $element['field_address']['locality']['#weight'] = -4;
+  return $element;
+}
+
+/**
+ * Implements hook_theme().
+ */
+function company_manager_theme(): array {
+  return [
+    'success_page' => [
+      'render element' => 'children',
+      'template' => 'page--register-success',
+      'path' => '../../../themes/custom/umio/templates/page/partner_talent_acquisition',
+      'variables' => [
+        'title' => NULL,
+        'content' => NULL,
+        'cta' => NULL,
+      ],
+    ],
+    'success_page_city_manager' => [
+      'render element' => 'children',
+      'template' => 'page--register-success-city-manager',
+      'path' => '../../../themes/custom/umio/templates/page/partner_talent_acquisition',
+      'variables' => [
+        'title' => NULL,
+        'content' => NULL,
+        'cta' => NULL,
+        'hasUnicefStamp' => NULL,
+      ],
+    ],
+  ];
+}
+
+/**
+ * Implements hook_preprocess_page().
+ */
+function company_manager_preprocess_page(array &$variables): void {
+  $current_route = \Drupal::routeMatch();
+  $route_name = $current_route->getRouteName();
+
+  $routes = [
+    'company_manager.register_aditional',
+    'company_manager.success_register_city_manager',
+  ];
+
+  if (in_array($route_name, $routes)) {
+    unset($variables['page']['content']['umio_page_title']);
+  }
+}

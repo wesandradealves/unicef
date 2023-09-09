@@ -1,0 +1,15 @@
+#!/usr/bin/env php
+<?php
+echo "Executing .git/hooks/commit-msg...\n";
+$repo_root = getcwd();
+
+$original_argv = $_SERVER['argv'];
+$commit_msg = rtrim(file_get_contents($original_argv[1]), "\n");
+
+if (!preg_match("/^[a-z]+\([a-z -_]+\):\s*AB#([0-9])+\s*-\s*.+/", $commit_msg)) {
+  echo "> Invalid commit message structure\n";
+  echo "Excpected structure\n";
+  echo "feat(module): AB#task-id - description\n";
+  #exit(1);
+}
+

@@ -1,0 +1,178 @@
+<?php
+
+/**
+ * @file
+ * Primary module hooks for umio_younger module.
+ *
+ * @DCG
+ * This file is no longer required in Drupal 8.
+ * @see https://www.drupal.org/node/2217931
+ */
+
+use Drupal\Component\Serialization\Json;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Url;
+use Drupal\taxonomy\Entity\Term;
+
+/**
+ * Implements hook_form_alter().
+ */
+function umio_younger_form_alter(array &$form, FormStateInterface $form_state, string $form_id): void {
+  if ($form_id == 'edit_young_form') {
+    $form['#attached']['library'][] = 'umio_younger/umio_younger.edit_profile_form';
+  }
+
+  if ($form_id === 'register_young_additional_form') {
+    $form['#attached']['library'][] = 'umio_user/umio_user.user_register';
+    $form['#attached']['library'][] = 'umio_helpers/umio_helpers.address_customization';
+    $form['#attached']['library'][] = 'umio_helpers/umio_helpers.mask';
+    $form['#attached']['library'][] = 'umio_helpers/umio_helpers.select2_customization';
+  }
+
+  if ($form_id === 'register_young_form') {
+    $form['#attached']['library'][] = 'umio_younger/umio_younger.register_young_form';
+  }
+
+  if ($form_id === 'quiz_form') {
+    $form['#attached']['library'][] = 'umio_younger/umio_younger.quiz_form';
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function umio_younger_theme(): array {
+  return [
+    'page_register_young_success' => [
+      'render element' => 'children',
+      'template' => 'page--register-candidate-success',
+      'path' => '../../../themes/custom/umio/templates/page/young',
+      'variables' => [
+        'userName' => NULL,
+      ],
+    ],
+    'page_young_skills' => [
+      'render element' => 'children',
+      'template' => 'page--young-skills',
+      'path' => '../../../themes/custom/umio/templates/page/young',
+      'variables' => [
+        'skills' => NULL,
+      ],
+    ],
+    'umio_edit_profile__region_content' => [
+      'template' => 'umio-edit-profile--region-content',
+      'path' => '../../../themes/custom/umio/templates/region',
+      'base hook' => 'region',
+    ],
+    'input__file__profile_picture' => [
+      'template' => 'input--file--profile-picture',
+      'path' => '../../../themes/custom/umio/templates/form',
+      'base hook' => 'input__file',
+    ],
+    'feed_not_found_results' => [
+      'template' => 'block--feed-not-found-results',
+      'path' => 'themes/custom/umio/templates/block',
+      'variables' => [
+        'skills' => NULL,
+      ],
+    ],
+  ];
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK_alter().
+ */
+function umio_younger_theme_suggestions_region_alter(array &$suggestions, array &$variables, string $hook): void {
+  $allowed_routes = [
+    'umio_younger.edit_young',
+  ];
+
+  $routeMatch = \Drupal::routeMatch();
+  $routeName = $routeMatch->getRouteName();
+
+  $region = $variables['elements']['#region'];
+
+  if ($region == 'content' && in_array($routeName, $allowed_routes)) {
+    $suggestions[] = 'umio_edit_profile__region_content';
+
+    $uid = $routeMatch->getRawParameter('user');
+
+    $variables['btn_cancel_link_profile'] = [
+      '#type' => 'link',
+      '#title' => t('Cancel account'),
+      '#route_name' => 'entity.user.cancel_form',
+      '#url' => Url::fromRoute('entity.user.cancel_form', ['user' => $uid]),
+      '#weight' => 100,
+      '#attributes' => [
+        'class' => ['d-block', 'mt-5', 'use-ajax', 'edit-young-form', 'cancel_link_profile'],
+        'data-dialog-type' => 'modal',
+        'data-dialog-options' => Json::encode([
+          'width' => '800',
+          'dialogClass' => 'modal-drupal-dialog',
+        ]),
+      ],
+      '#prefix' => '<div class="col-12 d-flex justify-content-center align-items-center button-form">',
+      '#suffix' => '</div>',
+    ];
+  }
+
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK_alter().
+ */
+function umio_younger_theme_suggestions_input_alter(array &$suggestions, array $variables, string $hook): void {
+  $allowed_routes = [
+    'umio_younger.edit_young',
+  ];
+  $routeMatch = \Drupal::routeMatch();
+  $routeName = $routeMatch->getRouteName();
+  if (isset($variables['element']['#name'])) {
+    $input_name = $variables['element']['#name'];
+    if ($input_name == 'files[field_user_profile_picture]' && in_array($routeName, $allowed_routes)) {
+      $suggestions[] = 'input__file__profile_picture';
+    }
+  }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function umio_younger_form_umio_younger_public_profile_alter(array &$form, FormStateInterface &$form_state, string $form_id): void {
+  $form['#attached']['library'][] = 'umio_younger/umio_younger.public_profile_form';
+  $options = $form['field_user_public_profile']['widget']['#options'];
+  foreach ($options as $termId => $label) {
+    $taxonomyTerm = Term::load($termId);
+    $newLabel = $taxonomyTerm->get('field_young_description')->getString();
+    if ($newLabel != '') {
+      $form['field_user_public_profile']['widget']['#options'][$termId] = $newLabel;
+    }
+  }
+}
+
+/**
+ * Implements hook_views_data_alter().
+ */
+function umio_younger_views_data_alter(array &$data): void {
+  $data['views']['recommended_match'] = [
+    'title' => t('Recommended vacancies for me'),
+    'filter' => [
+      'title' => t('Recommended vacancies for me'),
+      'group' => t('Content'),
+      'help' => t("Appears in: @bundles.", ['@bundles' => 'vacancy']),
+      'id' => 'vacancy_recommended_match_filter',
+    ],
+  ];
+}
+
+/**
+ * Implements template_prerocess_views_view().
+ */
+function umio_younger_preprocess_views_view(array &$variables): void {
+  if ($variables['id'] === 'feeds_jovens') {
+    /** @var \Drupal\Core\Block\BlockManager $managerBlock */
+    $managerBlock = \Drupal::service('plugin.manager.block');
+    $notFoundResults = $managerBlock->createInstance('feed_not_found_results_block');
+    $variables['empty'][] = $notFoundResults->build();
+  }
+}

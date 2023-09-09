@@ -1,0 +1,22 @@
+.call-to-action {
+  a {
+    font-size: 14px;
+    font-weight: 700;
+    border: none;
+    margin: 0 10px;
+    width: 100%;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    color: $gray-primary-10;
+
+    &:hover {
+      color: $gray-primary-10;
+      opacity: .8;
+    }
+    @include media-breakpoint-up(md) {
+      width: auto;
+      padding: 8px 100px;
+    }
+  }
+}

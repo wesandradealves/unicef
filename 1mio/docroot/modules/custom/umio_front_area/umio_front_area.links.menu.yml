@@ -1,0 +1,6 @@
+umio_front_area.umio_counters_form:
+  title: 'Counter 1MiO'
+  route_name: umio_front_area.umio_counters_form
+  description: ''
+  parent: system.admin_content
+  weight: 99

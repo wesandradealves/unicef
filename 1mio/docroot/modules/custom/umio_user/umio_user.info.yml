@@ -1,0 +1,11 @@
+name: 1MIO User
+type: module
+description: Module to handle some users customizations.
+package: Custom
+core_version_requirement: ^8 || ^9
+
+dependencies:
+  - password_policy:password_policy
+
+'interface translation project': umio_user
+'interface translation server pattern': modules/custom/umio_user/translations/umio_user.%language.po

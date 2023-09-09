@@ -1,0 +1,20 @@
+uuid: 9566c5b6-2a47-4c7c-91ac-1e42ff124fc6
+langcode: pt-br
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - admin
+id: admin_messages
+theme: admin
+region: highlighted
+weight: -5
+provider: null
+plugin: system_messages_block
+settings:
+  id: system_messages_block
+  label: Mensagens
+  label_display: '0'
+  provider: system
+visibility: {  }

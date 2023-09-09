@@ -1,0 +1,10 @@
+uuid: cfcdce6e-0599-4ea7-b1e0-f095c5d4fce8
+langcode: pt-br
+status: true
+dependencies:
+  module:
+    - node
+id: node.umio_card_social
+label: 'Card Social'
+targetEntityType: node
+cache: true

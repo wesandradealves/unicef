@@ -1,0 +1,14 @@
+uuid: 07d5fb0a-a735-4410-8ca6-424ab7544cf6
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - user.role.partner_talent_acquisition
+  module:
+    - user
+id: user_remove_role_action.partner_talent_acquisition
+label: 'Remover o papel Parceiro dos usuários selecionados'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: partner_talent_acquisition

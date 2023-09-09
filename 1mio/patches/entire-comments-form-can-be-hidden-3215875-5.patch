@@ -1,0 +1,60 @@
+From 8634cc849e848d063483c176a2823aff83a4d8fd Mon Sep 17 00:00:00 2001
+From: Kurt Trowbridge <kurt@gravityworksdesign.com>
+Date: Tue, 19 Oct 2021 22:08:55 -0400
+Subject: [PATCH] Adjusted JavaScript to match AJAX Comments selectors more
+ accurately
+
+---
+ comment_notify.js | 36 ++++++++++--------------------------
+ 1 file changed, 10 insertions(+), 26 deletions(-)
+
+diff --git a/comment_notify.js b/comment_notify.js
+index e748830..ac37e12 100644
+--- a/comment_notify.js
++++ b/comment_notify.js
+@@ -1,32 +1,16 @@
+ (function ($, Drupal) {
+-
+-  'use strict';
++  "use strict";
+
+   Drupal.behaviors.commentNotify = {
+     attach: function (context) {
+-
+-      $('.comment-notify', context)
+-        .bind('change', function() {
+-          var checkbox = $(this);
+-          var form = checkbox.closest('.comment-notify-form');
+-
+-          if (form.length > 0) {
+-            var radios = $('.comment-notify-type', form);
+-
+-            if (radios.length > 0) {
+-              var radiosHolder = radios.parent().parent();
+-
+-              if (checkbox.is(':checked')) {
+-                radiosHolder.show();
+-              }
+-              else {
+-                radiosHolder.hide();
+-              }
+-            }
+-          }
+-
++      $("#edit-notify, [id^='edit-notify--']", context)
++        .bind("change", function () {
++          $("#edit-notify-type, [id^='edit-notify-type--']", context)
++            [this.checked ? "show" : "hide"]()
++            .find("input[type=checkbox]:checked")
++            .attr("checked", "checked");
+         })
+-        .trigger('change');
+-    }
++        .trigger("change");
++    },
+   };
+-})(jQuery, Drupal);
++})(jQuery, Drupal);
+\ No newline at end of file
+--
+GitLab

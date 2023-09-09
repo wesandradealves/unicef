@@ -1,0 +1,62 @@
+#!/usr/bin/env bash
+
+set -ev
+TEMP_REMOTE_BLT=""
+PR_OWNER=""
+TEMP_PULL_REQUEST_NUMBER=""
+PR_REPO_NAME=${TRAVIS_REPO_SLUG#*/}
+
+if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then
+	TEMP_PULL_REQUEST_NUMBER="$TRAVIS_PULL_REQUEST"
+	PR_OWNER=${TRAVIS_PULL_REQUEST_SLUG%/*}
+else
+	TEMP_PULL_REQUEST_NUMBER="$(echo $TRAVIS_COMMIT_MESSAGE | cut -d/ -f1 |  cut -d# -f2 | cut -d' ' -f1)"
+	PR_OWNER="$(echo $TRAVIS_COMMIT_MESSAGE | cut -d/ -f1 |  cut -d# -f2 | cut -d' ' -f3)"
+fi
+
+if [ "$PR_OWNER" ]; then
+	if [ $PR_REPO_NAME = "global-web-redesign" ] || [ $PR_REPO_NAME = "unicef-drupal-base" ]; then
+      if [ "$PR_OWNER" == 'dksdev01' ] || [ "$PR_OWNER" == 'mgonzales7' ] || [ "$PR_OWNER" == 'rezsharmeen' ]; then
+		TEMP_REMOTE_BLT="unacp1@svn-4707.devcloud.hosting.acquia.com:unacp1.git"
+	  elif  [ "$PR_OWNER" == 'himan5050' ] || [ "$PR_OWNER" == 'shifalibaghel-srijan' ] || [ "$PR_OWNER" == 'shailja1344' ] || [ "$PR_OWNER" == 'akashbhawra' ] || [ "$PR_OWNER" == 'paritoshik-paul-srijan' ]; then
+		TEMP_REMOTE_BLT="unacp4@svn-4707.devcloud.hosting.acquia.com:unacp4.git"
+	  elif [ "$PR_OWNER" == 'himan5050' ] || [ "$PR_OWNER" == 'Loguercio' ]; then
+		TEMP_REMOTE_BLT="unacp6@svn-4707.devcloud.hosting.acquia.com:unacp6.git"
+	  elif [ -f "${BUILD_DIR}/site-blt.yml" ]; then
+		eval TEMP_REMOTE_BLT=$(yaml-cli get:value site-blt.yml git.remotes.cloud)
+	  fi
+    elif [ -f "${BUILD_DIR}/site-blt.yml" ]; then
+		eval TEMP_REMOTE_BLT=$(yaml-cli get:value site-blt.yml git.remotes.cloud)
+	fi
+fi
+
+if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then
+	if [ "$TEMP_REMOTE_BLT" ]; then
+		yaml-cli update:value blt/blt.yml git.remotes.cloud "${TEMP_REMOTE_BLT}"
+	fi
+  if [[ $TEMP_REMOTE_BLT =~ "unacp1" ]] || [[ $TEMP_REMOTE_BLT =~ "unacp4" ]] || [[ $TEMP_REMOTE_BLT =~ "unacp6" ]]; then
+		yaml-cli update:value "${BUILD_DIR}/blt/blt.yml" environment 'dev'
+		yaml-cli update:value "${BUILD_DIR}/blt/blt.yml" multisites.0 'default'
+		yaml-cli update:value "${BUILD_DIR}/blt/blt.yml" multisites.1 'unicef.org.eca'
+		yaml-cli update:value "${BUILD_DIR}/blt/blt.yml" multisites.2 'unicef.org.globaldebug'
+		yaml-cli update:value "${BUILD_DIR}/blt/blt.yml" multisites.3 'unicef.org.lac'
+		yaml-cli update:value "${BUILD_DIR}/blt/blt.yml" multisites.4 'unicef.org.genunlimited'
+		yaml-cli update:value "${BUILD_DIR}/blt/blt.yml" multisites.5 'unicef.org.micrositedebug'
+		yaml-cli update:value "${BUILD_DIR}/blt/blt.yml" multisites.6 'unicef.org.testing'
+		yaml-cli update:value "${BUILD_DIR}/blt/blt.yml" multisites.7 'unicef.org.master'
+  else
+		TEMP_REMOTE_BLT_SITES_COUNT=$(yaml-cli get:value site-blt.yml multisites | wc -l)
+		if [ $TEMP_REMOTE_BLT_SITES_COUNT > 1 ]; then
+			BLT_HAS_DYNAMIC_MULTISITE=false
+			COUNTER=0
+			for f in `yaml-cli get:value site-blt.yml multisites`; do
+				if [[ $f != '-' ]]; then
+					yaml-cli update:value ${BUILD_DIR}/blt/blt.yml multisites.$COUNTER $f
+					let COUNTER=COUNTER+1
+				fi
+			done
+		fi
+  fi
+fi
+
+set +v

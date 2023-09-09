@@ -1,0 +1,36 @@
+.action-link {
+  font-weight: normal;
+  &.action-link--icon-trash {
+    background-color: transparent;
+    border-radius: 32px;
+    border: 1px solid var(--colorGinDanger) !important;
+    &:hover {
+      border: 1px solid var(--colorGinDanger) !important;
+    }
+    &:focus {
+      box-shadow: none;
+    }
+  }
+}
+
+.button--danger {
+  @include make-danger-button();
+}
+
+.button[data-drupal-selector="edit-cancel"] {
+  @include make-danger-button();
+  border-radius: 32px;
+  border: 1px solid $alert-red-50 !important;
+  font-weight: normal;
+  &:hover {
+    border: 1px solid $alert-red-75 !important;
+  }
+  &:active,
+  &:focus {
+    box-shadow: none;
+  }
+}
+
+.btn {
+  padding: 0.375rem 1rem;
+}

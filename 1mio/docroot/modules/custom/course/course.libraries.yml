@@ -1,0 +1,6 @@
+course.form:
+  js:
+    js/form.js: {}
+  dependencies:
+    - core/jquery
+    - core/jquery.once

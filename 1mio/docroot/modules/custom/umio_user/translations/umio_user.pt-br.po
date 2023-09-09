@@ -1,0 +1,500 @@
+msgid "1MIO User"
+msgstr "1MIO Usuário"
+
+msgid "Module to handle some users customizations."
+msgstr "Módulo para realizar customizações no usuário."
+
+msgid "User not found."
+msgstr "Usuário não encontrado."
+
+msgid "User already active!"
+msgstr "Usuário já está ativo!"
+
+msgid "User already blocked!"
+msgstr "Usuário já está bloqueado!"
+
+msgid "Do you want to approve the user?"
+msgstr "Você deseja aprovar o usuário?"
+
+msgid "Do you want to reject the user?"
+msgstr "Você deseja reprovar o usuário?"
+
+msgid "Approve user"
+msgstr "Aprovar usuário"
+
+msgid "Reject user"
+msgstr "Bloquear usuário"
+
+msgid "Courses from my company"
+msgstr "Cursos da minha empresa"
+
+msgid "Created account"
+msgstr "Criar conta"
+
+msgid "Account type"
+msgstr "Tipo de conta"
+
+msgid "Access data"
+msgstr "Dados de acesso"
+
+msgid "Personal data"
+msgstr "Dados pessoais"
+
+msgid "Hello!"
+msgstr "Olá!"
+
+msgid "To register your account, select the type:"
+msgstr "Para cadastrar sua conta selecione qual o tipo:"
+
+msgid "Young"
+msgstr "Jovem"
+
+msgid "Company or Civil Society"
+msgstr "Empresas ou Sociedade Civil"
+
+msgid "To register your account, select the type:"
+msgstr "Para cadastrar sua conta selecione qual o tipo:"
+
+msgid "Registration sent!"
+msgstr "Cadastro enviado!"
+
+msgid "Your registration with full access to 1MIO will be released as soon as we confirm your link with the company informed, ok?"
+msgstr "Seu cadastro com acesso total ao 1MIO será liberado assim que a gente confirmar o seu vínculo com a empresa informada, ok?"
+
+msgid "What happens in 1MIO"
+msgstr "O que rola no 1MIO"
+
+msgid "Confirm your email"
+msgstr "Confirme seu e-mail"
+
+msgid "We have sent a confirmation link to @email"
+msgstr "Enviamos um link para confirmação ao e-mail @email"
+
+msgid "Return to home page"
+msgstr "Voltar à página inicial"
+
+msgid "Your account was created, @user_name!"
+msgstr "Sua conta foi criada, @user_name!"
+
+msgid "Now you can take our '1MiO Hability' test"
+msgstr "Agora você pode fazer nosso teste de 'Habilidades 1MiO'"
+
+msgid "Start quiz"
+msgstr "Iniciar teste"
+
+msgid ""
+"TFA plugins for HMAC-based and Time-based One Time Passwords with "
+"recovery codes as fallback."
+msgstr "Plug-ins de Autenticação de Dois Fatores para senhas de uso único baseadas em HMAC e em tempo com códigos de recuperação como fallback."
+
+msgid "Pluggable provider of second factor authentication for Drupal"
+msgstr "Provedor conectável de autenticação de segundo fator para Drupal"
+
+msgid "TFA web service provider for the Services Module."
+msgstr "Provedor de serviços da web de Autenticação de Dois Fatores para o Módulo de Serviços."
+
+msgid "Contact support to reset your access"
+msgstr "Contate o suporte para resetar seu acesso."
+
+msgid "Your [site:name] account now has two-factor authentication"
+msgstr "1MiO - Ativação da autenticação em dois fatores"
+
+msgid ""
+"[user:display-name],\n"
+"\n"
+"Thanks for configuring two-factor "
+"authentication on your [site:name] account!\n"
+"\n"
+"This additional level "
+"of security will help to ensure that only you are able to log in to "
+"your account.\n"
+"\n"
+"If you ever lose the device you configured, you "
+"should act quickly to delete its association with this "
+"account.\n"
+"\n"
+"--\n"
+"[site:name] team"
+msgstr ""
+"[user:display-name],\r\n"
+"\r\n"
+"Pronto! A sua conta 1Mio está ainda "
+"mais protegida com a autenticação em dois fatores.\r\n"
+"\r\n"
+"Essa "
+"autenticação é uma etapa a mais de segurança para acesso a sua "
+"conta 1MiO. Além da senha, é preciso acessar a conta do aparelho - "
+"celular ou computador -  em que essa autenticação foi "
+"ativada.\r\n"
+"\r\n"
+"Por isso, se você não tiver mais acesso a este "
+"aparelho por alguma razão, recomendamos excluir imediatamente sua "
+"conta e a refazê-la em um aparelho que só você tenha acesso."
+
+
+msgid "Your [site:name] account no longer has two-factor authentication"
+msgstr "1MiO - Desativação da autenticação em dois fatores"
+
+
+msgid ""
+"[user:display-name],\n"
+"\n"
+"Two-factor authentication has been disabled "
+"on your [site:name] account.\n"
+"\n"
+"If you did not take this action, "
+"please contact a site administrator immediately.\n"
+"\n"
+"--\n"
+"[site:name] "
+"team"
+msgstr ""
+"[user:display-name],\r\n"
+"\r\n"
+"Você desativou a autenticação em dois "
+"fatores da sua conta 1MiO. \r\n"
+"\r\n"
+"Não foi você quem executou esta "
+"ação? Entre em contato imediatamente pelo e-mail contato@1mio.com.br"
+
+
+msgid "Two-factor Authentication"
+msgstr "Autenticação de dois fatores"
+
+msgid "TFA process and plugin settings."
+msgstr "Processo de Autenticação de Dois Fatores e configurações de plug-in."
+
+msgid "GA Login Time-based OTP(TOTP)"
+msgstr "OTP baseado em tempo de login do GA (TOTP)"
+
+msgid "GA Login Hmac-based OTP(HOTP)"
+msgstr "OTP baseado em HMAC de login do GA (HOTP)"
+
+msgid "TFA Recovery Code"
+msgstr "Código de Recuperação da Autenticação de Dois Fatores"
+
+msgid "TFA Trusted Browser"
+msgstr "Navegador confiável de Autenticação de Dois Fatores"
+
+msgid "Enable TFA"
+msgstr "Habilitar a Autenticação de Dois Fatores"
+
+msgid "Enable TFA for account authentication."
+msgstr "Ative a Autenticação de Dois Fatores para autenticação de conta."
+
+msgid "Roles required to set up TFA"
+msgstr "Funções necessárias para configurar a Autenticação de Dois Fatores"
+
+msgid "Require users with these roles to set up TFA"
+msgstr "Exigir que usuários com essas funções configurem a Autenticação de Dois Fatores"
+
+msgid "Allowed Validation plugins"
+msgstr "Plugins de validação permitidos"
+
+msgid "Plugins that can be setup by users for various TFA processes."
+msgstr "Plug-ins que podem ser configurados por usuários para vários processos de Autenticação de Dois Fatores."
+
+msgid "Default Validation plugin"
+msgstr "Plug-in de validação padrão"
+
+msgid "Plugin that will be used as the default TFA process."
+msgstr "Plugin que será usado como o processos da Autenticação de Dois Fatores padrão."
+
+msgid "Number of Accepted Codes"
+msgstr "Número de códigos aceitos"
+
+msgid ""
+"Number of past codes to consider valid. Codes are generated every 30 "
+"seconds, so setting this value to 10 would allow each code to work for "
+"five minutes."
+msgstr "Número de códigos anteriores a serem considerados válidos. Os códigos são gerados a cada 30 segundos, portanto, definir esse valor como 10 permitiria que cada código funcionasse por cinco minutos."
+
+msgid "Use site name as OTP QR code name prefix."
+msgstr "Use o nome do site como prefixo do nome do código QR OTP."
+
+msgid ""
+"If checked, the site name will be used instead of a static string. "
+"This can be useful for multi-site installations."
+msgstr "Se marcado, o nome do site será usado em vez de uma string estática. Isso pode ser útil para instalações em vários locais."
+
+msgid "OTP QR Code Prefix"
+msgstr "Prefixo do código QR OTP"
+
+msgid "Prefix for OTP QR code names. Suffix is account username."
+msgstr "Prefixo para nomes de código QR OTP. O sufixo é o nome de usuário da conta."
+
+msgid "Issuer"
+msgstr "Emitente"
+
+msgid "The provider or service this account is associated with."
+msgstr "O provedor ou serviço ao qual esta conta está associada."
+
+msgid "Counter Window"
+msgstr "Janela do contador"
+
+msgid "How far ahead from current counter should we check the code."
+msgstr "A que distância do contador atual devemos verificar o código."
+
+msgid "Recovery Codes Amount"
+msgstr "Valor dos códigos de recuperação"
+
+msgid "Number of Recovery Codes To Generate."
+msgstr "Número de códigos de recuperação a serem gerados."
+
+msgid "Extra Settings"
+msgstr "Configurações extras"
+
+msgid "Encryption profiles to encrypt the secret"
+msgstr "Perfis de criptografia para criptografar o segredo"
+
+msgid "Skip Validation"
+msgstr "Pular validação"
+
+msgid "No. of times a user without having setup tfa validation can login."
+msgstr "Número de vezes que um usuário sem ter configurado a validação do tfa pode fazer o login."
+
+msgid "Login plugins"
+msgstr "Plugins de login"
+
+msgid ""
+"Plugins that can allow a user to skip the TFA process. If any plugin "
+"returns true the user will not be required to follow TFA. <strong>Use "
+"with caution.</strong>"
+msgstr "Plug-ins que podem permitir que um usuário ignore o processo de Autenticação de Dois Fatores. Se algum plugin retornar verdadeiro, o usuário não será obrigado a seguir a Autenticação de Dois Fatores. <strong> Use com cuidado. </strong>"
+
+msgid "Flood Control With UID Only"
+msgstr "Controle de inundação apenas com UID"
+
+msgid "Flood control on the basis of uid only."
+msgstr "Controle de inundação com base apenas no uid."
+
+msgid "TFA Flood Window"
+msgstr "Janela de inundação da Autenticação de Dois Fatores"
+
+msgid "TFA Flood Window."
+msgstr "Janela de inundação da Autenticação de Dois Fatores."
+
+msgid "TFA Flood Threshold"
+msgstr "Limite de Autenticação de Dois Fatores Flood"
+
+msgid "TFA Flood Threshold."
+msgstr "Limite de Autenticação de Dois Fatores Flood."
+
+msgid "TFA Flood Settings"
+msgstr "Configurações de Autenticação de Dois Fatores Flood"
+
+msgid "Configure the TFA Flood Settings."
+msgstr "Defina as configurações de Autenticação de Dois Fatores Flood."
+
+msgid "User enabled TFA validation method"
+msgstr "Método de validação da Autenticação de Dois Fatores habilitado pelo usuário"
+
+msgid ""
+"This email is sent to the user when they enable a TFA validation "
+"method on their account. Available tokens are: [site] and [user]. "
+"Common variables are: [site:name], [site:url], [user:display-name], "
+"[user:account-name], and [user:mail]."
+msgstr "Este e-mail é enviado ao usuário quando ele habilita um método de validação da Autenticação de Dois Fatores em sua conta. Os tokens disponíveis são: [site] e [user]. As variáveis ​​comuns são: [site:name], [site:url], [user:display-name], [user:account-name], e [user:mail]."
+
+msgid "User disabled TFA validation method"
+msgstr "Método de validação da Autenticação de Dois Fatores desativado pelo usuário"
+
+msgid ""
+"This email is sent to the user when they disable a TFA validation "
+"method on their account. Available tokens are: [site] and [user]. "
+"Common variables are: [site:name], [site:url], [user:display-name], "
+"[user:account-name], and [user:mail]."
+msgstr "Este e-mail é enviado ao usuário quando ele desabilita um método de validação da Autenticação de Dois Fatores em sua conta. Os tokens disponíveis são: [site] e [user]. As variáveis ​​comuns são: [site:name], [site:url], [user:display-name], [user:account-name], e [user:mail]."
+
+msgid "Text to display when a user is locked out and blocked from logging in."
+msgstr "Texto a ser exibido quando um usuário está bloqueado e impedido de fazer login."
+
+msgid "TFA Settings"
+msgstr "Configurações de Autenticação de Dois Fatores"
+
+msgid "TFA application"
+msgstr "Aplicação da Autenticação de Dois Fatores"
+
+msgid "Reset application"
+msgstr "Resetar Autenticação de Dois Fatores"
+
+msgid "Skip"
+msgstr "Pular"
+
+msgid ""
+"Two-factor authentication (TFA) provides\n"
+"      additional security "
+"for your account. With TFA enabled, you log in to\n"
+"      the site "
+"with a verification code in addition to your username and\n"
+"      "
+"password."
+msgstr "Baixe o aplicativo para autenticação de dois fatores para gerar códigos de verificação de um celular ou computador. Essa etapa é obrigatória para manter a sua conta ainda mais segura ao acessar a sua conta, além do e-mail e senha. "
+
+msgid "GA Login Totp Setup"
+msgstr "Configuração TOTP de Login do GA"
+
+msgid "Validation Plugin: @plugin"
+msgstr "Plugin de validação: @plugin"
+
+msgid "Generate verification codes from a mobile or desktop application."
+msgstr "Gere códigos de verificação a partir de um aplicativo móvel ou desktop."
+
+msgid "Number of times validation skipped: @skipped of @limit"
+msgstr "Este é o @skippedº de @limit para ativação. Ative a autenticação para não perder o acesso à conta."
+
+
+msgid ""
+"Enter your current password to\n"
+"        alter TFA settings for "
+"account %name."
+msgstr "Digite sua senha atual para \n alterar as configurações de Autenticação de Dois Fatores para a conta %name."
+
+msgid "TFA setup"
+msgstr "Configurar Autenticação de Dois Fatores"
+
+msgid "Verify and save"
+msgstr "Confirmar"
+
+msgid ""
+"Install authentication code application on your mobile or desktop "
+"device:"
+msgstr "Instale o aplicativo compatível com seu celular (Android ou iOS) ou computador:"
+
+msgid ""
+"The two-factor authentication application will be used during this "
+"setup and for generating codes during regular authentication. If the "
+"application supports it, scan the QR code below to get the setup code "
+"otherwise you can manually enter the text code."
+msgstr "Ao instalar o aplicativo, digite este código:"
+
+msgid ""
+"Enter this code into your two-factor authentication app or scan the QR "
+"code below."
+msgstr "Ou aponte a câmera para este QR code:"
+
+msgid "QR code for TFA setup"
+msgstr "Código QR para configuração de Autenticação de Dois Fatores"
+
+msgid "Application verification code"
+msgstr "Digite o código de verificação gerado no aplicativo:"
+
+msgid ""
+"A verification code will be generated after you scan the above QR code "
+"or manually enter the setup code. The verification code is six digits "
+"long."
+msgstr "Um código de verificação será gerado após você digitalizar o código QR acima ou inserir manualmente o código de configuração. O código de verificação tem seis dígitos."
+
+msgid "TFA setup complete."
+msgstr "Configuração da Autenticação de Dois Fatores concluída."
+
+msgid ""
+"Status: <strong>TFA enabled</strong>, set\n"
+"          @time. <a "
+"href=\":url\">Disable TFA</a>"
+msgstr "Status: <strong>Autenticação de Dois Fatores habilitada</strong>, definido \n @time. <a href=\":url\">Desativar</a>"
+
+msgid "Are you sure you want to disable your two-factor authentication setup?"
+msgstr "Tem certeza de que deseja desativar a configuração da autenticação de dois fatores?"
+
+msgid ""
+"Your settings and data will be lost. You can re-enable two-factor "
+"authentication again from your profile."
+msgstr "Suas configurações e dados serão perdidos. Você pode reativar a autenticação de dois fatores novamente em seu perfil."
+
+msgid "Confirm your current password"
+msgstr "Confirme sua senha atual"
+
+msgid "Set up application"
+msgstr "Ativar autenticação"
+
+msgid "TFA disable"
+msgstr "Desativar autenticação"
+
+msgid "TFA Disable cancelled."
+msgstr "Desativação da Autenticação de Dois Fatores cancelada"
+
+msgid "TFA setup canceled."
+msgstr "Configuração da Autenticação de Dois Fatores cancelada"
+
+msgid "TFA has been disabled."
+msgstr "A Autenticação de Dois Fatores foi desativada."
+
+msgid "Verification code is application generated and @length digits long."
+msgstr "O código de verificação é gerado pelo aplicativo e possui dígitos @length."
+
+msgid "Verify"
+msgstr "Verificar"
+
+msgid "Two-Factor Authentication"
+msgstr "Autenticação de dois fatores"
+
+msgid "Two-Factor Authentication."
+msgstr "Autenticação de dois fatores."
+
+msgid "Create account"
+msgstr "Criar conta"
+
+msgid "Insert your e-mail address"
+msgstr "Insira seu endereço de e-mail"
+
+msgid "Insert your password"
+msgstr "Digite sua senha"
+
+msgid "Protect your account"
+msgstr "Proteja sua conta"
+
+msgid "Reset skip validation attempts"
+msgstr "Resetar tentativas de login sem Autenticação de Dois Fatores"
+
+msgid "Share something with our community"
+msgstr "Compartilhe algo com nossa comunidade"
+
+msgid "See Details"
+msgstr "Ver detalhes"
+
+msgid "1MiO - Your registration request needs review."
+msgstr "1MiO - Sua solicitação de cadastro precisa de revisão."
+
+msgid "@name,\n\nYour access to 1MiO was blocked for the following reason:\n\n@justify\n\nCheck your details and contact us by email: @systemEmail\n\n"
+msgstr "@name,\n\nO seu cadastro de acesso ao 1MiO foi bloqueado pelo seguinte motivo:\n\n@justify\n\nConfira seus dados e entre em contato com a gente pelo e-mail: @systemEmail\n\n"
+
+msgid "Save and log in as @username"
+msgstr "Salvar e entrar"
+
+msgid "Choose a new password"
+msgstr "Escolha uma nova senha"
+
+msgid "You have tried to use a one-time login link that has expired. Please request a new one using the <a href=":link">link</a>."
+msgstr "Você tentou utilizar um link que já expirou. Por favor solicite um novo utilizando esse <a href=":link">link</a>."
+
+msgid "Public sector"
+msgstr "Setor Público"
+
+msgid "People from my company"
+msgstr "Pessoas da minha empresa"
+
+msgid ""
+"You are required to <a href=\"@link\">setup two-factor "
+"authentication</a>. You have @remaining attempt left. After this you "
+"will be unable to login."
+msgid_plural ""
+"You are required to <a href=\"@link\">setup two-factor "
+"authentication</a>. You have @remaining attempts left. After this you "
+"will be unable to login."
+msgstr[0] "Você precisa fazer a <a href="@link">configuração de Autenticação de Dois Fatores</a>. Você ainda pode logar-se @remaining vez sem definir. Após isso você ficará impossibilitado de logar."
+msgstr[1] "Você precisa fazer a <a href="@link">configuração de Autenticação de Dois Fatores</a>. Você ainda pode logar-se @remaining vezes sem definir. Após isso você ficará impossibilitado de logar."
+
+msgid ""
+"Unrecognized email address or password. <a href=\":password\">Forgot "
+"your password?</a>"
+msgstr "Endereço de e-mail ou senha não reconhecidos. <a href=\":password\">Esqueceu sua senha?</a>"
+
+msgid "Enter your current password to continue."
+msgstr "Digite sua senha atual para continuar."
+
+msgid "Instructions will be sent to your email."
+msgstr "As instruções serão enviadas ao seu e-mail."
+
+msgid "Add new tag"
+msgstr "Adicionar nova tag"

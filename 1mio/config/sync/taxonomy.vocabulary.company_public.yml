@@ -1,0 +1,8 @@
+uuid: 269fe4d4-7843-4da2-a0f8-9c14149c6531
+langcode: pt-br
+status: true
+dependencies: {  }
+name: 'Perfis prioritários'
+vid: company_public
+description: ''
+weight: 0

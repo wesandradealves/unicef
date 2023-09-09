@@ -1,0 +1,32 @@
+msgid "About"
+msgstr "Sobre"
+
+msgid "Custom module to make changes in Course content type."
+msgstr "Módulo customizado para realizar modificações no tipo de conteúdo Cursos."
+
+msgid "Ending date must be after current date."
+msgstr "Data de término deve ser após a data de início."
+
+msgid "Expiration date must be after current date."
+msgstr "Data de expiração deve ser após a data de início"
+
+msgid "Course duration must be postive."
+msgstr "A duração do curso deve ser maior que zero."
+
+msgid "Link must be valid."
+msgstr "Confira se o link está certo."
+
+msgid "Ending date must be after starting date."
+msgstr "Data de término deve ser após a data de início."
+
+msgid "New Course"
+msgstr "Novo Curso"
+
+msgid "Courses from my company"
+msgstr "Cursos da minha empresa"
+
+msgid "Program"
+msgstr "Programa"
+
+msgid "Certificate"
+msgstr "Certificado"

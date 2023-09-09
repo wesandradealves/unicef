@@ -1,0 +1,20 @@
+_core:
+  default_config_hash: y7oCzsZ-B0R-nyeSFO1f2h9BEChUQGSZT-3cqXd-sLE
+langcode: pt-br
+bundle_types:
+  - node--social_post--comment
+available_alerts:
+  1: false
+  2: true
+enable_default:
+  watcher: '2'
+  entity_author: false
+mail_templates:
+  watcher:
+    node:
+      subject: '[site:name] - [comment:author] deixou um comentário na sua publicação!'
+      body: "Oi, [comment-subscribed:author]!\r\n\r\n[comment:author] deixou um comentário em uma publicação sua. Confira!\r\n\r\n<a href=\"[comment:url]\">Ver comentário</a>\r\n"
+  entity_author:
+    node:
+      subject: '[site:name] - [comment:author] deixou um comentário na sua publicação!'
+      body: "Oi, [node:author]!\r\n\r\n[comment:author] deixou um comentário em uma publicação sua. Confira!\r\n\r\n<a href=\"[comment:url]\">Ver comentário</a>"

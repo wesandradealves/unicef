@@ -1,0 +1,25 @@
+{#
+/**
+ * @file
+ * Default theme implementation for a region.
+ *
+ * Available variables:
+ * - content: The content for this region, typically blocks.
+ * - attributes: Remaining HTML attributes for the element, including:
+ *   - class: HTML classes that can be used to style contextually through CSS.
+ *
+ * @see template_preprocess_region()
+ *
+ * @ingroup themeable
+ */
+#}
+
+<section class="hero-banner-priority-profile px-md-0" style="background-image: url({{ image_banner }})">
+  <div class="row m-0">
+    <div class="hero-column col-12 col-md-10 offset-md-1 col-xl-6 offset-xl-3">
+      <div class="banner--priority--container d-flex justify-content-between">
+        <h1>{{ title }}</h1>
+      </div>
+    </div>
+  </div>
+</section>

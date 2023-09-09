@@ -1,0 +1,8 @@
+uuid: 94f46702-dda3-4ec7-99c3-1d31d9c02328
+langcode: pt-br
+status: true
+dependencies: {  }
+name: Benefícios
+vid: vacancy_benefits
+description: ''
+weight: 0

@@ -1,0 +1,77 @@
+uuid: 482e2f99-470e-4e37-9304-3277f4c48b25
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - node.type.company
+  module:
+    - content_moderation
+id: company_workflow
+label: 'Fluxo de Empresa'
+type: content_moderation
+type_settings:
+  states:
+    canceled:
+      label: Excluída
+      weight: -3
+      published: false
+      default_revision: true
+    draft:
+      label: 'Aguardando upload do termo'
+      weight: -1
+      published: false
+      default_revision: false
+    not_approved:
+      label: 'Não aprovado'
+      weight: -2
+      published: false
+      default_revision: false
+    pending_approval:
+      label: 'Aguardando aprovação pelo 1MIO'
+      weight: 0
+      published: false
+      default_revision: false
+    published:
+      label: Aprovado
+      weight: 1
+      published: true
+      default_revision: true
+  transitions:
+    company_approval:
+      label: 'Aprovação pelo 1MIO'
+      from:
+        - pending_approval
+      to: published
+      weight: -1
+    company_canceled:
+      label: 'Cancelamento de Empresa'
+      from:
+        - canceled
+        - draft
+        - not_approved
+        - pending_approval
+        - published
+      to: canceled
+      weight: 1
+    company_commitment_term_upload:
+      label: 'Upload do Termo'
+      from:
+        - draft
+      to: pending_approval
+      weight: -2
+    company_not_approved:
+      label: 'Não aprovação pelo 1MIO'
+      from:
+        - pending_approval
+      to: not_approved
+      weight: 0
+    create_new_draft:
+      label: 'Refazer upload do termo'
+      from:
+        - not_approved
+      to: draft
+      weight: -3
+  entity_types:
+    node:
+      - company
+  default_moderation_state: draft

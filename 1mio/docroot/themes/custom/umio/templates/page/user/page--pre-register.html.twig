@@ -1,0 +1,81 @@
+{#
+/**
+ * @file
+ * Default theme implementation for a region.
+ *
+ * Available variables:
+ * - content: The content for this region, typically blocks.
+ * - attributes: Remaining HTML attributes for the element, including:
+ *   - class: HTML classes that can be used to style contextually through CSS.
+ *
+ * @see template_preprocess_region()
+ *
+ * @ingroup themeable
+ */
+#}
+
+{% extends '@umio/components/page_two_columns.html.twig' %}
+
+{% block sidebar %}
+  {% include '@umio/components/sidebar_register.html.twig' with {
+    title: ('Created account'|t),
+    steps: {
+      1: {
+        'active': 'true',
+        'icon': 'ph-user-circle',
+        'text': ('Account type'|t)
+      },
+      2: {
+        'icon': 'ph-key',
+        'text': ('Access data'|t)
+      },
+      3: {
+        'icon': 'ph-user',
+        'text': ('Personal data'|t)
+      },
+    }
+  } %}
+{% endblock %}
+
+{% block content %}
+  <div id="register-company-form">
+    <div class="form-page-title">
+      <div class="page-icon-title">
+        <span class="page-title-title">{{ 'Hello!'|t }} </span>
+        <span class="page-info-icon">
+          <img class="ml-2 create-account-hand-icon" src="/{{ directory }}/images/icon_hand.png">
+        </span>
+      </div>
+      <span class="page-title-description page-title-description col-12 col-lg-8">{{ 'To register your account, select the type:'|t }}</span>
+    </div>
+
+    <div class="form-page-info">
+      <span class="page-info-icon">
+        <i class="ph-user-circle svg-white"></i>
+      </span>
+      <span class="page-info-text">{{ 'Account type'|t }}</span>
+    </div>
+
+    <div class="portal-btn-separator d-flex align-items-center flex-column flex-sm-row align-items-sm-start flex-wrap">
+      <span class="btn-portal-wrapper">
+        <a href="/register/candidate" class="btn-portal">
+          <i class="ph-user"></i>
+          <p>{{ 'Young'|t }}</p>
+        </a>
+      </span>
+      <span class="btn-portal-wrapper">
+        <a href="/register/manager" class="btn-portal">
+          <i class="ph-hard-drives"></i>
+          <p>{{ 'Company or Civil Society'|t }}</p>
+        </a>
+      </span>
+      <span class="btn-portal-wrapper">
+        <a href="/register/city-manager" class="btn-portal">
+          <i class="ph-bank"></i>
+          <p>{{ 'Public sector'|t }}</p>
+        </a>
+      </span>
+    </div>
+  </div>
+{% endblock %}
+

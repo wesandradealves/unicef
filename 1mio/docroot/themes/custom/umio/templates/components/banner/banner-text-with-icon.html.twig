@@ -1,0 +1,17 @@
+{#
+/**
+ * @file
+ * The banner with a text and a icon template.
+ */
+#}
+
+<section class="hero-banner--text-icon row w-100 partner-list" {% if bg_color %} style="background-color: {{ bg_color}}" {% endif %}>
+  <div class="col-12 col-md-10 offset-md-1 col-xl-6 offset-xl-3">
+    <div class="d-flex justify-content-center justify-content-md-start align-items-center">
+      {% if icon %}
+        <i class="{{ icon }}" {% if text_color %} style="color: {{ text_color}}" {% endif %}></i>
+      {% endif %}
+      <h1 class="m-0 display-5" {% if text_color %} style="color: {{ text_color}}" {% endif %}>{{ title }}</h1>
+    </div>
+  </div>
+</section>

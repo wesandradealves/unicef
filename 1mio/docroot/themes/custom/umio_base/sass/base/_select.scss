@@ -1,0 +1,117 @@
+.form-select {
+  &:focus {
+    box-shadow: none;
+    border-color: $blue-primary-main;
+    border-width: 1px;
+  }
+}
+
+.select2-container {
+  border-radius: 0px 0px 16px 16px;
+  .select2-dropdown--below {
+    border-radius: 0px 0px 16px 16px;
+  }
+  .select2-dropdown--above {
+    border-radius: 16px 16px 0px 0px;
+  }
+  .select2-results__options {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+    border-bottom-left-radius: 16px;
+    border-bottom-right-radius: 16px;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+}
+.form-group.form-type--select,
+.form-group.form-type-select {
+  &:focus-within {
+    label {
+      color: $blue-primary-main;
+    }
+    .select2-container {
+      border: 1px solid $blue-primary-main;
+    }
+  }
+  .select2-container {
+    border-radius: 8px;
+    border: 1px solid $gray-primary-20;
+    box-shadow: none !important;
+    width: 100% !important;
+    &:hover {
+      box-shadow: none !important;
+    }
+    &:active {
+      border: 1px solid $blue-primary-main;
+      border-bottom-left-radius: 0px;
+      border-bottom-right-radius: 0px;
+    }
+    &.error {
+      border: 1px solid $alert-red-50;
+    }
+    &.select2-container--focus,
+    &.select2-container--open {
+      .select2-selection {
+        box-shadow: none;
+      }
+    }
+    &.select2-container--open {
+      border-bottom-left-radius: 0px;
+      border-bottom-right-radius: 0px;
+    }
+    .select2-selection {
+      display: flex;
+      border-radius: 8px;
+      border: none;
+      height: 100%;
+      &.select2-selection--multiple {
+        ul {
+          flex-direction: column;
+          @include media-breakpoint-up(md) {
+            flex-direction: row;
+          }
+          li {
+            margin-top: 0;
+          }
+        }
+      }
+      .select2-selection__rendered {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        .select2-search__field {
+          &:focus {
+            box-shadow: none;
+          }
+        }
+      }
+      .select2-selection__arrow {
+        height: 100%;
+      }
+    }
+  }
+  .select2-container--default {
+    .select2-results__option--highlighted[aria-selected] {
+      background-color: $blue-primary-main;
+    }
+  }
+  label.error,
+  .form-item--error-message {
+    color: $alert-red-50;
+    font-weight: normal;
+    &:before {
+      display: none;
+    }
+  }
+  &.error {
+    display: flex;
+    flex-direction: column;
+    .select2-container {
+      border: 1px solid $alert-red-50;
+    }
+    label.error {
+      order: 1;
+    }
+  }
+}

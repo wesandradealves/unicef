@@ -1,0 +1,17 @@
+{#
+/**
+ * @file
+ * The call to action template.
+ * Available variables:
+ * - user_name: The name of the user.
+ */
+#}
+
+{% set name = user_name|split(' ') %}
+{% set first_name = name[0]|first %}
+
+{% set last_name = '' %}
+{% if name|length > 1 %}
+  {% set last_name = name|last|first %}
+{% endif %}
+<div class="name-default-picture">{{ first_name }}{{ last_name }}</div>

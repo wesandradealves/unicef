@@ -1,0 +1,25 @@
+uuid: 91b4c883-b3cc-484b-91ac-8e86ade80920
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_weight_skill_4
+    - taxonomy.vocabulary.quiz_questions
+id: taxonomy_term.quiz_questions.field_weight_skill_4
+field_name: field_weight_skill_4
+entity_type: taxonomy_term
+bundle: quiz_questions
+label: 'Peso da Habilidade "Aprendizagem e adaptabilidade"'
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  min: 0
+  max: 100
+  prefix: ''
+  suffix: ''
+field_type: integer

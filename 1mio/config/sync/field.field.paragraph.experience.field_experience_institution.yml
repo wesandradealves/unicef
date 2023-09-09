@@ -1,0 +1,19 @@
+uuid: bdd9ae59-4775-4bfb-b09e-3f9ec6a01610
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_experience_institution
+    - paragraphs.paragraphs_type.experience
+id: paragraph.experience.field_experience_institution
+field_name: field_experience_institution
+entity_type: paragraph
+bundle: experience
+label: Empresa
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

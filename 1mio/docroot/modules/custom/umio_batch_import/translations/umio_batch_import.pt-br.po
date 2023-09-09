@@ -1,0 +1,71 @@
+msgid "1MIO Batch Import"
+msgstr "1MIO Importação em Lotes"
+
+msgid "About"
+msgstr "Sobre"
+
+msgid "Custom module to import Excel data into Vacancies and Courses."
+msgstr "Módulo customizado para importar arquivos excel em Vagas e Cursos."
+
+msgid "Batch vacancies"
+msgstr "Vagas em lote"
+
+msgid "Vacancy in batch settings"
+msgstr "Configurações Vagas em lotes"
+
+msgid "Download sheet"
+msgstr "Baixar planilha"
+
+msgid "Sheet to import"
+msgstr "Planilha para importar"
+
+msgid "Excel File Imported Successfully</br><strong>@number</strong> entries saved."
+msgstr "Arquivo importado com sucesso</br><strong>@number</strong> dados salvos."
+
+msgid "File required."
+msgstr "Arquivo obrigatório."
+
+msgid "Empty file!"
+msgstr "Arquivo vazio!"
+
+msgid "Text before sheet template"
+msgstr "Texto antes do template da planilha"
+
+msgid "Sheet template"
+msgstr "Planilha template"
+
+msgid "Text after sheet template"
+msgstr "Texto depois do template da planilha"
+
+msgid "Text after submit"
+msgstr "Texto depois de enviar a planilha"
+
+msgid "Please do not change the sheet template!"
+msgstr "Por favor não altere o template da planilha!"
+
+msgid "An unexpected error ocurred. Please try again later."
+msgstr "Um erro inesperado ocorreu. Por favor tente novamente mais tarde."
+
+msgid "Batch cities"
+msgstr "Municípios em lote"
+
+msgid "City stamp"
+msgstr "Município selo"
+
+msgid "Vacancy batch import Settings"
+msgstr "Configurações de vagas em lote"
+
+msgid "City batch import Settings"
+msgstr "Configurações de município selo"
+
+msgid "Saving Data"
+msgstr "Salvando dados"
+
+msgid "Import process is starting."
+msgstr "Processo de importação iniciado"
+
+msgid "Processed @current out of @total. Estimated time: @estimate."
+msgstr "Processado @current de @total. Tempo estimado: @estimate."
+
+msgid "The process has encountered an error."
+msgstr "Ocorreu um erro no processo."

@@ -1,0 +1,45 @@
+uuid: c33d3248-636a-4b05-8b2c-0de76563bf30
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - field.field.taxonomy_term.stamp_unicef.field_stamp_unicef_acronym
+    - field.field.taxonomy_term.stamp_unicef.field_stamp_unicef_ibge
+    - field.field.taxonomy_term.stamp_unicef.field_stamp_unicef_join_date
+    - taxonomy.vocabulary.stamp_unicef
+id: taxonomy_term.stamp_unicef.default
+targetEntityType: taxonomy_term
+bundle: stamp_unicef
+mode: default
+content:
+  field_stamp_unicef_acronym:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_stamp_unicef_ibge:
+    type: number_integer
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_stamp_unicef_join_date:
+    type: timestamp
+    label: above
+    settings:
+      date_format: medium
+      custom_date_format: ''
+      timezone: ''
+    third_party_settings: {  }
+    weight: 2
+    region: content
+hidden:
+  description: true
+  langcode: true
+  search_api_excerpt: true

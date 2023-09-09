@@ -1,0 +1,56 @@
+.card-container {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+
+  .btn-primary {
+    &:active {
+      color: $blue-primary-dark;
+      background-color: $blue-primary-light;
+    }
+  }
+}
+
+.btn-container {
+  margin-top: 20px;
+  margin-bottom: 40px;
+}
+
+.btn-card {
+  cursor: pointer;
+  color: $gray-primary-10;
+  background-color: $blue-primary-main;
+  border-top-right-radius: 4rem;
+  height: 11.56rem;
+  width: 11.25rem;
+  .card-icon {
+    font-size: 60px;
+    display: block !important;
+  }
+
+  .card-icon-title {
+    font-weight: bold;
+  }
+
+  &:hover {
+    color: $gray-primary-10;
+    background-color: $blue-primary-dark;
+  }
+  &:active {
+    color: $blue-primary-dark;
+    background-color: $blue-primary-light;
+  }
+
+  & i, span {
+    & :active {
+      color: $blue-primary-dark;
+    }
+  }
+}
+
+.btn-active {
+  opacity: 1;
+}
+
+.btn-inactive {
+  opacity: 0.30;
+}

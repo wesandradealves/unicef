@@ -1,0 +1,134 @@
+# Note that the example .travis.yml file for child projects lives in /install.
+sudo: required
+language: php
+dist: bionic
+
+php: "7.4"
+
+matrix:
+  fast_finish: true
+
+env:
+  global:
+    - COMPOSER_BIN=$TRAVIS_BUILD_DIR/vendor/bin
+    - BLT_TRAVIS_DIR=$TRAVIS_BUILD_DIR/vendor/acquia/blt-travis
+    - BLT_DIR=$TRAVIS_BUILD_DIR/vendor/acquia/blt
+    - BUILD_DIR=$TRAVIS_BUILD_DIR
+    - BUILD_REPO_SLUG=$TRAVIS_REPO_SLUG
+    - BUILD_REPO_BRANCH=$TRAVIS_BRANCH
+    - GIT_COMMIT_MSG=$TRAVIS_COMMIT_MESSAGE
+
+services:
+  - mysql
+  - memcached
+
+jdk:
+  - oraclejdk8
+
+cache:
+  bundler: true
+  apt: true
+  directories:
+  - "$HOME/.composer/cache"
+  - "$HOME/.drush/cache"
+  - "$HOME/.npm"
+  - "$HOME/.nvm"
+
+addons:
+  ssh_known_hosts:
+    - svn-23659.prod.hosting.acquia.com
+    - svn-4707.devcloud.hosting.acquia.com
+  chrome: stable
+
+# @see https://docs.travis-ci.com/user/notifications
+notifications:
+  email:
+    - lloguercio@unicef.org
+    - desingh@unicef.org
+# - hipchat: [api token]@[room id or name]
+# - slack: '<account>:<token>#[channel]'
+
+before_install:
+  - sudo apt-get update && sudo apt-get install apt-transport-https ca-certificates -y && sudo update-ca-certificates
+  - wget http://pecl.php.net/get/memcached-3.1.5.tgz
+  - echo "no --disable-memcached-sasl" | pear install memcached-3.1.5.tgz
+  - printf "\n" | pecl install yaml
+  # Disable xdebug.
+  - phpenv config-rm xdebug.ini
+  - source ${BUILD_DIR}/scripts/setup_cb1
+  - composer validate --no-check-all --ansi
+  # - composer install
+  # Exit build early if only documentation was changed in a Pull Request.
+  # - source ${BLT_DIR}/scripts/travis/exit_early
+  - nvm install 14.0.0
+  - nvm use 14.0.0
+
+install:
+  - source ${BLT_TRAVIS_DIR}/scripts/setup_environment
+  - mysql -u root -e "CREATE DATABASE eca; GRANT ALL ON eca.* TO 'drupal'@'localhost';"
+  - source ${BLT_TRAVIS_DIR}/scripts/setup_project
+  # - touch blt/project.local.yml
+  - echo "memory_limit=1024M" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
+
+before_script:
+  - echo 'max_execution_time = 120' >> drupal.php.ini;
+  - echo 'sendmail_path = /bin/true' >> drupal.php.ini;
+  - phpenv config-add drupal.php.ini
+  - phpenv rehash
+  # Increase Robo timeout value.
+  - sed -i 's/$maxWait = 15/$maxWait = 60/' "${BLT_DIR}/src/Robo/Common/Executor.php"
+  - source ${BUILD_DIR}/scripts/deploy_update_remote
+  - source ${BUILD_DIR}/scripts/clean_pull_request
+
+script:
+  # This takes time.
+  - source ${BUILD_DIR}/blt/scripts/travis/run_tests
+
+before_deploy:
+  # this script is located in structure repo and adds all multisites to blt.yml
+  - source ${BUILD_DIR}/blt/scripts/travis/add_multisites
+
+after_success:
+  - source ${BUILD_DIR}/scripts/deploy_pull_request
+
+deploy:
+  # While both 'develop' and 'master' branches are primary development
+  # branches in typical scenarios, UNICEF's current on-going development
+  # regularly results in additional merge conflicts. This is primarily the
+  # result of code diverging and not staying in sync.
+  #
+  # UNICEF's canonical code repository branches master and develop should
+  # be the only source of upstream development. Downstream vendor forks where
+  # continued development occurs, should not, make use of these branches and
+  # instead use specialized `[branch]-[vendor]` naming conventions where
+  # the vendor's developers are actively working on items prior to merge upstream.
+  - provider: script
+    script: "${BUILD_DIR}/blt/scripts/travis/deploy_branch"
+    skip_cleanup: true
+    on:
+      branch: base-unicef-dev
+      php: 7.4
+  - provider: script
+    script: "${BUILD_DIR}/blt/scripts/travis/deploy_branch"
+    skip_cleanup: true
+    on:
+      branch: base-unicef-stage
+      php: 7.4
+  - provider: script
+    script: "${BUILD_DIR}/blt/scripts/travis/deploy_branch"
+    skip_cleanup: true
+    on:
+      branch: develop
+      php: 7.4
+  - provider: script
+    script: "${BUILD_DIR}/blt/scripts/travis/deploy_branch"
+    skip_cleanup: true
+    on:
+      branch: master
+      php: 7.4
+  - provider: script
+    script: "${BUILD_DIR}/blt/scripts/travis/deploy_tag"
+    skip_cleanup: true
+    on:
+      tags: true
+      php: 7.4

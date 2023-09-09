@@ -1,0 +1,10 @@
+uuid: f123c400-602d-48bb-915c-ba5cdbd0442b
+langcode: pt-br
+status: true
+dependencies: {  }
+id: counter_priority_profiles
+label: 'Perfis Prioritários'
+icon_uuid: null
+icon_default: null
+description: ''
+behavior_plugins: {  }

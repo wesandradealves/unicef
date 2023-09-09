@@ -1,0 +1,73 @@
+uuid: d802a23b-697b-42c2-8910-3f6d7ef6996c
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - node.type.company
+    - node.type.course
+    - node.type.social_post
+    - node.type.vacancy
+    - workflows.workflow.company_workflow
+    - workflows.workflow.vacancy_workflow
+  module:
+    - comment
+    - comment_delete
+    - content_moderation
+    - eu_cookie_compliance
+    - field_ui
+    - node
+    - paragraphs_type_permissions
+    - system
+    - tfa
+    - toolbar
+id: company_manager
+label: Consultoria
+weight: 4
+is_admin: null
+permissions:
+  - 'access administration pages'
+  - 'access content overview'
+  - 'access toolbar'
+  - 'access user profiles'
+  - 'administer comments'
+  - 'administer node display'
+  - 'administer nodes'
+  - 'administer users'
+  - 'cancel account'
+  - 'create company content'
+  - 'create course content'
+  - 'create paragraph content paragraph_address'
+  - 'create social_post content'
+  - 'create vacancy content'
+  - 'delete any comment'
+  - 'delete any comment anytime'
+  - 'delete any social_post content'
+  - 'delete paragraph content paragraph_address'
+  - 'disable own tfa'
+  - 'display eu cookie compliance popup'
+  - 'edit any company content'
+  - 'edit any course content'
+  - 'edit any vacancy content'
+  - 'edit own company content'
+  - 'edit own course content'
+  - 'edit own social_post content'
+  - 'edit own vacancy content'
+  - 'revert vacancy revisions'
+  - 'setup own tfa'
+  - 'update paragraph content paragraph_address'
+  - 'use company_workflow transition company_approval'
+  - 'use company_workflow transition company_canceled'
+  - 'use company_workflow transition company_commitment_term_upload'
+  - 'use company_workflow transition company_not_approved'
+  - 'use company_workflow transition create_new_draft'
+  - 'use vacancy_workflow transition cancel_vacancy'
+  - 'use vacancy_workflow transition change_vacancy'
+  - 'use vacancy_workflow transition creating_vacancy'
+  - 'use vacancy_workflow transition publish'
+  - 'use vacancy_workflow transition reject_vacancy'
+  - 'view any unpublished content'
+  - 'view own unpublished content'
+  - 'view paragraph content paragraph_address'
+  - 'view the administration theme'
+  - 'view user email addresses'
+  - 'view vacancy revisions'

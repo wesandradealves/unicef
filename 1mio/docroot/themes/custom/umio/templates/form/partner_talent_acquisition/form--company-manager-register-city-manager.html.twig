@@ -1,0 +1,46 @@
+{#
+/**
+  * @file
+  * Theme override for a 'form' element.
+  *
+  * Available variables
+  * - attributes: A list of HTML attributes for the wrapper element.
+  * - children: The child elements of the form.
+  *
+  * @see template_preprocess_form()
+  */
+#}
+{% extends '@umio/components/page_two_columns.html.twig' %}
+
+{% block sidebar %}
+  {% include '@umio/components/sidebar_register.html.twig' with {
+    title: ('Created account'|t),
+    steps: {
+      1: {
+        'active': 'true',
+        'done': 'true',
+        'icon': 'ph-user-circle',
+        'text': ('Account type'|t)
+      },
+      2: {
+        'active': 'true',
+        'icon': 'ph-key',
+        'text': ('Access data'|t)
+      },
+      3: {
+        'icon': 'ph-user',
+        'text': ('Personal data'|t)
+      },
+      4: {
+        'icon': 'ph-hard-drives',
+        'text': ('Company'|t)
+      },
+    }
+  } %}
+{% endblock %}
+
+{% block content %}
+  <form{{ attributes }}>
+    {{ children }}
+  </form>
+{% endblock %}

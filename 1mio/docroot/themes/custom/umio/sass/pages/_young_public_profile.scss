@@ -1,0 +1,87 @@
+.cb-young-public-profile--head {
+  .title-description {
+    margin-top: 35px !important;
+    h2, p {
+      font-size: 0.875rem;
+      line-height: 1.313rem;
+      color: $gray-primary-50;
+    }
+
+    h2 {
+      font-weight: 700;
+      font-size: 1.5rem;
+    }
+
+    p {
+      font-weight: 400;
+      font-size: 1rem;
+    }
+  }
+}
+
+.umio-younger-public-profile {
+  margin-bottom: 80px;
+  .btn-primary {
+    display: block;
+    width: 94%;
+    margin: 0 auto;
+    background-color: $orange-primary-main;
+    border-color: $orange-primary-main;
+
+    @include media-breakpoint-up(md) {
+      width: 50%;
+    }
+
+    @include media-breakpoint-up(xl) {
+      width: 30%;
+    }
+
+    &:hover {
+      color: $gray-primary-10;
+      background-color: $orange-primary-dark;
+    }
+
+    &:active {
+      color: $orange-primary-dark;
+      background-color: $orange-primary-light;
+    }
+  }
+}
+
+.cb-young-public-profile {
+  @include media-breakpoint-only(xs) {
+    padding: 0 3%;
+  }
+
+  .fieldset-legend {
+    display: none;
+  }
+
+  .form-type-checkbox{
+    border: 1px solid $gray-primary-20;
+    padding: 20px;
+    border-radius: 16px;
+    margin-bottom: 25px;
+
+    &.active-border {
+      border-color: $orange-primary-main;
+    }
+
+    @include media-breakpoint-up(md) {
+      padding: 25px;
+    }
+
+    .form-check-input {
+      margin-left: 0;
+      margin-right: 10px;
+      &:checked {
+        background-color: $orange-primary-main;
+        border-color: $orange-primary-main;
+      }
+    }
+
+    label {
+      font-weight: 700;
+    }
+  }
+}

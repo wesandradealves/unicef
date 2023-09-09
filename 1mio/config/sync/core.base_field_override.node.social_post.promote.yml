@@ -1,0 +1,22 @@
+uuid: ca38d953-a2ba-46e8-a829-7b3606fbf64b
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - node.type.social_post
+id: node.social_post.promote
+field_name: promote
+entity_type: node
+bundle: social_post
+label: 'Promovido para a página inicial'
+description: ''
+required: false
+translatable: true
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: Habilitado
+  off_label: Desligado
+field_type: boolean

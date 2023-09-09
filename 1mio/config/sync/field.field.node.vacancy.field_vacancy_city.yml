@@ -1,0 +1,21 @@
+uuid: 43d855bf-4f1d-45f7-8bf8-9a81d02af789
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_vacancy_city
+    - node.type.vacancy
+  module:
+    - options
+id: node.vacancy.field_vacancy_city
+field_name: field_vacancy_city
+entity_type: node
+bundle: vacancy
+label: Cidade
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string

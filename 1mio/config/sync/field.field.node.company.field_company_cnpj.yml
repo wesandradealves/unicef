@@ -1,0 +1,19 @@
+uuid: 2d85a1f1-4db6-4a57-ac41-d24b9a5f9d40
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_company_cnpj
+    - node.type.company
+id: node.company.field_company_cnpj
+field_name: field_company_cnpj
+entity_type: node
+bundle: company
+label: CNPJ
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

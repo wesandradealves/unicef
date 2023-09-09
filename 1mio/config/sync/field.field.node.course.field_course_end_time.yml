@@ -1,0 +1,21 @@
+uuid: 093bb69a-a01c-493e-89e1-09d0f52ff15e
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_course_end_time
+    - node.type.course
+  module:
+    - time_field
+id: node.course.field_course_end_time
+field_name: field_course_end_time
+entity_type: node
+bundle: course
+label: 'Horário de término'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: time

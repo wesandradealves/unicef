@@ -1,0 +1,16 @@
+{#
+/**
+ * @file
+ * The card template.
+ */
+#}
+
+<section class="card-cta">
+  <div class="title-webform d-inline-flex">
+    <h1>{{ title }}</h1>
+  </div>
+  <h2 id="page-title" class="title-message mb-5">{{ content }}</h2>
+  {% if cta %}
+    <a href="{{ cta.link }}" class="btn btn-primary me-3 btn-margin-top">{{ cta.text }}</a>
+  {% endif %}
+</section>

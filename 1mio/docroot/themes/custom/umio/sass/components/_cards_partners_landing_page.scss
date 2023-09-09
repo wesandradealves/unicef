@@ -1,0 +1,134 @@
+.view-id-view_company_partners, .view-id-view_public_institution_partners, .view-id-view_civil_society_partners {
+  .view-header {
+    font-size: .875rem;
+    color: $gray-primary-75;
+    margin-bottom: 20px;
+    .icon-content {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+      i, span {
+        font-weight: 700;
+        font-size: 1.5rem;
+        color: $gray-primary-50;
+      }
+      i {
+        margin-right: 16px;
+      }
+    }
+    .number-total {
+      font-weight: 700;
+      color: $purple-primary-main;
+      font-size: 1.125rem;
+      margin-right: 10px;
+    }
+  }
+
+  .view-content {
+    margin-bottom: 14px;
+  }
+
+  .view-footer {
+    display: flex;
+    justify-content: center;
+    @include media-breakpoint-up(md) {
+      justify-content: flex-end;
+    }
+    a {
+      font-weight: 700;
+      color: $purple-primary-main;
+      font-size: 1rem;
+    }
+  }
+  .views-view-grid .row div {
+    padding: 8px 0;
+    @include media-breakpoint-up(md) {
+      padding-right: calc(var(--bs-gutter-x) * .5);
+      padding-left: calc(var(--bs-gutter-x) * .5);
+    }
+  }
+
+  .company-partner-logo .company-partner-node img {
+    @include media-breakpoint-up(md) {
+      padding: 0;
+    }
+  }
+}
+
+.landing-page-our-partner-block {
+  padding-top: 32px !important;
+  @include media-breakpoint-up(md) {
+    padding-top: 80px !important;
+  }
+  @include media-breakpoint-up(lg) {
+    padding-top: 96px !important;
+  }
+}
+
+.view-id-view_company_partners {
+  @include media-breakpoint-up(md) {
+    padding-left: 32px !important;
+    padding-right: 32px !important;
+  }
+  @include media-breakpoint-up(lg) {
+    padding-left: 32px !important;
+    padding-right: 32px !important;
+  }
+}
+
+.view-id-view_public_institution_partners, .view-id-view_civil_society_partners {
+  @include media-breakpoint-up(md) {
+    padding-left: 32px !important;
+    padding-right: 32px !important;
+  }
+}
+
+.view-id-view_civil_society_partners {
+  padding-bottom: 64px !important;
+}
+
+.company-partner-logo {
+  &.border-radius-bottom {
+    border-bottom-right-radius: 40px;
+  }
+
+  &.border-radius-top {
+    border-top-left-radius: 40px;
+  }
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 157px;
+  width: 166px;
+  background-color: $gray-primary-10;
+
+  @include media-breakpoint-up(md) {
+    width: 161px;
+    height: 161px;
+  }
+
+  @media (min-width: 1024px) and (max-width: 1440px) {
+    width: 220px;
+    height: 220px;
+   }
+
+  @media (min-width: 1441px) {
+    width: 194px;
+    height: 194px;
+  }
+
+  .company-partner-node{
+    img {
+      padding: 16px;
+      height: auto;
+      width: 100%;
+    }
+  }
+}
+
+.view-view-company-partners {
+  .views-col {
+    width: 23%;
+  }
+}

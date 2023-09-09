@@ -1,0 +1,14 @@
+services:
+  umio_younger.young_service:
+    class: Drupal\umio_younger\Service\YoungService
+  umio_younger.young_fields:
+    class: Drupal\umio_younger\Service\YoungFieldsService
+    arguments: [
+      '@entity_type.manager'
+    ]
+  umio_younger.quiz_service:
+    class: Drupal\umio_younger\Service\QuizService
+    arguments: [
+      '@config.factory',
+      '@entity_type.manager'
+    ]

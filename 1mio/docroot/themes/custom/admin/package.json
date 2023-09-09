@@ -1,0 +1,19 @@
+{
+  "name": "1mio",
+  "version": "1.0.0",
+  "description": "1Mio",
+  "main": "index.js",
+  "scripts": {
+    "gulp": "gulp"
+  },
+  "author": "CI&T",
+  "license": "ISC",
+  "devDependencies": {
+    "bootstrap": "^5.0.2",
+    "gulp": "^4.0.2",
+    "gulp-minify-css": "^1.2.4",
+    "gulp-sass": "^5.0.0",
+    "sass": "^1.37.2"
+  },
+  "dependencies": {}
+}

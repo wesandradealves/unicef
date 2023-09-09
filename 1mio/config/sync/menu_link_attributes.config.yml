@@ -1,0 +1,9 @@
+langcode: pt-br
+attributes:
+  icon_class:
+    label: 'Class to the icon'
+    description: 'Class to the icon of the link'
+  target:
+    options:
+      _blank: 'Nova janela (_blank)'
+      _self: 'Mesma janela (_self)'

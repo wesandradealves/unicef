@@ -1,0 +1,20 @@
+uuid: ab8b1c9c-e570-41d9-ac25-ec1a0dedf0f6
+langcode: pt-br
+status: true
+dependencies:
+  module:
+    - taxonomy
+id: taxonomy_term.field_stamp_unicef_ibge
+field_name: field_stamp_unicef_ibge
+entity_type: taxonomy_term
+type: integer
+settings:
+  unsigned: false
+  size: normal
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

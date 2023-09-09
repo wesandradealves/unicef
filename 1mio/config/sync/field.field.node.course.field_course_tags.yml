@@ -1,0 +1,29 @@
+uuid: cc9902fd-50d5-45bc-8217-be6861bf34b4
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_course_tags
+    - node.type.course
+    - taxonomy.vocabulary.course_tags
+id: node.course.field_course_tags
+field_name: field_course_tags
+entity_type: node
+bundle: course
+label: Tags
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      course_tags: course_tags
+    sort:
+      field: name
+      direction: asc
+    auto_create: true
+    auto_create_bundle: ''
+field_type: entity_reference

@@ -1,0 +1,21 @@
+uuid: 154f71a0-da1f-4df3-a27f-ea653c5df05b
+langcode: pt-br
+status: true
+dependencies:
+  module:
+    - paragraphs
+id: paragraph.field_volunteer_work_title
+field_name: field_volunteer_work_title
+entity_type: paragraph
+type: string
+settings:
+  max_length: 255
+  case_sensitive: false
+  is_ascii: false
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

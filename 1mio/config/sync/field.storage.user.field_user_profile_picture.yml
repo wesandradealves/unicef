@@ -1,0 +1,30 @@
+uuid: 3830e61d-ed83-4c37-a556-5e0196acd69b
+langcode: pt-br
+status: true
+dependencies:
+  module:
+    - file
+    - image
+    - user
+id: user.field_user_profile_picture
+field_name: field_user_profile_picture
+entity_type: user
+type: image
+settings:
+  target_type: file
+  display_field: false
+  display_default: false
+  uri_scheme: public
+  default_image:
+    uuid: ''
+    alt: ''
+    title: ''
+    width: null
+    height: null
+module: image
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

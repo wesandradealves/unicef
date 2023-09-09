@@ -1,0 +1,11 @@
+_core:
+  default_config_hash: UVH1aJ4b44UM-VdPVN7hNNuuVqfReJxwfVeDQH1Hvsk
+langcode: pt-br
+ignored_config_entities:
+  - company.settings
+  - umio_batch_import.vacancy.settings
+  - umio_batch_import.city_stamp.settings
+  - shield.settings
+  - umio_younger.skills_config
+  - tfa.settings
+  - umio_front_area.umio_counters

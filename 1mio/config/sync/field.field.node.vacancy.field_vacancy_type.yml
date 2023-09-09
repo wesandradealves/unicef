@@ -1,0 +1,21 @@
+uuid: 1b134053-abdb-4eee-8b9f-b8ba2f998ba4
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_vacancy_type
+    - node.type.vacancy
+  module:
+    - options
+id: node.vacancy.field_vacancy_type
+field_name: field_vacancy_type
+entity_type: node
+bundle: vacancy
+label: 'Tipo de vaga'
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string

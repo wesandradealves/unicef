@@ -1,0 +1,39 @@
+name: 1MIO Admin Theme
+type: theme
+description: 'My Awesome theme'
+package: Custom
+core_version_requirement: 9.x
+logo: logo.png
+
+libraries:
+  - umio_base/global-styling
+  - admin/global-styling
+
+libraries-override:
+  gin/gin_editform:
+    js:
+      dist/js/gin_editform.js: FALSE
+  gin/gin_dialog:
+    css:
+      theme:
+        dist/css/gin_dialog.css: css/main.css
+
+libraries-extend:
+  gin/gin_dialog:
+    - admin/global-styling
+
+base theme: gin
+
+# Regions
+regions:
+  header: 'Header'
+  pre_content: 'Pre-content'
+  breadcrumb: Breadcrumb
+  highlighted: Highlighted
+  help: Help
+  content: Content
+  page_top: 'Page top'
+  page_bottom: 'Page bottom'
+  sidebar_first: 'First sidebar'
+regions_hidden:
+  - sidebar_first

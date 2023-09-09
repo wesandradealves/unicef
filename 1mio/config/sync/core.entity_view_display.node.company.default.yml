@@ -1,0 +1,272 @@
+uuid: a6be9011-c5c3-45ed-ada3-9e4014c0d756
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - field.field.node.company.field_company_address
+    - field.field.node.company.field_company_branch_activity
+    - field.field.node.company.field_company_cnpj
+    - field.field.node.company.field_company_commitment_term
+    - field.field.node.company.field_company_corporate_name
+    - field.field.node.company.field_company_cover
+    - field.field.node.company.field_company_email
+    - field.field.node.company.field_company_justify
+    - field.field.node.company.field_company_logo
+    - field.field.node.company.field_company_main_office
+    - field.field.node.company.field_company_mission_statement
+    - field.field.node.company.field_company_phone
+    - field.field.node.company.field_company_phone_extension
+    - field.field.node.company.field_company_profile
+    - field.field.node.company.field_company_public
+    - field.field.node.company.field_company_region
+    - field.field.node.company.field_company_scope_operation
+    - field.field.node.company.field_company_second_email
+    - field.field.node.company.field_company_segment
+    - field.field.node.company.field_company_size
+    - field.field.node.company.field_company_start_activity
+    - field.field.node.company.field_company_telephone
+    - field.field.node.company.field_company_type
+    - field.field.node.company.field_company_unicef_stamp
+    - field.field.node.company.field_company_values_statement
+    - field.field.node.company.field_deleted_at
+    - image.style.medium
+    - node.type.company
+  module:
+    - datetime
+    - file
+    - image
+    - options
+    - paragraphs
+    - telephone
+    - user
+id: node.company.default
+targetEntityType: node
+bundle: company
+mode: default
+content:
+  content_moderation_control:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_company_address:
+    type: paragraph_summary
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 25
+    region: content
+  field_company_branch_activity:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 7
+    region: content
+  field_company_cnpj:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 24
+    region: content
+  field_company_commitment_term:
+    type: file_default
+    label: above
+    settings:
+      use_description_as_link_text: true
+    third_party_settings: {  }
+    weight: 14
+    region: content
+  field_company_corporate_name:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 15
+    region: content
+  field_company_cover:
+    type: image
+    label: above
+    settings:
+      image_link: ''
+      image_style: ''
+      image_loading:
+        attribute: lazy
+    third_party_settings: {  }
+    weight: 4
+    region: content
+  field_company_email:
+    type: basic_string
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 9
+    region: content
+  field_company_justify:
+    type: basic_string
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 21
+    region: content
+  field_company_logo:
+    type: image
+    label: hidden
+    settings:
+      image_link: ''
+      image_style: medium
+      image_loading:
+        attribute: lazy
+    third_party_settings: {  }
+    weight: 3
+    region: content
+  field_company_main_office:
+    type: entity_reference_entity_view
+    label: above
+    settings:
+      view_mode: default
+      link: true
+    third_party_settings: {  }
+    weight: 25
+    region: content
+  field_company_mission_statement:
+    type: basic_string
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 22
+    region: content
+  field_company_phone:
+    type: telephone_link
+    label: above
+    settings:
+      title: ''
+    third_party_settings: {  }
+    weight: 12
+    region: content
+  field_company_phone_extension:
+    type: number_integer
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 11
+    region: content
+  field_company_profile:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 18
+    region: content
+  field_company_public:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 19
+    region: content
+  field_company_region:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 29
+    region: content
+  field_company_scope_operation:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 17
+    region: content
+  field_company_second_email:
+    type: basic_string
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 8
+    region: content
+  field_company_segment:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 6
+    region: content
+  field_company_size:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 13
+    region: content
+  field_company_start_activity:
+    type: datetime_default
+    label: above
+    settings:
+      timezone_override: ''
+      format_type: html_date
+    third_party_settings: {  }
+    weight: 16
+    region: content
+  field_company_telephone:
+    type: telephone_link
+    label: above
+    settings:
+      title: ''
+    third_party_settings: {  }
+    weight: 10
+    region: content
+  field_company_type:
+    type: list_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  field_company_unicef_stamp:
+    type: boolean
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    weight: 28
+    region: content
+  field_company_values_statement:
+    type: basic_string
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 23
+    region: content
+  langcode:
+    type: language
+    label: above
+    settings:
+      link_to_entity: false
+      native_language: false
+    third_party_settings: {  }
+    weight: 20
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 1
+    region: content
+hidden:
+  field_deleted_at: true
+  search_api_excerpt: true

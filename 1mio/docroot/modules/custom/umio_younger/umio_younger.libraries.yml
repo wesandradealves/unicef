@@ -1,0 +1,23 @@
+umio_younger.edit_profile_form:
+  version: VERSION
+  js:
+    js/edit_profile_form.js: {}
+  dependencies:
+    - core/jquery
+    - core/jquery.once
+
+umio_younger.register_young_form:
+  version: VERSION
+  js:
+    js/register_young_form.js: {}
+  dependencies:
+    - core/jquery
+    - core/jquery.once
+
+umio_younger.public_profile_form:
+  version: VERSION
+  js:
+    js/public_profile_form.js: {}
+  dependencies:
+    - core/jquery
+    - core/jquery.once

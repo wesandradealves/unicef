@@ -1,0 +1,32 @@
+name: 'UNICEF Profile'
+type: profile
+description: 'Provides a common core profile for all of the UNICEF properties.'
+core_version_requirement: ^8.8 || ^9
+distribution:
+  name: unicef_profile
+exclude:
+    - contact
+    - contact_storage
+    - contextual
+    - field_ui
+    - lightning_api
+    - lightning_contact_form
+    - lightning_landing_page
+    - lightning_layout
+    - lightning_media_instagram
+    - media_instagram
+    - lightning_media_twitter
+    - media_twitter
+    - lightning_page
+    - views_ui
+    - lightning_roles
+    - lightning_search
+    - panelizer
+    - panelizer_quickedit
+    - search_api_db
+    - search_api
+    - quickedit
+themes:
+  - seven
+  - unicef_base
+config_install: 'true'

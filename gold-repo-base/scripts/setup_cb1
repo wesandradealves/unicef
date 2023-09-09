@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+set -ev
+
+TRAVIS_LAST_COMMIT_MESSAGE=`git log --format=%B --no-merges -n 1`
+
+# Remove any git-related files
+rm -rf .git
+
+cp ${TRAVIS_BUILD_DIR}/composer.lock composer-backup.lock
+
+TEMP_SITE_NAME="docroot"
+
+mkdir --parents $TEMP_SITE_NAME
+
+cd $TEMP_SITE_NAME
+
+git init
+git remote add cb1 git@github.com:unicef/global-web-redesign.git
+
+if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then
+  BASEPR=`echo "$TRAVIS_LAST_COMMIT_MESSAGE" | sed -n 's/\(.*\)\[BASE-PR-\(.*\)\]\(.*\)$/\2/p'`
+fi
+
+if [[ $TRAVIS_LAST_COMMIT_MESSAGE =~ "[BASE-PR-" ]] && [[ "$BASEPR" ]]; then
+  git pull cb1 "pull/$BASEPR/head"
+elif [ $TRAVIS_BRANCH == 'base-unicef-dev' ]; then
+  git pull cb1 unicef-dev
+elif [ $TRAVIS_BRANCH == 'base-unicef-stage' ] || [ $TRAVIS_BRANCH == 'unicef-stage-gold' ]; then
+  git pull cb1 unicef-stage
+else
+  git pull cb1 unicef-master
+fi
+
+# Copy more sites for cb1.
+
+cp ./blt.yml ../site-blt.yml
+
+if [ -f ${TRAVIS_BUILD_DIR}/docroot/sites/sites.php ]; then
+  echo "\$sites['127.0.0.2'] = 'unicef.org.eca';" >> ${TRAVIS_BUILD_DIR}/docroot/sites/sites.php
+fi
+
+source ${TRAVIS_BUILD_DIR}/scripts/setup_project
+
+cd ${TRAVIS_BUILD_DIR} || exit
+
+set +v

@@ -1,0 +1,21 @@
+uuid: cf5119dc-ffc2-4b39-ae60-6c8471d5a442
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_vacancy_skills_match
+    - node.type.vacancy
+  module:
+    - options
+id: node.vacancy.field_vacancy_skills_match
+field_name: field_vacancy_skills_match
+entity_type: node
+bundle: vacancy
+label: 'Habilidades valorizadas'
+description: "Selecione até 2 competências que tenham mais a ver com essa vaga.\r\nEsse campo ajudará a enviarmos recomendações aos jovens de acordo com o resultado do teste de habilidades 1MiO."
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_integer

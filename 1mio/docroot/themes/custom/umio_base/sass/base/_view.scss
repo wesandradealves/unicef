@@ -1,0 +1,62 @@
+#block-admin-page-title {
+  &.block-page-title-block {
+    margin-top: 48px;
+    margin-bottom: 24px;
+  }
+
+  h1 {
+    font-weight: bold;
+  }
+
+  .view_icon_wrapper {
+    display: inline-block;
+    border-radius: 50%;
+    background-color: $blue-primary-main;
+    width: 2.125rem;
+    height: 2.125rem;
+    overflow: hidden;
+    color: white;
+    margin: 5px;
+
+    margin-right: 10px;
+
+    i {
+      font-size: 1.5em;
+      margin: 0.33rem;
+    }
+  }
+
+  .page-title-back-link {
+    font-size: 1.2rem;
+    letter-spacing: 0.3px;
+    color: $blue-primary-dark;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    font-weight: 700;
+    &::before {
+      color: $blue-primary-main;
+      font-weight: 600;
+      font-size: 1.4rem;
+      margin-right: 4px;
+      @include generate-icon("\f01b");
+    }
+  }
+
+  .block-title-content {
+    margin-top: 56px;
+    @include media-breakpoint-up(lg) {
+      margin-top: 0;
+    }
+  }
+}
+
+.custom-view-filters {
+  form.views-exposed-form {
+    min-width: initial !important;
+  }
+
+  .view-custom-actions {
+    @include make-layout-content();
+  }
+}

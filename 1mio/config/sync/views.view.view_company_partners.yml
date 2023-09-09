@@ -1,0 +1,470 @@
+uuid: 5a099f6c-d507-45f7-86ba-8d90270ee316
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_company_logo
+    - image.style.umio_partners_block
+    - node.type.company
+    - workflows.workflow.company_workflow
+  module:
+    - content_moderation
+    - image
+    - node
+    - options
+    - user
+    - views_infinite_scroll
+    - views_random_seed
+id: view_company_partners
+label: 'Parceiros Empresa'
+module: views
+description: ''
+tag: ''
+base_table: node_field_data
+base_field: nid
+display:
+  default:
+    id: default
+    display_title: Default
+    display_plugin: default
+    position: 0
+    display_options:
+      title: 'Empresas no 1MiO'
+      fields:
+        field_company_logo:
+          id: field_company_logo
+          table: node__field_company_logo
+          field: field_company_logo
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: field
+          label: ''
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: div
+          element_class: company-partner-node
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: div
+          element_wrapper_class: company-partner-logo
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: target_id
+          type: image
+          settings:
+            image_link: ''
+            image_style: umio_partners_block
+            image_loading:
+              attribute: lazy
+          group_column: ''
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+      pager:
+        type: some
+        options:
+          offset: 0
+          items_per_page: 0
+      exposed_form:
+        type: basic
+        options:
+          submit_button: Apply
+          reset_button: false
+          reset_button_label: Reset
+          exposed_sorts_label: 'Sort by'
+          expose_sort_order: true
+          sort_asc_label: Asc
+          sort_desc_label: Desc
+      access:
+        type: perm
+        options:
+          perm: 'access content'
+      cache:
+        type: tag
+        options: {  }
+      empty: {  }
+      sorts:
+        random_seed:
+          id: random_seed
+          table: views
+          field: random_seed
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: views_random_seed_random
+          order: ASC
+          expose:
+            label: ''
+            field_identifier: random_seed
+          exposed: false
+          user_seed_type: diff_per_user
+          anonymous_session: true
+          reset_seed_int: 0
+          reset_seed_custom: 60
+          reuse_seed: ''
+      arguments: {  }
+      filters:
+        status:
+          id: status
+          table: node_field_data
+          field: status
+          entity_type: node
+          entity_field: status
+          plugin_id: boolean
+          value: '1'
+          group: 1
+          expose:
+            operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
+        type:
+          id: type
+          table: node_field_data
+          field: type
+          entity_type: node
+          entity_field: type
+          plugin_id: bundle
+          value:
+            company: company
+          expose:
+            operator_limit_selection: false
+            operator_list: {  }
+        field_company_type_value:
+          id: field_company_type_value
+          table: node__field_company_type
+          field: field_company_type_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: list_field
+          operator: or
+          value:
+            company: company
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: false
+        moderation_state:
+          id: moderation_state
+          table: node_field_data
+          field: moderation_state
+          relationship: none
+          group_type: group
+          admin_label: ''
+          entity_type: node
+          plugin_id: moderation_state_filter
+          operator: in
+          value:
+            company_workflow-published: company_workflow-published
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+        field_company_logo_target_id:
+          id: field_company_logo_target_id
+          table: node__field_company_logo
+          field: field_company_logo_target_id
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: numeric
+          operator: 'not empty'
+          value:
+            min: ''
+            max: ''
+            value: ''
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+            min_placeholder: ''
+            max_placeholder: ''
+            placeholder: ''
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+      style:
+        type: grid
+        options:
+          grouping: {  }
+          columns: 4
+          automatic_width: false
+          alignment: horizontal
+          row_class_custom: row
+          row_class_default: false
+          col_class_custom: 'col-6 col-md-3 d-flex justify-content-center'
+          col_class_default: false
+      row:
+        type: fields
+      query:
+        type: views_query
+        options:
+          query_comment: ''
+          disable_sql_rewrite: false
+          distinct: false
+          replica: false
+          query_tags: {  }
+      relationships: {  }
+      header:
+        result:
+          id: result
+          table: views
+          field: result
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: result
+          empty: false
+          content: '@total'
+      footer: {  }
+      display_extenders: {  }
+    cache_metadata:
+      max-age: -1
+      contexts:
+        - 'languages:language_content'
+        - 'languages:language_interface'
+        - user
+        - 'user.node_grants:view'
+        - user.permissions
+      tags:
+        - 'config:field.storage.node.field_company_logo'
+        - 'config:workflow_list'
+  company_partner_block:
+    id: company_partner_block
+    display_title: 'Parceiros empresa bloco'
+    display_plugin: block
+    position: 1
+    display_options:
+      pager:
+        type: some
+        options:
+          offset: 0
+          items_per_page: 4
+      defaults:
+        pager: false
+        header: false
+        footer: false
+      display_description: ''
+      header:
+        area:
+          id: area
+          table: views
+          field: area
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: text
+          empty: false
+          content:
+            value: "<div class=\"icon-content\">\r\n  <i class=\"ph-buildings\"></i>\r\n  <span>Empresas</span>\r\n</div>"
+            format: full_html
+          tokenize: false
+        result:
+          id: result
+          table: views
+          field: result
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: result
+          empty: false
+          content: "<div class=\"d-flex align-items-center\">\r\n    <div class=\"number-total\">@total</div>\r\n    <div class=\"description\">Empresas de todo o Brasil</div>\r\n</div>"
+      footer:
+        area:
+          id: area
+          table: views
+          field: area
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: text
+          empty: false
+          content:
+            value: '<a class="d-flex justify-content-end " href="/empresas-parceiras">Ver tudo</a>'
+            format: full_html
+          tokenize: false
+      display_extenders: {  }
+    cache_metadata:
+      max-age: -1
+      contexts:
+        - 'languages:language_content'
+        - 'languages:language_interface'
+        - user
+        - 'user.node_grants:view'
+        - user.permissions
+      tags:
+        - 'config:field.storage.node.field_company_logo'
+        - 'config:workflow_list'
+  page_1:
+    id: page_1
+    display_title: Página
+    display_plugin: page
+    position: 2
+    display_options:
+      pager:
+        type: infinite_scroll
+        options:
+          offset: 0
+          items_per_page: 0
+          total_pages: null
+          id: 0
+          tags:
+            next: 'Avançar ›'
+            previous: '‹ Voltar'
+          expose:
+            items_per_page: false
+            items_per_page_label: 'Itens por página'
+            items_per_page_options: '5, 10, 25, 50'
+            items_per_page_options_all: false
+            items_per_page_options_all_label: '- Tudo -'
+            offset: false
+            offset_label: Deslocamento
+          views_infinite_scroll:
+            button_text: 'Load More'
+            automatically_load_content: true
+            initially_load_all_pages: false
+      sorts:
+        title:
+          id: title
+          table: node_field_data
+          field: title
+          relationship: none
+          group_type: group
+          admin_label: ''
+          entity_type: node
+          entity_field: title
+          plugin_id: standard
+          order: ASC
+          expose:
+            label: ''
+            field_identifier: title
+          exposed: false
+      defaults:
+        use_ajax: false
+        pager: false
+        sorts: false
+        header: false
+      use_ajax: true
+      header: {  }
+      display_extenders: {  }
+      path: empresas-parceiras
+    cache_metadata:
+      max-age: -1
+      contexts:
+        - 'languages:language_content'
+        - 'languages:language_interface'
+        - url.query_args
+        - 'user.node_grants:view'
+        - user.permissions
+      tags:
+        - 'config:field.storage.node.field_company_logo'
+        - 'config:workflow_list'

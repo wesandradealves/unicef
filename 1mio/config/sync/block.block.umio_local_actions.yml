@@ -1,0 +1,20 @@
+uuid: 09851512-1af1-4fd6-b9e4-60bd865c1b4c
+langcode: pt-br
+status: true
+dependencies:
+  theme:
+    - umio
+_core:
+  default_config_hash: 13GQpeITIJsp1kyPniXtWZfyFH87vb1xxJCHifL4UeE
+id: umio_local_actions
+theme: umio
+region: content
+weight: -4
+provider: null
+plugin: local_actions_block
+settings:
+  id: local_actions_block
+  label: 'Principais ações do administrador'
+  label_display: '0'
+  provider: core
+visibility: {  }

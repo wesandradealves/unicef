@@ -1,0 +1,22 @@
+uuid: 6d59b2dd-c2b1-4ba4-a073-8ebaa2e8d66d
+langcode: pt-br
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - umio
+_core:
+  default_config_hash: 9EoWV2Lot6FVSr50t4hoKgiz1LIXYWNG-IIPYsWxBqo
+id: umio_content
+theme: umio
+region: content
+weight: -3
+provider: null
+plugin: system_main_block
+settings:
+  id: system_main_block
+  label: 'Conteúdo da página principal'
+  label_display: '0'
+  provider: system
+visibility: {  }

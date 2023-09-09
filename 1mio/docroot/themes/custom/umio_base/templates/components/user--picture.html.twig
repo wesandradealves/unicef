@@ -1,0 +1,16 @@
+{#
+/**
+ * @file
+ * The user picture template.
+ */
+#}
+
+{% if user_picture %}
+  <span class="profile-details--picture"
+    style="background: url({{ user_picture }}); background-size: cover; background-position: center;">
+  </span>
+{% else %}
+  <span class="profile-details--picture"
+    style="background: url(/themes/custom/umio_base/images/profile-placeholder.png); background-size: cover; background-position: center;">
+  </span>
+{% endif %}

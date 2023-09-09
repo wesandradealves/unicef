@@ -1,0 +1,20 @@
+uuid: b3ef03b2-a764-434b-b774-cd4579e79c2e
+langcode: pt-br
+status: true
+dependencies:
+  module:
+    - node
+    - taxonomy
+id: node.field_vacancy_benefits
+field_name: field_vacancy_benefits
+entity_type: node
+type: entity_reference
+settings:
+  target_type: taxonomy_term
+module: core
+locked: false
+cardinality: -1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

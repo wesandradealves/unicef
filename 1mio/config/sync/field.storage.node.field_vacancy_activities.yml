@@ -1,0 +1,19 @@
+uuid: 96eb0475-49f1-457d-828f-5881d3b90196
+langcode: pt-br
+status: true
+dependencies:
+  module:
+    - node
+id: node.field_vacancy_activities
+field_name: field_vacancy_activities
+entity_type: node
+type: string_long
+settings:
+  case_sensitive: false
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

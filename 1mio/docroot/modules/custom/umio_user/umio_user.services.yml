@@ -1,0 +1,111 @@
+services:
+  umio_user.company_service:
+    class: Drupal\umio_user\Service\CompanyUserService
+    arguments: [
+      '@current_user'
+    ]
+
+  umio_user.user_service:
+    class: Drupal\umio_user\Service\UserService
+    arguments: [
+      '@company.company_service',
+      '@current_user'
+    ]
+
+  umio_user.social_service:
+    class: Drupal\umio_user\Service\SocialService
+
+  # Access Check
+  umio_user.partner_active_access_check:
+    class: Drupal\umio_user\Access\PartnerActiveAccessCheck
+    arguments: [
+      '@entity_type.manager'
+    ]
+    tags:
+      - { name: access_check, applies_to: _active_partner }
+
+  # Access Check
+  umio_user.same_company_access_check:
+    class: Drupal\umio_user\Access\SameUserCompanyAccessCheck
+    arguments: [
+      '@current_route_match',
+      '@entity_type.manager',
+      '@umio_user.user_service'
+    ]
+    tags:
+      - { name: access_check, applies_to: _same_company_user }
+
+  # Access Check
+  umio_user.same_logged_user:
+    class: Drupal\umio_user\Access\SameLoggedUserAccessCheck
+    arguments: [
+      '@current_route_match',
+      '@umio_user.user_service',
+    ]
+    tags:
+      - { name: access_check, applies_to: _same_logged_user }
+
+  # Access Check
+  umio_user.not_logged_user:
+    class: Drupal\umio_user\Access\NotTheSameLoggedUserAccessCheck
+    arguments: [
+      '@current_route_match'
+    ]
+    tags:
+      - { name: access_check, applies_to: _not_same_logged_user }
+
+  # Subscriber to the event we dispatch in hook_user_login.
+  umio_user_login:
+    class: '\Drupal\umio_user\EventSubscriber\UserLoginSubscriber'
+    arguments: ['@kernel']
+    tags:
+      - { name: 'event_subscriber' }
+
+
+  # Check if user complete his register
+  umio_user.route_permission:
+    class: '\Drupal\umio_user\EventSubscriber\UserRoutePermissionSubscriber'
+    arguments: [
+      '@kernel',
+      '@current_user',
+      '@current_route_match',
+    ]
+    tags:
+      - { name: 'event_subscriber' }
+
+  umio_user.register_route:
+    class: '\Drupal\umio_user\EventSubscriber\UserRegisterRouteSubscriber'
+    arguments: [
+      '@kernel',
+      '@current_user',
+    ]
+    tags:
+      - { name: 'event_subscriber' }
+
+  umio_user.user_editroute:
+    class: '\Drupal\umio_user\EventSubscriber\UserEditRouteSubscriber'
+    arguments: [
+      '@kernel',
+      '@current_user',
+      '@current_route_match',
+    ]
+    tags:
+      - { name: 'event_subscriber' }
+
+  # Check if user complete his register
+  umio_user.approved_subscriber:
+    class: '\Drupal\umio_user\EventSubscriber\UserApprovedSubscriber'
+    arguments: [
+      '@kernel',
+      '@current_user',
+      '@current_route_match',
+      ]
+    tags:
+      - { name: 'event_subscriber' }
+
+  umio_user.password_validator:
+    class: Drupal\company\Service\CompanyFormValidator
+    arguments: [
+      '@password_policy.validator',
+      '@path.current',
+    ]

@@ -1,0 +1,23 @@
+uuid: 3e51a3ad-3e82-41f9-a14e-95b2bafe688e
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_stamp_unicef_ibge
+    - taxonomy.vocabulary.stamp_unicef
+id: taxonomy_term.stamp_unicef.field_stamp_unicef_ibge
+field_name: field_stamp_unicef_ibge
+entity_type: taxonomy_term
+bundle: stamp_unicef
+label: IBGE
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

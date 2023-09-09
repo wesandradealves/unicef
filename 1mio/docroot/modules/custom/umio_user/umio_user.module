@@ -1,0 +1,330 @@
+<?php
+
+/**
+ * @file
+ * Contains umio_user.module.
+ */
+
+use Drupal\Core\Url;
+use Drupal\file\Entity\File;
+use Drupal\umio_user\Event\UserLoginEvent;
+use Drupal\user\Entity\User;
+use Drupal\user\UserInterface;
+
+/**
+ * Implements hook_theme().
+ */
+function umio_user_theme(): array {
+  return [
+    'page_pre_register_user' => [
+      'render element' => 'children',
+      'template' => 'page--pre-register',
+      'path' => '../../../themes/custom/umio/templates/page/user',
+      'variables' => [],
+    ],
+    'page_email_confirmation' => [
+      'render element' => 'children',
+      'template' => 'page--register-confirm-email',
+      'path' => '../../../themes/custom/umio/templates/page/user',
+      'variables' => [
+        'email' => NULL,
+      ],
+    ],
+    'page_admin_people_profile' => [
+      'template' => 'page-custom-admin--people--profile',
+      'path' => '../../../themes/custom/admin/templates/page',
+      'variables' => [
+        'company_user' => NULL,
+        'target_user' => NULL,
+        'current_user' => NULL,
+        'headerActions' => [],
+        'bodyItems' => [],
+      ],
+    ],
+    'page__user__reset' => [
+      'template' => 'page/page--user--reset',
+      'base hook' => 'page',
+      'preprocess functions' => [
+        'gin_login_preprocess_ginlogin',
+      ],
+    ],
+  ];
+
+}
+
+/**
+ * Implements hook_user_login().
+ */
+function umio_user_user_login(UserInterface $account):void {
+  // Instantiate our event.
+  $event = new UserLoginEvent($account);
+
+  // Get the event_dispatcher service and dispatch the event.
+  $event_dispatcher = \Drupal::service('event_dispatcher');
+  $event_dispatcher->dispatch($event, UserLoginEvent::EVENT_NAME);
+}
+
+/**
+ * Implements hook_preprocess_page().
+ */
+function umio_user_preprocess_page(array &$variables): void {
+  $current_route = \Drupal::routeMatch();
+  $route_name = $current_route->getRouteName();
+
+  if ($route_name == 'umio_user.confirm_email') {
+    $variables['email'] = $current_route->getParameter('email');
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function umio_user_form_user_cancel_form_alter(array &$form): void {
+  unset($form['actions']['cancel']);
+  $form['actions']['submit']['#value'] = t('Cancel account');
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function umio_user_form_user_login_form_alter(array &$form): void {
+  // Adjust form variables.
+  $form['name']['#description'] = '';
+  $form['pass']['#description'] = '';
+  $form['name']['#attributes']['placeholder'] = t('Insert your e-mail address');
+  $form['pass']['#attributes']['placeholder'] = t('Insert your password');
+  // Set the more-links var.
+  $more_links = &$form['more-links'];
+  // Set the current element to register_button;
+  $register_button = &$more_links['register_button'];
+  $register_button['#url'] = Url::fromRoute("umio_user.register");
+  $register_button['#title'] = t('Create account');
+  $register_button['#attributes']['class'] = ['register-button', 'link'];
+  $register_button['#type'] = 'link';
+  $register_button['#weight'] = 3;
+  // Set the current element to forgot_password_link;
+  $forgot_password_link = &$more_links['forgot_password_link'];
+  $forgot_password_link['#attributes']['class'] = ['forgot-password-link', 'link'];
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function umio_user_form_user_pass_alter(array &$form): void {
+  // Set the more-links var.
+  $user_pass = &$form;
+  // Set the current element to register_button;
+  $back_button = &$user_pass['actions']['back'];
+  $back_button = [
+    '#type' => 'link',
+    '#url' => Url::fromRoute("user.login"),
+    '#title' => t('Back'),
+    '#attributes' => [
+      'class' => [
+        'back-link',
+        'link',
+      ],
+    ],
+    '#weight' => 2,
+  ];
+
+  $user_pass['mail']['#markup'] = t('Instructions will be sent to your email.');
+  $user_pass['actions']['submit'] = [
+    '#type' => 'submit',
+    '#value' => t('Send'),
+  ];
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function umio_user_form_tfa_entry_form_alter(array &$form): void {
+  // Set the more-links var.
+  $user_pass = &$form;
+
+  // Set the current element to register_button;
+  $back_button = &$user_pass['actions']['back'];
+  $back_button = [
+    '#type' => 'link',
+    '#url' => Url::fromRoute("user.login"),
+    '#title' => t('Back'),
+    '#attributes' => [
+      'class' => [
+        'back-link',
+        'link',
+      ],
+    ],
+    '#weight' => 2,
+  ];
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK_alter().
+ */
+function umio_user_theme_suggestions_page_alter(array &$suggestions, array $variables): void {
+  $route = Drupal::routeMatch()->getRouteName();
+  $ginLoginRoutes = [
+    'tfa.entry' => 'page__tfa_entry_form',
+  ];
+  if (array_key_exists($route, $ginLoginRoutes)) {
+    // Suggest the template based on the route array value.
+    $suggestions[] = $ginLoginRoutes[$route];
+    $variables['page']['#attached']['library'][] = 'gin_login/gin_login';
+  }
+  $noHeaderRoutes = ['umio_user.register', 'umio_younger.register_young', 'company_manager.register', 'company_manager.register_city_manager', 'umio_younger.register_additional'];
+  if (in_array($route, $noHeaderRoutes)) {
+    $suggestions[] = 'page__without_header';
+  }
+
+}
+
+/**
+ * Implements hook_gin_login_route_definitions_alter().
+ */
+function umio_user_gin_login_route_definitions_alter(array &$route_definitions): void {
+  if (\Drupal::moduleHandler()->moduleExists('gin_login')) {
+    $defaultValues = [
+      'page' => '',
+      'template' => '',
+      'preprocess functions' => [],
+    ];
+    $route_definitions['tfa.entry'] = $defaultValues;
+    $route_definitions['user.reset'] = $defaultValues;
+  }
+}
+
+/**
+ * Implements hook_preprocess_hook().
+ */
+function umio_user_preprocess_page_title(array &$data, string $hook): void {
+  $current_route = \Drupal::routeMatch();
+  $route_name = $current_route->getRouteName();
+  if (validateTfaRoute($route_name)) {
+    $data['title'] = t('Protect your account');
+  }
+}
+
+/**
+ * Implements hook_preprocess_breadcrumb().
+ */
+function umio_user_preprocess_breadcrumb(array &$data, string $hook): void {
+  $current_route = \Drupal::routeMatch();
+  $route_name = $current_route->getRouteName();
+  if (validateTfaRoute($route_name)) {
+    $data['breadcrumb'][2]['text'] = t('Protect your account');
+  }
+}
+
+/**
+ * Function that verifies if a route is in tfa route group.
+ */
+function validateTfaRoute(string $route_name): bool {
+  $route = explode('.', $route_name);
+  if ($route[0] == 'tfa') {
+    return true;
+  }
+  return FALSE;
+}
+
+/**
+ * Implements preprocess_hook().
+ */
+function umio_user_preprocess_region(array &$vars, string $hook): void {
+  if (isset($vars['user']) && $vars['region'] === 'header') {
+    /** @var \Drupal\Core\Session\AccountProxy $user */
+    $user = $vars['user'];
+    $user = User::load($user->id());
+    $name = $user->get('field_user_name')->getString();
+    $vars['current_user']['name'] = $name;
+    $firstName = strstr($name, ' ', true) ? strstr($name, ' ', true) : $name;
+    $vars['current_user']['first_name'] = $firstName;
+    $picture = $user->get('field_user_profile_picture')->getValue();
+    if (isset($picture[0]) && !empty($picture[0])) {
+      $picture = File::load($picture[0]['target_id']);
+      if ($picture) {
+        $vars['current_user']['picture'] = $picture->createFileUrl(true);
+      }
+    }
+
+    $vars['#cache']['contexts'][] = 'user';
+  }
+}
+
+function umio_user_form_tfa_base_overview_alter(array &$form): void {
+  // Instantiate our event.
+  $current_route = \Drupal::routeMatch();
+  $route_user = $current_route->getRawParameter('user');
+  unset($form['status']);
+  unset($form['ga_login_totp']['heading']);
+  unset($form['ga_login_totp']['validation_plugin']);
+  unset($form['ga_login_totp']['description']);
+  $form['ga_login_totp']['link']['#attributes'] = [
+    'class' => [
+      'py-3',
+    ],
+  ];
+  $form['ga_login_totp']['link']['#links']['disable'] = [
+    'title' => t('TFA disable'),
+    'url' => Url::fromRoute('tfa.disable', ['user' => $route_user]),
+  ];
+
+  $form['#attributes']['class'] = [
+    'py-5',
+  ];
+}
+
+/**
+ * Implements hook_menu_local_tasks_alter().
+ */
+function umio_user_menu_local_tasks_alter(array &$data, string $route_name): void {
+  if (isset($data['tabs'][0])) {
+    $tfa_menu_button = $data['tabs'][0];
+    if (isset($tfa_menu_button['tfa.overview']) && $tfa_menu_button['tfa.overview'] !== NULL) {
+      $tfa_menu_button['tfa.overview']['#link']['title'] = t('Protect your account');
+    }
+  }
+
+  $routes = [
+    'entity.user.canonical',
+    'entity.node.canonical',
+    'entity.node.edit_form',
+  ];
+  $roles = \Drupal::currentUser()->getRoles();
+  if (!in_array('administrator', $roles) && in_array($route_name, $routes)) {
+    unset($data['tabs']);
+  }
+}
+
+/**
+ * Implements hook_preprocess_menu().
+ */
+function umio_user_preprocess_menu(array &$variables): void {
+  if ($variables['menu_name'] === 'main') {
+    $currentUser = \Drupal::currentUser();
+    if ($currentUser->isAnonymous()) {
+      return;
+    }
+    foreach ($variables['items'] as $key => $menuItem) {
+      /** @var \Drupal\Core\Url $url */
+      $url = $menuItem['url'];
+      $uri = urldecode($url->toUriString());
+      if ($uri && str_contains($uri, '{user}')) {
+        $newUri = str_replace('{user}', (string) $currentUser->id(), $uri);
+        $newUrl = Url::fromUri($newUri, $url->getOptions());
+        $variables['items'][$key]['url'] = $newUrl;
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function umio_user_preprocess_node(array &$variables): void {
+  $node = $variables['elements']['#node'];
+  if ($node->bundle() == 'social_post') {
+    $timeStamp = $node->getCreatedTime();
+    $socialService = \Drupal::service('umio_user.social_service');
+    $variables['created'] = $socialService->getNodeCreatedField($timeStamp);
+  }
+}

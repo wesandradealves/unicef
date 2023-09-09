@@ -1,0 +1,23 @@
+uuid: 964c8d36-e025-4157-a68d-460d652cd5f4
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_ethnic_racial_equity
+    - paragraphs.paragraphs_type.counter_priority_profiles
+id: paragraph.counter_priority_profiles.field_ethnic_racial_equity
+field_name: field_ethnic_racial_equity
+entity_type: paragraph
+bundle: counter_priority_profiles
+label: 'Equidade Étnico Racial'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: 0
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

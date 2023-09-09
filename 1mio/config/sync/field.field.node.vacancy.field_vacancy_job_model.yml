@@ -1,0 +1,21 @@
+uuid: f86e14b5-b2f1-42a3-b889-160d23d62b8e
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_vacancy_job_model
+    - node.type.vacancy
+  module:
+    - options
+id: node.vacancy.field_vacancy_job_model
+field_name: field_vacancy_job_model
+entity_type: node
+bundle: vacancy
+label: 'Modelo de trabalho'
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string

@@ -1,0 +1,281 @@
+// Mobile size
+.hero-banner-landing-page--background-color {
+  // background-color: $blue-primary-main;
+  background: linear-gradient(
+    135deg,
+    rgba(251, 92, 16, 1) 0%,
+    rgba(183, 29, 255, 1) 100%
+  );
+  margin-bottom: -1px;
+  height: 450px;
+
+  .hero-banner-landing-page {
+    // background tests with a .gif
+    background-image: url('../images/new_layout/Urbano.gif');
+    background-repeat: no-repeat;
+    background-size: cover;
+
+    .hero-banner--tree-animation,
+    .hero-banner--set-tree-animation {
+      display: none;
+    }
+
+    /*  Bicycle animation   */
+    .landingpage-bicycle-container {
+      position: relative;
+      width: 100%;
+      height: 150px;
+    }
+
+    .hero-banner-background-bark {
+      .content-full {
+        display: flex;
+        align-items: center;
+        height: 200px;
+      }
+      .content-phrase-and-link {
+        height: 100%;
+      }
+
+      .landing-phrase-content {
+          padding: 3rem 2rem;
+          height: 100%;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-around;
+          align-items: center;
+          color: #fff;
+
+        h1 {
+          font-weight: 700;
+          font-size: 1.1rem;
+          line-height: 16.37px;
+          text-align: center;
+        }
+        h2 {
+          font-weight: 400;
+          font-size: .87rem;
+          line-height: 14.06px;
+          text-align: center;
+          @include media-breakpoint-up(lg) {
+            width: 70%;
+          }
+        }
+      }
+      .landing-container-btn-link {
+        display: flex;
+        justify-content: center;
+        height: 100px;
+
+        .landing-btn-link {
+          background-color: #000; /* $gray-primary-10*/
+          display: flex;
+          align-items: center;
+          padding: 16px 24px;
+          text-decoration: none;
+          color: $gray-primary-10; //$blue-primary-main
+          font-weight: 700;
+        }
+      }
+    }
+  }
+}
+// 768px
+@include media-breakpoint-up(md) {
+  .hero-banner-landing-page--background-color {
+    height: 600px;
+    margin-bottom: 0;
+    .hero-banner-landing-page-repeat-x {
+      .hero-banner-landing-page {
+        background-image: url('../images/new_layout/Urbano.gif'),
+          url('../images/new_layout/outdoor.svg'),
+          url('../images/new_layout/Nuvens.gif'),
+          url('../images/new_layout/background_ray.svg');
+        background-repeat: no-repeat, no-repeat, no-repeat, no-repeat;
+        background-size: 159% 133%, 58% 106%, 119% 102%, 169%;
+        background-position: bottom, bottom, bottom, bottom;
+        height: 600px;
+
+        .hero-banner--tree-animation,
+        .hero-banner--tree-animation {
+          position: absolute;
+          display: initial;
+          height: 244px;
+          width: 179px;
+        }
+
+        .tree-animation-1 {
+          bottom: 0;
+          right: -200px;
+          animation: treeAnimation 10s infinite linear;
+          animation-delay: 2s;
+        }
+        .tree-animation-2 {
+          bottom: 0;
+          right: -200px;
+          animation: treeAnimation 10s infinite linear;
+          animation-delay: 5s;
+        }
+        @keyframes treeAnimation {
+          0% {
+            right: -200px;
+          }
+          100% {
+            right: calc(100% + 200px);
+          }
+        }
+      }
+
+      .hero-banner-background-bark {
+        height: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: flex-end;
+
+        .content-full {
+          display: none;
+
+          .umio-logo-container {
+            justify-content: flex-start;
+            padding: 45px 0 0 30px;
+          }
+          .landing-phrase-content {
+            width: 50%;
+            padding: 23px 0 0 30px;
+          }
+        }
+        .landing-container-btn-link {
+          justify-content: flex-start;
+          align-items: flex-end;
+          padding-bottom: 15%;
+
+          .landing-btn-link {
+            padding: 1.5rem 1.5rem;
+            font-size: 1.5rem;
+          }
+        }
+      }
+      .landingpage-bicycle-container {
+        width: calc(100% + 100px);
+        height: 50%;
+        padding: 0;
+      }
+    }
+  }
+}
+
+@media (min-width: 900px) {
+  .hero-banner-landing-page--background-color {
+    height: 650px;
+    .hero-banner-landing-page-repeat-x {
+      .hero-banner-landing-page {
+        height: 650px;
+      }
+    }
+  }
+}
+
+@media (min-width: 1020px) {
+  .hero-banner-landing-page--background-color {
+    height: 715px;
+    .hero-banner-landing-page-repeat-x {
+      .hero-banner-landing-page {
+        height: 715px;
+        background-size: 133% 121%, 50% 102%, 107% 101%, 143%;
+
+        .hero-banner-background-bark {
+          .landing-container-btn-link {
+            padding-bottom: 12%;
+            .landing-btn-link {
+              padding: 1.8rem;
+              font-size: 1.67rem;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: 1200px) {
+  .hero-banner-landing-page--background-color {
+    .hero-banner-landing-page-repeat-x {
+      .hero-banner-landing-page {
+        .hero-banner-background-bark {
+          .landing-container-btn-link {
+            padding-bottom: 23%;
+            .landing-btn-link {
+              padding: 2rem;
+              font-size: 2rem;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: 1370px) {
+  .hero-banner-landing-page--background-color {
+    .hero-banner-landing-page-repeat-x {
+      .hero-banner-landing-page {
+        background-size: 118% 116%, 70% 90%, 107% 101%, 143%;
+        .hero-banner-background-bark {
+          .landing-container-btn-link {
+            padding-bottom: 15%;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: 1550px) {
+  .hero-banner-landing-page--background-color {
+    .hero-banner-landing-page-repeat-x {
+      .hero-banner-landing-page {
+        background-size: 118% 116%, 70% 90%, 100% 102%, 103%;
+      }
+    }
+  }
+}
+@media (min-width: 1610px) {
+  .hero-banner-landing-page--background-color {
+    .hero-banner-landing-page-repeat-x {
+      .hero-banner-landing-page {
+        background-size: 118% 116%, 70% 90%, 107% 101%, 143%;
+        .hero-banner-background-bark {
+          .landing-container-btn-link {
+            padding-bottom: 13%;
+          }
+        }
+      }
+    }
+  }
+}
+@media (min-width: 1840px) {
+  .hero-banner-landing-page--background-color {
+    .hero-banner-landing-page-repeat-x {
+      .hero-banner-landing-page {
+        .hero-banner-background-bark {
+          .landing-container-btn-link {
+            padding-bottom: 12%;
+          }
+        }
+      }
+    }
+  }
+}
+@media (min-width: 1920px) {
+  .hero-banner-landing-page--background-color {
+    .hero-banner-landing-page-repeat-x {
+      .hero-banner-landing-page {
+        .hero-banner-background-bark {
+          .landing-container-btn-link {
+            padding-bottom: 12%;
+          }
+        }
+      }
+    }
+  }
+}

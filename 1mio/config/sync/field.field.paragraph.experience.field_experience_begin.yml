@@ -1,0 +1,21 @@
+uuid: 206040ae-9cf1-404f-8b42-2008b6c6b921
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_experience_begin
+    - paragraphs.paragraphs_type.experience
+  module:
+    - datetime
+id: paragraph.experience.field_experience_begin
+field_name: field_experience_begin
+entity_type: paragraph
+bundle: experience
+label: Início
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: datetime

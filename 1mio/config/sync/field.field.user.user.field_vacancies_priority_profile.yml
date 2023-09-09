@@ -1,0 +1,55 @@
+uuid: c855b365-8fda-4507-aa16-62628ed3dbec
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - field.storage.user.field_vacancies_priority_profile
+    - paragraphs.paragraphs_type.counter_priority_profiles
+  module:
+    - entity_reference_revisions
+    - user
+id: user.user.field_vacancies_priority_profile
+field_name: field_vacancies_priority_profile
+entity_type: user
+bundle: user
+label: 'Vagas de perfis prioritários fechadas'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    target_bundles:
+      counter_priority_profiles: counter_priority_profiles
+    negate: 0
+    target_bundles_drag_drop:
+      counter_priority_profiles:
+        weight: 10
+        enabled: true
+      courses_and_abilities:
+        weight: 11
+        enabled: false
+      curriculum:
+        weight: 12
+        enabled: false
+      educational_formation:
+        weight: 13
+        enabled: false
+      experience:
+        weight: 14
+        enabled: false
+      paragraph_address:
+        weight: 15
+        enabled: false
+      paragraph_social:
+        weight: 16
+        enabled: false
+      paragraph_trajectory:
+        weight: 17
+        enabled: false
+      paragraph_volunteer_work:
+        weight: 18
+        enabled: false
+field_type: entity_reference_revisions

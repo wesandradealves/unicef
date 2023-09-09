@@ -1,0 +1,5 @@
+_core:
+  default_config_hash: BoKtrJ9ngxeDs4crU3DufPf0zkedgz1tBhdGegfwook
+langcode: pt-br
+overwrite_internal_link_target_access: true
+inherit_parent_access: true

@@ -1,0 +1,86 @@
+# TA Admin area:
+umio_admin_area.ta_admin.my_account:
+  title: My data
+  description: My data
+  parent: ta-admin-area
+  menu_name: ta-admin-area
+  route_name: umio_admin_area.ta_admin.my_account
+  weight: 10
+
+umio_admin_area.ta_admin.company:
+  title: Company data
+  description: Company data
+  parent: ta-admin-area
+  menu_name: ta-admin-area
+  route_name: umio_admin_area.ta_admin.company
+  weight: 20
+
+
+umio_admin_area.ta_admin.company_branches:
+  title: Branches
+  description: Branches
+  parent: ta-admin-area
+  menu_name: ta-admin-area
+  route_name: umio_admin_area.ta_admin.company.branches
+  weight: 21
+
+
+umio_admin_area.ta_admin.company_people:
+  title: People from my company
+  description: People from my company
+  parent: ta-admin-area
+  menu_name: ta-admin-area
+  route_name: umio_admin_area.ta_admin.company_people
+  weight: 30
+
+umio_admin_area.ta_admin.vacancies:
+  title: Vacancies
+  description: Vacancies
+  parent: ta-admin-area
+  menu_name: ta-admin-area
+  route_name: umio_admin_area.ta_admin.vacancies
+  weight: 40
+
+umio_admin_area.ta_admin.courses:
+  title: Courses
+  description: Courses
+  parent: ta-admin-area
+  menu_name: ta-admin-area
+  route_name: umio_admin_area.ta_admin.courses
+  weight: 50
+
+umio_admin_area.ta_admin.dashboard:
+  title: Perfomance data
+  description: Perfomance data
+  parent: ta-admin-area
+  menu_name: ta-admin-area
+  route_name: umio_admin_area.ta_admin.dashboard
+  weight: 60
+
+umio_admin_area.custom_content_exports:
+  title: Export
+  route_name: <nolink>
+  description: Export the custom UMIOs contents.
+  parent: system.admin_content
+  weight: 100
+
+umio_admin_area.export_course:
+  title: Courses
+  route_name: view.content.export_course
+  description: Image and the texts for the vocacional test results.
+  parent: umio_admin_area.custom_content_exports
+  weight: 101
+
+umio_admin_area.export_vacancy:
+  title: Vacancies
+  route_name: view.content.export_vacancy
+  description: Image and the texts for the vocacional test results.
+  parent: umio_admin_area.custom_content_exports
+  weight: 102
+
+umio_admin_area.update_cities:
+  title: Update Cities Date
+  route_name: umio_admin_area.update_cities
+  description: Update the join date of a city
+  parent: system.admin_content
+  weight: 103

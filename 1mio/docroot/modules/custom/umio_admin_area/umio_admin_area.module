@@ -1,0 +1,215 @@
+<?php
+
+/**
+ * @file
+ * Primary module hooks for Umio Admin Area module.
+ *
+ * @DCG
+ * This file is no longer required in Drupal 8.
+ * @see https://www.drupal.org/node/2217931
+ */
+
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\node\Entity\Node;
+use Drupal\views\ViewExecutable;
+use Drupal\views\Plugin\views\query\QueryPluginBase;
+use Drupal\user\Entity\User;
+
+/**
+ * Implements hook_theme_suggestions_HOOK_alter().
+ */
+function umio_admin_area_theme_suggestions_page_alter(array &$suggestions, array $variables): void {
+  $routeMatch = \Drupal::routeMatch();
+
+  // Split the route name using the "." delimiter.
+  $routeSplit = explode('.', $routeMatch->getRouteName());
+
+  if (count($routeSplit) < 2) {
+    return;
+  }
+  // If route points to a Talent Acquisition admin screen.
+  if ($routeSplit[0] === 'umio_admin_area' && $routeSplit[1] === 'ta_admin') {
+    $suggestions[] = 'page__umio_admin_area';
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function umio_admin_area_theme(array $existing, string $type, string $theme, string $path):array {
+  return [
+    'page__umio_admin_area' => [
+      'template' => 'page/page--umio-admin-area',
+      'base hook' => 'page',
+    ],
+    'menu__ta_admin_area' => [
+      'template' => 'menu/menu--ta-admin-area',
+      'base hook' => 'menu',
+    ],
+    'content__dashboard_content' => [
+      'template' => 'content/content--dashboard-content',
+      'variables' => [
+        'courses' => NULL,
+        'vacancies' => NULL,
+      ],
+      'base hook' => 'content',
+    ],
+    'email__invite' => [
+      'template' => 'email/email--invite',
+      'variables' => [
+        'link' => NULL,
+        'link_login' => NULL,
+        'email' => NULL,
+        'company_name' => NULL,
+      ],
+    ]
+  ];
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function umio_admin_area_preprocess_menu__ta_admin_area(array &$variables):void {
+  $current_user = \Drupal::currentUser();
+  $user = User::load($current_user->id());
+  $company = Node::load($user->get('field_user_company')->getString());
+
+  if (in_array($company->get('field_company_type')->getString(), ['city', 'state'])) {
+    $variables['items']['umio_admin_area.ta_admin.company']['title'] = t('Public Sector data');
+  }
+  elseif ($company->get('field_company_type')->getString() == 'civil-society') {
+    $variables['items']['umio_admin_area.ta_admin.company']['title'] = t('Civil Society data');
+  }
+
+  if ($company->get('moderation_state')->getString() != 'published') {
+    $removeItens = [
+      'umio_admin_area.ta_admin.company_branches',
+      'umio_admin_area.ta_admin.company_people',
+      'umio_admin_area.ta_admin.vacancies',
+      'umio_admin_area.ta_admin.courses',
+      'umio_admin_area.ta_admin.dashboard',
+    ];
+    if ($company && ($company->getOwnerId() !== $user->id())) {
+      array_push($removeItens, 'umio_admin_area.ta_admin.company');
+    }
+    foreach ($removeItens as $item => $itemName) {
+      unset($variables['items'][$itemName]);
+    }
+  }
+
+  $variables['#cache']['contexts'][] = 'user';
+  $variables['#attached']['library'][] = 'claro/drupal.nav-tabs';
+}
+
+/**
+ * Implements hook_views_query_alter().
+ */
+function umio_admin_area_views_query_alter(ViewExecutable $view, QueryPluginBase $query): void {
+  if ($view->id() == 'view_my_posts') {
+    $current_user = \Drupal::currentUser();
+    /** @var \Drupal\views\Plugin\views\query\Sql $query */
+    $query->where[1]['conditions'][] = [
+      "field" => "node_field_data.uid",
+      "value" => [$current_user->id()],
+      "operator" => "in"
+    ];
+  }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function umio_admin_area_form_alter(array &$form, FormStateInterface $form_state, string $form_id): void {
+  if ($form_id == 'company_manager_edit_talent_acquisition') {
+    $form['#attached']['library'][] = 'umio_younger/umio_younger.edit_profile_form';
+  }
+
+  if ($form_id == 'comment_comment_delete_form') {
+    unset($form['actions']['cancel']);
+    $form['actions']['submit']['#value'] = t('Yes, delete');
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function umio_admin_area_preprocess_image_widget(): void {
+  $allowedTypes = [
+    'social_post',
+  ];
+
+  $routeMatch = \Drupal::routeMatch();
+  /** @var \Drupal\node\Entity\NodeType|null $nodeType */
+  $nodeType = $routeMatch->getParameter('node_type');
+  if ($nodeType === NULL) {
+    $node = $routeMatch->getParameter('node');
+    if ($node !== NULL) {
+      $nodeType = $node->bundle();
+    }
+  }
+  else {
+    $nodeType = $nodeType->get('type');
+  }
+
+  if ($nodeType !== NULL && in_array($nodeType, $allowedTypes)) {
+    $variables['element']['remove_button']['#value'] = 'x';
+    $variables['element']['remove_button']['#attributes']['class'][] = 'icon-button-remove';
+    $variables['data']['remove_button'] = $variables['element']['remove_button'];
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function umio_admin_area_preprocess_file_managed_file(array &$variables): void {
+  if ($variables['element']['#id'] != 'edit-field-company-commitment-term') {
+    return;
+  }
+
+  $umioUserService = \Drupal::service('umio_user.user_service');
+  $userMainCompanyId = $umioUserService->getCurrentUserMainCompany();
+  if ($userMainCompanyId == NULL) {
+    return;
+  }
+
+  $company = Node::load($userMainCompanyId);
+  $companyStatus = $company->moderation_state->getValue();
+  if ($companyStatus == 'published') {
+    unset($variables['element']['remove_button']);
+  }
+}
+
+/**
+ * Implements hook_menu_local_tasks_alter().
+ */
+function umio_admin_area_menu_local_tasks_alter(array &$data, string $route_name): void {
+  if ($route_name === 'tfa.overview') {
+    $currentUser = \Drupal::currentUser();
+
+    if (in_array('company_manager', $currentUser->getRoles()) ||
+        in_array('partner_talent_acquisition', $currentUser->getRoles())
+    ) {
+      unset($data['tabs']);
+    }
+  }
+}
+
+/**
+ * Implements hook_mail().
+ */
+function umio_admin_area_mail(string $key, array &$message, array $params): void {
+  $renderer = \Drupal::service("renderer");
+  if ($key === 'invite_email') {
+    $body = [
+      '#theme' => 'email__invite',
+      '#link' => $params['link'],
+      '#link_login' => $params['link_login'],
+      '#email' => $params['email'],
+      '#company_name' => $params['company_name'],
+    ];
+    $body = $renderer->render($body);
+    $subject = $params['subject'];
+    $message['body'][] = $body;
+    $message['subject'] = $subject;
+  }
+}

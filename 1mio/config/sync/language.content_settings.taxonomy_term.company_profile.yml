@@ -1,0 +1,11 @@
+uuid: e56636db-e283-411a-90e9-12cb1dffd97d
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.company_profile
+id: taxonomy_term.company_profile
+target_entity_type_id: taxonomy_term
+target_bundle: company_profile
+default_langcode: site_default
+language_alterable: false

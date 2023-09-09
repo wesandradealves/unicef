@@ -1,0 +1,100 @@
+project:
+  prefix: MCANUNI
+  human_name: 'UNICEF Platform'
+  profile:
+    name: unicef_profile
+  local: {  }
+git:
+  default_branch: develop
+  remotes:
+    cloud: 'unicefv4@svn-23659.prod.hosting.acquia.com:unicefv4.git'
+  hooks:
+    commit-msg: '${repo.root}/blt/scripts/git-hooks'
+deploy:
+  tag_source: true
+  exclude_file: '${repo.root}/blt/deploy-exclude.txt'
+drush:
+  aliases:
+    remote: '${project.machine_name}.test'
+    local: self
+    ci: self
+  default_alias: '${drush.aliases.local}'
+  sanitize: false
+modules:
+  local:
+    enable: [dblog, field_ui, views_ui, devel, admin_toolbar, admin_toolbar_tools]
+    uninstall: [acquia_connector, shield, autologout, simplesamlphp_auth]
+  ci:
+    enable: {  }
+    uninstall: [acquia_connector, shield]
+  dev:
+    enable: [admin_toolbar, admin_toolbar_tools, stage_file_proxy]
+    uninstall: {  }
+  test:
+    enable: [admin_toolbar, admin_toolbar_tools]
+    uninstall: {  }
+  prod:
+    enable: {  }
+    uninstall: {  }
+  ra:
+    enable: {  }
+    uninstall: {  }
+  qa4:
+    enable: [admin_toolbar, admin_toolbar_tools, stage_file_proxy]
+    uninstall: {  }
+  migration:
+    enable: [admin_toolbar, admin_toolbar_tools, stage_file_proxy]
+    uninstall: {  }
+  sec4:
+    enable: [admin_toolbar, admin_toolbar_tools, stage_file_proxy]
+    uninstall: {  }
+  training4:
+    enable: {  }
+    uninstall: {  }
+command-hooks:
+  pre-config-import:
+    dir: '${docroot}'
+    command: 'echo ''No pre-config-import configured.'''
+  post-setup-build:
+    dir: '${docroot}'
+    command: 'echo ''No post-setup build configured.'''
+  post-deploy:
+    dir: '${docroot}'
+    command: 'echo ''No post-deploy configured.'''
+  post-deploy-build:
+    dir: '${repo.root}/hooks/common/post-deploy-build'
+    command: ./delete-unwanted-files.sh
+setup:
+  strategy: install
+cm:
+  strategy: config-split
+  allow-overrides: true
+phpcs:
+  filesets:
+    - files.php.custom.profiles
+    - files.php.custom.modules
+    - files.php.tests
+    - files.php.custom.themes
+    - files.frontend.unicef
+disable-targets:
+  tests:
+    security: { check: { updates: true, composer: true } }
+    security-composer: true
+    security-drupal: true
+unicefplatform:
+  migrations:
+    default_data: false
+  modules:
+    unicefv4: { default: { enable: {  }, uninstall: {  } } }
+    unicefplatform: { default: { enable: {  }, uninstall: [akamai] } }
+simplesamlphp: 'true'
+vm:
+  blt-in-vm: false
+# Note that PHPCS filesets are not configured here, but via phpcs.xml.dist in the root directory. See "Extending BLT" in docs.
+validate:
+  # You can change this to true to have blt automatically validate acsf-init.
+  acsf: false
+  # You can change one or both of these to false to disable deprecated code scanning.
+  deprecation:
+    modules: false
+    themes: false

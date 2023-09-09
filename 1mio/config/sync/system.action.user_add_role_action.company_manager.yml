@@ -1,0 +1,14 @@
+uuid: 6eb6435b-1b42-4b0e-b550-d947a34a3832
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - user.role.company_manager
+  module:
+    - user
+id: user_add_role_action.company_manager
+label: 'Adiciona o papel Gestor de Empresas para o(s) usuário(s) selecionado(s)'
+type: user
+plugin: user_add_role_action
+configuration:
+  rid: company_manager

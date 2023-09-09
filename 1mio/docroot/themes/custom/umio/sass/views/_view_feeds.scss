@@ -1,0 +1,110 @@
+.umio-card--grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  grid-gap: 0.5rem 0.5rem;
+  grid-auto-flow: dense;
+
+  @include media-breakpoint-up(lg) {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-gap: 0.75rem 0.75rem;
+  }
+}
+
+.umio-card--normal-card {
+  grid-column: span 1;
+}
+
+.umio-card--highlight-card {
+  grid-column: span 2;
+}
+
+.umio-button-see-more {
+  li {
+    a {
+      text-decoration: none;
+      font-weight: 700;
+      color: $blue-primary-main;
+      font-size: 1rem;
+      outline: initial;
+
+      align-items: center;
+      display: flex;
+
+      i {
+        font-weight: 700;
+        font-size: 1.20rem;
+        color: $blue-primary-main;
+        margin: 0 .5rem;
+      }
+    }
+  }
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.form-item-field-vacancy-job-model,
+.form-item-field-course-model,
+.form-item-locality-city-vacancy,
+.form-item-locality-city-course,
+.form-item-administrative-area-course-uf,
+.form-item-administrative-area-vacancy-uf {
+  display: none;
+}
+
+.filter--open-button-bold,
+.filter--print-button-bold {
+  font-weight: 700;
+}
+
+.view-filters{
+  margin: 2rem 0 0;
+  @include media-breakpoint-up(md) {
+    margin: 2rem 0rem;
+  }
+}
+
+#views-exposed-form-feeds-jovens-feed-general,
+#views-exposed-form-feeds-jovens-feed-skills {
+
+  .select2-container--default {
+    .select2-results__option--highlighted[aria-selected] {
+      background-color: $blue-primary-main;
+    }
+  }
+
+  #select2-edit-umio-feeds-opportunities-results .select2-results__option[aria-selected="true"] {
+    color: $white !important;
+  }
+
+  #select2-edit-umio-feeds-opportunities-results strong.select2-results__group {
+    padding: .375rem .375rem;
+    font-weight: 500;
+    line-height: 1.5;
+    color: $gray-primary-25;
+  }
+
+  .form-item-umio__feeds__opportunities,
+  .form-item-umio__feeds__opportunities-course,
+  .form-item-umio__feeds__opportunities-vacancy {
+    .select2-container--default .select2-selection--single .select2-selection__rendered {
+        line-height: 38px;
+    }
+  }
+
+  .select2-container--below .select2-selection[aria-expanded="true"] {
+    border-radius: 16px 16px 0px 0px;
+    transition-duration: 2s;
+    transition-timing-function: linear;
+    transition-delay: 1s;
+  }
+
+  .select2-container--above .select2-selection[aria-expanded="true"] {
+    border-radius: 0px 0px 16px 16px;
+    transition-duration: 2s;
+    transition-timing-function: linear;
+    transition-delay: 1s;
+  }
+
+}

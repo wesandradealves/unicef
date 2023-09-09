@@ -1,0 +1,56 @@
+uuid: b0fa30ac-c182-45ef-9f34-e29ebd664c5c
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - field.field.taxonomy_term.quiz_questions.field_weight_skill_1
+    - field.field.taxonomy_term.quiz_questions.field_weight_skill_2
+    - field.field.taxonomy_term.quiz_questions.field_weight_skill_3
+    - field.field.taxonomy_term.quiz_questions.field_weight_skill_4
+    - taxonomy.vocabulary.quiz_questions
+id: taxonomy_term.quiz_questions.default
+targetEntityType: taxonomy_term
+bundle: quiz_questions
+mode: default
+content:
+  field_weight_skill_1:
+    type: number
+    weight: 1
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_weight_skill_2:
+    type: number
+    weight: 2
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_weight_skill_3:
+    type: number
+    weight: 3
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_weight_skill_4:
+    type: number
+    weight: 4
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  name:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  description: true
+  langcode: true
+  path: true
+  status: true

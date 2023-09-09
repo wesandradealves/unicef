@@ -1,0 +1,91 @@
+{#
+/**
+ * @file
+ * Theme override for a node edit form.
+ *
+ * Two column template for the node add/edit form.
+ *
+ * This template will be used when a node edit form specifies 'node_edit_form'
+ * as its #theme callback.  Otherwise, by default, node add/edit forms will be
+ * themed by form.html.twig.
+ *
+ * Available variables:
+ * - form: The node add/edit form.
+ *
+ * @see claro_form_node_form_alter()
+ */
+#}
+
+<div class="layout-node-form d-flex flex-column clearfix py-4">
+
+  <div class="row d-flex mb-2 align-items-center">
+    <div class="d-flex align-items-start justify-content-start col-3 col-md-2 text-center">
+      {% if userCompany.imageUrl %}
+        <img src={{ userCompany.imageUrl }} class="course-registration-company-image rounded-circle">
+      {% endif %}
+    </div>
+    <div class="align-items-center col-9 col-md-4">
+      {% if headerItems %}
+        {% if headerItems.title %}<h3 class="headerTitle">{{ headerItems.title }}</h3>{% endif %}
+        {% if headerItems.subTitle %}<h4 class="headerSubTitle">{{ headerItems.subTitle }}</h4>{% endif %}
+      {% endif %}
+
+      {% if nodeFooter %}
+        <div class="row d-flex justify-content-start">
+          <span class="{{ nodeFooter.nodeStatus.class }} font-weight-bold align-items-center d-flex flex-row justify-content-start">
+            <i class="people-profile-status-icon {{ nodeFooter.nodeStatus.icon }} mr-5 "></i>
+            <b>{{ nodeFooter.nodeStatus.status }}</b>
+          </span>
+        </div>
+      {% endif %}
+    </div>
+    <div class="d-block col-12 col-md-6 mt-4 mt-md-0">
+      <div class="d-flex flex-column flex-md-row gap-3 justify-content-end">
+        {% if form.nodeHeaderActions %}
+          {{ form.nodeHeaderActions }}
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <div class="layout-region layout-region-node-main">
+    <div class="row">
+      {{ form|without('advanced', 'footer', 'actions', 'gin_actions', 'gin_sidebar', 'nodeHeaderActions', 'nodeFooter', 'headerItems') }}
+      <div class="col-12 form__actions">
+        {{ form.actions }}
+      </div>
+      {% if nodeFooter %}
+        <div class="mt-4">
+          <div class="footerContent col-12 row d-flex pt-3 pb-3">
+            <div class="col-12 col-md-6 d-flex flex-column flex-md-row justify-md-content-start ">
+              <span class="{{ nodeFooter.nodeStatus.class }} font-weight-bold align-items-center text-align-center text-md-align-start">
+                <i class="people-profile-status-icon {{ nodeFooter.nodeStatus.icon }} mr-5 "></i>
+                <b>{{ nodeFooter.nodeStatus.status }}</b>
+              </span>
+            </div>
+            <div class="col-12 col-md-6 d-flex flex-column flex-md-row justify-content-end align-items-center">
+              <div class="footerCreated me-4">{{ nodeFooter.nodeCreated }}</div>
+              <div>{{ nodeFooter.delete }}</div>
+            </div>
+          </div>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+  {% if 'administrator' in user.getroles(true) %}
+    <div class="layout-region layout-region-node-secondary">
+      <div class="layout-region__content">
+        {{ form.advanced }}
+      </div>
+    </div>
+  {% endif %}
+</div>
+
+{% if gin_layout_paragraphs == 1 %}
+<style>
+  .layout-node-form {
+    --ginLPLayoutLabel: "{{ 'Layout'|t }}";
+    --ginLPContentLabel: "{{ 'Content'|t }}";
+  }
+</style>
+{% endif %}

@@ -1,0 +1,72 @@
+diff --git a/modules/lightning_scheduler/lightning_scheduler.services.yml b/modules/lightning_scheduler/lightning_scheduler.services.yml
+index db50b6e..711a03b 100644
+--- a/modules/lightning_scheduler/lightning_scheduler.services.yml
++++ b/modules/lightning_scheduler/lightning_scheduler.services.yml
+@@ -8,6 +8,7 @@ services:
+       - '@logger.channel.cron'
+       - '@entity.repository'
+       - '@string_translation'
++      - '@config.factory'
+
+   lightning_scheduler.migrator:
+     class: 'Drupal\lightning_scheduler\Migrator'
+diff --git a/modules/lightning_scheduler/src/TransitionManager.php b/modules/lightning_scheduler/src/TransitionManager.php
+index 6d448dd..8b857a2 100644
+--- a/modules/lightning_scheduler/src/TransitionManager.php
++++ b/modules/lightning_scheduler/src/TransitionManager.php
+@@ -15,6 +15,7 @@ use Drupal\Core\Session\AccountInterface;
+ use Drupal\Core\StringTranslation\StringTranslationTrait;
+ use Drupal\Core\StringTranslation\TranslationInterface;
+ use Drupal\datetime\Plugin\Field\FieldType\DateTimeItemInterface;
++use Drupal\Core\Config\ConfigFactoryInterface;
+
+ /**
+  * Executes scheduled transition changes.
+@@ -59,6 +60,13 @@ class TransitionManager {
+   protected $entityRepository;
+
+   /**
++   * The configuration factory to get the configuration objects.
++   *
++   * @var \Drupal\Core\Config\ConfigFactoryInterface
++   */
++  protected $configFactory;
++
++  /**
+    * TransitionManager constructor.
+    *
+    * @param \Drupal\content_moderation\ModerationInformationInterface $moderation_information
+@@ -73,13 +81,16 @@ class TransitionManager {
+    *   The entity repository.
+    * @param \Drupal\Core\StringTranslation\TranslationInterface $translation
+    *   (optional) The string translation service.
++   * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
++   *   Config service, injected into the new object.
+    */
+-  public function __construct(ModerationInformationInterface $moderation_information, AccountInterface $current_user, EntityTypeManagerInterface $entity_type_manager, LoggerChannelInterface $logger, EntityRepository $entity_repository, TranslationInterface $translation = NULL) {
++  public function __construct(ModerationInformationInterface $moderation_information, AccountInterface $current_user, EntityTypeManagerInterface $entity_type_manager, LoggerChannelInterface $logger, EntityRepository $entity_repository, TranslationInterface $translation = NULL, ConfigFactoryInterface $config_factory) {
+     $this->moderationInformation = $moderation_information;
+     $this->currentUser = $current_user;
+     $this->entityTypeManager = $entity_type_manager;
+     $this->logger = $logger;
+     $this->entityRepository = $entity_repository;
++    $this->configFactory = $config_factory;
+
+     if ($translation) {
+       $this->setStringTranslation($translation);
+@@ -234,6 +245,15 @@ class TransitionManager {
+
+     if ($plugin->hasTransitionFromStateToState($from_state, $to_state)) {
+       $entity->set('moderation_state', $to_state);
++
++      // Send notification when unpublished transition.
++      $config = $this->configFactory->getEditable('unicef_content_unpublish.settings');
++      if ($to_state == 'unpublished' && ($config->get('is_content_unpublish_enabled'))) {
++        $action = $this->entityTypeManager->getStorage('action')->load('unpublished_notification');
++        if ($action) {
++          $action->execute([$entity]);
++        }
++      }
+     }
+     else {
+       $error_context += [

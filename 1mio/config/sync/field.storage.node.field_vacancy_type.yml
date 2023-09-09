@@ -1,0 +1,39 @@
+uuid: 6ff15be6-fd27-46ee-9171-f57c0b8c8aa4
+langcode: pt-br
+status: true
+dependencies:
+  module:
+    - node
+    - options
+id: node.field_vacancy_type
+field_name: field_vacancy_type
+entity_type: node
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: young-apprentice
+      label: 'Jovem Aprendiz'
+    -
+      value: trainee
+      label: Trainee
+    -
+      value: CLT
+      label: CLT
+    -
+      value: temporary-clt
+      label: 'CLT Temporário'
+    -
+      value: internship
+      label: Estágio
+    -
+      value: pj
+      label: PJ
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

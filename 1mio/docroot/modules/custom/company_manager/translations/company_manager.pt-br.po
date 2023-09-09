@@ -1,0 +1,125 @@
+msgid "This field must be a valid e-mail."
+msgstr "Esse campo deve conter um e-mail válido."
+
+msgid "This e-mail already exists."
+msgstr "Esse e-mail já está em uso."
+
+msgid "This field must be a valid telephone."
+msgstr "Esse campo deve conter um telefone válido."
+
+msgid "This field must be a valid telephone extension."
+msgstr "Esse campo deve conter um ramal válido."
+
+msgid "This field must be a valid phone."
+msgstr "Esse campo deve conter um telefone-fixo válido."
+
+msgid "This field must be a valid postal code."
+msgstr "Esse campo deve conter um CEP válido."
+
+msgid "Back"
+msgstr "Voltar"
+
+msgid "Next"
+msgstr "Próximo"
+
+msgid "Please inform a valid and active company."
+msgstr "Por favor, informe uma empresa válida.."
+
+msgid "You must select the company you work for."
+msgstr "Você deve selecionar a empresa para qual você trabalha."
+
+msgid "If you want to register a new company this field should be empty."
+msgstr "Se você quer registrar uma empresa esse campo deve ficar vazio."
+
+msgid "Or..."
+msgstr "Ou..."
+
+msgid "Click here to register a company"
+msgstr "Clique aqui para registrar uma empresa."
+
+msgid "Started at"
+msgstr "Iniciou em"
+
+msgid "Started in"
+msgstr "Iniciou em"
+
+msgid "All the informations has been successfully saved."
+msgstr "Informações salvas com sucesso."
+
+msgid "Enter your contact details:"
+msgstr "Informe seus dados de contato:"
+
+msgid "Select your company. If you don't find it in the listing, you can register it:"
+msgstr "Selecione sua empresa. Se não a encontrar na listagem, pode cadastrá-la:"
+
+msgid "Contact details"
+msgstr "Dados de contato"
+
+msgid "Enter your access data:"
+msgstr "Informe seus dados de acesso:"
+
+msgid "Your access"
+msgstr "Seu acesso"
+
+msgid "Inform your access data:"
+msgstr "Informe seus dados para acesso à conta:"
+
+msgid "Company"
+msgstr "Empresa"
+
+msgid "Institutional phone"
+msgstr "Telefone Institucional"
+
+msgid "Role in your institution"
+msgstr "Seu cargo na instituição"
+
+msgid "Inform the company data that you represent"
+msgstr "Informe os dados da empresa que você representa"
+
+msgid "Now choose an image that represents your isntitution"
+msgstr "Agora, escolha imagens que a representem"
+
+msgid "Download the commitment to sign and finish the signup"
+msgstr "Para finalizar, baixe o termo de compromisso para assinatura"
+
+msgid "Download the commitment term above and use the space below to upload it after signing"
+msgstr "Baixe o termo de compromisso abaixo e use o espaço abaixo para carrega-lo na plataforma assinado"
+
+msgid "If you prefer you can take this action later. However, your city will only be approved after the upload"
+msgstr "Ou se preferir, você pode deixar para executar esta ação depois. Contudo, a avaliação da empresa pelo 1MiO só ocorrera após envio do termo"
+
+msgid "Does your institution has the UNICEF stamp?"
+msgstr "Sua instituição é parceira do Selo UNICEF?"
+
+msgid "Public sector details"
+msgstr "Dados do Setor Público"
+
+msgid "Public sector"
+msgstr "Setor Público"
+
+msgid "Select an answer"
+msgstr "Selecione uma resposta"
+
+msgid "Which is the region?"
+msgstr "Qual a região?"
+
+msgid "Select an region"
+msgstr "Selecione uma região"
+
+msgid "What is your institution type?"
+msgstr "Qual o tipo da instituição?"
+
+msgid "Institutional data"
+msgstr "Dados do Setor Público"
+
+msgid "Register city manager additional"
+msgstr "Cadastre os dados adicionais"
+
+msgid "See our opportunities"
+msgstr "Veja nossas oportunidades"
+
+msgid "Register headquarter"
+msgstr "Cadastrar empresa"
+
+msgid "Register branch"
+msgstr "Cadastrar filial"

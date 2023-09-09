@@ -1,0 +1,125 @@
+{#
+/**
+ * @file
+ * Default theme implementation for a region.
+ *
+ * Available variables:
+ * - content: The content for this region, typically blocks.
+ * - attributes: Remaining HTML attributes for the element, including:
+ *   - class: HTML classes that can be used to style contextually through CSS.
+ *
+ * @see template_preprocess_region()
+ *
+ * @ingroup themeable
+ */
+#}
+{{ attach_library('classy/node') }}
+
+{% set details_attributes = create_attribute() %}
+{% set font_attributes = create_attribute() %}
+
+{% set card_info_title = card_info.title %}
+{% set card_info_subtitle = card_info.subtitle|without('salary') %}
+
+{%
+  set classes = [
+    'node',
+    'node--type-' ~ node.bundle|clean_class,
+    node.isPromoted() ? 'node--promoted',
+    node.isSticky() ? 'node--sticky',
+    not node.isPublished() ? 'node--unpublished',
+    view_mode ? 'node--view-mode-' ~ view_mode|clean_class,
+  ]
+%}
+
+{%
+  set card_classes = [
+    'umio-card',
+    'umio-card--' ~ type,
+    'umio-card--normal-card',
+    'px-md-0',
+  ]
+%}
+
+{%
+  set card_details_classes = [
+    'col-12',
+    'd-flex',
+    'justify-content-between',
+    'flex-column',
+    'px-4',
+    'position-relative',
+  ]
+%}
+
+{%
+  set card_fontsize_classes = [
+    'umio-card--normal-font',
+    'fw-bold',
+  ]
+%}
+
+<article{{ attributes.addClass(card_classes) }}>
+  <section
+      {{ attributes.addClass(classes) }}
+      style="background: {{ background }};"
+    >
+  <a href="{{ url }}" rel="bookmark">
+    <div class="row m-0 h-100">
+      <div {{ details_attributes.addClass(card_details_classes) }}>
+        <div class="umio-card--company mt-3">
+          {% if company.name %}
+            <span class="umio-card--company--details">
+              <h3>
+                {{ company.name }}
+              </h3>
+            </span>
+          {% endif %}
+        </div>
+        <div class="umio-card--title my-3 pb-1">
+          {% if card_info_title %}
+            <h2 {{ font_attributes.addClass(card_fontsize_classes) }}>
+              {{ card_info_title }}
+            </h2>
+          {% endif %}
+        </div>
+        <div class="umio-card--details d-flex row mb-4">
+            {% if card_info %}
+              {% for card_info_title, card_info_compnent in card_info_subtitle %}
+                <div class="umio-card--card-info--details d-flex">
+
+                  {% if card_info_compnent %}
+                    {% if card_info_title == 'start' %}
+                      <span class="umio-card--card-info--details--start">
+                        {{ 'Begin'|t ~ ': ' }}
+                      </span>
+                    {% endif %}
+
+                    {{ card_info_compnent }}
+                  {% endif %}
+
+                </div>
+              {% endfor %}
+            {% endif %}
+          </div>
+        {% if card_info.salary_info %}
+            {% if card_info.salary_info.type == 'unique' %}
+              <div class="umio-card--card-info--salary--details d-flex flex-row mb-5">
+                {{ card_info.salary_info.salary.value }}
+              </div>
+            {% else %}
+              <div class="umio-card--card-info--salary--details flex-row  mb-5">
+                {{ card_info.salary_info.salary.start|merge({'#attributes': {'class': ''}}) }}
+                <span class="px-1">{{ "to"|t({}, {'context' : 'Range Field'}) }}</span>
+                {{ card_info.salary_info.salary.end|merge({'#attributes': {'class': ''}}) }}
+              </div>
+            {% endif %}
+        {% endif %}
+          <div class="umio-card--see-details-link position-absolute">
+            <span>{{ 'See Details'|t }}</span>
+          </div>
+        </div>
+      </div>
+    </a>
+  </section>
+</article>

@@ -1,0 +1,30 @@
+uuid: f8ad00ee-6b0f-4fa4-9a1b-94e5b657ffe4
+langcode: pt-br
+status: false
+dependencies:
+  module:
+    - system
+    - user
+  theme:
+    - umio
+_core:
+  default_config_hash: oXUb3JZR2WW5VOdw4HrhRicCsq51mCgLfRyvheG68ck
+id: umio_breadcrumbs
+theme: umio
+region: header
+weight: -3
+provider: null
+plugin: system_breadcrumb_block
+settings:
+  id: system_breadcrumb_block
+  label: 'Trilha de navegação'
+  label_display: '0'
+  provider: system
+visibility:
+  user_role:
+    id: user_role
+    negate: false
+    context_mapping:
+      user: '@user.current_user_context:current_user'
+    roles:
+      authenticated: authenticated

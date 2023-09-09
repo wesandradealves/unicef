@@ -1,0 +1,56 @@
+
+<div id="umio_people_profile_wrapper" >
+  <div id="umio_people_profile" class="layout-node-div d-flex flex-column clearfix">
+    <div class="layout-region layout-region-node-main">
+
+      <div id="umio_people_profile_header" class="layout-content">
+        <div class="row">
+          <div class="d-flex flex-column col-12 flex-lg-row">
+            <div class="col-12 col-lg-6 d-flex flex-column flex-md-row gap-3 justify-content-lg-start align-items-center">
+              {% if bodyItems.logo %}
+                <div class="people-profile-company-logo">
+                  <img src="{{ bodyItems.logo }}">
+                </div>
+              {% endif %}
+              <div class="people-profile-name">
+                {{ target_user.field_user_name.value }}
+              </div>
+            </div>
+
+            {% if headerActions %}
+              <div class="d-flex justify-content-center justify-content-lg-end col-12 col-lg-6 header-actions-margin">
+                <div class="col-12 d-flex flex-column flex-md-row gap-3 justify-content-lg-end align-items-center">
+                  {{ headerActions.reject }}
+                  {{ headerActions.approve }}
+                </div>
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+
+      <div id="umio_people_profile_body" class="layout-content">
+        <div class="row">
+          <div class="col-12 col-lg-6 d-flex flex-column">
+            {{ bodyItems.form }}
+          </div>
+        </div>
+      </div>
+
+      <div id="umio_people_profile_footer" class="row">
+        <div class="col-12 d-block d-lg-flex">
+          <div class="col-12 col-lg-6 d-flex gap-3 justify-content-center justify-content-lg-start">
+            <span class="{{ bodyItems.current_status.class }} font-weight-bold align-items-center d-flex">
+                <i class="people-profile-status-icon {{ bodyItems.current_status.icon }} mr-5 "></i>
+                <b>{{ bodyItems.current_status.status }}</b>
+            </span>
+          </div>
+          <div class="col-12 col-lg-6 d-flex justify-content-center justify-content-lg-end text-muted align-items-center pt-3 pt-lg-0">
+            {{ bodyItems.created_date  }}
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

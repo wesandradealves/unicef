@@ -1,0 +1,8 @@
+uuid: 069ca9e8-5c99-49da-8e2a-33c37529cd97
+langcode: pt-br
+status: true
+dependencies: {  }
+id: hour_brazilian_pattern
+label: 'Hora - Padrão Brasil'
+locked: false
+pattern: 'H:i'

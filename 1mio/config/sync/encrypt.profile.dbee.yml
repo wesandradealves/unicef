@@ -1,0 +1,13 @@
+uuid: 619a4412-5b33-49b3-a1e0-dd1170bb0350
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - key.key.dbee
+  module:
+    - real_aes
+id: dbee
+label: 'Criptografia do E-mail'
+encryption_method: real_aes
+encryption_method_configuration: {  }
+encryption_key: dbee

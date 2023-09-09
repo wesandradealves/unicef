@@ -1,0 +1,33 @@
+uuid: 061c4207-ed45-45ec-9259-eb4f1a4464c7
+langcode: pt-br
+status: true
+dependencies:
+  module:
+    - node
+    - options
+id: node.field_company_type
+field_name: field_company_type
+entity_type: node
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: company
+      label: Empresa
+    -
+      value: civil-society
+      label: 'Sociedade Civil'
+    -
+      value: city
+      label: Município
+    -
+      value: state
+      label: Estado
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

@@ -1,0 +1,19 @@
+diff --git a/src/Robo/Commands/Deploy/DeployCommand.php b/src/Robo/Commands/Deploy/DeployCommand.php
+index f3b801b..4f58377 100644
+--- a/src/Robo/Commands/Deploy/DeployCommand.php
++++ b/src/Robo/Commands/Deploy/DeployCommand.php
+@@ -557,13 +557,9 @@ public function updateSites() {
+
+     foreach ($this->getConfigValue('multisites') as $multisite) {
+       $this->say("Deploying updates to $multisite...");
+-      if (!$this->config->get('drush.uri')) {
+-        $this->config->set('drush.uri', $multisite);
+-      }
+-
++      $this->config->set('drush.uri', $multisite);
+       $this->invokeCommand('setup:config-import');
+       $this->invokeCommand('setup:toggle-modules');
+-
+       $this->say("Finished deploying updates to $multisite.");
+     }
+   }

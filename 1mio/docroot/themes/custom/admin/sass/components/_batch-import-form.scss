@@ -1,0 +1,46 @@
+form.batch-import-form {
+  .batch-import-text {
+    &:first-of-type {
+      padding-top: 2rem;
+    }
+    p {
+      margin: 0;
+    }
+  }
+  .form-actions {
+    justify-content: center;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+  }
+  .form-item--file {
+    margin-top: 48px;
+    text-align: center;
+    .form-item__label {
+      margin: 0 auto;
+      margin-bottom: 12px;
+    }
+  }
+
+  .content-importer-messages {
+    background-color: unset;
+    color: $gray-primary-50;
+    margin-top: 0;
+    i {
+      position: absolute;
+      top: 50%;
+      transform: translate(0, -50%);
+      font-size: 30px;
+      width: auto;
+      padding: 0;
+    }
+    .row {
+      a {
+        text-decoration: none;
+      }
+    }
+  }
+
+  .messages__wrapper {
+    display: none;
+  }
+}

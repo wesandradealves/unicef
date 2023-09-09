@@ -1,0 +1,135 @@
+<?php
+
+/**
+ * @file
+ * Provides various customizations on the SSO/SAML integration.
+ */
+
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Link;
+use Drupal\Core\Url;
+use Drupal\unicef_sso\UnicefSSOExistingUser;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+
+/**
+ * Implements hook_simplesamlphp_auth_existing_user().
+ */
+function unicef_sso_simplesamlphp_auth_existing_user($attributes) {
+  $existing = UnicefSSOExistingUser::fetchExistingUser($attributes);
+  if ($existing) {
+    return $existing;
+  }
+  $messenger = \Drupal::messenger();
+  $messenger->addMessage(t("Your UNICEF user doesn’t have an account in the CMS. Please contact DOC to get a registration account!"));
+  $url = Url::fromRoute('<front>');
+  $response = new RedirectResponse($url->toString());
+  $request = \Drupal::request();
+  // Save the session so things like messages get saved.
+  $request->getSession()->save();
+  $response->prepare($request);
+  // Make sure to trigger kernel events.
+  \Drupal::service('kernel')->terminate($request, $response);
+  $response->send();
+  exit();
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ *
+ * Generally force UNICEF staff to use SSO (with a few exceptions).
+ */
+function unicef_sso_form_user_login_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+
+  // Return without executing if the functionality is not enabled.
+  if (!\Drupal::config('simplesamlphp_auth.settings')->get('activate')) {
+    return;
+  }
+
+  // Due to a not always reproducible bug, when after SSO, user saw
+  // user/login with the form, instead of user profile,
+  // we forbid the caching entirely here.
+  // @see https://unicef.visualstudio.com/unicef.org/_workitems/edit/21109
+  \Drupal::service('page_cache_kill_switch')->trigger();
+
+  $form['#validate'][] = 'unicef_sso_user_login_validate';
+  unset($form['simplesamlphp_auth_login_link']);
+  $form['unicef_sso_explanation'] = [
+    '#weight' => -99,
+    '#prefix' => '<div class="unicef-sso-explanation">',
+    '#suffix' => '</div>',
+    '#markup' => t('This CMS-based authentication is only for external users. UNICEF staff and consultants are required to use the @staff.', [
+      '@staff' => Link::fromTextAndUrl(t('UNICEF users login'), Url::fromRoute('simplesamlphp_auth.saml_login'))->toString(),
+    ]),
+  ];
+  $form['unicef_sso_password'] = [
+    '#weight' => 99,
+    '#markup' => Link::fromTextAndUrl(t('Reset password'), Url::fromRoute('user.pass'))->toString(),
+    '#prefix' => '<div class="unicef-sso-reset-password">',
+    '#suffix' => '</div>',
+  ];
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ *
+ * Generally force UNICEF staff to use SSO (with a few exceptions).
+ */
+function unicef_sso_form_user_pass_alter(&$form, FormStateInterface $form_state, $form_id) {
+  // Return without executing if the functionality is not enabled.
+  if (!\Drupal::config('simplesamlphp_auth.settings')->get('activate')) {
+    return;
+  }
+
+  if (\Drupal::currentUser()->isAuthenticated()) {
+    return;
+  }
+  $form['#validate'][] = 'unicef_sso_user_pass_validate';
+}
+
+/**
+ * Form validation handler for the user login.
+ */
+function unicef_sso_user_login_validate($form, FormStateInterface $form_state) {
+  $username = $form_state->getValue('name');
+  $account = user_load_by_name($username);
+  if (!$account) {
+    return;
+  }
+
+  // If somebody cannot bypass SAML, let's not allow to login.
+  if (!UnicefSSOExistingUser::canBypassSaml($account)) {
+    $form_state->setErrorByName('name', t('Our CMS now uses Single Sign-On for UNICEF users. Please click on the UNICEF users login tab above for Single Sign On access.'));
+    return FALSE;
+  }
+}
+
+/**
+ * Form validation handler for the password reset form.
+ */
+function unicef_sso_user_pass_validate($form, FormStateInterface $form_state) {
+  $username = $form_state->getValue('name');
+  $account = user_load_by_name($username);
+  if (!$account) {
+    return;
+  }
+
+  // If somebody cannot bypass SAML, let's not allow to login.
+  if (!UnicefSSOExistingUser::canBypassSaml($account)) {
+    $form_state->setErrorByName('name', t('As a UNICEF user, you should use Single Sign-On. Hence, you are not allowed to reset your password.'));
+    return FALSE;
+  }
+}
+
+/**
+ * Rename normal login tab, removes password reset tab.
+ */
+function unicef_sso_menu_local_tasks_alter(&$data, $route_name) {
+  if (\Drupal::currentUser()->isAuthenticated()) {
+    return;
+  }
+  if (isset($data['tabs'][0]['user.login'])) {
+    $data['tabs'][0]['user.login']['#link']['title'] = t('External users login');
+  }
+  unset($data['tabs'][0]['user.pass']);
+
+}

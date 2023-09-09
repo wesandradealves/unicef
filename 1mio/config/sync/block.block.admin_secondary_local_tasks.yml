@@ -1,0 +1,29 @@
+uuid: f667956f-9064-4c55-ab50-c859a10e443c
+langcode: pt-br
+status: true
+dependencies:
+  module:
+    - user
+  theme:
+    - admin
+id: admin_secondary_local_tasks
+theme: admin
+region: pre_content
+weight: -3
+provider: null
+plugin: local_tasks_block
+settings:
+  id: local_tasks_block
+  label: 'Abas Secondárias'
+  label_display: '0'
+  provider: core
+  primary: false
+  secondary: true
+visibility:
+  user_role:
+    id: user_role
+    negate: false
+    context_mapping:
+      user: '@user.current_user_context:current_user'
+    roles:
+      administrator: administrator

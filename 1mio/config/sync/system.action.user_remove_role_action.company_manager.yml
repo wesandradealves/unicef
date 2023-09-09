@@ -1,0 +1,14 @@
+uuid: cc6a03c7-414c-4743-8eeb-d2ce415173ce
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - user.role.company_manager
+  module:
+    - user
+id: user_remove_role_action.company_manager
+label: 'Remover o papel Gestor de Empresas dos usuários selecionados'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: company_manager

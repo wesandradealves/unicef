@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+set -ev
+
+if [ $TRAVIS_PULL_REQUEST = "false" ]; then
+  if [[ "$TEMP_REMOTE_BLT" ]] && [[ "$PR_OWNER" ]] && [[ "$TEMP_PULL_REQUEST_NUMBER" ]]; then
+    cd ${BUILD_DIR}/scripts
+    php ./script-cloud-switch-code.php $TEMP_REMOTE_BLT ${PR_OWNER}-${TEMP_PULL_REQUEST_NUMBER}-${TRAVIS_BRANCH}-build
+    git push "$TEMP_REMOTE_BLT" +:refs/heads/${PR_OWNER}-${TEMP_PULL_REQUEST_NUMBER}-${TRAVIS_BRANCH}-build
+    cd ${BUILD_DIR}
+  fi
+fi
+
+set +v

@@ -1,0 +1,9 @@
+name: 1MIO Batch Import
+type: module
+description: Custom module to import Excel data into Vacancies and Courses.
+package: Custom
+core: 8.x
+core_version_requirement: ^8 || ^9
+
+'interface translation project': umio_batch_import
+'interface translation server pattern': modules/custom/umio_batch_import/translations/umio_batch_import.%language.po

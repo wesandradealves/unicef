@@ -1,0 +1,463 @@
+diff --git a/search_api_spellcheck.info.yml b/search_api_spellcheck.info.yml
+index c937aa4..9c5a089 100644
+--- a/search_api_spellcheck.info.yml
++++ b/search_api_spellcheck.info.yml
+@@ -6,3 +6,4 @@ dependencies:
+   - drupal:views
+   - search_api_solr:search_api_solr (>=8.x-3.0-beta3)
+ core: 8.x
++core_version_requirement: ^8 || ^9
+diff --git a/search_api_spellcheck.module b/search_api_spellcheck.module
+index 8cd50c2..b240cc0 100644
+--- a/search_api_spellcheck.module
++++ b/search_api_spellcheck.module
+@@ -1,15 +1,38 @@
+ <?php
+
+ /**
++ * @file
++ * Search API Spellcheck.
++ */
++
++use Drupal\search_api\Query\QueryInterface;
++use Solarium\QueryType\Select\Query\Query;
++
++/**
+  * Implements hook_theme().
+  */
+ function search_api_spellcheck_theme() {
+   $themes['search_api_spellcheck_did_you_mean'] = [
+     'variables' => [
+-      'label' => NULL,
+-      'link' => NULL,
++      'old_label' => NULL,
++      'new_label' => NULL,
++      'old_phrase' => NULL,
++      'new_phrase' => NULL,
++      'old_url' => NULL,
++      'new_url' => NULL,
+     ],
+   ];
+-
+   return $themes;
+ }
++
++/**
++ * Implements hook_search_api_solr_query_alter().
++ *
++ * Activates the spellcheck if enabled for the given View.
++ */
++function search_api_spellcheck_search_api_solr_query_alter(Query $solarium_query, QueryInterface $query) {
++  if (!$query->getOption('search_api_spellcheck')) {
++    return;
++  }
++
++}
+diff --git a/src/Plugin/views/area/SpellCheck.php b/src/Plugin/views/area/SpellCheck.php
+index 0dc1ed7..b81c432 100644
+--- a/src/Plugin/views/area/SpellCheck.php
++++ b/src/Plugin/views/area/SpellCheck.php
+@@ -5,8 +5,8 @@ namespace Drupal\search_api_spellcheck\Plugin\views\area;
+ use Drupal\Core\Form\FormStateInterface;
+ use Drupal\Core\Link;
+ use Drupal\Core\Url;
+-use Drupal\search_api\Query\ResultSetInterface;
+ use Drupal\views\Plugin\views\area\AreaPluginBase;
++use Symfony\Component\HttpFoundation\RedirectResponse;
+
+ /**
+  * Provides an area for messages.
+@@ -24,23 +24,53 @@ class SpellCheck extends AreaPluginBase {
+    */
+   private $currentQuery;
+
++  const FORCE_QUERY = 'force';
++
+   /**
+    * {@inheritdoc}
+    */
+   protected function defineOptions() {
+     $options = parent::defineOptions();
+-    $options['search_api_spellcheck_filter_name']['default'] = 'search_api_fulltext_keywords';
++    $options['search_api_spellcheck_filter_name']['default'] = 'query';
+     $options['search_api_spellcheck_hide_on_result']['default'] = TRUE;
++    $options['search_api_spellcheck_only_more_popular']['default'] = FALSE;
++    $options['search_api_spellcheck_alternative_term_count']['default'] = 0;
++    $options['search_api_spellcheck_accuracy']['default'] = 0.5;
++    $options['search_api_spellcheck_max_results_for_suggest']['default'] = 0;
+     return $options;
+   }
+
+   /**
++   * Hidden form element for forcing the old query if requested.
++   */
++  public function buildExposedForm(&$form, FormStateInterface $form_state) {
++    $form[self::FORCE_QUERY] = [
++      '#type' => 'hidden',
++      '#default_value' => 0,
++    ];
++  }
++
++  /**
++   * Expose always.
++   */
++  public function isExposed() {
++    return TRUE;
++  }
++
++  /**
++   * Determine if a handler can be exposed.
++   */
++  public function canExpose() {
++    return TRUE;
++  }
++
++  /**
+    * {@inheritdoc}
+    */
+   public function buildOptionsForm(&$form, FormStateInterface $form_state) {
+     parent::buildOptionsForm($form, $form_state);
+     $form['search_api_spellcheck_filter_name'] = [
+-      '#default_value' => $this->options['search_api_spellcheck_filter_name'] ?: 'search_api_fulltext_keywords',
++      '#default_value' => $this->options['search_api_spellcheck_filter_name'] ?: 'query',
+       '#title' => $this->t('Enter parameter name of text search filter'),
+       '#type' => 'textfield',
+     ];
+@@ -49,12 +79,34 @@ class SpellCheck extends AreaPluginBase {
+       '#title' => $this->t('Hide when the view has results.'),
+       '#type' => 'checkbox',
+     ];
++    $form['search_api_spellcheck_only_more_popular'] = [
++      '#default_value' => $this->options['search_api_spellcheck_only_more_popular'] ?? TRUE,
++      '#title' => $this->t('Only more popular - Solr query parameter'),
++      '#description' => Link::fromTextAndUrl('https://lucene.apache.org/solr/guide/6_6/spell-checking.html#SpellChecking-Thespellcheck.onlyMorePopularParameter', Url::fromUri('https://lucene.apache.org/solr/guide/6_6/spell-checking.html#SpellChecking-Thespellcheck.onlyMorePopularParameter')),
++      '#type' => 'checkbox',
++    ];
++    $form['search_api_spellcheck_accuracy'] = [
++      '#default_value' => $this->options['search_api_spellcheck_accuracy'] ?? 0.5,
++      '#title' => $this->t('Accuracy - Solr query parameter'),
++      '#description' => Link::fromTextAndUrl('https://lucene.apache.org/solr/guide/6_6/spell-checking.html#SpellChecking-Thespellcheck.accuracyParameter', Url::fromUri('https://lucene.apache.org/solr/guide/6_6/spell-checking.html#SpellChecking-Thespellcheck.accuracyParameter')),
++      '#type' => 'textfield',
++    ];
++    $form['search_api_spellcheck_alternative_term_count'] = [
++      '#default_value' => $this->options['search_api_spellcheck_alternative_term_count'] ?? 1,
++      '#title' => $this->t('Alternative term count - Solr query parameter'),
++      '#description' => Link::fromTextAndUrl('https://lucene.apache.org/solr/guide/6_6/spell-checking.html#SpellChecking-Thespellcheck.alternativeTermCountParameter', Url::fromUri('https://lucene.apache.org/solr/guide/6_6/spell-checking.html#SpellChecking-Thespellcheck.alternativeTermCountParameter')),
++      '#type' => 'textfield',
++    ];
++    $form['search_api_spellcheck_max_results_for_suggest'] = [
++      '#default_value' => $this->options['search_api_spellcheck_max_results_for_suggest'] ?? 0,
++      '#title' => $this->t('Maximum results for suggest - Solr query parameter'),
++      '#description' => Link::fromTextAndUrl('https://lucene.apache.org/solr/guide/6_6/spell-checking.html#SpellChecking-Thespellcheck.maxResultsForSuggestParameter', Url::fromUri('https://lucene.apache.org/solr/guide/6_6/spell-checking.html#SpellChecking-Thespellcheck.maxResultsForSuggestParameter')),
++      '#type' => 'textfield',
++    ];
+   }
+
+   /**
+    * {@inheritdoc}
+-   *
+-   * @throws \InvalidArgumentException
+    */
+   public function query() {
+     /** @var \Drupal\search_api\Plugin\views\query\SearchApiQuery $query */
+@@ -80,10 +132,142 @@ class SpellCheck extends AreaPluginBase {
+         'collate' => TRUE,
+       ]);
+     }
++
++    $extra_options = [
++      'only_more_popular',
++      'accuracy',
++      'alternative_term_count',
++      'max_results_for_suggest',
++    ];
++    foreach ($extra_options as $option) {
++      $query->setOption('search_api_spellcheck_' . $option, $this->options['search_api_spellcheck_' . $option]);
++    }
+     parent::query();
+   }
+
+   /**
++   * {@inheritdoc}
++   *
++   * Performs a redirection is a spell mistake is detected.
++   */
++  public function postExecute(&$values) {
++    /** @var ResultSetInterface $result */
++    $old_parameters = $this->getCurrentQuery();
++
++    // If we force the old query or we already have a suggestion, do not
++    // try to redirect.
++    $unchanged_keyword = FALSE;
++    if (isset($old_parameters[self::FORCE_QUERY])) {
++      $unchanged_keyword = $old_parameters[self::FORCE_QUERY] === $old_parameters[$this->getNewPhraseKey()];
++    }
++    if ((!empty($old_parameters[self::FORCE_QUERY]) && $unchanged_keyword) || isset($old_parameters[$this->getOldPhraseKey()])) {
++      return parent::postExecute($values);
++    }
++
++    $result = $this->query->getSearchApiResults();
++    $extra_data = $result->getExtraData('search_api_solr_response');
++    // Check that we have suggestions.
++    $exposed_input = $this->view->getExposedInput();
++    $filter_name = $this->options['search_api_spellcheck_filter_name'];
++    if (!isset($exposed_input[$filter_name])) {
++      return [];
++    }
++    $keys = $exposed_input[$filter_name];
++    $old_keys = $keys;
++    $new_data = [];
++
++    if (empty($extra_data['spellcheck']['suggestions'])) {
++      return parent::postExecute($values);
++    }
++    // Loop over the suggestions and print them as links.
++    foreach ($extra_data['spellcheck']['suggestions'] as $key => $value) {
++      if (is_string($value)) {
++        $new_data[$key] = [
++          'error' => $value,
++          'suggestion' => $extra_data['spellcheck']['suggestions'][$key + 1]['suggestion'][0],
++        ];
++      }
++    }
++
++    // We might have multiple misspelled words, looping over the suggestions.
++    foreach ($new_data as $datum) {
++      if (empty($datum['suggestion'])) {
++        continue;
++      }
++      $keys = self::replaceWithCasePreserve($datum['error'], $datum['suggestion'], $keys);
++    }
++
++    if ($keys === $old_keys) {
++      // This should not be the case ever, for the sake of robustness,
++      // we handle it to not cause redirect loops.
++      return [];
++    }
++
++    // Keep all the parameters, like facets, filters or sorts.
++    $new_parameters = $old_parameters;
++    if (!$unchanged_keyword && !empty($old_parameters[$this->getNewPhraseKey()])) {
++      unset($new_parameters[self::FORCE_QUERY]);
++    }
++    // But replace the selected filter.
++    $new_parameters[$filter_name] = $keys;
++    $new_parameters[$this->getOldPhraseKey()] = $old_keys;
++    $url = Url::fromRoute('<current>', [], ['query' => $new_parameters])->toString();
++    $redirect = new RedirectResponse(Url::fromUserInput($url)->toString());
++
++    // Caching can't be active, as the regular output of the views with no
++    // results would be cached.
++    \Drupal::service('page_cache_kill_switch')->trigger();
++
++    // Simply returning redirect does not work, we're not in a controller.
++    // @see https://www.drupal.org/node/2023537
++    $redirect->send();
++  }
++
++  /**
++   * Checks if the given charater is lowercase, multibyte-safe.
++   *
++   * @param string $str
++   *   The input character.
++   *
++   * @return bool
++   *   TRUE is lowercase, FALSE otherwise.
++   */
++  private static function isLowerCase($str) {
++    $chr = mb_substr($str, 0, 1, 'UTF-8');
++    return mb_strtolower($chr, 'UTF-8') === $chr;
++  }
++
++  /**
++   * Replaces a string in another string with preserving the original case.
++   *
++   * This seemingly complex function is needed, as Solr returns the suggestions
++   * always in lowercase, however if somebody searched for UNICAF, we'd like to
++   * correct it to UNICEF, not to unicef, and with all the possible case
++   * variations.
++   */
++  protected static function replaceWithCasePreserve($search, $replace, $original) {
++    return preg_replace_callback('/\b' . $search . '\b/i', function ($matches) use ($replace) {
++      $i = 0;
++      return implode('', array_map(function ($char) use ($matches, &$i) {
++        $match_char = mb_substr($matches[0], $i++, 1);
++        if (!empty($match_char)) {
++          return self::isLowerCase($match_char) ? mb_strtolower($char) : mb_strtoupper($char);
++        }
++        else {
++          return $char;
++        }
++      }, self::splitToArray($replace)));
++    }, $original);
++  }
++
++  /**
++   * Multibyte-safe variant of str_split.
++   */
++  protected static function splitToArray($str) {
++    return preg_split('/(?<!^)(?!$)/u', $str);
++  }
++
++  /**
+    * Render the area.
+    *
+    * @param bool $empty
+@@ -93,33 +277,60 @@ class SpellCheck extends AreaPluginBase {
+    *   In any case we need a valid Drupal render array to return.
+    */
+   public function render($empty = FALSE) {
+-    if ($this->options['search_api_spellcheck_hide_on_result'] == FALSE || ($this->options['search_api_spellcheck_hide_on_result'] && $empty)) {
+-      /** @var ResultSetInterface $result */
+-      $result = $this->query->getSearchApiResults();
+-      if ($spellcheck = $result->getExtraData('search_api_spellcheck')) {
+-        $filter_name = $this->options['search_api_spellcheck_filter_name'];
+-
+-        $keys = $this->view->getExposedInput()[$filter_name];
+-        $new_keys = $spellcheck['collation'] ?? $keys;
+-
+-        if (empty($spellcheck['collation']) && !empty($spellcheck['suggestions'])) {
+-          // Loop over the suggestions and replace the keys.
+-          foreach ($spellcheck['suggestions'] as $key => $values) {
+-            $new_keys = str_replace($key, $values[0], $new_keys);
+-          }
+-        }
++    if (!($this->options['search_api_spellcheck_hide_on_result'] == FALSE || ($this->options['search_api_spellcheck_hide_on_result'] && $empty))) {
++      return [];
++    }
++    $filter_name = $this->options['search_api_spellcheck_filter_name'];
+
+-        // Don't offer the identical search keys as "Did you mean".
+-        if ($new_keys !== $keys) {
+-          return [
+-            '#theme' => 'search_api_spellcheck_did_you_mean',
+-            '#label' => $this->getSuggestionLabel(),
+-            '#link' => $this->getSuggestionLink($new_keys, $filter_name),
+-          ];
+-        }
+-      }
++    // Keep all the parameters, like facets, filters or sorts.
++    $new_parameters = $this->getCurrentQuery();
++    $old_parameters = $new_parameters;
++    $old_key = $this->getOldPhraseKey();
++    $new_key = $this->getNewPhraseKey();
++    if (!isset($old_parameters[$old_key]) || !isset($old_parameters[$new_key])) {
++      return [];
++    }
++    $old_keys = $old_parameters[$old_key];
++    $new_keys = $old_parameters[$new_key];
++    if (empty($old_keys)) {
++      return [];
+     }
+-    return [];
++    $old_parameters[$filter_name] = $old_parameters[$old_key];
++    $old_parameters[self::FORCE_QUERY] = $old_parameters[$old_key];
++    unset($old_parameters[$old_key]);
++    unset($new_parameters[$old_key]);
++
++    $build = [
++      '#theme' => 'search_api_spellcheck_did_you_mean',
++      '#old_label' => $this->getSuggestionOldLabel(),
++      '#new_label' => $this->getSuggestionNewLabel(),
++      '#old_phrase' => urldecode($old_keys),
++      '#new_phrase' => urldecode($new_keys),
++      '#old_url' => Url::fromRoute('<current>', [], ['query' => $old_parameters])->toString(),
++      '#new_url' => Url::fromRoute('<current>', [], ['query' => $new_parameters])->toString(),
++    ];
++
++    return $build;
++  }
++
++  /**
++   * Gets the suggestion label.
++   *
++   * @return \Drupal\Core\StringTranslation\TranslatableMarkup
++   *   The suggestion label translated.
++   */
++  protected function getSuggestionOldLabel() {
++   return $this->t('Search instead for');
++  }
++
++  /**
++   * Gets the suggestion label.
++   *
++   * @return \Drupal\Core\StringTranslation\TranslatableMarkup
++   *   The suggestion label translated.
++   */
++  protected function getSuggestionNewLabel() {
++   return $this->t('Showing results for');
+   }
+
+   /**
+@@ -136,32 +347,17 @@ class SpellCheck extends AreaPluginBase {
+   }
+
+   /**
+-   * Gets the suggestion label.
+-   *
+-   * @return \Drupal\Core\StringTranslation\TranslatableMarkup
+-   *   The suggestion label translated.
++   * Retrieves the query key for the old, original search.
+    */
+-  protected function getSuggestionLabel() {
+-    return $this->t('Did you mean:');
++  protected function getOldPhraseKey() {
++    return $this->options['search_api_spellcheck_filter_name'] . '_original';
+   }
+
+   /**
+-   * Gets the suggestion link.
+-   *
+-   * @param string $new_keys
+-   *   The suggestion.
+-   * @param string $filter_name
+-   *   The parameter name of text search filter.
+-   *
+-   * @return \Drupal\Core\Link
+-   *   The suggestion link.
++   * Retrieves the query key for the new search.
+    */
+-  protected function getSuggestionLink($new_keys, $filter_name) {
+-    $url = Url::fromRoute(
+-      '<current>',
+-      [$filter_name => $new_keys] + $this->getCurrentQuery()
+-    );
+-
+-    return Link::fromTextAndUrl($new_keys, $url);
++  protected function getNewPhraseKey() {
++    return $this->options['search_api_spellcheck_filter_name'];
+   }
++
+ }
+diff --git a/templates/search-api-spellcheck-did-you-mean.html.twig b/templates/search-api-spellcheck-did-you-mean.html.twig
+index 42b474e..0f360ed 100644
+--- a/templates/search-api-spellcheck-did-you-mean.html.twig
++++ b/templates/search-api-spellcheck-did-you-mean.html.twig
+@@ -4,17 +4,19 @@
+  * Default theme implementation to display a search did you mean.
+  *
+  * Available variables:
+- * - label: Text to display in front of the did you mean.
+- * - link: The link (\Drupal\Core\Link object) to which the did you mean will
++ * - new_label: Text to display in front of the new phrase.
++ * - old_label: Text to display in front of the old phrase.
++ * - new_phrase: New phrase.
++ * - old_phrase: Old phrase.
++ * - new_url: The link (\Drupal\Core\Link object) to which the new phrase will
++ *   redirect the user.
++ * - old_url: The link (\Drupal\Core\Link object) to which the old phrase will
+  *   redirect the user.
+  *
+  * @ingroup themeable
+  */
+ #}
+-
+-<div class="sapi-did-you-mean">
+-  <span class="did-you-mean-prefix">{{ label }} </span>
+-  {{ link }}
+-  <span class="did-you-mean-suffix">?</span>
++<div class="search-api-spellcheck-suggestion container">
++  <div class="suggestion">{% trans %}{{ new_label }} <a href="{{ new_url }}">{{ new_phrase }}</a>{% endtrans %}</div>
++  <div class="original">{% trans %}{{ old_label }} <a href="{{ old_url }}">{{ old_phrase }}</a>{% endtrans %}</div>
+ </div>
+-

@@ -1,0 +1,12 @@
+<div class="card-highlights-profile-edit mt-5 mb-5 position-relative">
+  <div class="image-illustration position-absolute" style="background-image: url({{ image_card }})"></div>
+  <div class="card-highlights-profile-content">
+    <h2>{{ title }}</h2>
+    <p>{{ description.textOne }}
+      <a href="{{ url('umio_younger.public_profile', {'user': logged_in_uid}) }}">{{ description.textTwo }}</a>
+      {{ description.textThree }}
+      <a href="{{ url('umio_younger.young_skills') }}">{{ description.textFour }}</a>.
+      {{ description.textFive }}
+    </p>
+  </div>
+</div>

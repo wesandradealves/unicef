@@ -1,0 +1,27 @@
+uuid: dcbcf517-751f-4a7d-8a92-40a00a38f0f3
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_company_commitment_term
+    - node.type.company
+  module:
+    - file
+id: node.company.field_company_commitment_term
+field_name: field_company_commitment_term
+entity_type: node
+bundle: company
+label: 'Termo de compromisso'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:file'
+  handler_settings: {  }
+  file_directory: '[date:custom:Y]-[date:custom:m]'
+  file_extensions: 'pdf docx'
+  max_filesize: '4 MB'
+  description_field: false
+field_type: file

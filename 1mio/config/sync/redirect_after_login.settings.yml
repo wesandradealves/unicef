@@ -1,0 +1,8 @@
+login_redirection:
+  anonymous: null
+  authenticated: /
+  administrator: /
+  user_manager: /
+  company_manager: /admin/instituicao
+  partner_talent_acquisition: /vagas
+exclude_urls: ''

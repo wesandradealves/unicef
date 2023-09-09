@@ -1,0 +1,21 @@
+uuid: ba2c6961-e44b-44f4-b94d-8740a512414d
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_vacancy_closing_date
+    - node.type.vacancy
+  module:
+    - datetime
+id: node.vacancy.field_vacancy_closing_date
+field_name: field_vacancy_closing_date
+entity_type: node
+bundle: vacancy
+label: 'Quando encerram as inscrições'
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: datetime

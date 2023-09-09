@@ -1,0 +1,19 @@
+uuid: 28ec7877-6313-4d50-8eaf-f64329975071
+langcode: pt-br
+status: true
+dependencies:
+  module:
+    - node
+    - youtube
+id: node.field_social_post_video
+field_name: field_social_post_video
+entity_type: node
+type: youtube
+settings: {  }
+module: youtube
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

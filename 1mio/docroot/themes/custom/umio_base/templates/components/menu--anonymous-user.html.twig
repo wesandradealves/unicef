@@ -1,0 +1,47 @@
+{#
+/**
+ * @file
+ * The menu template.
+ */
+#}
+
+{{ attach_library('umio_front_area/umio_front_area.anonymous-menu') }}
+
+<nav class="navbar shadow-none">
+  {% if is_landing_page %}
+    <!-- Mobile sidebar strucutre (hamburguer menu) -->
+    <div class="umio-side-bar-container">
+      <button class="offcanvas-show d-flex align-items-center" type="button" data-bs-target="#sidebar--menu" aria-controls="sidebar--menu" aria-expanded="FALSE">
+        <i class="ph-list ms-4"></i>
+      </button>
+      <div class="offcanvas offcanvas-end" tabindex="-1" id="sidebar--menu" aria-labelledby="sidebar--menuLabel" style="visibility: hidden;" aria-hidden="true">
+        <div class="offcanvas-header">
+          <button type="button" class="offcanvas-toggle align-self-end" data-bs-dismiss="offcanvas" aria-label="{{ ('Close'|t) }}">
+            <i class="ph-x-bold"></i>
+          </button>
+        </div>
+        <div class="offcanvas-body"></div>
+      </div>
+    </div>
+    <!-- The menu list itself -->
+    <ul class="container landing-page-anchors">
+      <li class="nav-item">
+        <a class="navbar-brand d-flex align-items-center" href="#{{ ('who-we-are'|t({}, {'context' : 'Menu'})) }}">{{ ('Who we are'|t({}, {'context' : 'Menu'})) }}</a>
+      </li>
+      <li class="nav-item">
+        <a class="navbar-brand d-flex align-items-center" href="#{{ ('what-is-going-on-1mio'|t({}, {'context' : 'Menu'})) }}">{{ ('What is going on'|t({}, {'context' : 'Menu'})) }}</a>
+      </li>
+      <li class="nav-item">
+        <a class="navbar-brand d-flex align-items-center" href="#{{ ('partnership'|t({}, {'context' : 'Menu'})) }}">{{ ('Partnership'|t({}, {'context' : 'Menu'})) }}</a>
+      </li>
+    </ul>
+  {% endif %}
+  <ul class="container umio-user-actions">
+    <li class="nav-item">
+      <a class="navbar-brand d-flex align-items-center" href="{{ url('user.login') }}">{{ ('Login'|t({}, {'context' : 'Menu'})) }}</a>
+    </li>
+    <li class="nav-item">
+      <a class="navbar-brand d-flex align-items-center register-btn" href="{{ url('umio_user.register') }}">{{ ('Register'|t({}, {'context' : 'Menu'})) }}</a>
+    </li>
+  </ul>
+</nav>

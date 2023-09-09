@@ -1,0 +1,20 @@
+uuid: 3ce06b23-1d10-4183-b05b-cec3d4814d6b
+langcode: pt-br
+status: true
+dependencies:
+  module:
+    - node
+    - taxonomy
+id: node.field_company_public
+field_name: field_company_public
+entity_type: node
+type: entity_reference
+settings:
+  target_type: taxonomy_term
+module: core
+locked: false
+cardinality: -1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

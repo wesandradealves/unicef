@@ -1,0 +1,26 @@
+uuid: a4a171ae-5198-470e-96b7-1510a7ab0af5
+langcode: pt-br
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - admin
+id: admin_primary_local_tasks
+theme: admin
+region: pre_content
+weight: -5
+provider: null
+plugin: local_tasks_block
+settings:
+  id: local_tasks_block
+  label: 'Abas Primárias'
+  label_display: '0'
+  provider: core
+  primary: true
+  secondary: false
+visibility:
+  request_path:
+    id: request_path
+    negate: true
+    pages: "/user/login\r\n/user/password"

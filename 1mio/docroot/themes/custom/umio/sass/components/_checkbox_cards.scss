@@ -1,0 +1,24 @@
+.checkbox_cards {
+  .form-checkboxes {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    .form-item {
+      display: flex;
+      padding: 0;
+      input {
+        display: none;
+        &:checked + label {
+          background-color: $purple-primary-light;
+        }
+      }
+      label {
+        width: 100%;
+        background-color: $gray-primary-10;
+        padding: 56px 21px;
+        border: 3px solid $gray-primary-75;
+        color: $gray-primary-75;
+      }
+    }
+  }
+}

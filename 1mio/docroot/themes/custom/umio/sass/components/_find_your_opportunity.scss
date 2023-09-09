@@ -1,0 +1,265 @@
+.find-your-opportunity {
+  position: relative;
+  background-color: #e7e7e7;
+  padding: 1rem 0;
+
+  .find-your-opportunity-container {
+    margin: 2rem 0;
+    color: #e7e7e7;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .find-your-opportunity-content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    .content-header-container {
+      display: none;
+      .find-your-opportunity-button-desk {
+        display: none;
+      }
+    }
+    .logo-bg-white {
+      display: none;
+    }
+    .card-title {
+      display: none;
+    }
+    .card-subtitle {
+      display: none;
+    }
+  }
+
+  .find-your-opportunity-body {
+    height: 100%;
+    width: auto;
+  }
+
+  .find-your-opportunity-button-container {
+    margin: 1rem;
+    display: flex;
+    justify-content: center;
+    .find-your-opportunity-button {
+      box-shadow: 1px 5px 7px rgb(0 0 0 / 25%);
+      background-color: #fff;
+      color: #000;
+      .user-icon-mobile {
+        width: 1rem;
+        height: 1rem;
+        margin: 0 8px;
+      }
+      .user-icon-desk {
+        display: none;
+      }
+    }
+  }
+}
+
+@media (min-width: 630px) {
+  .find-your-opportunity {
+    .find-your-opportunity-container {
+      justify-content: flex-end;
+      .find-your-opportunity-content {
+        width: 100%;
+      }
+    }
+  }
+}
+
+// 768px
+@include media-breakpoint-up(md) {
+  .find-your-opportunity {
+    height: 400px;
+    .find-your-opportunity-content {
+      width: 100%;
+      height: 100%;
+
+      .find-your-opportunity-button-container {
+        display: none;
+      }
+      .content-header-container {
+        display: flex;
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 34%;
+        flex-direction: column;
+        justify-content: flex-end;
+        align-items: center;
+
+        .card-title {
+          font-weight: bold;
+          display: initial;
+          color: #000;
+          max-width: 13rem;
+          margin: 0 0 20px;
+          font-size: small;
+          text-align: center;
+        }
+        .card-subtitle {
+          display: initial;
+          color: #000;
+          max-width: 200px;
+          font-size: x-small;
+          text-align: center;
+          margin-bottom: 10px;
+        }
+        .find-your-opportunity-button-desk {
+          background-color: #000;
+          color: #fff;
+          width: 230px;
+          height: 40px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          margin-bottom: 25px;
+
+          .user-icon-desk {
+            display: initial;
+            width: 1rem;
+            height: 1rem;
+            margin: 0 8px;
+          }
+        }
+      }
+      .find-your-opportunity-body {
+        position: relative;
+        .infographic {
+          display: block;
+          background-image: url('../images/new_layout/infographic.svg');
+          background-repeat: no-repeat;
+          background-size: 95% 100%;
+          background-position: center;
+          width: 100%;
+          height: 100%;
+          right: 0;
+          top: 0;
+        }
+      }
+    }
+  }
+}
+@media (min-width: 900px) {
+  .find-your-opportunity {
+    .find-your-opportunity-content {
+      .content-header-container {
+        width: 29%;
+      }
+    }
+  }
+}
+
+// 992px
+@include media-breakpoint-up(lg) {
+  .find-your-opportunity {
+    .find-your-opportunity-content {
+      .content-header-container {
+        width: 34%;
+      }
+      .find-your-opportunity-body {
+        .infographic {
+          background-size: 87%;
+        }
+      }
+    }
+  }
+}
+@media (min-width: 1040px) {
+  .find-your-opportunity {
+    .find-your-opportunity-container {
+      .find-your-opportunity-content {
+        .find-your-opportunity-body {
+          .infographic {
+            background-size: 85% 100%;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: 1130px) {
+  .find-your-opportunity {
+    .find-your-opportunity-content {
+      .content-header-container {
+        width: 37%;
+      }
+    }
+  }
+}
+@media (min-width: 1200px) {
+  .find-your-opportunity {
+    .find-your-opportunity-content {
+      .content-header-container {
+        width: 43%;
+      }
+    }
+  }
+}
+@media (min-width: 1300px) {
+  .find-your-opportunity {
+    .find-your-opportunity-container {
+      .content-header-container {
+        width: 46%;
+      }
+    }
+  }
+}
+@media (min-width: 1375px) {
+  .find-your-opportunity {
+    .find-your-opportunity-container {
+      .content-header-container {
+        width: 48%;
+      }
+    }
+  }
+}
+@media (min-width: 1468px) {
+  .find-your-opportunity {
+    .find-your-opportunity-container {
+      .content-header-container {
+        width: 52%;
+      }
+    }
+  }
+}
+
+@media (min-width: 1525px) {
+  .find-your-opportunity {
+    .find-your-opportunity-container {
+      .content-header-container {
+        width: 54%;
+      }
+    }
+  }
+}
+@media (min-width: 1610px) {
+  .find-your-opportunity {
+    .find-your-opportunity-container {
+      .content-header-container {
+        width: 57%;
+      }
+    }
+  }
+}
+@media (min-width: 1880px) {
+  .find-your-opportunity {
+    .find-your-opportunity-container {
+      .content-header-container {
+        width: 63%;
+      }
+    }
+  }
+}
+@media (min-width: 1953px) {
+  .find-your-opportunity {
+    .find-your-opportunity-container {
+      .content-header-container {
+        width: 64%;
+      }
+    }
+  }
+}

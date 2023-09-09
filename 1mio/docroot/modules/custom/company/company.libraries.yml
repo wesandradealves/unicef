@@ -1,0 +1,16 @@
+company.register_company:
+  js:
+    js/register_company.js: {}
+  dependencies:
+    - core/jquery
+    - core/jquery.once
+    - umio_helpers/umio_helpers.address_customization
+
+company.view_company_list:
+  version: VERSION
+  js:
+    js/view_company_list.js: {}
+  dependencies:
+    - core/jquery
+    - core/jquery.once
+    - umio_helpers/umio_helpers.mask

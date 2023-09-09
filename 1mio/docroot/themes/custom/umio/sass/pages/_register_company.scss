@@ -1,0 +1,117 @@
+.form-control {
+  &.is-invalid:focus {
+    box-shadow: none;
+    color: $alert-red-50;
+  }
+}
+
+label.form-control-file-image-preview {
+  display: flex;
+  justify-content: center;
+}
+
+div[id^="edit-field-company-logo"] > label:not(.form-control-file-image-preview) {
+  /* #edit-field-company-logo-upload-label */
+  background-image: url("../images/input-upload-file-logo-bg.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 320px;
+}
+
+div[id^="edit-field-company-cover"] > label:not(.form-control-file-image-preview) {
+  /* #edit-field-company-cover-upload-label */
+  background-image: url("../images/input-upload-file-cover-bg.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 320px;
+}
+
+div[id^="edit-field-company-commitment-term"] > label:not(.form-control-file-image-preview) {
+  /* #edit-field-company-commitment-term-upload-label */
+  background-image: url("../images/input-upload-file-commitment-term.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 250px;
+}
+
+.form-managed-file > .form-control-managed-file-wrapper {
+  width: 100%;
+  max-width: 100%;
+  img {
+    max-width: 100%;
+  }
+}
+
+.form-managed-file {
+  &:focus-within {
+    .form-control-managed-file-wrapper {
+      border: 1px dashed $blue-primary-main;
+    }
+  }
+  .form-control-managed-file-wrapper {
+    position: relative;
+    overflow: visible;
+    height: 176px;
+    margin-bottom: 15px;
+    width: 100%;
+    z-index: 10;
+    left: 0%;
+    right: 0%;
+    top: 8px;
+    border: 1px dashed $gray-primary-25;
+    box-sizing: border-box;
+    border-radius: 8px;
+    & > input[type="file"].form-control-managed-file {
+      cursor: pointer;
+      height: 176px;
+      margin-bottom: 15px;
+      width: 100%;
+      opacity: 0;
+      z-index: 15;
+    }
+    & > .form-control-management-preview {
+      padding: 20px;
+      align-items: center;
+      position: relative;
+      height: 150px;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      flex-direction: column;
+      & > .form-control-management-icon > i {
+        font-size: 2rem;
+      }
+      & > .form-control-management-file-chosen {
+        font-size: 1rem;
+        font-weight: bold;
+      }
+      & > .form-control-management-text::after {
+        text-align: center;
+      }
+    }
+    & > .form-control-management-description {
+      padding: 20px;
+      align-items: center;
+      position: relative;
+      top: -180px;
+      height: 200px;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      flex-direction: column;
+      & > .form-control-management-icon > i {
+        font-size: 2rem;
+      }
+      & > .form-control-management-text > p {
+        text-align: center;
+      }
+    }
+  }
+}
+
+.btn-download-commitment-term {
+  &:before {
+    margin-right: .5rem;
+    @include generate-icon("\f14c");
+  }
+}

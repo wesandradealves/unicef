@@ -1,0 +1,168 @@
+uuid: e73b8248-d1be-40bf-98eb-c4c012b59745
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - search_api.index.social_feed
+  module:
+    - search_api
+    - views_infinite_scroll
+id: social_feed
+label: 'Social Feed'
+module: views
+description: ''
+tag: ''
+base_table: search_api_index_social_feed
+base_field: search_api_id
+display:
+  default:
+    id: default
+    display_title: Default
+    display_plugin: default
+    position: 0
+    display_options:
+      title: 'Social Feed'
+      fields: {  }
+      pager:
+        type: infinite_scroll
+        options:
+          offset: 0
+          items_per_page: 20
+          total_pages: null
+          id: 1
+          tags:
+            next: ››
+            previous: ‹‹
+          expose:
+            items_per_page: false
+            items_per_page_label: 'Itens por página'
+            items_per_page_options: '5, 10, 25, 50'
+            items_per_page_options_all: false
+            items_per_page_options_all_label: '- Tudo -'
+            offset: false
+            offset_label: Deslocamento
+          views_infinite_scroll:
+            button_text: 'Ver mais'
+            automatically_load_content: false
+            initially_load_all_pages: false
+      exposed_form:
+        type: basic
+        options:
+          submit_button: Aplicar
+          reset_button: false
+          reset_button_label: Reiniciar
+          exposed_sorts_label: 'Ordenar por'
+          expose_sort_order: true
+          sort_asc_label: Ascendente
+          sort_desc_label: Decrescente
+      access:
+        type: none
+        options: {  }
+      cache:
+        type: none
+        options: {  }
+      empty: {  }
+      sorts:
+        created:
+          id: created
+          table: search_api_index_social_feed
+          field: created
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: search_api
+          order: DESC
+          expose:
+            label: ''
+            field_identifier: created
+          exposed: false
+      arguments: {  }
+      filters:
+        status:
+          id: status
+          table: search_api_index_social_feed
+          field: status
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: search_api_boolean
+          operator: '='
+          value: '1'
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+      style:
+        type: default
+        options:
+          row_class: ''
+          default_row_class: false
+          uses_fields: false
+      row:
+        type: search_api
+        options:
+          view_modes:
+            'entity:node':
+              course: umio_card_social
+              social_post: umio_social_post
+              vacancy: umio_card_social
+      query:
+        type: views_query
+        options:
+          skip_access: 0
+          bypass_access: 1
+          preserve_facet_query_args: false
+      relationships: {  }
+      use_ajax: true
+      show_admin_links: false
+      header: {  }
+      footer: {  }
+      display_extenders: {  }
+    cache_metadata:
+      max-age: -1
+      contexts:
+        - 'languages:language_interface'
+        - url.query_args
+        - 'user.node_grants:view'
+      tags:
+        - 'config:search_api.index.social_feed'
+  social_feed_display:
+    id: social_feed_display
+    display_title: Page
+    display_plugin: page
+    position: 1
+    display_options:
+      display_extenders: {  }
+      path: social-feed
+    cache_metadata:
+      max-age: -1
+      contexts:
+        - 'languages:language_interface'
+        - url.query_args
+        - 'user.node_grants:view'
+      tags:
+        - 'config:search_api.index.social_feed'

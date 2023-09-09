@@ -1,0 +1,21 @@
+uuid: cceedce1-4a16-4ed6-9850-da053ebd1f83
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_course_type
+    - node.type.course
+  module:
+    - options
+id: node.course.field_course_type
+field_name: field_course_type
+entity_type: node
+bundle: course
+label: 'Tipo do curso'
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string

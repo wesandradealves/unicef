@@ -1,0 +1,7 @@
+#
+# Additional files and directories specific for the UNICEF Platform that
+# should not be included as part of a build artifact and should be excluded.
+#
+# Default exclusions: [root]/acquia/blt/phing/files/deploy-exclude.txt
+#
+

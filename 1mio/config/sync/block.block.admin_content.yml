@@ -1,0 +1,22 @@
+uuid: 6c5f96a7-22f9-4d28-a50c-646c5ced60f3
+langcode: pt-br
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - admin
+_core:
+  default_config_hash: 9EoWV2Lot6FVSr50t4hoKgiz1LIXYWNG-IIPYsWxBqo
+id: admin_content
+theme: admin
+region: content
+weight: -4
+provider: null
+plugin: system_main_block
+settings:
+  id: system_main_block
+  label: 'Conteúdo da página principal'
+  label_display: '0'
+  provider: system
+visibility: {  }

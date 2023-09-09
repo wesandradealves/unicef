@@ -1,0 +1,34 @@
+set -ev
+BLT_HAS_DYNAMIC_MULTISITE=true
+if [ -f ${BUILD_DIR}/site-blt.yml ]; then
+    TEMP_REMOTE_BLT=$(yaml-cli get:value site-blt.yml git.remotes.cloud)
+    yaml-cli update:value blt/blt.yml git.remotes.cloud $TEMP_REMOTE_BLT
+
+    TEMP_REMOTE_BLT_MULTISITE=$(yaml-cli get:value site-blt.yml multisites || exit 0)
+
+    TEMP_REMOTE_BLT_SITES_COUNT=$(yaml-cli get:value site-blt.yml multisites | wc -l)
+    if [[ $TEMP_REMOTE_BLT_SITES_COUNT > 1 ]] && [[ "$TEMP_REMOTE_BLT_MULTISITE" != "The key multisites does not exist." ]]; then
+        BLT_HAS_DYNAMIC_MULTISITE=false
+        COUNTER=0
+        for f in `yaml-cli get:value site-blt.yml multisites`; do
+            if [[ $f != '-' ]]; then
+                yaml-cli update:value ${BUILD_DIR}/blt/blt.yml multisites.$COUNTER $f
+                let COUNTER=COUNTER+1
+            fi
+        done
+    fi
+fi
+
+if [ "$BLT_HAS_DYNAMIC_MULTISITE" = true ] ; then
+    cd ${BUILD_DIR}/docroot/sites
+
+    COUNTER=0
+    for f in *; do
+        if [ -d ${f} ]; then
+            # Will not run if no directories are available
+            yaml-cli update:value ${BUILD_DIR}/blt/blt.yml multisites.$COUNTER $f
+            let COUNTER=COUNTER+1
+        fi
+    done
+fi
+set +v

@@ -1,0 +1,29 @@
+uuid: a4ae45c7-d774-4934-978e-a77e4d939618
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_vacancy_priority_profiles
+    - node.type.vacancy
+    - taxonomy.vocabulary.company_public
+id: node.vacancy.field_vacancy_priority_profiles
+field_name: field_vacancy_priority_profiles
+entity_type: node
+bundle: vacancy
+label: 'Perfis Prioritários'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      company_public: company_public
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

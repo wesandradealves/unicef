@@ -1,0 +1,22 @@
+uuid: 727c0628-3666-468e-9a7a-258040f1715f
+langcode: pt-br
+status: true
+dependencies:
+  module:
+    - node
+id: social_posts
+label: Postagens
+type: 'canonical_entities:node'
+pattern: '/post/[node:nid]'
+selection_criteria:
+  827e856e-e219-4a84-90dc-d48aac2f1b2b:
+    id: node_type
+    negate: false
+    uuid: 827e856e-e219-4a84-90dc-d48aac2f1b2b
+    context_mapping:
+      node: node
+    bundles:
+      social_post: social_post
+selection_logic: and
+weight: -8
+relationships: {  }

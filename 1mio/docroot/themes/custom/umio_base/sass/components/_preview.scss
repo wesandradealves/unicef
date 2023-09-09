@@ -1,0 +1,36 @@
+.node-preview-container {
+  position: sticky;
+  top: 0;
+  z-index: 1020;
+  background-color: $gray-primary-15 !important;
+  padding: 1rem 0;
+  .node-preview-form-select {
+    @include make-container-boostrap();
+    .node-preview-backlink {
+      display: block;
+      width: 100%;
+      max-width: 300px;
+      padding: .375rem .75rem;
+      text-align: center;
+      color: $gray-primary-10;
+      background-color: $blue-primary-main;
+      border-color: $blue-primary-main;
+      border-radius: 32px!important;
+      text-decoration: none;
+    }
+    .form-item-view-mode {
+      margin: 0;
+    }
+  }
+}
+
+.company_manager,
+.partner_talent_acquisition {
+  .node-preview-container {
+    .node-preview-form-select {
+      .form-item-view-mode {
+        display: none;
+      }
+    }
+  }
+}

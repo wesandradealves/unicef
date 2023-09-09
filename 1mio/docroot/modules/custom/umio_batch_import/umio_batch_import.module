@@ -1,0 +1,30 @@
+<?php
+
+/**
+ * @file
+ * Primary module hooks for 1MIO Batch Import module.
+ *
+ * @DCG
+ * This file is no longer required in Drupal 8.
+ * @see https://www.drupal.org/node/2217931
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function umio_batch_import_help(string $route_name, RouteMatchInterface $route_match): string {
+  switch ($route_name) {
+    // Main module help for the user module.
+    case 'help.page.user':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('Custom module to import Excel data into Vacancies and Courses.') . '</p>';
+      return $output;
+
+    default:
+  }
+
+  return '';
+}

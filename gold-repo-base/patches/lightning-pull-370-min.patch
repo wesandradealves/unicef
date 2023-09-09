@@ -1,0 +1,161 @@
+diff --git a/modules/lightning_features/lightning_core/src/BundleEntityStorage.php b/modules/lightning_features/lightning_core/src/BundleEntityStorage.php
+index df22b8e..d2122e9 100644
+--- a/modules/lightning_features/lightning_core/src/BundleEntityStorage.php
++++ b/modules/lightning_features/lightning_core/src/BundleEntityStorage.php
+@@ -57,7 +57,7 @@ class BundleEntityStorage extends ConfigEntityStorage {
+   public function loadMultiple(array $ids = NULL, $check_access = FALSE) {
+     if ($check_access) {
+       $ids = array_filter(
+-        $this->getQuery()->execute(),
++        $ids ?: $this->getQuery()->execute(),
+         [$this->accessHandler, 'createAccess']
+       );
+     }
+diff --git a/modules/lightning_features/lightning_media/lightning_media.module b/modules/lightning_features/lightning_media/lightning_media.module
+index cfefb6d..02f9510 100644
+--- a/modules/lightning_features/lightning_media/lightning_media.module
++++ b/modules/lightning_features/lightning_media/lightning_media.module
+@@ -87,13 +87,16 @@ function lightning_media_inline_entity_form_entity_form_alter(array &$entity_for
+  *
+  * @param \Drupal\file\FileInterface $file
+  *   The file to validate.
++ * @param string[] $bundles
++ *   (optional) A set of media bundle IDs which might match the input. If
++ *   omitted, all bundles to which the user has create access will be checked.
+  *
+  * @return string[]
+  *   An array of errors. If empty, the file passed validation.
+  */
+-function lightning_media_validate_upload(FileInterface $file) {
++function lightning_media_validate_upload(FileInterface $file, array $bundles = []) {
+   try {
+-    $entity = \Drupal::service('lightning.media_helper')->createFromInput($file);
++    $entity = \Drupal::service('lightning.media_helper')->createFromInput($file, $bundles);
+   }
+   catch (IndeterminateBundleException $e) {
+     return [];
+@@ -389,6 +392,7 @@ function lightning_media_entity_form_display_presave(EntityFormDisplayInterface
+         ],
+         'open' => TRUE,
+       ],
++      'region' => 'content',
+     ]);
+   }
+ }
+diff --git a/modules/lightning_features/lightning_media/modules/lightning_media_image/lightning_media_image.module b/modules/lightning_features/lightning_media/modules/lightning_media_image/lightning_media_image.module
+index a66a0f1..bbb395c 100644
+--- a/modules/lightning_features/lightning_media/modules/lightning_media_image/lightning_media_image.module
++++ b/modules/lightning_features/lightning_media/modules/lightning_media_image/lightning_media_image.module
+@@ -81,6 +81,7 @@ function lightning_media_image_entity_form_display_presave(EntityFormDisplayInte
+         'preview_image_style' => 'thumbnail',
+         'open' => TRUE,
+       ],
++      'region' => 'content',
+     ]);
+   }
+ }
+diff --git a/modules/lightning_features/lightning_media/src/MediaHelper.php b/modules/lightning_features/lightning_media/src/MediaHelper.php
+index 876398e..f08ec9d 100644
+--- a/modules/lightning_features/lightning_media/src/MediaHelper.php
++++ b/modules/lightning_features/lightning_media/src/MediaHelper.php
+@@ -36,18 +36,21 @@ class MediaHelper {
+    * @param bool $check_access
+    *   (optional) Whether to filter the bundles by create access for the current
+    *   user. Defaults to FALSE.
++   * @param string[] $bundles
++   *   (optional) An array of bundle IDs from which to retrieve source field
++   *   extensions. If omitted, all available bundles are allowed.
+    *
+    * @return string[]
+    *   The file extensions accepted by all available bundles.
+    */
+-  public function getFileExtensions($check_access = FALSE) {
++  public function getFileExtensions($check_access = FALSE, array $bundles = []) {
+     $extensions = '';
+
+     // Lightning Media overrides the media_bundle storage handler with a special
+     // one that adds an optional second parameter to loadMultiple().
+-    $bundles = $this->entityTypeManager
+-      ->getStorage('media_bundle')
+-      ->loadMultiple(NULL, $check_access);
++    $storage = $this->entityTypeManager
++      ->getStorage('media_bundle');
++    $bundles = $storage->loadMultiple($bundles ?: NULL, $check_access);
+
+     /** @var \Drupal\media_entity\MediaBundleInterface $bundle */
+     foreach ($bundles as $bundle) {
+@@ -76,6 +79,9 @@ class MediaHelper {
+    * @param bool $check_access
+    *   (optional) Whether to filter the bundles by create access for the current
+    *   user. Defaults to TRUE.
++   * @param string[] $bundles
++   *   (optional) A set of media bundle IDs which might match the input. If
++   *   omitted, all available bundles are checked.
+    *
+    * @return \Drupal\media_entity\MediaBundleInterface
+    *   A media bundle that can accept the input value.
+@@ -83,12 +89,12 @@ class MediaHelper {
+    * @throws \Drupal\lightning_media\Exception\IndeterminateBundleException if
+    * no bundle can be matched to the input value.
+    */
+-  public function getBundleFromInput($value, $check_access = TRUE) {
++  public function getBundleFromInput($value, $check_access = TRUE, array $bundles = []) {
+     // Lightning Media overrides the media_bundle storage handler with a special
+     // one that adds an optional second parameter to loadMultiple().
+     $bundles = $this->entityTypeManager
+       ->getStorage('media_bundle')
+-      ->loadMultiple(NULL, $check_access);
++      ->loadMultiple($bundles ?: NULL, $check_access);
+
+     /** @var \Drupal\media_entity\MediaBundleInterface $bundle */
+     foreach ($bundles as $bundle) {
+@@ -106,16 +112,19 @@ class MediaHelper {
+    *
+    * @param mixed $value
+    *   The input value.
++   * @param string[] $bundles
++   *   (optional) A set of media bundle IDs which might match the input value.
++   *   If omitted, all bundles to which the user has create access are checked.
+    *
+    * @return \Drupal\media_entity\MediaInterface
+    *   The unsaved media entity.
+    */
+-  public function createFromInput($value) {
++  public function createFromInput($value, array $bundles = []) {
+     /** @var \Drupal\media_entity\MediaInterface $entity */
+     $entity = $this->entityTypeManager
+       ->getStorage('media')
+       ->create([
+-        'bundle' => $this->getBundleFromInput($value)->id(),
++        'bundle' => $this->getBundleFromInput($value, TRUE, $bundles)->id(),
+       ]);
+
+     $field = static::getSourceField($entity);
+diff --git a/modules/lightning_features/lightning_media/src/Plugin/EntityBrowser/Widget/FileUpload.php b/modules/lightning_features/lightning_media/src/Plugin/EntityBrowser/Widget/FileUpload.php
+index 7599e7c..06122ac 100644
+--- a/modules/lightning_features/lightning_media/src/Plugin/EntityBrowser/Widget/FileUpload.php
++++ b/modules/lightning_features/lightning_media/src/Plugin/EntityBrowser/Widget/FileUpload.php
+@@ -65,13 +65,21 @@ class FileUpload extends EntityFormProxy {
+     // it as the first validator, allowing it to accept only file extensions
+     // associated with existing media bundles.
+     if (empty($validators['file_validate_extensions'])) {
++      $bundles = [];
++      $entity_browser_info = $form_state->get('entity_browser');
++      if (!empty($entity_browser_info['widget_context']['target_bundles'])) {
++        $bundles = $entity_browser_info['widget_context']['target_bundles'];
++      }
++
+       $validators = array_merge([
+         'file_validate_extensions' => [
+-          implode(' ', $this->helper->getFileExtensions(TRUE)),
++          implode(' ', $this->helper->getFileExtensions(TRUE, $bundles)),
+         ],
+         // This must be a function because file_validate() still thinks that
+         // function_exists() is a good way to ensure callability.
+-        'lightning_media_validate_upload' => [],
++        'lightning_media_validate_upload' => [
++          $bundles,
++        ],
+       ], $validators);
+     }
+     $form['input']['#upload_validators'] = $validators;

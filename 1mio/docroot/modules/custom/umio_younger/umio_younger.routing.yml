@@ -1,0 +1,66 @@
+# Pages
+umio_younger.register_additional_young_success:
+  path: /register/candidate/additional/success
+  defaults:
+    _controller: Drupal\umio_younger\Controller\UmioYoungerController::successAdditionalRegister
+  requirements:
+    _role: "administrator+young"
+umio_younger.young_skills:
+  path: /vocacional
+  defaults:
+    _title: 'Vocational quiz result'
+    _controller: Drupal\umio_younger\Controller\UmioYoungerController::youngerSkillsPage
+  requirements:
+    _role: "administrator+young"
+  options:
+    no_cache: true
+
+# Forms
+umio_younger.register_young:
+  path: /register/candidate
+  defaults:
+    _title: "Criar Conta"
+    _form: '\Drupal\umio_younger\Form\RegisterYoungForm'
+  requirements:
+    _role: "anonymous+administrator"
+umio_younger.register_additional:
+  path: /register/candidate/additional
+  defaults:
+    _title: "Cadastro de dados adicionais do Jovem"
+    _form: '\Drupal\umio_younger\Form\RegisterYoungAdditionalForm'
+  requirements:
+    _role: "administrator+young"
+umio_younger.edit_young:
+  path: /perfil/{user}/editar
+  defaults:
+    _title: "Editar Perfil"
+    _form: '\Drupal\umio_younger\Form\EditYoungForm'
+  requirements:
+    _role: "administrator+young"
+    _same_logged_user: 'true'
+umio_younger.quiz_form:
+  path: '/teste/vocacional'
+  defaults:
+    _form: '\Drupal\umio_younger\Form\QuizForm'
+    _title: 'Vocational quiz'
+  requirements:
+    _role: "administrator+young"
+umio_younger.public_profile:
+  path: '/perfil/{user}/autodeclaracao'
+  defaults:
+    _title: 'Autodeclaração'
+    _form: 'Drupal\umio_younger\Form\PublicProfileForm'
+  requirements:
+    _role: "administrator+young"
+    _same_logged_user: 'true'
+
+# Config Forms
+umio_younger.skills_config_form:
+  path: '/admin/config/umio_younger/skillsconfig'
+  defaults:
+    _form: '\Drupal\umio_younger\Form\SkillsConfigForm'
+    _title: 'Skills 1MiO Config'
+  requirements:
+    _role: "administrator"
+  options:
+    _admin_route: true

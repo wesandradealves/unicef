@@ -1,0 +1,13 @@
+uuid: 9831aef0-1d06-4dd2-a12d-1edfbb68a097
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - key.key.encrypt_fields
+  module:
+    - real_aes
+id: profile_fields_encrypt
+label: 'Criptografia dos Campos'
+encryption_method: real_aes
+encryption_method_configuration: {  }
+encryption_key: encrypt_fields

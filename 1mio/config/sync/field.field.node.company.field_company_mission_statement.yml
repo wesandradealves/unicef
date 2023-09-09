@@ -1,0 +1,19 @@
+uuid: 899cf7bf-187d-4b3a-996b-503bc9876a72
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_company_mission_statement
+    - node.type.company
+id: node.company.field_company_mission_statement
+field_name: field_company_mission_statement
+entity_type: node
+bundle: company
+label: 'Missão da Empresa'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string_long

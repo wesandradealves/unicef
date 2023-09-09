@@ -1,0 +1,10 @@
+unicef_sso.saml_login:
+  path: '/unicef/login'
+  defaults:
+    _controller: '\Drupal\simplesamlphp_auth\Controller\SimplesamlphpAuthController::authenticate'
+  requirements:
+  # This page is a login page, and it should be open to all.
+    _access: 'TRUE'
+  options:
+    _maintenance_access: TRUE
+    no_cache: TRUE

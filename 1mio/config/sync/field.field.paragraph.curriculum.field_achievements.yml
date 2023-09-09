@@ -1,0 +1,19 @@
+uuid: d332db2c-fb51-4986-8a01-a54db2ddda98
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_achievements
+    - paragraphs.paragraphs_type.curriculum
+id: paragraph.curriculum.field_achievements
+field_name: field_achievements
+entity_type: paragraph
+bundle: curriculum
+label: Conquistas
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string_long

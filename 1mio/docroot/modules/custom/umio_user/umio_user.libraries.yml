@@ -1,0 +1,6 @@
+umio_user.user_register:
+  js:
+    js/user_register.js: {}
+  dependencies:
+    - core/jquery
+    - core/jquery.once

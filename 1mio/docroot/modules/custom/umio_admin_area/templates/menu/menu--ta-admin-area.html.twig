@@ -1,0 +1,41 @@
+{#
+/**
+ * @file
+ * Theme override to display a menu.
+ *
+ * Available variables:
+ * - menu_name: The machine name of the menu.
+ * - items: A nested list of menu items. Each menu item contains:
+ *   - attributes: HTML attributes for the menu item.
+ *   - below: The menu item child items.
+ *   - title: The menu link title.
+ *   - url: The menu link url, instance of \Drupal\Core\Url
+ *   - localized_options: Menu link localized options.
+ *   - is_expanded: true if the link has visible children within the current
+ *     menu tree.
+ *   - is_collapsed: true if the link has children within the current menu tree
+ *     that are not currently visible.
+ *   - in_active_trail: true if the link is in the active trail.
+ */
+#}
+
+{% if items %}
+  <nav role="navigation" class="tabs-wrapper is-horizontal is-collapsible" aria-labelledby="primary-tabs-title" data-drupal-nav-tabs>
+    <ul class="tabs tabs--primary clearfix" data-drupal-nav-tabs-target>
+
+      {% for item in items %}
+        {% set is_active = item.in_active_trail %}
+
+        <li class="tabs__tab js-tab {{ is_active ? 'is-active js-active-tab' }}">
+          {{ link(item.title, item.url, { 'class':['tabs__link', 'js-tabs-link']}) }}
+          {% if is_active %}
+            <button class="reset-appearance tabs__trigger" aria-label="{{ 'Tabs display toggle'|t }}" data-drupal-nav-tabs-trigger>
+              {% include "@claro/../images/src/hamburger-menu.svg" %}
+            </button>
+          {% endif %}
+        </li>
+      {% endfor %}
+
+    </ul>
+  </nav>
+{% endif %}

@@ -1,0 +1,44 @@
+{#
+/**
+ * @file
+ * Default theme implementation for a region.
+ *
+ * Available variables:
+ * - content: The content for this region, typically blocks.
+ * - attributes: Remaining HTML attributes for the element, including:
+ *   - class: HTML classes that can be used to style contextually through CSS.
+ *
+ * @see template_preprocess_region()
+ *
+ * @ingroup themeable
+ */
+#}
+
+<div id="profile-experiences" class="row m-0">
+  <div class="col-12 col-md-10 offset-md-1 col-lg-6 offset-lg-3 d-flex justify-content-center">
+    <div class="container d-flex flex-column justify-content-center mt-3">
+      <h1>
+        {{ title }}
+      </h1>
+      {% if current == 1 or endDate == '' %}
+        <h2>
+          {% if company %}
+            {{ "#{company} - " }}
+          {% endif %}
+          {{ 'Since'|t|lower }}
+          {{ startDate|date('U')|format_date('html_year') }}
+        </h2>
+      {% elseif startDate != '' and endDate != '' %}
+        <h2>
+          {% if company %}
+            {{ "#{company} - " }}
+          {% endif %}
+          {{ startDate|date('U')|format_date('html_year') }} {{
+            'dateTo'|t|lower
+          }}
+          {{ endDate|date('U')|format_date('html_year') }}
+        </h2>
+      {% endif %}
+    </div>
+  </div>
+</div>

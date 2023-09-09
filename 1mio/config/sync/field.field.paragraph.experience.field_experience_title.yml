@@ -1,0 +1,19 @@
+uuid: 5db9336c-0d2f-4147-82d3-389b8aa5f9e6
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_experience_title
+    - paragraphs.paragraphs_type.experience
+id: paragraph.experience.field_experience_title
+field_name: field_experience_title
+entity_type: paragraph
+bundle: experience
+label: Título
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

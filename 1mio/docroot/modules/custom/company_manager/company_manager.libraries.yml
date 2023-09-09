@@ -1,0 +1,6 @@
+company_manager.city_manager_register:
+  js:
+    js/city_manager_register.js: {}
+  dependencies:
+    - core/jquery
+    - core/jquery.once

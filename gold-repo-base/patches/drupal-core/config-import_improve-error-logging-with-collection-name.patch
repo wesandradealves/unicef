@@ -1,0 +1,13 @@
+diff --git a/core/lib/Drupal/Core/Config/ConfigImporter.php b/core/lib/Drupal/Core/Config/ConfigImporter.php
+index 06fed4b1b0..c69903a743 100644
+--- a/core/lib/Drupal/Core/Config/ConfigImporter.php
++++ b/core/lib/Drupal/Core/Config/ConfigImporter.php
+@@ -875,7 +875,7 @@ protected function checkOp($collection, $op, $name) {
+ 
+       case 'update':
+         if (!$target_exists) {
+-          $this->logError($this->t('Update target "@name" is missing.', ['@name' => $name]));
++          $this->logError($this->t('Update target "@name" is missing (collection: @collection).', ['@name' => $name, '@collection' => $collection]));
+           // Mark as processed so that the synchronization continues. Once the
+           // the current synchronization is complete it will show up as a
+           // create.

@@ -1,0 +1,19 @@
+uuid: 71de1c58-01dd-46b1-8301-06af634970db
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_young_description
+    - taxonomy.vocabulary.company_public
+id: taxonomy_term.company_public.field_young_description
+field_name: field_young_description
+entity_type: taxonomy_term
+bundle: company_public
+label: 'Descrição para o jovem'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string_long

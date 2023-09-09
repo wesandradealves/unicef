@@ -1,0 +1,180 @@
+<?php
+
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\views\ViewExecutable;
+
+/**
+ * @file
+ * Functions to support theming in the umio theme.
+ */
+
+/**
+ * Implements hook_theme().
+ */
+function umio_theme() {
+  return [
+    'views_view_unformatted_feeds' => [
+      'template' => 'views/views-view-unformatted-feeds',
+      'base hook' => 'views_view_unformatted',
+    ],
+    'umio__front_feeds__region' => [
+      'template' => 'region/umio-feeds--region-content',
+      'base hook' => 'region',
+    ],
+    'umio__front_partners_cities__region' => [
+      'template' => 'region/umio-partners-cities--region-content',
+      'base hook' => 'region',
+    ],
+    'views_view__partners' => [
+      'template' => 'views/views-view--partners',
+      'base hook' => 'views_view',
+    ]
+  ];
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK_alter().
+ */
+function umio_theme_suggestions_form_alter(&$suggestions, $variables) {
+  if (isset($variables['element']['#form_id'])) {
+    $suggestions[] = 'form__' . $variables['element']['#form_id'];
+  }
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK_alter().
+ */
+function umio_theme_suggestions_views_view_unformatted_alter(&$suggestions, $variables) {
+  $allowed_routes = [
+    'view.feeds_jovens.feed_general',
+    'view.feeds_jovens.feed_skills',
+    'umio_front_area.feeds.opportunities_panel',
+  ];
+
+  $routeMatch = \Drupal::routeMatch();
+  $routeName = $routeMatch->getRouteName();
+
+  if (in_array($routeName, $allowed_routes)) {
+    $suggestions[] = 'views_view_unformatted_feeds';
+  }
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK_alter().
+ */
+function umio_theme_suggestions_region_alter(&$suggestions, $variables, $hook) {
+  $allowed_routes = [
+    'view.feeds_jovens.feed_general',
+    'view.feeds_jovens.feed_skills',
+    'umio_front_area.feeds.opportunities_panel',
+  ];
+
+  $routeMatch = \Drupal::routeMatch();
+  $routeName = $routeMatch->getRouteName();
+
+  $region = $variables['elements']['#region'];
+
+  if ($region == 'content' && in_array($routeName, $allowed_routes)) {
+    $suggestions[] = 'umio__front_feeds__region';
+  }
+
+  if ($region == 'content' && $routeName == 'umio_front_area.partners_cities') {
+    $suggestions[] = 'umio__front_partners_cities__region';
+  }
+
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK_alter().
+ */
+function umio_theme_suggestions_user_alter(array &$suggestions, array $variables) {
+  $currentUser = $variables['elements']['#user'];
+  $roles = $currentUser->getRoles();
+  foreach ($roles as $role) {
+    $suggestions[] = 'user__' . $role;
+  }
+  $mode = $variables['elements']['#view_mode'];
+  $suggestions[] = 'user__' . $mode;
+}
+
+/**
+ * Implements hook_preprocess_user().
+ */
+function umio_preprocess_user(&$variables) {
+  /** @var \Drupal\user\Entity\User $account */
+  $variables['currentUser'] = \Drupal::currentUser();
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK_alter().
+ */
+function umio_theme_suggestions_views_view_alter(array &$suggestions, array $variables) {
+  $routeMatch = \Drupal::routeMatch();
+  $routeName = $routeMatch->getRouteName();
+
+  $viewRoute = explode('.', $routeName);
+  if (isset($viewRoute[1]) && in_array('feeds_jovens', $viewRoute)) {
+    $suggestions[] = 'views_view__feeds';
+  }
+
+  $partnersViewsRoute = [
+    'view.view_company_partners.page_1',
+    'view.view_civil_society_partners.page_1',
+    'view.view_public_institution_partners.page_1',
+  ];
+  $partnersViews = [
+    'view_company_partners',
+    'view_civil_society_partners',
+    'view_public_institution_partners',
+  ];
+  if (in_array($variables['view']->id(), $partnersViews) && !in_array($routeName, $partnersViewsRoute)) {
+    $suggestions[] = 'views_view__partners';
+  }
+
+}
+
+/**
+ * Implements hook_preprocess_region().
+ */
+function umio_preprocess_region(&$variables) {
+  $routeMatch = \Drupal::routeMatch();
+  $routeName = $routeMatch->getRouteName();
+
+  $variables['is_landing_page'] = FALSE;
+  if ($routeName === 'umio_front_area.landing_page') {
+    $variables['is_landing_page'] = true;
+  }
+}
+
+/**
+ * Implements hook_preprocess_node().
+ */
+function umio_preprocess_node(&$variables) {
+  $current_uri = \Drupal::request()->getRequestUri();
+
+  if(strpos($current_uri, 'vagas')) {
+    $node = \Drupal::routeMatch()->getParameter('node');
+    $variables['job_model'] = $node ? $node->get('field_vacancy_job_model')->getValue()[0]['value'] : array();
+    $variables['state'] = $node ? $node->get('field_vacancy_state')->getValue()[0]['value'] : array();
+    $variables['city'] = $node ? $node->get('field_vacancy_city')->getValue()[0]['value'] : array();
+  }
+}
+
+/**
+ * Implements hook_views_pre_render().
+ */
+function umio_views_pre_render(&$view) {
+  if ($view->storage->id() == 'vacancy_cities') {
+    $group = array();
+    foreach ($view->result as $row) {
+      $entity = $row->_entity;
+      $state = $entity->field_vacancy_state->getString();
+      $city = $entity->field_vacancy_city->getString();      
+      if(!in_array($city.' - '.$state, $group)){
+        array_push($group, $city.' - '.$state);
+        $rows[] = $row;
+      }
+    }
+    $view->result = $rows;
+  }
+}

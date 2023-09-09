@@ -1,0 +1,15 @@
+services:
+  umio_batch_import.batch_operation:
+    class: Drupal\umio_batch_import\Service\BatchOperationService
+  umio_batch_import.phpoffice:
+    class: Drupal\umio_batch_import\Service\PhpOfficeService
+    arguments: [
+      '@entity_type.manager',
+      '@file_system',
+      '@file_url_generator'
+    ]
+  umio_batch_import.taxonomy:
+    class: Drupal\umio_batch_import\Service\BatchImportTaxonomyService
+    arguments: [
+      '@entity_type.manager',
+    ]

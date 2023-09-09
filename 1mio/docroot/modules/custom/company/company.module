@@ -1,0 +1,282 @@
+<?php
+
+/**
+ * @file
+ * Contains company.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Entity\EntityFormInterface;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Template\Attribute;
+use Drupal\Core\Link;
+use Drupal\Core\Url;
+use Drupal\file\Entity\File;
+
+/**
+ * Implements hook_help().
+ */
+function company_help(string $route_name, RouteMatchInterface $route_match): string {
+  $output = '';
+  switch ($route_name) {
+    // Main module help for the company module.
+    case 'help.page.company':
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('Module for make changes in Company content type') . '</p>';
+      break;
+  }
+  return $output;
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function company_form_node_company_edit_form_alter(array &$form, FormStateInterface $form_state, string $form_id): void {
+  if ($form_state->getFormObject() instanceof EntityFormInterface) {
+    /** @var \Drupal\Core\Entity\EntityFormInterface $form_object */
+    $form_object = $form_state->getformObject();
+
+    /** @var \Drupal\node\Entity\Node $node */
+    $node = $form_object->getEntity();
+
+    if ($node->get("field_company_main_office")->getValue() == NULL) {
+      unset($form['field_company_main_office']);
+    }
+
+    /** @var \Drupal\company\Service\CompanyWorkflowService $companyWorkflowService */
+    $companyWorkflowService = \Drupal::service('company.company_workflow_service');
+    $form['actions']['delete'] = $companyWorkflowService->getDeleteWorkflowField($node);
+    $form['nodeHeaderActions'] = $companyWorkflowService->getApproveAndRejectWorkflowFields($node);
+
+    if ($node->get('field_deleted_at')->getValue()) {
+      unset($form['actions']['delete']);
+    }
+  }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function company_form_alter(array &$form, FormStateInterface $form_state, string $form_id): void {
+  $allowedCompanyForms = [
+    'node_company_form',
+    'node_company_edit_form',
+  ];
+  if (in_array($form_id, $allowedCompanyForms)) {
+    $form['#validate'][] = 'company_validate_form';
+
+    // Adding masks.
+    $form['#attached']['library'][] = 'umio_helpers/umio_helpers.mask';
+    $form['#attached']['library'][] = 'umio_helpers/umio_helpers.select2_customization';
+    $form['field_company_cnpj']['widget'][0]['value']['#attributes']['class'] = ['cnpj-mask'];
+    $form['field_company_telephone']['widget'][0]['value']['#attributes']['class'] = ['telephone-mask'];
+    $form['field_company_phone_extension']['widget'][0]['value']['#attributes']['class'] = ['telephone-extension-mask'];
+    $form['field_company_phone']['widget'][0]['value']['#attributes']['class'] = ['phone-mask'];
+    $form['field_company_address']['widget'][0]['top'] = [];
+  }
+
+  $allowedCompanyForms = [
+    'register_company_form',
+    'company_edit_company',
+    'register_company_branch_form',
+    'company_branch_edit_form',
+  ];
+  if (in_array($form_id, $allowedCompanyForms)) {
+    $form['#attached']['library'][] = 'umio_helpers/umio_helpers.handle_steps_form';
+    $form['#attached']['library'][] = 'company/company.register_company';
+    $form['#attached']['library'][] = 'umio_helpers/umio_helpers.mask';
+    $form['#attached']['library'][] = 'umio_helpers/umio_helpers.address_customization';
+    $form['elements']['field_address']['#after_build'][] = 'company_customize_address';
+  }
+}
+
+/**
+ * Function to validate the form.
+ *
+ * @var array $form
+ * @var \Drupal\Core\Form\FormStateInterface $form_state
+ */
+function company_validate_form(array &$form, FormstateInterface $form_state): void {
+  /** @var \Drupal\company\Service\CompanyFormValidator */
+  $formValidator = \Drupal::service('company.form_validator');
+  $formValidator->validate($form_state);
+}
+
+/**
+ * Function to change order of address fields.
+ *
+ * @var array $element
+ * @var \Drupal\Core\Form\FormStateInterface $form_state
+ */
+function company_customize_address(array $element, FormStateInterface $form_state): array {
+  $element['field_address']['administrative_area']['#weight'] = -5;
+  $element['field_address']['locality']['#weight'] = -4;
+  return $element;
+}
+
+/**
+ * Implements hook_preprocess_node__page().
+ */
+function company_preprocess_node__page(array &$variables) : void {
+  $variables['#attached']['library'][] = 'core/jquery';
+  $variables['#attached']['library'][] = 'core/drupal.dialog.ajax';
+  $variables['#attached']['library'][] = 'core/jquery.form';
+}
+
+/**
+ * Implements hook_preprocess_views_view().
+ */
+function company_preprocess_views_view(array &$variables) : void {
+  if ($variables['id'] == 'view_company' && $variables['display_id'] == 'company_list') {
+    $variables['#attached']['library'][] = 'company/company.view_company_list';
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function company_theme() : array {
+  return [
+    'success_page_company_registered_with_commitment_term' => [
+      'render element' => 'children',
+      'template' => 'page--register-company-success',
+      'path' => '../../../themes/custom/umio/templates/page/company',
+      'variables' => [],
+    ],
+    'success_page_company_registered_without_commitment_term' => [
+      'render element' => 'children',
+      'template' => 'page--register-company-success-without-term',
+      'path' => '../../../themes/custom/umio/templates/page/company',
+      'variables' => [],
+    ],
+  ];
+}
+
+/**
+ * Prepares variables for file link templates.
+ *
+ * Default template: file-link.html.twig.
+ *
+ * @param array $variables
+ *   An associative array containing:
+ *   - file: A File entity to which the link will be created.
+ *   - icon_directory: (optional) A path to a directory of icons to be used for
+ *     files. Defaults to the value of the "icon.directory" variable.
+ *   - description: A description to be displayed instead of the filename.
+ *   - attributes: An associative array of attributes to be placed in the a tag.
+ */
+function company_preprocess_file_link(&$variables) : void {
+
+  $file = $variables['file'];
+  $options = [];
+
+  // @todo Wrap in file_url_transform_relative(). This is currently
+  // impossible. As a work-around, we currently add the 'url.site' cache context
+  // to ensure different file URLs are generated for different sites in a
+  // multisite setup, including HTTP and HTTPS versions of the same site.
+  // Fix in https://www.drupal.org/node/2646744.
+  $url = $file->createFileUrl(FALSE);
+  $variables['#cache']['contexts'][] = 'url.site';
+
+  $mime_type = $file->getMimeType();
+  $options['attributes']['type'] = $mime_type;
+
+  // Use the description as the link text if available.
+  if (empty($variables['description'])) {
+    $link_text = $file->getFilename();
+  }
+  else {
+    $link_text = $variables['description'];
+    $options['attributes']['title'] = $file->getFilename();
+  }
+
+  // Classes to add to the file field for icons.
+  $classes = [
+    'file',
+    // Add a specific class for each and every mime type.
+    'file--mime-' . strtr($mime_type, ['/' => '-', '.' => '-']),
+    // Add a more general class for groups of well known MIME types.
+    'file--' . file_icon_class($mime_type),
+  ];
+
+  // Set file classes to the options array.
+  $variables['attributes'] = new Attribute($variables['attributes']);
+  $variables['attributes']->addClass($classes);
+  $variables['file_size'] = format_size($file->getSize());
+
+  $link = Link::fromTextAndUrl($link_text, Url::fromUri($url, $options));
+  $variables['link'] = $link->toRenderable();
+
+  /**
+   * Adpatation to put a image-preview once the fiel was uploaded by the user.
+   */
+  if (explode('/', $mime_type)[0] == 'image') {
+    $preview_wrapper_attributes = [
+      'class' => [
+        'form-control-file-image-preview',
+        'form-control-managed-file-wrapper',
+      ],
+    ];
+
+    $variables['image_preview_wrapper'] = [
+      'attributes' => new Attribute($preview_wrapper_attributes),
+    ];
+
+    $preview_attributes = [
+      'alt' => $file->getFilename(),
+      'title' => $file->getFilename(),
+      'src' => $link->getUrl()->toString(),
+    ];
+
+    $variables['image_preview'] = [
+      'attributes' => new Attribute($preview_attributes),
+      'file_name' => $file->getFilename(),
+    ];
+  }
+
+}
+
+/**
+ * Implements hook_views_data_alter().
+ */
+function company_views_data_alter(array &$data): void {
+  $companyFields = [
+    'course' => 'node__field_course_institution',
+    'vacancy' => 'field_vacancy_company_target_id',
+    'user' => 'user__field_user_company',
+  ];
+
+  foreach ($companyFields as $type => $field) {
+    $data['views'][$type] = [
+      'title' => t('Node company'),
+      'field' => [
+        'id' => $field,
+      ],
+      'filter' => [
+        'title' => t('Company'),
+        'group' => t('Content'),
+        'help' => t("Appears in: @bundles.", ['@bundles' => $type]),
+        'id' => 'company_' . $type . '_filter',
+      ],
+    ];
+  }
+}
+
+/**
+ * Implements hook_preprocess_views_view_field().
+ */
+function company_preprocess_views_view_field(array &$variables): void {
+  $views_company_array = ['view_company_partners', 'view_public_institution_partners', 'view_civil_society_partners'];
+  if (in_array($variables['view']->id(), $views_company_array)) {
+    $file = File::load($variables['field']->getValue($variables['row']));
+
+    $image_variables = [
+      '#theme' => 'image_style',
+      '#style_name' => 'umio_partners_block',
+      '#uri' => $file->getFileUri(),
+      '#title' => $variables['row']->_entity->get('title')->getString(),
+      '#alt' => $variables['row']->_entity->get('title')->getString(),
+    ];
+    $variables['output'] = \Drupal::service('renderer')->render($image_variables);
+  }
+}

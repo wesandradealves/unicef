@@ -1,0 +1,10 @@
+uuid: 27123854-ccac-47d6-92ea-59687a0ecd1a
+langcode: pt-br
+status: true
+dependencies: {  }
+id: paragraph_volunteer_work
+label: 'Trabalhos voluntários'
+icon_uuid: null
+icon_default: null
+description: 'Trabalhos voluntários para ser utilizado nos content types'
+behavior_plugins: {  }

@@ -1,0 +1,16 @@
+.modal-footer {
+  .btn + .btn {
+    margin-left: 0;
+  }
+  .modal-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+  }
+}
+
+.eu-cookie-compliance-message > p {
+  font-size: 16px;
+  font-weight: initial;
+}

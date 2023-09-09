@@ -1,0 +1,93 @@
+msgid "About"
+msgstr "Sobre"
+
+msgid "Custom module to reuse code and functions in other modules."
+msgstr "Módulo customizado para reutilizar códigos e funções em outros módulos."
+
+msgid "Password too short!"
+msgstr "A senha é muito curta!"
+
+msgid "Password must include at least one number!"
+msgstr "A senha deve conter no mínimo um número!"
+
+msgid "Password must include at least one letter!"
+msgstr "A senha deve conter no mínimo uma letra!"
+
+msgid "Name"
+msgstr "Nome"
+
+msgid "Main Email"
+msgstr "Email principal"
+
+msgid "Alternative e-mail"
+msgstr "Email alternativo"
+
+msgid "Landline"
+msgstr "Telefone fixo"
+
+msgid "Phone extension"
+msgstr "Ramal"
+
+msgid "Cell Phone"
+msgstr "Celular"
+
+msgid "Select..."
+msgstr "Selecione..."
+
+msgctxt "Address label"
+msgid "Street address"
+msgstr "Logradouro"
+
+msgctxt "Address label"
+msgid "Complement"
+msgstr "Complemento"
+
+msgctxt "Address label"
+msgid "District"
+msgstr "Bairro"
+
+msgctxt "Address label"
+msgid "Administrative area"
+msgstr "Estado"
+
+msgctxt "Address label"
+msgid "City"
+msgstr "Cidade"
+
+msgctxt "Address label"
+msgid "Postal code"
+msgstr "CEP"
+
+msgid "Page @page"
+msgstr "Página @page"
+
+msgid "Company"
+msgstr "Empresa"
+
+msgid "Role on company"
+msgstr "Cargo na Empresa"
+
+msgid "Role on company"
+msgstr "Cargo na Empresa"
+
+msgid "The value in @title has to be greater than @min."
+msgstr "O valor do campo @title tem que ser maior do que @min."
+
+msgctxt "Range Field"
+msgid "to"
+msgstr "à"
+
+msgid "Begin"
+msgstr "Início"
+
+msgid "The password needs to have at least 8 characters, one number, one letter and one special character."
+msgstr "A senha necessita de no mínimo 8 caracteres, um número, uma letra e um caractere especial."
+
+msgid "The password does not satisfy the password policies."
+msgstr "A senha não atende às políticas de segurança."
+
+msgid "I want to sign up"
+msgstr "Quero me inscrever"
+
+msgid "Title should not exceed @config_value character(s)"
+msgstr "Título não deve exceder @config_value caracteres"

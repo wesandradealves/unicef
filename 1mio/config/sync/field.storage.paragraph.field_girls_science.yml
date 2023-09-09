@@ -1,0 +1,20 @@
+uuid: e258c95a-9097-41a3-b769-59d24b9d05e2
+langcode: pt-br
+status: true
+dependencies:
+  module:
+    - paragraphs
+id: paragraph.field_girls_science
+field_name: field_girls_science
+entity_type: paragraph
+type: integer
+settings:
+  unsigned: false
+  size: normal
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

@@ -1,0 +1,20 @@
+uuid: b9d90664-0b75-46e7-88ba-4a512ffecb86
+langcode: pt-br
+status: true
+dependencies:
+  module:
+    - datetime
+    - paragraphs
+id: paragraph.field_education_end
+field_name: field_education_end
+entity_type: paragraph
+type: datetime
+settings:
+  datetime_type: date
+module: datetime
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

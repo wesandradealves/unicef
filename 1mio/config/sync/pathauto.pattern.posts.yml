@@ -1,0 +1,22 @@
+uuid: 4ad5f1bd-b994-4472-809c-9ed68a14a552
+langcode: pt-br
+status: true
+dependencies:
+  module:
+    - node
+id: posts
+label: 'Postagens Form Edit'
+type: 'canonical_entities:node'
+pattern: '/post/[node:nid]/edit'
+selection_criteria:
+  d42aaabe-9efe-4520-b459-09c58fba6f0c:
+    id: node_type
+    negate: false
+    uuid: d42aaabe-9efe-4520-b459-09c58fba6f0c
+    context_mapping:
+      node: node
+    bundles:
+      social_post: social_post
+selection_logic: and
+weight: -7
+relationships: {  }

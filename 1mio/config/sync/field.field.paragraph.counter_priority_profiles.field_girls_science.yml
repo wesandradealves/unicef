@@ -1,0 +1,23 @@
+uuid: 937d4e1e-6b4a-4510-9fb2-01f21396bbde
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_girls_science
+    - paragraphs.paragraphs_type.counter_priority_profiles
+id: paragraph.counter_priority_profiles.field_girls_science
+field_name: field_girls_science
+entity_type: paragraph
+bundle: counter_priority_profiles
+label: 'Meninas nos mercados de Ciência, Tecnologia, Engenharia e afins'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: 0
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

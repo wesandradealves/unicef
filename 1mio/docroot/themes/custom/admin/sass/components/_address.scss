@@ -1,0 +1,27 @@
+.field--type-address {
+  .address-container-inline {
+    @include make-row();
+    flex-direction: column;
+    @include media-breakpoint-up(sm) {
+      flex-direction: row;
+    }
+    .form-item {
+      margin-top: 1rem;
+      margin-right: 0;
+      &:first-of-type {
+        @include make-col-ready();
+        @include make-col(12);
+        @include media-breakpoint-up(sm) {
+          @include make-col(6);
+        }
+      }
+      &:last-of-type {
+        @include make-col-ready();
+        @include make-col(12);
+        @include media-breakpoint-up(sm) {
+          @include make-col(6);
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,43 @@
+{#
+/**
+ * @file
+ * Theme override to display a region.
+ *
+ * Available variables:
+ * - content: The content for this region, typically blocks.
+ * - attributes: HTML attributes for the region <div>.
+ * - region: The name of the region variable as defined in the theme's
+ *   .info.yml file.
+ *
+ * @see template_preprocess_region()
+ */
+#}
+{%
+  set classes = [
+    'region',
+    'region-' ~ region|clean_class,
+  ]
+%}
+{% if content %}
+  {%
+    set classes = not logged_in ? classes|merge([
+      'menu-bar-anonymous',
+      is_landing_page ? 'landing-page' : '',
+    ]) : classes
+  %}
+  <div{{ attributes.addClass(classes) }}>
+    {{ elements['umio_branding'] }}
+    <div class="main--menu">
+      {% if not logged_in %}
+        {% include '@umio_base/components/menu--anonymous-user.html.twig' with {
+          is_landing_page: is_landing_page
+        }%}
+      {% else %}
+        {% include '@umio_base/components/menu--logged-user.html.twig' with {
+          current_user: current_user,
+          menu: elements['umio_menu_main']
+        }%}
+      {% endif %}
+    </div>
+  </div>
+{% endif %}

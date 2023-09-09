@@ -1,0 +1,21 @@
+uuid: 3dd203df-a965-4852-b527-e4328205f104
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_social_post_media_type
+    - node.type.social_post
+  module:
+    - options
+id: node.social_post.field_social_post_media_type
+field_name: field_social_post_media_type
+entity_type: node
+bundle: social_post
+label: 'Tipo de mídia'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string

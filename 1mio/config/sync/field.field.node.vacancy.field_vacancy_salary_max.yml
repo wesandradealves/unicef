@@ -1,0 +1,23 @@
+uuid: c1181642-4ca4-4ed9-988a-455415487750
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_vacancy_salary_max
+    - node.type.vacancy
+id: node.vacancy.field_vacancy_salary_max
+field_name: field_vacancy_salary_max
+entity_type: node
+bundle: vacancy
+label: a
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: !!float 0
+  max: null
+  prefix: 'R$ '
+  suffix: ''
+field_type: decimal

@@ -1,0 +1,17 @@
+uuid: 00a7e08d-1468-489f-b016-e244d297af50
+langcode: pt-br
+status: true
+dependencies:
+  module:
+    - menu_ui
+third_party_settings:
+  menu_ui:
+    available_menus: {  }
+    parent: ''
+name: Empresa
+type: company
+description: 'Cadastro de nova empresa'
+help: ''
+new_revision: true
+preview_mode: 1
+display_submitted: true

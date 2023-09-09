@@ -1,0 +1,63 @@
+uuid: 53650f07-0cf1-40a6-901f-ed48daec58f4
+langcode: pt-br
+status: false
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.vacancy.field_vacancy_activities
+    - field.field.node.vacancy.field_vacancy_audio
+    - field.field.node.vacancy.field_vacancy_benefits
+    - field.field.node.vacancy.field_vacancy_city
+    - field.field.node.vacancy.field_vacancy_closing_date
+    - field.field.node.vacancy.field_vacancy_company
+    - field.field.node.vacancy.field_vacancy_job_model
+    - field.field.node.vacancy.field_vacancy_justify
+    - field.field.node.vacancy.field_vacancy_priority_profiles
+    - field.field.node.vacancy.field_vacancy_qr_code
+    - field.field.node.vacancy.field_vacancy_quantity
+    - field.field.node.vacancy.field_vacancy_salary
+    - field.field.node.vacancy.field_vacancy_salary_max
+    - field.field.node.vacancy.field_vacancy_salary_min
+    - field.field.node.vacancy.field_vacancy_salary_options
+    - field.field.node.vacancy.field_vacancy_skills_match
+    - field.field.node.vacancy.field_vacancy_state
+    - field.field.node.vacancy.field_vacancy_subscription_url
+    - field.field.node.vacancy.field_vacancy_type
+    - field.field.node.vacancy.field_vacancy_video
+    - node.type.vacancy
+  module:
+    - user
+id: node.vacancy.teaser
+targetEntityType: node
+bundle: vacancy
+mode: teaser
+content:
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  content_moderation_control: true
+  field_vacancy_activities: true
+  field_vacancy_audio: true
+  field_vacancy_benefits: true
+  field_vacancy_city: true
+  field_vacancy_closing_date: true
+  field_vacancy_company: true
+  field_vacancy_job_model: true
+  field_vacancy_justify: true
+  field_vacancy_priority_profiles: true
+  field_vacancy_qr_code: true
+  field_vacancy_quantity: true
+  field_vacancy_salary: true
+  field_vacancy_salary_max: true
+  field_vacancy_salary_min: true
+  field_vacancy_salary_options: true
+  field_vacancy_skills_match: true
+  field_vacancy_state: true
+  field_vacancy_subscription_url: true
+  field_vacancy_type: true
+  field_vacancy_video: true
+  langcode: true
+  search_api_excerpt: true

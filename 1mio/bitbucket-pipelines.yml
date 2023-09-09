@@ -1,0 +1,44 @@
+image: thallesferreira/drupal-with-zip:1.0.1
+clone:
+  depth: full
+pipelines:
+  custom:
+    dev-to-stage:
+      - step:
+          script:
+            - scripts/ci/merge-in-stage.sh stage
+  branches:
+    development:
+      - step:
+         script:
+           - scripts/ci/build.sh
+           - scripts/ci/deploy.sh
+         services:
+           - docker
+         caches:
+           - docker
+           - node
+           - composer
+    stage:
+      - step:
+         script:
+           - scripts/ci/build.sh
+           - scripts/ci/deploy.sh
+         services:
+           - docker
+         caches:
+           - docker
+           - node
+           - composer
+    main:
+      - step:
+         script:
+           - scripts/ci/build.sh
+           - scripts/ci/deploy.sh
+         services:
+           - docker
+         caches:
+           - docker
+           - node
+           - composer
+

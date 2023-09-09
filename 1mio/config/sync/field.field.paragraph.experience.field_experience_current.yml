@@ -1,0 +1,23 @@
+uuid: b9bfa99a-138f-439a-9c2f-4c03e6592da2
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_experience_current
+    - paragraphs.paragraphs_type.experience
+id: paragraph.experience.field_experience_current
+field_name: field_experience_current
+entity_type: paragraph
+bundle: experience
+label: Atual
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: Habilitado
+  off_label: Desligado
+field_type: boolean

@@ -1,0 +1,37 @@
+{#
+/**
+ * @file
+ * The menu template.
+ */
+#}
+
+<div class="d-flex align-items-center">
+  <p class="fw-bold m-0 me-3">{{ ('Hello'|t({}, {'context' : 'Menu'})) }}, {{ current_user.first_name }}!</p>
+  {% if 'young' in user.getroles(true) or 'partner_talent_acquisition' in user.getroles(true) %}
+    <a class="link-item-profile text-primary fw-bold text-decoration-none d-none d-sm-block" href="/user">{{ ('Preview Profile'|t) }}</a>
+  {% endif %}
+  <button class="offcanvas-toggle d-flex align-items-center" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebar--menu" aria-controls="sidebar--menu">
+    <i class="ph-list ms-4"></i>
+  </button>
+</div>
+
+<div class="offcanvas offcanvas-end" tabindex="-1" id="sidebar--menu" aria-labelledby="sidebar--menuLabel">
+  <div class="offcanvas-header">
+    <button type="button" class="offcanvas-toggle align-self-end" data-bs-dismiss="offcanvas" aria-label="{{ ('Close'|t) }}">
+      <i class="ph-x-bold"></i>
+    </button>
+    <a class="offcanvas-header--link" href="/user">
+      {% include '@umio_base/components/user--picture.html.twig' with { user_picture: current_user.picture } %}
+      <h5 id="sidebar--menuLabel" class="offcanvas-title">{{ current_user.name }}</h5>
+      {% if 'young' in user.getroles(true) or 'partner_talent_acquisition' in user.getroles(true) %}
+        <p class="link-item-profile text-primary fw-bold fs-6 text-decoration-none">{{ ('Preview Profile'|t) }}</p>
+      {% endif %}
+    </a>
+  </div>
+  <div class="offcanvas-body">
+    {{ menu }}
+    <a class="link-item-logout" href="{{ url('user.logout') }}"> {{ ('Logout'|t({}, {'context' : 'Menu'})) }}
+      <i class="ph-sign-out-bold ms-2"></i>
+    </a>
+  </div>
+</div>

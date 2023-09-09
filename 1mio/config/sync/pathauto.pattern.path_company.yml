@@ -1,0 +1,22 @@
+uuid: 5b5b7f33-ecef-4236-b3d3-e36434c171d1
+langcode: pt-br
+status: true
+dependencies:
+  module:
+    - node
+id: path_company
+label: Empresa
+type: 'canonical_entities:node'
+pattern: '/empresa/[node:nid]'
+selection_criteria:
+  faba395f-4420-483f-8576-314c44c1a161:
+    id: node_type
+    negate: false
+    uuid: faba395f-4420-483f-8576-314c44c1a161
+    context_mapping:
+      node: node
+    bundles:
+      company: company
+selection_logic: and
+weight: -5
+relationships: {  }

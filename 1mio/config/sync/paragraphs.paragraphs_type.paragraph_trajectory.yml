@@ -1,0 +1,10 @@
+uuid: 6bc15688-9019-4849-9de4-47804547ae52
+langcode: pt-br
+status: true
+dependencies: {  }
+id: paragraph_trajectory
+label: 'Trajetória profissional'
+icon_uuid: null
+icon_default: null
+description: 'Campo de trajetória profissional para utilizar nos content types'
+behavior_plugins: {  }

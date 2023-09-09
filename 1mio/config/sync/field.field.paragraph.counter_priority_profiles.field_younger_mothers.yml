@@ -1,0 +1,23 @@
+uuid: 1fadea04-fc22-441e-bcb5-a5c783172ae4
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_younger_mothers
+    - paragraphs.paragraphs_type.counter_priority_profiles
+id: paragraph.counter_priority_profiles.field_younger_mothers
+field_name: field_younger_mothers
+entity_type: paragraph
+bundle: counter_priority_profiles
+label: 'Adolescentes e Jovens Mães'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: 0
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

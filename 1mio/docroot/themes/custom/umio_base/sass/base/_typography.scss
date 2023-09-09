@@ -1,0 +1,41 @@
+// Typography
+
+body {
+  font-family: "Nunito", sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  color: $gray-primary-75;
+  font-size: 16px;
+
+  h1,
+  .h1,
+  .display-1 {
+    font-size: $font-size-6xl;
+  }
+  h2,
+  .h2,
+  .display-2 {
+    font-size: $font-size-5xl;
+  }
+  h3,
+  .h3,
+  .display-3 {
+    font-size: $font-size-4xl;
+  }
+  h4,
+  .h4,
+  .display-4 {
+    font-size: $font-size-3xl;
+  }
+  h5,
+  .h5 {
+    font-size: $font-size-2xl;
+  }
+  h6,
+  .h6 {
+    font-size: $font-size-xl;
+  }
+  p {
+    font-size: $font-size-base;
+  }
+}

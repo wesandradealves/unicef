@@ -1,0 +1,25 @@
+uuid: 30557256-95ea-49ce-a11d-76e98175ccec
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.paragraph_social.field_paragraph_networks
+    - paragraphs.paragraphs_type.paragraph_social
+  module:
+    - social_media_links_field
+id: paragraph.paragraph_social.default
+targetEntityType: paragraph
+bundle: paragraph_social
+mode: default
+content:
+  field_paragraph_networks:
+    type: social_media_links_field_default
+    label: above
+    settings:
+      appearance: {  }
+      link_attributes: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  search_api_excerpt: true

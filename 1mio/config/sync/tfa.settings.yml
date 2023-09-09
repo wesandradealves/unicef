@@ -1,0 +1,43 @@
+_core:
+  default_config_hash: 4TTdc5Uiqqxvbfe55bMlU6tBitgsYNtoi_bqDo7iDNs
+langcode: pt-br
+enabled: 1
+required_roles:
+  administrator: administrator
+  company_manager: company_manager
+  partner_talent_acquisition: partner_talent_acquisition
+  authenticated: '0'
+  young: '0'
+send_plugins: {  }
+login_plugins: {  }
+allowed_validation_plugins:
+  ga_login_totp: ga_login_totp
+default_validation_plugin: ga_login_totp
+validation_plugin_settings:
+  ga_login_hotp:
+    counter_window: 10
+    site_name_prefix: 1
+    name_prefix: TFA
+    issuer: Drupal
+  ga_login_totp:
+    time_skew: 2
+    site_name_prefix: 1
+    name_prefix: TFA
+    issuer: 1Mio
+  tfa_recovery_code:
+    recovery_codes_amount: 10
+validation_skip: 99999999999
+encryption: profile_fields_encrypt
+trust_cookie_expiration: 2592000
+cookie_name: TFA
+tfa_flood_uid_only: 1
+tfa_flood_window: 300
+tfa_flood_threshold: 7
+help_text: 'Contate o suporte para resetar seu acesso.'
+mail:
+  tfa_enabled_configuration:
+    subject: '1MiO - Ativação da autenticação em dois fatores'
+    body: "[user:display-name],\r\n\r\nPronto! A sua conta 1Mio está ainda mais protegida com a autenticação em dois fatores.\r\n\r\nEssa autenticação é uma etapa a mais de segurança para acesso a sua conta 1MiO. Além da senha, é preciso acessar a conta do aparelho - celular ou computador -  em que essa autenticação foi ativada.\r\n\r\nPor isso, se você não tiver mais acesso a este aparelho por alguma razão, recomendamos excluir imediatamente sua conta e a refazê-la em um aparelho que só você tenha acesso."
+  tfa_disabled_configuration:
+    subject: '1MiO - Desativação da autenticação em dois fatores'
+    body: "[user:display-name],\r\n\r\nVocê desativou a autenticação em dois fatores da sua conta 1MiO. \r\n\r\nNão foi você quem executou esta ação? Entre em contato imediatamente pelo e-mail contato@1mio.com.br"

@@ -1,0 +1,4 @@
+administer umio_younger configuration:
+  title: 'Administer umio_younger configuration'
+  description: 'Optional description.'
+  restrict access: true

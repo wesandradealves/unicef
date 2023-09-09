@@ -1,0 +1,76 @@
+.hero {
+  background-color: $blue-primary-main;
+  border-radius: 0px 0px 80px 0px;
+  color: $gray-primary-10;
+
+  .hero--company {
+    .hero--company--logo {
+      width: 50px;
+      height: 50px;
+      border-radius: 100%;
+      background-size: cover;
+      background-position: center;
+      margin-right: 15px;
+    }
+
+    .hero--company--details {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      color: $gray-primary-10;
+    }
+
+    h3 {
+      font-size: 14px;
+      margin: 0;
+      font-weight: 700;
+    }
+
+    p {
+      font-size: 12px;
+      opacity: 60%;
+      margin: 0;
+    }
+  }
+
+  .go-back-anchor {
+    background: unset;
+    border: none;
+    color: $gray-primary-10;
+    text-decoration: unset;
+  }
+
+  .hero--vacancy-details {
+    h1 {
+      font-weight: 700;
+      margin: 0;
+    }
+
+    @media (min-width: 768px) {
+      h1 {
+        font-size: 64px !important;
+        font-weight: 800;
+      }
+    }
+
+    .hero--vacancy-details--vacancy-qty {
+      font-size: 20px;
+      opacity: 0.6;
+      line-height: 1;
+    }
+
+    &--badges {
+      .badge {
+        border: 1px solid #fff;
+        padding: 8px 16px;
+        border-radius: 32px;
+        display: flex;
+        margin-right: 10px;
+
+        i {
+          margin-right: 5px;
+        }
+      }
+    }
+  }
+}

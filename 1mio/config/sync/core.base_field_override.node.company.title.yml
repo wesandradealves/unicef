@@ -1,0 +1,18 @@
+uuid: 5c2423c9-a4f4-4d44-b0bd-1f05372d135c
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - node.type.company
+id: node.company.title
+field_name: title
+entity_type: node
+bundle: company
+label: Nome
+description: ''
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

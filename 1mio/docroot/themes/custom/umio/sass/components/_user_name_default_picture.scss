@@ -1,0 +1,16 @@
+.name-default-picture {
+  border-radius: 50%;
+  border: 3px solid $gray-primary-75;
+  display: flex;
+  width: 56px;
+  height: 56px;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 20px;
+  line-height: 36px;
+  color: $gray-primary-75;
+  background-color: $gray-primary-10;
+}

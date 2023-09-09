@@ -1,0 +1,23 @@
+uuid: 800cf14a-d751-4c0f-9d6c-002972198e08
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_child_labor_victims
+    - paragraphs.paragraphs_type.counter_priority_profiles
+id: paragraph.counter_priority_profiles.field_child_labor_victims
+field_name: field_child_labor_victims
+entity_type: paragraph
+bundle: counter_priority_profiles
+label: 'Vítimas de trabalho infantil'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: 0
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

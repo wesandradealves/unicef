@@ -1,0 +1,22 @@
+uuid: 1bfb5850-c502-40c5-8f63-59bf38f4b633
+langcode: pt-br
+status: true
+dependencies:
+  module:
+    - node
+id: path_vacancy_form_edit
+label: 'Vagas Form Edit'
+type: 'canonical_entities:node'
+pattern: '/vagas/[node:nid]/edit'
+selection_criteria:
+  bc3234ad-748e-49da-abf3-f7eb1068d398:
+    id: node_type
+    negate: false
+    uuid: bc3234ad-748e-49da-abf3-f7eb1068d398
+    context_mapping:
+      node: node
+    bundles:
+      vacancy: vacancy
+selection_logic: and
+weight: -4
+relationships: {  }

@@ -1,0 +1,59 @@
+services:
+  company.form_validator:
+    class: Drupal\company\Service\CompanyFormValidator
+    arguments: [
+      '@umio_helpers.form_validator',
+      '@path.current',
+    ]
+
+  company.company_fields:
+    class: Drupal\company\Service\CompanyFieldsService
+    arguments: [
+      '@address.subdivision_repository',
+      '@entity_type.manager',
+    ]
+
+  company.company_service:
+    class: Drupal\company\Service\CompanyService
+    arguments: [
+      '@entity_type.manager',
+    ]
+
+  company.company_workflow_service:
+    class: Drupal\company\Service\CompanyWorkflowService
+
+  # City Service
+  company.city_stamp_service:
+    class: Drupal\company\Service\CityStampService
+    arguments: [
+      '@entity_type.manager',
+      '@datetime.time',
+    ]
+
+  company.city_fields_service:
+    class: Drupal\company\Service\CityFieldsService
+    arguments: [
+      '@address.subdivision_repository',
+      '@entity_type.manager',
+      '@company.company_fields',
+      '@company.city_stamp_service',
+    ]
+
+  # Access Check
+  company.branch_access_check:
+    class: Drupal\company\Access\BranchAccessCheck
+    arguments: [
+      '@current_route_match',
+      '@entity_type.manager',
+      '@umio_user.user_service'
+    ]
+    tags:
+      - { name: access_check, applies_to: _branch_access_check }
+
+  company.only_company_access_check:
+    class: Drupal\company\Access\OnlyCompanyAccessCheck
+    arguments: [
+      '@umio_user.company_service'
+    ]
+    tags:
+      - { name: access_check, applies_to: _only_company }

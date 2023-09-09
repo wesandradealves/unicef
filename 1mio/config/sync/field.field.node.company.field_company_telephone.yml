@@ -1,0 +1,21 @@
+uuid: 664bb83a-ff06-438a-9870-8c8c7953c212
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_company_telephone
+    - node.type.company
+  module:
+    - telephone
+id: node.company.field_company_telephone
+field_name: field_company_telephone
+entity_type: node
+bundle: company
+label: 'Telefone fixo'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: telephone

@@ -1,0 +1,32 @@
+{% extends "@umio/components/page_two_columns.html.twig" %}
+
+{% block sidebar %}
+  {% include '@umio/components/sidebar_register.html.twig' with {
+    title: ('Register Company'|t),
+    steps: {
+      1: {
+        'active': 'true',
+        'icon': 'ph-image',
+        'text': ('Pictures'|t)
+      },
+      2: {
+        'icon': 'ph-hard-drives',
+        'text': ('Company data'|t)
+      },
+      3: {
+        'icon': 'ph-map-pin',
+        'text': ('Region'|t)
+      },
+      4: {
+        'icon': 'ph-note-pencil',
+        'text': ('Commitment Term'|t)
+      },
+    }
+  } %}
+{% endblock %}
+
+{% block content%}
+  <form{{ attributes }}>
+    {{ children }}
+  </form>
+{% endblock %}

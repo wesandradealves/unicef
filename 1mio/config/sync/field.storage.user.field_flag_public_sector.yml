@@ -1,0 +1,18 @@
+uuid: 840ba3e0-2aee-4e75-b20c-fb5e4014ad56
+langcode: pt-br
+status: true
+dependencies:
+  module:
+    - user
+id: user.field_flag_public_sector
+field_name: field_flag_public_sector
+entity_type: user
+type: boolean
+settings: {  }
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

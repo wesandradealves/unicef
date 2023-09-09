@@ -1,0 +1,30 @@
+uuid: b3285b6d-2a76-446a-8e59-23a56959a3a9
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - field.storage.user.field_user_public_profile
+    - taxonomy.vocabulary.company_public
+  module:
+    - user
+id: user.user.field_user_public_profile
+field_name: field_user_public_profile
+entity_type: user
+bundle: user
+label: 'Perfis prioritários'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      company_public: company_public
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

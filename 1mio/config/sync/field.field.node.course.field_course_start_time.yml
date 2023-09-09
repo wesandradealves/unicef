@@ -1,0 +1,21 @@
+uuid: 09952bbd-a9e5-4242-aebd-b57b8eac1af9
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_course_start_time
+    - node.type.course
+  module:
+    - time_field
+id: node.course.field_course_start_time
+field_name: field_course_start_time
+entity_type: node
+bundle: course
+label: 'Horário de começo'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: time

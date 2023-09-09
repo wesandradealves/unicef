@@ -1,0 +1,18 @@
+uuid: eddc41e1-1077-48f1-b010-c15909029b9a
+langcode: pt-br
+status: true
+dependencies:
+  module:
+    - taxonomy
+id: taxonomy_term.field_stamp_unicef_join_date
+field_name: field_stamp_unicef_join_date
+entity_type: taxonomy_term
+type: timestamp
+settings: {  }
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

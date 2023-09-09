@@ -1,0 +1,18 @@
+.form-control {
+  &.form-radio {
+    padding: 0;
+    border-radius: 50%;
+    width: 21px;
+    height: 21px;
+  }
+}
+
+.form-element:focus, .form-element:hover:focus {
+  box-shadow: none !important;
+}
+
+.form-managed-file {
+  input.form-file {
+    min-height: unset;
+  }
+}

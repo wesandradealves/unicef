@@ -1,0 +1,20 @@
+uuid: b4f0c949-47e5-4df4-802e-7e70ea09a034
+langcode: pt-br
+status: true
+dependencies:
+  module:
+    - datetime
+    - node
+id: node.field_course_start_date
+field_name: field_course_start_date
+entity_type: node
+type: datetime
+settings:
+  datetime_type: date
+module: datetime
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

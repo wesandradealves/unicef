@@ -1,0 +1,20 @@
+uuid: 07769def-eb43-4623-ad66-f23d733916c3
+langcode: pt-br
+status: true
+dependencies:
+  module:
+    - paragraphs
+id: paragraph.field_disabilities_youngs
+field_name: field_disabilities_youngs
+entity_type: paragraph
+type: integer
+settings:
+  unsigned: false
+  size: normal
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

@@ -1,0 +1,58 @@
+{#
+/**
+ * @file
+ * Default theme implementation for a region.
+ *
+ * Available variables:
+ * - content: The content for this region, typically blocks.
+ * - attributes: Remaining HTML attributes for the element, including:
+ *   - class: HTML classes that can be used to style contextually through CSS.
+ *
+ * @see template_preprocess_region()
+ *
+ * @ingroup themeable
+ */
+#}
+
+<div class="side-progress col">
+  <div class="content-btn-logo">
+    <img src="{{ base_path ~ directory }}/images/logo.png" alt="" width="115" height="64" class="logo" />
+    <h1 class="title-progress">Criar conta</h1>
+  </div>
+
+  <div class="content-progress-bar">
+    <ul class="by-step-progress-bar d-flex d-md-block m-0">
+      <li class="active">
+        <span class="icon-progress-bar">
+          <i class="ph-user-circle svg-white svg-progress-default"></i>
+          <i class="ph-check svg-white svg-icon-check svg-icon-off"></i>
+        </span>
+        <span class="title-progress-bar">Tipo de conta</span>
+      </li>
+      <li>
+        <span class="icon-progress-bar">
+          <i class="ph-key svg-gray svg-progress-default"></i>
+          <i class="ph-key svg-white svg-progress-white svg-icon-off"></i>
+          <i class="ph-check svg-white svg-icon-check svg-icon-off"></i>
+        </span>
+        <span class="title-progress-bar">Dados de acesso</span>
+      </li>
+      <li>
+        <span class="icon-progress-bar">
+          <i class="ph-user svg-gray svg-progress-default"></i>
+          <i class="ph-user svg-white svg-progress-white svg-icon-off"></i>
+          <i class="ph-check svg-white svg-icon-check svg-icon-off"></i>
+        </span>
+        <span class="title-progress-bar">Dados pessoais</span>
+      </li>
+      <li>
+        <span class="icon-progress-bar">
+          <i class="ph-hard-drives svg-gray svg-progress-default"></i>
+          <i class="ph-hard-drives svg-white svg-progress-white svg-icon-off"></i>
+          <i class="ph-hard-drives svg-white svg-icon-check svg-icon-off"></i>
+        </span>
+        <span class="title-progress-bar">Empresa</span>
+      </li>
+    </ul>
+  </div>
+</div>

@@ -1,0 +1,67 @@
+{#
+/**
+ * @file
+ * Default theme implementation for a region.
+ *
+ * Available variables:
+ * - content: The content for this region, typically blocks.
+ * - attributes: Remaining HTML attributes for the element, including:
+ *   - class: HTML classes that can be used to style contextually through CSS.
+ *
+ * @see template_preprocess_region()
+ *
+ * @ingroup themeable
+ */
+#}
+
+<section class="profile-details pb-4 d-flex flex-column align-items-center d-print-none">
+  {% if content.field_user_profile_picture[0] %}
+    {{ content.field_user_profile_picture }}
+  {% else %}
+    {% include '@umio/components/user-name-default-picture.html.twig' with {
+      user_name: content.field_user_name[0]['#context']['value']
+    } %}
+  {% endif %}
+
+  <h1 class="my-2 my-md-3">
+    {{ content.field_user_name[0] }}
+  </h1>
+  {% if (professionalInfo|length) > 0 %}
+    <h3>
+      Trabalha como {{
+        professionalInfo[0].entity.field_experience_title.value
+      }} em {{ professionalInfo[0].entity.field_experience_institution.value }}
+    </h3>
+      <a href={{ url('entity.node.canonical', {node: company_id}) }}>
+        <div class="company-image-container"
+        style="background: url({{
+        workPlaceLogo
+        }}); background-size: cover; background-position: center;"> </div> </a>
+  {% endif %}
+
+  {% if address == true %}
+    {{ content.field_user_address[0] }}
+  {% endif %}
+
+  {% if logged_in and user.id == logged_in_uid %}
+    <div class="profile-details--actions d-flex justify-content-between w-100 container mt-4">
+      {% set btn_class = 'flex-grow-1 d-flex align-items-center justify-content-center' %}
+      {% if 'young' in user.getroles(true) %}
+        <a class="btn btn-green fw-bold {{ btn_class }}"
+          href="{{ url('umio_younger.edit_young', {user: user.id}) }}">
+          <i class="ph-pencil-bold mr-2"></i> {{ 'Edit profile'|t }}
+        </a>
+        <a class="btn btn-outline-green fw-bold {{ btn_class }}"
+          onclick="window.print(); return FALSE"
+          href="{{ url('entity.user.canonical', {user: user.id}) }}">
+          <i class="ph-file-arrow-down-bold"></i> {{ 'Save'|t }}
+        </a>
+      {% elseif 'partner_talent_acquisition' in user.getroles(true) %}
+        <a class="btn btn-outline-purple fw-bold {{ btn_class }}"
+          href="{{ url('umio_admin_area.ta_admin.my_account') }}">
+          <i class="ph-pencil-bold mr-2"></i> {{ 'Edit profile'|t }}
+        </a>
+      {% endif %}
+    </div>
+  {% endif %}
+</section>

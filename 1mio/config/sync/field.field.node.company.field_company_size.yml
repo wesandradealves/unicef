@@ -1,0 +1,29 @@
+uuid: 130a76a0-66e1-485d-84c7-ee2b4da98a95
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_company_size
+    - node.type.company
+    - taxonomy.vocabulary.company_size
+id: node.company.field_company_size
+field_name: field_company_size
+entity_type: node
+bundle: company
+label: 'Porte da empresa'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      company_size: company_size
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: company_size
+field_type: entity_reference

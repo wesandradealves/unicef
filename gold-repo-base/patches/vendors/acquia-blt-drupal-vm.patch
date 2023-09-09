@@ -1,0 +1,243 @@
+diff --git a/src/Blt/Plugin/Commands/VmCommand.php b/src/Blt/Plugin/Commands/VmCommand.php
+index 1d87986..a49c422 100644
+--- a/src/Blt/Plugin/Commands/VmCommand.php
++++ b/src/Blt/Plugin/Commands/VmCommand.php
+@@ -8,6 +8,7 @@ use Acquia\Blt\Robo\Exceptions\BltException;
+ use Grasmash\YamlExpander\Expander;
+ use Robo\Contract\VerbosityThresholdInterface;
+ use Symfony\Component\Yaml\Yaml;
++use Acquia\Blt\Robo\Common\Executor;
+ 
+ /**
+  * Defines commands in the "vm" namespace.
+@@ -84,6 +85,34 @@ class VmCommand extends BltTasks {
+    */
+   protected $vmDir;
+ 
++  /**
++   * Is DrupalVM booted.
++   *
++   * @var null
++   */
++  protected $isDrupalVmBooted = NULL;
++
++  /**
++   * Is VM initialized.
++   *
++   * @var null
++   */
++  protected $isDrupalVmLocallyInitialized = NULL;
++
++  /**
++   * DrupalVM status.
++   *
++   * @var array
++   */
++  protected $drupalVmStatus = NULL;
++
++  /**
++   * Process executor.
++   *
++   * @var \Acquia\Blt\Robo\Common\Executor
++   */
++  protected $executor;
++
+   /**
+    * This hook will fire for all commands in this command file.
+    *
+@@ -103,6 +132,17 @@ class VmCommand extends BltTasks {
+     $this->vmConfigFile = array_pop($path_parts);
+   }
+ 
++  /**
++   * Determines if Drupal VM configuration exists in the project.
++   *
++   * @return bool
++   *   TRUE if Drupal VM configuration exists.
++   */
++  public function isDrupalVmConfigPresent() {
++    return file_exists($this->getConfigValue('repo.root') . '/Vagrantfile')
++      && file_exists($this->getConfigValue('vm.config'));
++  }
++
+   /**
+    * Configures and boots a Drupal VM.
+    *
+@@ -115,7 +155,7 @@ class VmCommand extends BltTasks {
+    * @throws \Exception
+    */
+   public function vm($options = ['no-boot' => FALSE]) {
+-    if (!$this->getInspector()->isDrupalVmConfigPresent()) {
++    if (!$this->isDrupalVmConfigPresent()) {
+       $confirm = $this->confirm("Drupal VM is not currently installed. Install it now? ", TRUE);
+       if ($confirm) {
+         $this->install();
+@@ -127,18 +167,36 @@ class VmCommand extends BltTasks {
+ 
+     // @todo Check that VM is properly configured, e.g., all config files exist
+     // and geerlingguy/drupalvm is in composer.lock.
+-    if (!$this->getInspector()->isDrupalVmLocallyInitialized()) {
++    if (!$this->isDrupalVmLocallyInitialized()) {
+       $this->localInitialize();
+     }
+     else {
+       $this->say("Drupal VM is already configured. In the future, please use vagrant commands to interact directly with the VM.");
+     }
+ 
+-    if (!$options['no-boot'] && !$this->getInspector()->isDrupalVmBooted()) {
++    if (!$options['no-boot'] && !$this->isDrupalVmBooted()) {
+       return $this->boot();
+     }
+   }
+ 
++  /**
++   * Determines if Drupal VM is initialized for the local machine.
++   *
++   * I.E., whether Drupal VM is the default LAMP stack for BLT on local machine.
++   *
++   * @return bool
++   *   TRUE if Drupal VM is initialized for the local machine.
++   */
++  public function isDrupalVmLocallyInitialized() {
++    if (is_null($this->isDrupalVmLocallyInitialized)) {
++      $this->isDrupalVmLocallyInitialized = $this->isVmCli() || $this->getConfigValue('vm.enable');
++      $statement = $this->isDrupalVmLocallyInitialized ? "is" : "is not";
++      $this->logger->debug("Drupal VM $statement initialized.");
++    }
++
++    return $this->isDrupalVmLocallyInitialized;
++  }
++
+   /**
+    * Destroys existing VM and all related configuration.
+    *
+@@ -290,6 +348,19 @@ class VmCommand extends BltTasks {
+     }
+   }
+ 
++  /**
++   * Installs a vagrant plugin if it is not already installed.
++   *
++   * @param string $plugin
++   *   The vagrant plugin name.
++   */
++  protected function installVagrantPlugin($plugin) {
++    if (!$this->isVagrantPluginInstalled($plugin)) {
++      $this->logger->warning("The $plugin plugin is not installed! Attempting to install it...");
++      $this->taskExec("vagrant plugin install $plugin")->run();
++    }
++  }
++
+   /**
+    * Sets the Drupal VM base box.
+    *
+@@ -329,6 +400,70 @@ class VmCommand extends BltTasks {
+     $config->set('base_box', $base_box);
+   }
+ 
++  /**
++   * Determines if Drupal VM is booted.
++   *
++   * @return bool
++   *   TRUE if Drupal VM is booted.
++   */
++  public function isDrupalVmBooted() {
++    if (!$this->getInspector()->commandExists('vagrant')) {
++      $this->isDrupalVmBooted = FALSE;
++    }
++
++    if (is_null($this->isDrupalVmBooted)) {
++      $status = $this->getDrupalVmStatus();
++      $machine_name = $this->getConfigValue('project.machine_name');
++      $this->isDrupalVmBooted = !empty($status[$machine_name]['state'])
++        && $status[$machine_name]['state'] == 'running';
++
++      $statement = $this->isDrupalVmBooted ? "is" : "is not";
++      $this->logger->debug("Drupal VM $statement booted.");
++    }
++
++    return $this->isDrupalVmBooted;
++  }
++
++  /**
++   * Gets the value of $this->drupalVmStatus. Sets it if empty.
++   *
++   * @return array
++   *   An array of status data.
++   */
++  protected function getDrupalVmStatus() {
++    if (is_null($this->drupalVmStatus)) {
++      $this->setDrupalVmStatus();
++    }
++    return $this->drupalVmStatus;
++  }
++
++ /**
++   * Sets $this->drupalVmStatus by executing `vagrant status`.
++   */
++  protected function setDrupalVmStatus() {
++    $executor = $this->getContainer()->get('executor');
++    $result = $executor->execute("vagrant status --machine-readable")
++      ->interactive(FALSE)
++      ->printMetadata(TRUE)
++      ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_VERY_VERBOSE)
++      ->run();
++    $output = $result->getMessage();
++    if (!$result->wasSuccessful() || !$output) {
++      $this->drupalVmStatus = [];
++      return FALSE;
++    }
++    $lines = explode("\n", $output);
++    foreach ($lines as $line) {
++      $parsed_line = explode(',', $line);
++      if (count($parsed_line) < 4) {
++        continue;
++      }
++      list(, $target, $type, $data) = $parsed_line;
++      $this->drupalVmStatus[$target][$type] = $data;
++      $this->logger->debug("vagrant $target.$type = $data");
++    }
++  }
++
+   /**
+    * Modifies the default configuration file.
+    */
+@@ -348,6 +483,38 @@ class VmCommand extends BltTasks {
+     $config->expandFileProperties($this->projectDrupalVmConfigFile);
+   }
+ 
++  /**
++   * Determines if the current PHP process is being executed inside VM.
++   *
++   * @return bool
++   *   TRUE if current PHP process is being executed inside of VM.
++   */
++  public function isVmCli() {
++    return (isset($_SERVER['USER']) && $_SERVER['USER'] == 'vagrant');
++  }
++
++  /**
++   * Checks to see if a given vagrant plugin is installed.
++   *
++   * You can check to see if vagrant is installed with commandExists('vagrant').
++   *
++   * @param string $plugin
++   *   The plugin name.
++   *
++   * @return bool
++   *   TRUE if the plugin is installed.
++   */
++  public function isVagrantPluginInstalled($plugin) {
++    $executor = $this->getContainer()->get('executor');
++    $installed = (bool) $executor->execute("vagrant plugin list | grep '$plugin'")
++      ->interactive(FALSE)
++      ->silent(TRUE)
++      ->run()
++      ->getMessage();
++
++    return $installed;
++  }
++
+   /**
+    * Creates the default configuration file.
+    */

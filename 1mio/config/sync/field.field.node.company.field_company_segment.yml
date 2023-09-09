@@ -1,0 +1,29 @@
+uuid: deb854c3-87ab-440b-a3d7-2776e32a0ad7
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_company_segment
+    - node.type.company
+    - taxonomy.vocabulary.company_segment
+id: node.company.field_company_segment
+field_name: field_company_segment
+entity_type: node
+bundle: company
+label: Segmento
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      company_segment: company_segment
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: company_segment
+field_type: entity_reference

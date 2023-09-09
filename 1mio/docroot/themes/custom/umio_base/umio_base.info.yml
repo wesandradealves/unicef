@@ -1,0 +1,20 @@
+name: 1MIO Base Theme
+type: theme
+description: '1MIO Base Theme'
+package: Custom
+core_version_requirement: 9.x
+
+libraries:
+  - umio_base/global-styling
+
+libraries-override:
+  gin/gin_dialog:
+    css:
+      theme:
+        dist/css/gin_dialog.css: css/main.css
+
+libraries-extend:
+  gin/gin_dialog:
+    - umio_base/global-styling
+
+base theme: classy

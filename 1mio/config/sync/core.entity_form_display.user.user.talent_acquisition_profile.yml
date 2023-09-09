@@ -1,0 +1,149 @@
+uuid: a1e4de2f-4659-47b3-91f8-7af4ebfa39bb
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - core.entity_form_mode.user.talent_acquisition_profile
+    - field.field.user.user.field_flag_public_sector
+    - field.field.user.user.field_flag_singup
+    - field.field.user.user.field_last_password_reset
+    - field.field.user.user.field_password_expiration
+    - field.field.user.user.field_pending_expire_sent
+    - field.field.user.user.field_user_accepted_term_data
+    - field.field.user.user.field_user_address
+    - field.field.user.user.field_user_birth_date
+    - field.field.user.user.field_user_company
+    - field.field.user.user.field_user_company_role
+    - field.field.user.user.field_user_company_role_started
+    - field.field.user.user.field_user_cpf
+    - field.field.user.user.field_user_curriculum
+    - field.field.user.user.field_user_gender
+    - field.field.user.user.field_user_name
+    - field.field.user.user.field_user_phone
+    - field.field.user.user.field_user_professional_traject
+    - field.field.user.user.field_user_profile_picture
+    - field.field.user.user.field_user_public_profile
+    - field.field.user.user.field_user_social
+    - field.field.user.user.field_user_status
+    - field.field.user.user.field_user_telephone
+    - field.field.user.user.field_user_telephone_extension
+    - field.field.user.user.field_user_vacancies_closed
+    - field.field.user.user.field_younger_skills
+    - image.style.thumbnail
+  module:
+    - datetime
+    - image
+    - paragraphs
+    - telephone
+    - user
+_core:
+  default_config_hash: K-1rBM8mTIkFp9RqOC2tMRUukOQ1xbRCfSKK8dEddnA
+id: user.user.talent_acquisition_profile
+targetEntityType: user
+bundle: user
+mode: talent_acquisition_profile
+content:
+  field_user_address:
+    type: entity_reference_paragraphs
+    weight: 2
+    region: content
+    settings:
+      title: Parágrafo
+      title_plural: Parágrafos
+      edit_mode: open
+      add_mode: dropdown
+      form_display_mode: default
+      default_paragraph_type: ''
+    third_party_settings: {  }
+  field_user_company_role:
+    type: string_textfield
+    weight: 5
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_user_company_role_started:
+    type: datetime_default
+    weight: 6
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_user_name:
+    type: string_textfield
+    weight: 1
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_user_phone:
+    type: telephone_default
+    weight: 4
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_user_professional_traject:
+    type: entity_reference_paragraphs
+    weight: 7
+    region: content
+    settings:
+      title: Parágrafo
+      title_plural: Parágrafos
+      edit_mode: open
+      add_mode: dropdown
+      form_display_mode: default
+      default_paragraph_type: ''
+    third_party_settings: {  }
+  field_user_profile_picture:
+    type: image_image
+    weight: 0
+    region: content
+    settings:
+      progress_indicator: throbber
+      preview_image_style: thumbnail
+    third_party_settings: {  }
+  field_user_social:
+    type: entity_reference_paragraphs
+    weight: 8
+    region: content
+    settings:
+      title: Parágrafo
+      title_plural: Parágrafos
+      edit_mode: open
+      add_mode: dropdown
+      form_display_mode: default
+      default_paragraph_type: paragraph_social
+    third_party_settings: {  }
+  field_user_telephone:
+    type: telephone_default
+    weight: 3
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  account: true
+  comment_notify_settings: true
+  contact: true
+  field_flag_public_sector: true
+  field_flag_singup: true
+  field_last_password_reset: true
+  field_password_expiration: true
+  field_pending_expire_sent: true
+  field_user_accepted_term_data: true
+  field_user_birth_date: true
+  field_user_company: true
+  field_user_cpf: true
+  field_user_curriculum: true
+  field_user_gender: true
+  field_user_public_profile: true
+  field_user_status: true
+  field_user_telephone_extension: true
+  field_user_vacancies_closed: true
+  field_younger_skills: true
+  langcode: true
+  language: true
+  path: true
+  timezone: true

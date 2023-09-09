@@ -1,0 +1,22 @@
+uuid: c49d9f59-0e6a-412a-9f01-773326e47f00
+langcode: pt-br
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - umio
+_core:
+  default_config_hash: KHQIJ7Vfl25lTjzIc7qIvnuistt-Mw2O0kG4jCofmkI
+id: umio_messages
+theme: umio
+region: content
+weight: -8
+provider: null
+plugin: system_messages_block
+settings:
+  id: system_messages_block
+  label: 'Mensagens de status'
+  label_display: '0'
+  provider: system
+visibility: {  }

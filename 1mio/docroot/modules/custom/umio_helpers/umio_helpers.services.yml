@@ -1,0 +1,8 @@
+services:
+  umio_helpers.form_validator:
+    class: Drupal\umio_helpers\Service\FormValidator
+
+  umio_helpers.ajax_subscriber:
+    class: Drupal\umio_helpers\EventSubscriber\AjaxResponseSubscriber
+    tags:
+      - { name: event_subscriber }

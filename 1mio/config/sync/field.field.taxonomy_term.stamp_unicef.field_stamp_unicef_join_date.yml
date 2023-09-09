@@ -1,0 +1,19 @@
+uuid: 66842748-823d-4bae-a625-7370af6398c9
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_stamp_unicef_join_date
+    - taxonomy.vocabulary.stamp_unicef
+id: taxonomy_term.stamp_unicef.field_stamp_unicef_join_date
+field_name: field_stamp_unicef_join_date
+entity_type: taxonomy_term
+bundle: stamp_unicef
+label: 'Data de cadastro'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: timestamp

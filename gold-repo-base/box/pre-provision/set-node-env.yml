@@ -1,0 +1,5 @@
+- name: Add node environment variables
+  template:
+    src: templates/node-env.j2
+    dest: /etc/profile.d/node-env.sh
+    mode: 0644

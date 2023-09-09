@@ -1,0 +1,40 @@
+node_title_validation_config:
+  comma-article: 0
+  exclude-article: ''
+  min-article: '1'
+  max-article: '255'
+  min-wc-article: '1'
+  max-wc-article: '25'
+  unique-article: 0
+  comma-company: 0
+  exclude-company: ''
+  min-company: '1'
+  max-company: '255'
+  min-wc-company: '1'
+  max-wc-company: '25'
+  unique-company: 0
+  comma-course: 0
+  exclude-course: ''
+  min-course: '1'
+  max-course: '50'
+  min-wc-course: '1'
+  max-wc-course: '25'
+  unique-course: 0
+  comma-page: 0
+  exclude-page: ''
+  min-page: '1'
+  max-page: '255'
+  min-wc-page: '1'
+  max-wc-page: '25'
+  unique-page: 0
+  comma-vacancy: 0
+  exclude-vacancy: ''
+  min-vacancy: '1'
+  max-vacancy: '50'
+  min-wc-vacancy: '1'
+  max-wc-vacancy: '25'
+  unique-vacancy: 0
+  unique: 0
+_core:
+  default_config_hash: 5p2lzpRAbNnhbgkvO2MKkxtc2QOBeMRkWubKyc7HYFE
+langcode: pt-br

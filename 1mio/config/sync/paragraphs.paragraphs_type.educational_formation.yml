@@ -1,0 +1,10 @@
+uuid: 4ec13a77-6aa2-445c-8062-1eee605209bd
+langcode: pt-br
+status: true
+dependencies: {  }
+id: educational_formation
+label: 'Formação Educacional'
+icon_uuid: null
+icon_default: null
+description: ''
+behavior_plugins: {  }

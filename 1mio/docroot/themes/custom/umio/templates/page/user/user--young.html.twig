@@ -1,0 +1,142 @@
+{#
+/**
+ * @file
+ * Theme override to present all user data.
+ *
+ * This template is used when viewing a registered user's page,
+ * e.g., example.com/user/123. 123 being the user's ID.
+ *
+ * Available variables:
+ * - content: A list of content items. Use 'content' to print all content, or
+ *   print a subset such as 'content.field_example'. Fields attached to a user
+ *   such as 'user_picture' are available as 'content.user_picture'.
+ * - attributes: HTML attributes for the container element.
+ * - currentUser: The current loggedIn user instance.
+ * - user: A Drupal User entity.
+ *
+ * @see template_preprocess_user()
+ */
+#}
+
+<article {{ attributes.addClass('young-profile') }}>
+  {# Hero Banner #}
+  {% include '@umio/components/hero_banner.html.twig' with {
+    background: 'url(/' ~ directory
+      ~ '/images/profile-bg.png) no-repeat left / auto, #08A3B3',
+    back_anchor: FALSE
+  } %}
+
+  {# Profile #}
+  {% include '@umio/components/profile_details.html.twig' with {
+    logged_in_uid: currentUser.id,
+    address: true,
+  } %}
+
+  {# Profile print #}
+  <section class='profile-printer d-print-inline-block'>
+    {% include '@umio/components/profile_print.html.twig' with {
+      logged_in_uid: currentUser.id,
+      userPhone: user.field_user_phone.value,
+      userEmail: user.mail.value,
+    } %}
+  </section>
+
+  {# About me #}
+  {% if (content.field_user_curriculum[0]['#paragraph'].field_about_you|length) > 0 %}
+  <section class="pb-5 about-me">
+    {% include '@umio/components/title_description.html.twig' with {
+      title: 'About me'|t,
+      titleColor: '#08a3b3',
+      description: content.field_user_curriculum[0]['#paragraph'].field_about_you.value
+    } %}
+  </section>
+  {% endif %}
+
+  {# Social Icons #}
+  <section class="d-print-none">
+    {% include '@umio/components/profile_social_icons.html.twig' with {
+      socialInfo: content.field_user_social[0]['#paragraph'].field_paragraph_networks.value[0].platform_values,
+    } %}
+  </section>
+
+  {# What i'm searching professionally #}
+  {% if (content.field_user_curriculum[0]['#paragraph'].field_what_do_you_search|length) > 0 %}
+  <section class="pb-5">
+    {% include '@umio/components/title_description.html.twig' with {
+      title: "What I'm searching professionally"|t,
+      titleColor: '#08a3b3',
+      description: content.field_user_curriculum[0]['#paragraph'].field_what_do_you_search.value
+    } %}
+  </section>
+  {% endif %}
+
+
+  {# Work Experience #}
+  {% if (content.field_user_curriculum[0]['#paragraph'].field_paragraph_experience|length) > 0 %}
+  <section class="pb-5">
+    {% include '@umio/components/title_description.html.twig' with {
+      title: 'Work experiences'|t,
+      titleColor: '#08a3b3'
+    } %}
+    {% for experience in content.field_user_curriculum[0]['#paragraph'].field_paragraph_experience|sort((a,b) => a.entity.field_experience_begin.value < b.entity.field_experience_begin.value) %}
+      {% include '@umio/components/profile_experiences.html.twig' with {
+        title: experience.entity.field_experience_title.value,
+        company: experience.entity.field_experience_institution.value,
+        startDate: experience.entity.field_experience_begin.value,
+        endDate: experience.entity.field_experience_end.value|default('') ,
+        current: experience.entity.field_experience_current.value
+      } %}
+    {% endfor %}
+  </section>
+  {% endif %}
+
+
+  {# Education #}
+  {% if (content.field_user_curriculum[0]['#paragraph'].field_paragraph_education|length) > 0 %}
+  <section class="pb-5">
+    {% include '@umio/components/title_description.html.twig' with {
+      title: 'Educational training'|t,
+      titleColor: '#08a3b3'
+    } %}
+    {% for education in content.field_user_curriculum[0]['#paragraph'].field_paragraph_education|sort((a,b) => a.entity.field_education_begin.value < b.entity.field_education_begin.value) %}
+      {% include '@umio/components/profile_experiences.html.twig' with {
+        title: education.entity.field_educational_title.value,
+        company: education.entity.field_educational_institution.value,
+        startDate: education.entity.field_education_begin.value,
+        endDate: education.entity.field_education_end.value|default('') ,
+        current: education.entity.field_education_current.value
+      } %}
+    {% endfor %}
+  </section>
+  {% endif %}
+
+  {# Courses and Skills #}
+  {% if (content.field_user_curriculum[0]['#paragraph'].field_paragraph_courses|length) > 0 %}
+  <section class="pb-5">
+    {% include '@umio/components/title_description.html.twig' with {
+      title: 'Courses and Skills'|t,
+      titleColor: '#08a3b3'
+    } %}
+    {% for course in content.field_user_curriculum[0]['#paragraph'].field_paragraph_courses|sort((a,b) => a.entity.field_course_begin.value < b.entity.field_course_begin.value) %}
+      {% include '@umio/components/profile_experiences.html.twig' with {
+        title: course.entity.field_course_title.value,
+        company: course.entity.field_course_learned.value,
+        startDate: course.entity.field_course_begin.value,
+        endDate: course.entity.field_course_end.value|default('') ,
+        current: course.entity.field_course_current.value
+      } %}
+    {% endfor %}
+  </section>
+  {% endif %}
+
+  {# Achievements #}
+  {% if (content.field_user_curriculum[0]['#paragraph'].field_achievements|length) > 0 %}
+  <section class="pb-5">
+    {% include '@umio/components/title_description.html.twig' with {
+      title: 'Achievements'|t,
+      titleColor: '#08a3b3',
+      description: content.field_user_curriculum[0]['#paragraph'].field_achievements.value
+    } %}
+  </section>
+  {% endif %}
+</article>

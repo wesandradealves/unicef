@@ -1,0 +1,10 @@
+uuid: 964b1539-a786-4352-b13c-a0d4bfd0c79c
+langcode: pt-br
+status: true
+dependencies: {  }
+id: courses_and_abilities
+label: 'Cursos e Habilidades'
+icon_uuid: null
+icon_default: null
+description: ''
+behavior_plugins: {  }

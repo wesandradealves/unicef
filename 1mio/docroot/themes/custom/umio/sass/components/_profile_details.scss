@@ -1,0 +1,98 @@
+.profile-details {
+  margin-top: -70px;
+
+  .field--name-field-user-profile-picture {
+    img {
+      border-radius: 100%;
+      width: 130px;
+      height: 130px;
+      object-fit: cover;
+      @include media-breakpoint-up(md) {
+        width: 175px;
+        height: 175px;
+      }
+    }
+  }
+  .name-default-picture {
+    width: 130px;
+    height: 130px;
+    font-size: 3rem;
+    @include media-breakpoint-up(md) {
+      width: 175px;
+      height: 175px;
+    }
+  }
+
+  h1 {
+    font-size: 1.5rem;
+    font-weight: 800;
+  }
+
+  h3 {
+    align-items: center;
+    display: flex;
+    max-width: 40%;
+    text-align: center;
+    font-size: 0.8rem;
+    font-weight: 800;
+    margin-bottom: 0.8rem;
+    color: $gray-primary-50;
+  }
+
+  .company-image-container {
+    border-radius: 50%;
+    height: 34px;
+    width: 34px;
+    min-height: 34px;
+    min-width: 34px;
+    box-shadow: 0px 0px 2px $gray-primary-25;
+    background-size: cover;
+    background-position: center;
+  }
+
+  p {
+    font-weight: 700;
+    color: $gray-primary-50;
+    font-size: 0.8rem;
+  }
+
+  .address {
+    span {
+      display: none;
+    }
+    .locality,
+    .administrative-area {
+      display: initial;
+    }
+  }
+
+  &--actions {
+    a {
+      flex-basis: 0;
+      margin-right: 16px;
+      padding: 2px 0;
+      height: auto;
+
+      i {
+        margin-right: 8px;
+        font-size: 22px;
+      }
+    }
+
+    a:last-child {
+      margin-right: 0;
+    }
+
+    @media (min-width: 768px) {
+      max-width: 400px;
+    }
+  }
+
+  @media (min-width: 768px) {
+    margin-top: -100px;
+
+    h1 {
+      font-size: 2.2rem;
+    }
+  }
+}

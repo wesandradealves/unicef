@@ -1,0 +1,25 @@
+uuid: 2dba8c1f-c6cf-428f-884c-ee7640e46fac
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_weight_skill_1
+    - taxonomy.vocabulary.quiz_questions
+id: taxonomy_term.quiz_questions.field_weight_skill_1
+field_name: field_weight_skill_1
+entity_type: taxonomy_term
+bundle: quiz_questions
+label: 'Peso da Habilidade "Determinação e criatividade"'
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  min: 0
+  max: 100
+  prefix: ''
+  suffix: ''
+field_type: integer

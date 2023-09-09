@@ -1,0 +1,85 @@
+@charset "UTF-8";
+@use "sass:math";
+
+// Abstracts
+@import "abstracts/mixins";
+@import "abstracts/variables";
+
+@import "../node_modules/bootstrap/scss/functions";
+@import "../node_modules/bootstrap/scss/variables";
+@import "../node_modules/bootstrap/scss/mixins";
+
+body {
+  font-family: "Nunito", sans-serif;
+  font-style: normal;
+  font-weight: normal;
+}
+
+
+// Pages
+@import "pages/ta_profile";
+@import "pages/young_profile";
+@import "pages/node_course";
+@import "pages/quiz_form";
+@import "pages/register";
+@import "pages/register_citymanageraddtional";
+@import "pages/register_company";
+@import "pages/register_companymanager";
+@import "pages/younger_edit_profile";
+@import "pages/young_public_profile";
+@import "pages/young_skills_results";
+@import "pages/node_company";
+
+
+// Components/blocks
+@import "components/banner";
+@import "components/call_to_action";
+@import "components/card_content_list";
+@import "components/card_highlights_profile_edit";
+@import "components/cards_partners_landing_page";
+@import "components/checkbox_cards";
+@import "components/field_range";
+@import "components/find_your_opportunity";
+@import "components/form";
+@import "components/hero_banner_county";
+@import "components/hero_banner_landing_page";
+@import "components/hero_banner_landing_page_number_counter";
+@import "components/hero_banner_landing_page_participate";
+@import "components/hero_banner_my_publications";
+@import "components/hero_banner_opportunities";
+@import "components/hero_banner_public_profile";
+@import "components/hero";
+@import "components/menu_footer";
+@import "components/menu_main";
+@import "components/modal";
+@import "components/opportunities-waiting";
+@import "components/opportunities-nofound";
+@import "components/page_content";
+@import "components/print_opportunities";
+@import "components/print_profile";
+@import "components/profile_details";
+@import "components/profile_experiences";
+@import "components/profile_social_icons";
+@import "components/profile_coworkers";
+@import "components/sidebar_register";
+@import "components/system_branding_block";
+@import "components/social_post_author_info";
+@import "components/social_post_comments";
+@import "components/tags";
+@import "components/teaser_card";
+@import "components/title_description";
+@import "components/truncate_text";
+@import "components/user_name_default_picture";
+@import "components/view_filters";
+@import "components/vote_widget";
+@import "components/partners_and_number_count";
+
+//Astronaut Animation
+@import "components/_astronaut_animation";
+@import "components/_bicycle_animation.scss";
+
+// Views
+@import "views/view_company_list";
+@import "views/view_feeds";
+@import "views/view_partner-cities";
+@import "views/view_social_post_feed";

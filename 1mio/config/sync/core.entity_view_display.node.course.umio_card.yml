@@ -1,0 +1,117 @@
+uuid: 8a7b73bf-448a-4236-bcc2-1991ce1bf22b
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.umio_card
+    - field.field.node.course.field_course_amount
+    - field.field.node.course.field_course_details
+    - field.field.node.course.field_course_duration
+    - field.field.node.course.field_course_end_date
+    - field.field.node.course.field_course_end_time
+    - field.field.node.course.field_course_expiration_day
+    - field.field.node.course.field_course_has_certification
+    - field.field.node.course.field_course_image
+    - field.field.node.course.field_course_institution
+    - field.field.node.course.field_course_location
+    - field.field.node.course.field_course_model
+    - field.field.node.course.field_course_qr_code
+    - field.field.node.course.field_course_start_date
+    - field.field.node.course.field_course_start_time
+    - field.field.node.course.field_course_subscription_url
+    - field.field.node.course.field_course_tags
+    - field.field.node.course.field_course_type
+    - node.type.course
+  module:
+    - datetime
+    - image
+    - options
+    - user
+id: node.course.umio_card
+targetEntityType: node
+bundle: course
+mode: umio_card
+content:
+  field_course_amount:
+    type: number_integer
+    label: hidden
+    settings:
+      thousand_separator: .
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 12
+    region: content
+  field_course_end_date:
+    type: datetime_default
+    label: hidden
+    settings:
+      timezone_override: ''
+      format_type: date_brazilian_pattern
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  field_course_has_certification:
+    type: boolean
+    label: hidden
+    settings:
+      format: yes-no
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    weight: 13
+    region: content
+  field_course_image:
+    type: image
+    label: hidden
+    settings:
+      image_link: ''
+      image_style: ''
+      image_loading:
+        attribute: lazy
+    third_party_settings: {  }
+    weight: 6
+    region: content
+  field_course_institution:
+    type: entity_reference_label
+    label: hidden
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 15
+    region: content
+  field_course_model:
+    type: list_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 16
+    region: content
+  field_course_start_date:
+    type: datetime_default
+    label: hidden
+    settings:
+      timezone_override: ''
+      format_type: date_brazilian_pattern
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_course_type:
+    type: list_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 10
+    region: content
+hidden:
+  field_course_details: true
+  field_course_duration: true
+  field_course_end_time: true
+  field_course_expiration_day: true
+  field_course_location: true
+  field_course_qr_code: true
+  field_course_start_time: true
+  field_course_subscription_url: true
+  field_course_tags: true
+  langcode: true
+  links: true
+  search_api_excerpt: true

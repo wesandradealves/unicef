@@ -1,0 +1,16 @@
+# Composer folder
+/vendor
+
+# Code Coverage Reports
+/reports
+/.phpunit.cache
+
+# Xdebug Log
+/.vscode/xdebug.log
+
+# SQL Files
+/*.sql
+/*.gz
+
+# Ignore MacOS system files
+.DS_Store

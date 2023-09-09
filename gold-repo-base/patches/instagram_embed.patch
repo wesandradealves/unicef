@@ -1,0 +1,65 @@
+diff --git a/src/Http/CurlDispatcher.php b/src/Http/CurlDispatcher.php
+index b6c17ad..9eab853 100644
+--- a/src/Http/CurlDispatcher.php
++++ b/src/Http/CurlDispatcher.php
+@@ -155,6 +155,12 @@ class CurlDispatcher implements DispatcherInterface
+
+         $result = $curl->getResult();
+
++        if (strpos((string)$url, "instagram.com") !== FALSE) {
++            $result['url'] = (string)$url;
++            $result['info']['url'] = (string)$url;
++            $result['statusCode'] = "200";
++        }
++
+         curl_close($connection);
+
+         return $this->responses[] = new Response(
+diff --git a/src/Providers/Api/Facebook.php b/src/Providers/Api/Facebook.php
+index 489196a..2584558 100644
+--- a/src/Providers/Api/Facebook.php
++++ b/src/Providers/Api/Facebook.php
+@@ -105,7 +105,7 @@ class Facebook extends Provider
+     private function getEndPoint()
+     {
+         $url = $this->adapter->getResponse()->getUrl();
+-        $key = $this->adapter->getConfig('facebook[key]');
++        $key = getenv('UNICEF_FACEBOOK_API_TOKEN');
+
+         if (empty($key)) {
+             return;
+diff --git a/src/Providers/OEmbed/Facebook.php b/src/Providers/OEmbed/Facebook.php
+index 2e4e0c4..dd148b5 100644
+--- a/src/Providers/OEmbed/Facebook.php
++++ b/src/Providers/OEmbed/Facebook.php
+@@ -16,7 +16,7 @@ class Facebook extends EndPoint implements EndPointInterface
+      */
+     public static function create(Adapter $adapter)
+     {
+-        $key = $adapter->getConfig('facebook[key]');
++        $key = getenv('UNICEF_FACEBOOK_API_TOKEN');
+
+         if (!empty($key)) {
+             $response = $adapter->getResponse();
+diff --git a/src/Providers/OEmbed/Instagram.php b/src/Providers/OEmbed/Instagram.php
+index 347d5d2..31509fa 100644
+--- a/src/Providers/OEmbed/Instagram.php
++++ b/src/Providers/OEmbed/Instagram.php
+@@ -13,6 +13,8 @@ class Instagram extends EndPoint implements EndPointInterface
+         'www.instagram.com/p/*',
+         'www.instagram.com/tv/*',
+         'instagr.am/p/*',
++        'instagram.com/tv/*',
++        'www.instagram.com/tv/*',
+     ];
+     protected static $endPoint = 'https://graph.facebook.com/v8.0/instagram_oembed';
+     protected $key;
+@@ -22,7 +24,7 @@ class Instagram extends EndPoint implements EndPointInterface
+      */
+     public static function create(Adapter $adapter)
+     {
+-        $key = $adapter->getConfig('facebook[key]');
++        $key = getenv('UNICEF_FACEBOOK_API_TOKEN');
+
+         if (!empty($key)) {
+             $response = $adapter->getResponse();

@@ -1,0 +1,2392 @@
+diff --git a/config/install/views.view.file_entity_files.yml b/config/install/views.view.file_entity_files.yml
+index 0c0fecf..73549e3 100644
+--- a/config/install/views.view.file_entity_files.yml
++++ b/config/install/views.view.file_entity_files.yml
+@@ -13,7 +13,6 @@ description: 'Find and manage files.'
+ tag: default
+ base_table: file_managed
+ base_field: fid
+-core: 8.x
+ display:
+   default:
+     display_plugin: default
+diff --git a/file_entity.api.php b/file_entity.api.php
+index 864faf5..bdee6ef 100644
+--- a/file_entity.api.php
++++ b/file_entity.api.php
+@@ -5,6 +5,9 @@
+  * Hooks provided by the File Entity module.
+  */
+ 
++use Drupal\Core\Database\Query\AlterableInterface;
++use Drupal\Core\StreamWrapper\StreamWrapperManager;
++
+ /**
+  * Control access to listings of files.
+  *
+@@ -15,9 +18,9 @@
+  * @see hook_query_TAG_alter()
+  * @ingroup file_entity_access
+  */
+-function hook_query_file_entity_access_alter(QueryAlterableInterface $query) {
++function hook_query_file_entity_access_alter(AlterableInterface $query) {
+   // Only show files that have been uploaded more than an hour ago.
+-  $query->condition('timestamp', REQUEST_TIME - 3600, '<=');
++  $query->condition('timestamp', \Drupal::time()->getRequestTime() - 3600, '<=');
+ }
+ 
+ /**
+@@ -39,7 +42,7 @@ function hook_file_download_headers_alter(array &$headers, $file) {
+  */
+ function hook_file_transfer($uri, array $headers) {
+   // Redirect a download for an S3 file to the actual location.
+-  if (file_uri_scheme($uri) == 's3') {
++  if (StreamWrapperManager::getScheme($uri) == 's3') {
+     $url = file_create_url($uri);
+     drupal_goto($url);
+   }
+@@ -60,7 +63,7 @@ function hook_file_transfer($uri, array $headers) {
+  */
+ function hook_file_type($file) {
+   // Assign all files uploaded by anonymous users to a special file type.
+-  if (user_is_anonymous()) {
++  if (\Drupal::currentUser()->isAnonymous()) {
+     return array('untrusted_files');
+   }
+ }
+diff --git a/file_entity.install b/file_entity.install
+index 1e64f33..feb1031 100644
+--- a/file_entity.install
++++ b/file_entity.install
+@@ -86,7 +86,7 @@ function file_entity_install() {
+   // Warn users that existing files will not have a file type until the queue
+   // has been processed.
+   if ($queue->numberOfItems()) {
+-    drupal_set_message(t('Existing files must be classified according to the currently defined file types. These files have been queued for processing and will have their file type determined during cron runs.'));
++    \Drupal::messenger()->addMessage(t('Existing files must be classified according to the currently defined file types. These files have been queued for processing and will have their file type determined during cron runs.'));
+   }
+ 
+   // Disable the core files view.
+diff --git a/file_entity.module b/file_entity.module
+index 4a82468..1f6756c 100644
+--- a/file_entity.module
++++ b/file_entity.module
+@@ -234,7 +234,7 @@ function template_preprocess_file(&$variables) {
+   );
+   $variables['name']      = $username;
+ 
+-  $variables['file_url']  = $file->url('canonical');
++  $variables['file_url']  = $file->toUrl('canonical')->toString();
+   $variables['label']     = $file->label();
+   $variables['page']      = $view_mode == 'full' && $file->isPage();
+ 
+@@ -294,7 +294,7 @@ function file_entity_type_get_names() {
+  * Return the label for a specific file entity view mode.
+  */
+ function file_entity_view_mode_label($view_mode, $default = FALSE) {
+-  $labels = \Drupal::entityManager()->getViewModeOptions('file');
++  $labels = \Drupal::getContainer()->get('entity_display.repository')->getViewModeOptions('file');
+   return isset($labels[$view_mode]) ? $labels[$view_mode] : $default;
+ }
+ 
+@@ -464,11 +464,15 @@ function file_entity_get_public_and_private_stream_wrapper_names($flag = StreamW
+  */
+ function file_uri_to_object($uri, $use_existing = TRUE) {
+   $file = FALSE;
+-  $uri = file_stream_wrapper_uri_normalize($uri);
++  $uri = \Drupal::service('stream_wrapper_manager')->normalizeUri($uri);
+ 
+   if ($use_existing) {
+     // We should always attempt to re-use a file if possible.
+-    $files = entity_load_multiple_by_properties('file', array('uri' => $uri));
++    $files = \Drupal::entityTypeManager()
++      ->getStorage('file')
++      ->loadByProperties([
++        'uri' => $uri,
++      ]);
+     $file = !empty($files) ? reset($files) : FALSE;
+   }
+ 
+diff --git a/file_entity.tokens.inc b/file_entity.tokens.inc
+index db8705d..563fb9f 100644
+--- a/file_entity.tokens.inc
++++ b/file_entity.tokens.inc
+@@ -4,10 +4,10 @@
+  * @file
+  * Token integration for the file_entity module.
+  */
+-use Drupal\Component\Utility\SafeMarkup;
+ use Drupal\Core\Url;
+ use Drupal\file_entity\Entity\FileType;
+ use Drupal\Core\Render\BubbleableMetadata;
++use Drupal\Component\Utility\Html;
+ 
+ /**
+  * Implements hook_token_info().
+@@ -73,8 +73,6 @@ function file_entity_tokens($type, $tokens, array $data, array $options, Bubblea
+     $langcode = NULL;
+   }
+ 
+-  $sanitize = !empty($options['sanitize']);
+-
+   // File tokens.
+   if ($type == 'file' && !empty($data['file'])) {
+     $file = $data['file'];
+@@ -84,7 +82,7 @@ function file_entity_tokens($type, $tokens, array $data, array $options, Bubblea
+         case 'type':
+           if ($file_type = FileType::load($file->bundle())) {
+             $bubbleable_metadata->addCacheableDependency($file_type);
+-            $replacements[$original] = $sanitize ? SafeMarkup::checkPlain($file_type->label()) : $file_type->label();
++            $replacements[$original] = $file_type->label();
+           }
+           break;
+ 
+@@ -111,7 +109,7 @@ function file_entity_tokens($type, $tokens, array $data, array $options, Bubblea
+     foreach ($tokens as $name => $original) {
+       switch ($name) {
+         case 'name':
+-          $replacements[$original] = $sanitize ? SafeMarkup::checkPlain($file_type->label()) : $file_type->label();
++          $replacements[$original] = $file_type->label();
+           break;
+ 
+         case 'machine-name':
+@@ -120,7 +118,7 @@ function file_entity_tokens($type, $tokens, array $data, array $options, Bubblea
+           break;
+ 
+         case 'count':
+-          $query = db_select('file_managed');
++          $query = \Drupal::database()->select('file_managed');
+           $query->condition('type', $file_type->id());
+           $query->addTag('file_type_file_count');
+           $count = $query->countQuery()->execute()->fetchField();
+diff --git a/src/Controller/FileController.php b/src/Controller/FileController.php
+index 1ab3dba..4d54140 100644
+--- a/src/Controller/FileController.php
++++ b/src/Controller/FileController.php
+@@ -12,12 +12,37 @@ use Drupal\file\FileInterface;
+ use Symfony\Component\HttpFoundation\BinaryFileResponse;
+ use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
+ use Symfony\Component\HttpFoundation\Response;
++use Drupal\Core\File\FileSystemInterface;
++use Symfony\Component\DependencyInjection\ContainerInterface;
+ 
+ /**
+  * Class FileController
+  */
+ class FileController extends ControllerBase {
+ 
++  /**
++   * The file system service.
++   *
++   * @var \Drupal\Core\File\FileSystemInterface
++   */
++  protected $fileSystem;
++
++  /**
++   * {@inheritdoc}
++   */
++  public function __construct(FileSystemInterface $file_system) {
++    $this->fileSystem = $file_system;
++  }
++
++  /**
++   * {@inheritdoc}
++   */
++  public static function create(ContainerInterface $container) {
++    return new static(
++      $container->get('file_system')
++    );
++  }
++
+   /**
+    * Upload
+    */
+@@ -60,7 +85,7 @@ class FileController extends ControllerBase {
+ 
+     $headers = array(
+       'Content-Type' => Unicode::mimeHeaderEncode($file->getMimeType()),
+-      'Content-Disposition' => 'attachment; filename="' . Unicode::mimeHeaderEncode(drupal_basename($file->getFileUri())) . '"',
++      'Content-Disposition' => 'attachment; filename="' . Unicode::mimeHeaderEncode($this->fileSystem->basename($file->getFileUri())) . '"',
+       'Content-Length' => $file->getSize(),
+       'Content-Transfer-Encoding' => 'binary',
+       'Pragma' => 'no-cache',
+@@ -94,7 +119,7 @@ class FileController extends ControllerBase {
+    */
+   public function inlineEdit(FileInterface $file) {
+     // Build the file edit form.
+-    $form_object = $this->entityManager()->getFormObject('file', 'inline_edit');
++    $form_object = $this->entityTypeManager()->getFormObject('file', 'inline_edit');
+     $form_object->setEntity($file);
+     $form_state = (new FormState())
+       ->setFormObject($form_object)
+diff --git a/src/Entity/FileEntity.php b/src/Entity/FileEntity.php
+index 586c729..0d4ad5d 100644
+--- a/src/Entity/FileEntity.php
++++ b/src/Entity/FileEntity.php
+@@ -9,6 +9,7 @@ use Drupal\Core\Entity\FieldableEntityInterface;
+ use Drupal\Core\Field\BaseFieldDefinition;
+ use Drupal\Core\Site\Settings;
+ use Drupal\Core\StreamWrapper\StreamWrapperInterface;
++use Drupal\Core\StreamWrapper\StreamWrapperManager;
+ use Drupal\Core\Url;
+ use Drupal\Component\Utility\Crypt;
+ use Drupal\file\Entity\File;
+@@ -39,7 +40,7 @@ class FileEntity extends File implements FileEntityInterface {
+   protected function loadMetadata() {
+     if ($this->metadata === NULL) {
+       // Load and unserialize metadata.
+-      $results = db_query("SELECT * FROM {file_metadata} WHERE fid = :fid", array(':fid' => $this->id()));
++      $results = \Drupal::database()->query("SELECT * FROM {file_metadata} WHERE fid = :fid", array(':fid' => $this->id()));
+       foreach ($results as $result) {
+         $this->metadata[$result->name] = unserialize($result->value);
+       }
+@@ -200,11 +201,11 @@ class FileEntity extends File implements FileEntityInterface {
+     // Save file metadata.
+     if ($this->metadataChanged) {
+       if ($update) {
+-        db_delete('file_metadata')
++        \Drupal::database()->delete('file_metadata')
+           ->condition('fid', $this->id())
+           ->execute();
+       }
+-      $query = db_insert('file_metadata')->fields(array('fid', 'name', 'value'));
++      $query = \Drupal::database()->insert('file_metadata')->fields(array('fid', 'name', 'value'));
+       foreach ($this->getAllMetadata() as $name => $value) {
+         $query->values(array(
+           'fid' => $this->id(),
+@@ -297,7 +298,7 @@ class FileEntity extends File implements FileEntityInterface {
+   public static function preDelete(EntityStorageInterface $storage, array $entities) {
+     parent::preDelete($storage, $entities);
+     // Remove file metadata.
+-    db_delete('file_metadata')
++    \Drupal::database()->delete('file_metadata')
+       ->condition('fid', array_keys($entities), 'IN')
+       ->execute();
+   }
+@@ -394,7 +395,7 @@ class FileEntity extends File implements FileEntityInterface {
+    *   TRUE if the file is using a readable stream wrapper, or FALSE otherwise.
+    */
+   function isReadable() {
+-    $scheme = file_uri_scheme($this->getFileUri());
++    $scheme = StreamWrapperManager::getScheme($this->getFileUri());
+     $wrappers = \Drupal::service('stream_wrapper_manager')->getWrappers(StreamWrapperInterface::READ);
+     return !empty($wrappers[$scheme]);
+   }
+@@ -407,7 +408,7 @@ class FileEntity extends File implements FileEntityInterface {
+    *   or FALSE otherwise.
+    */
+   public function isWritable() {
+-    $scheme = file_uri_scheme($this->getFileUri());
++    $scheme = StreamWrapperManager::getScheme($this->getFileUri());
+     $wrappers = \Drupal::service('stream_wrapper_manager')->getWrappers(StreamWrapperInterface::WRITE_VISIBLE);
+     return !empty($wrappers[$scheme]);
+   }
+@@ -431,7 +432,7 @@ class FileEntity extends File implements FileEntityInterface {
+    *   TRUE if the file is using a local stream wrapper, or FALSE otherwise.
+    */
+   public function isLocal() {
+-    $scheme = file_uri_scheme($this->uri);
++    $scheme = StreamWrapperManager::getScheme($this->uri);
+     $wrappers = \Drupal::service('stream_wrapper_manager')->getWrappers(StreamWrapperInterface::LOCAL);
+     return !empty($wrappers[$scheme]) && empty($wrappers[$scheme]['remote']);
+   }
+@@ -515,7 +516,7 @@ class FileEntity extends File implements FileEntityInterface {
+       // tags of entities that use that file.
+       foreach (\Drupal::service('file.usage')->listUsage($this) as $module => $module_references) {
+         foreach ($module_references as $type => $ids) {
+-          if ($this->entityManager()->hasDefinition($type)) {
++          if ($this->entityTypeManager()->hasDefinition($type)) {
+             $tags = Cache::mergeTags($tags, Cache::buildTags($type, array_keys($ids)));
+           }
+         }
+diff --git a/src/Entity/FileEntityViewBuilder.php b/src/Entity/FileEntityViewBuilder.php
+index f67917a..cba068d 100644
+--- a/src/Entity/FileEntityViewBuilder.php
++++ b/src/Entity/FileEntityViewBuilder.php
+@@ -27,7 +27,7 @@ class FileEntityViewBuilder extends EntityViewBuilder {
+     // @todo Make this available as a method?
+     foreach (\Drupal::service('file.usage')->listUsage($entity) as $module => $module_references) {
+       foreach ($module_references as $type => $ids) {
+-        if (\Drupal::entityManager()->hasDefinition($type)) {
++        if (\Drupal::entityTypeManager()->hasDefinition($type)) {
+           $build['#cache']['tags'] = Cache::mergeTags($build['#cache']['tags'], array($type . ':' . key($ids)));
+           break 2;
+         }
+diff --git a/src/FileEntityAccessControlHandler.php b/src/FileEntityAccessControlHandler.php
+index 92d7572..885910e 100644
+--- a/src/FileEntityAccessControlHandler.php
++++ b/src/FileEntityAccessControlHandler.php
+@@ -6,6 +6,7 @@ use Drupal\Core\Access\AccessResult;
+ use Drupal\Core\Language\LanguageInterface;
+ use Drupal\Core\Entity\EntityInterface;
+ use Drupal\Core\Session\AccountInterface;
++use Drupal\Core\StreamWrapper\StreamWrapperManager;
+ use Drupal\file\FileAccessControlHandler;
+ use Drupal\file_entity\Entity\FileEntity;
+ 
+@@ -50,7 +51,7 @@ class FileEntityAccessControlHandler extends FileAccessControlHandler {
+ 
+     if ($operation == 'view') {
+       $schemes = file_entity_get_public_and_private_stream_wrapper_names();
+-      if (isset($schemes['private'][file_uri_scheme($entity->getFileUri())])) {
++      if (isset($schemes['private'][StreamWrapperManager::getScheme($entity->getFileUri())])) {
+         return AccessResult::allowedIfHasPermission($account, 'view private files')
+           ->orIf(AccessResult::allowedIf($account->isAuthenticated() && $is_owner)->addCacheableDependency($entity)
+             ->andIf(AccessResult::allowedIfHasPermission($account, 'view own private files')));
+diff --git a/src/FileEntityServiceProvider.php b/src/FileEntityServiceProvider.php
+index 07dcb97..f89d21b 100644
+--- a/src/FileEntityServiceProvider.php
++++ b/src/FileEntityServiceProvider.php
+@@ -23,8 +23,11 @@ class FileEntityServiceProvider extends ServiceProviderBase {
+       // Add a normalizer service for file entities.
+       $service_definition = new Definition(FileEntityNormalizer::class, array(
+         new Reference('hal.link_manager'),
+-        new Reference('entity.manager'),
++        new Reference('entity_type.manager'),
+         new Reference('module_handler'),
++        new Reference('entity_type.repository'),
++        new Reference('entity_field.manager'),
++
+       ));
+       // The priority must be higher than that of
+       // serializer.normalizer.file_entity.hal in hal.services.yml
+diff --git a/src/FileTypeListBuilder.php b/src/FileTypeListBuilder.php
+index ca7864d..d0a3cb8 100644
+--- a/src/FileTypeListBuilder.php
++++ b/src/FileTypeListBuilder.php
+@@ -32,7 +32,7 @@ class FileTypeListBuilder extends ConfigEntityListBuilder {
+   public function buildRow(EntityInterface $entity) {
+     /** @var FileType $entity */
+     $row['label'] = array(
+-      'data' => $this->getLabel($entity),
++      'data' => $entity->label(),
+       'class' => array('menu-label'),
+     );
+     $row['description']['data'] = ['#markup' => $entity->getDescription()];
+diff --git a/src/Form/FileAddArchiveForm.php b/src/Form/FileAddArchiveForm.php
+index 37fc3aa..fd0c583 100644
+--- a/src/Form/FileAddArchiveForm.php
++++ b/src/Form/FileAddArchiveForm.php
+@@ -2,11 +2,15 @@
+ 
+ namespace Drupal\file_entity\Form;
+ 
+-use Drupal\Core\Entity\Entity;
++use Drupal\Core\Archiver\ArchiverManager;
++use Drupal\Core\Config\ConfigFactoryInterface;
+ use Drupal\Core\Form\FormBase;
+ use Drupal\Core\Form\FormStateInterface;
+ use Drupal\file\Entity\File;
+ use Drupal\file_entity\UploadValidatorsTrait;
++use Drupal\Core\File\FileSystemInterface;
++use Drupal\Core\Messenger\MessengerInterface;
++use Symfony\Component\DependencyInjection\ContainerInterface;
+ 
+ /**
+  * Form controller for archive type forms.
+@@ -15,6 +19,47 @@ class FileAddArchiveForm extends FormBase {
+ 
+   use UploadValidatorsTrait;
+ 
++  /**
++   * The file system service.
++   *
++   * @var \Drupal\Core\File\FileSystemInterface
++   */
++  protected $fileSystem;
++
++  /**
++   * The messenger.
++   *
++   * @var \Drupal\Core\Messenger\MessengerInterface
++   */
++  protected $messenger;
++
++  /**
++   * The archiver manager.
++   *
++   * @var \Drupal\Core\Archiver\ArchiverManager
++   */
++  protected $archiverManager;
++
++  /**
++   * {@inheritdoc}
++   */
++  public function __construct(FileSystemInterface $file_system, MessengerInterface $messenger, ArchiverManager $archiver_manager) {
++    $this->fileSystem = $file_system;
++    $this->messenger = $messenger;
++    $this->archiverManager = $archiver_manager;
++  }
++
++  /**
++   * {@inheritdoc}
++   */
++  public static function create(ContainerInterface $container) {
++    return new static(
++      $container->get('file_system'),
++      $container->get('messenger'),
++      $container->get('plugin.manager.archiver')
++    );
++  }
++
+   /**
+    * {@inheritdoc}
+    */
+@@ -27,7 +72,7 @@ class FileAddArchiveForm extends FormBase {
+    */
+   public function buildForm(array $form, FormStateInterface $form_state) {
+     $options = [
+-      'file_extensions' => archiver_get_extensions(),
++      'file_extensions' => $this->archiverManager->getExtensions(),
+     ];
+     $options = $form_state->get('options') ? $form_state->get('options') : $options;
+     $validators = $this->getUploadValidators($options);
+@@ -72,16 +117,17 @@ class FileAddArchiveForm extends FormBase {
+    */
+   public function submitForm(array &$form, FormStateInterface $form_state) {
+     if ($archive = File::load($form_state->getValue('upload')[0])) {
+-      if ($archiver = archiver_get_archiver($archive->getFileUri())) {
+ 
+-        $extract_dir = file_default_scheme() . '://' . pathinfo($archive->getFilename(), PATHINFO_FILENAME);
+-        $extract_dir = file_destination($extract_dir, FILE_EXISTS_RENAME);
+-        if (!file_prepare_directory($extract_dir, FILE_MODIFY_PERMISSIONS | FILE_CREATE_DIRECTORY)) {
++      if ($archiver = $this->archiverManager->getInstance(['filepath' => $this->fileSystem->realpath($archive->getFileUri())])) {
++
++        $extract_dir = $this->config('system.file')->get('default_scheme') . '://' . pathinfo($archive->getFilename(), PATHINFO_FILENAME);
++        $extract_dir = $this->fileSystem->getDestinationFilename($extract_dir, FileSystemInterface::EXISTS_RENAME);
++        if (!$this->fileSystem->prepareDirectory($extract_dir, FileSystemInterface::MODIFY_PERMISSIONS | FileSystemInterface::CREATE_DIRECTORY)) {
+           throw new \Exception(t('Unable to prepare, the directory %dir for extraction.', array('%dir' => $extract_dir)));
+         }
+         $archiver->extract($extract_dir);
+         $pattern = '/' . $form_state->getValue('pattern') . '/';
+-        if ($files = file_scan_directory($extract_dir, $pattern)) {
++        if ($files = $this->fileSystem->scanDirectory($extract_dir, $pattern)) {
+           foreach ($files as $file) {
+             $file = File::create([
+               'uri' => $file->uri,
+@@ -90,16 +136,16 @@ class FileAddArchiveForm extends FormBase {
+             ]);
+             $file->save();
+           }
+-          $all_files = file_scan_directory($extract_dir, '/.*/');
++          $all_files = $this->fileSystem->scanDirectory($extract_dir, '/.*/');
+           // Get all files that don't match the pattern so we can remove them.
+           $remainig_files = array_diff_key($all_files, $files);
+           foreach ($remainig_files as $file) {
+-            drupal_unlink($file->uri);
++            $this->fileSystem->unlink($file->uri);
+           }
+         }
+-        drupal_set_message($this->t('Extracted %file and added @count new files.', array('%file' => $archive->getFilename(), '@count' => count($files))));
++        $this->messenger->addMessage($this->t('Extracted %file and added @count new files.', array('%file' => $archive->getFilename(), '@count' => count($files))));
+         if ($form_state->getValue('remove_archive')) {
+-          drupal_set_message($this->t('Archive %name was removed from the system.', array('%name' => $archive->getFilename())));
++          $this->messenger->addMessage($this->t('Archive %name was removed from the system.', array('%name' => $archive->getFilename())));
+           $archive->delete();
+         }
+         else {
+diff --git a/src/Form/FileAddForm.php b/src/Form/FileAddForm.php
+index d0551f9..7b47cfc 100644
+--- a/src/Form/FileAddForm.php
++++ b/src/Form/FileAddForm.php
+@@ -2,16 +2,22 @@
+ 
+ namespace Drupal\file_entity\Form;
+ 
+-use Drupal\Component\Utility\SafeMarkup;
++use Drupal\Component\Utility\Html;
+ use Drupal\Core\Entity\Entity\EntityFormDisplay;
++use Drupal\Core\File\FileSystemInterface;
+ use Drupal\Core\Form\FormBase;
+ use Drupal\Core\Form\FormStateInterface;
++use Drupal\Core\Messenger\MessengerInterface;
+ use Drupal\Core\StreamWrapper\StreamWrapperInterface;
++use Drupal\Core\StreamWrapper\StreamWrapperManager;
+ use Drupal\field\FieldConfigInterface;
+ use Drupal\file\Entity\File;
+ use Drupal\file\FileInterface;
+ use Drupal\file_entity\Entity\FileType;
+ use Drupal\file_entity\UploadValidatorsTrait;
++use Drupal\Core\Render\RendererInterface;
++use Drupal\Core\Entity\EntityTypeManagerInterface;
++use Symfony\Component\DependencyInjection\ContainerInterface;
+ 
+ /**
+  * Form controller for file type forms.
+@@ -20,6 +26,56 @@ class FileAddForm extends FormBase {
+ 
+   use UploadValidatorsTrait;
+ 
++  /**
++   * The renderer.
++   *
++   * @var \Drupal\Core\Render\RendererInterface
++   */
++  protected $renderer;
++
++  /**
++   * The entity type manager.
++   *
++   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
++   */
++  protected $entityTypeManager;
++
++  /**
++   * The file system service.
++   *
++   * @var \Drupal\Core\File\FileSystemInterface
++   */
++  protected $fileSystem;
++
++  /**
++   * The messenger.
++   *
++   * @var \Drupal\Core\Messenger\MessengerInterface
++   */
++  protected $messenger;
++
++  /**
++   * {@inheritdoc}
++   */
++  public function __construct(RendererInterface $renderer, EntityTypeManagerInterface $entity_type_manager, FileSystemInterface $file_system, MessengerInterface $messenger) {
++    $this->renderer = $renderer;
++    $this->entityTypeManager = $entity_type_manager;
++    $this->fileSystem = $file_system;
++    $this->messenger = $messenger;
++  }
++
++  /**
++   * {@inheritdoc}
++   */
++  public static function create(ContainerInterface $container) {
++    return new static(
++      $container->get('renderer'),
++      $container->get('entity_type.manager'),
++      $container->get('file_system'),
++      $container->get('messenger')
++    );
++  }
++
+   /**
+    * Returns a unique string identifying the form.
+    *
+@@ -89,7 +145,7 @@ class FileAddForm extends FormBase {
+       '#theme' => 'file_upload_help',
+       '#upload_validators' => $form['upload']['#upload_validators'],
+     );
+-    $form['upload']['#description'] = drupal_render($file_upload_help);
++    $form['upload']['#description'] = $this->renderer->render($file_upload_help);
+ 
+     $form['actions'] = array('#type' => 'actions');
+     $form['actions']['next'] = array(
+@@ -116,7 +172,7 @@ class FileAddForm extends FormBase {
+    */
+   function getUploadDestinationUri(array $params, array $data = array()) {
+     $params += array(
+-      'uri_scheme' => file_default_scheme(),
++      'uri_scheme' => $this->config('system.file')->get('default_scheme'),
+       'file_directory' => '',
+     );
+ 
+@@ -181,7 +237,7 @@ class FileAddForm extends FormBase {
+     $candidates = array();
+     foreach ($types as $type) {
+ 
+-      if ($has_access = \Drupal::entityManager()->getAccessControlHandler('file')
++      if ($has_access = $this->entityTypeManager->getAccessControlHandler('file')
+         ->createAccess($type)
+       ) {
+         $candidates[$type] = FileType::load($type)->label();
+@@ -201,14 +257,14 @@ class FileAddForm extends FormBase {
+   function stepScheme(array $form, FormStateInterface $form_state) {
+     $options = array();
+     foreach (\Drupal::service('stream_wrapper_manager')->getDescriptions(StreamWrapperInterface::WRITE_VISIBLE) as $scheme => $description) {
+-      $options[$scheme] = SafeMarkup::checkPlain($description);
++      $options[$scheme] = Html::escape($description);
+     }
+ 
+     $form['scheme'] = array(
+       '#type' => 'radios',
+       '#title' => t('Destination'),
+       '#options' => $options,
+-      '#default_value' => $form_state->get('scheme') ?: file_default_scheme(),
++      '#default_value' => $form_state->get('scheme') ?: $this->config('system.file')->get('default_scheme'),
+       '#required' => TRUE,
+     );
+ 
+@@ -333,7 +389,7 @@ class FileAddForm extends FormBase {
+           if (!$file->isWritable()) {
+             // The file is read-only (remote) and must use its provided scheme.
+             $current_step += ($trigger == 'edit-previous') ? -1 : 1;
+-            $form_state->set('scheme', file_uri_scheme($file->getFileUri()));
++            $form_state->set('scheme', StreamWrapperManager::getScheme($file->getFileUri()));
+           }
+           elseif (count($schemes) == 1) {
+             // There is only one possible stream wrapper for this file.
+@@ -344,7 +400,7 @@ class FileAddForm extends FormBase {
+           elseif (\Drupal::config('file_entity.settings')->get('wizard_skip_scheme')) {
+             // Assign the file the default scheme.
+             $current_step += ($trigger == 'edit-previous') ? -1 : 1;
+-            $form_state->set('scheme', file_default_scheme());
++            $form_state->set('scheme', $this->config('system.file')->get('default_scheme'));
+           }
+         }
+       }
+@@ -388,9 +444,9 @@ class FileAddForm extends FormBase {
+     $form_state->set('step', $current_step);
+ 
+     if ($save) {
+-      if (file_uri_scheme($file->getFileUri()) != $form_state->get('scheme')) {
++      if (StreamWrapperManager::getScheme($file->getFileUri()) != $form_state->get('scheme')) {
+         // @TODO: Users should not be allowed to create private files without permission ('view private files')
+-        if ($moved_file = file_move($file, $form_state->get('scheme') . '://' . file_uri_target($file->getFileUri()), FILE_EXISTS_RENAME)) {
++        if ($moved_file = file_move($file, $form_state->get('scheme') . '://' . StreamWrapperManager::getTarget($file->getFileUri()), FileSystemInterface::EXISTS_RENAME)) {
+           // Only re-assign the file object if file_move() did not fail.
+           $moved_file->setFilename($file->getFilename());
+ 
+@@ -407,7 +463,7 @@ class FileAddForm extends FormBase {
+ 
+       $form_state->set('file', $file);
+ 
+-      drupal_set_message(t('@type %name was uploaded.', array(
++      $this->messenger->addMessage(t('@type %name was uploaded.', array(
+         '@type' => $file->type->entity->label(),
+         '%name' => $file->getFilename()
+       )));
+@@ -417,7 +473,7 @@ class FileAddForm extends FormBase {
+         $form_state->setRedirect('entity.file.collection');
+       }
+       else {
+-        $form_state->setRedirectUrl($file->urlInfo());
++        $form_state->setRedirectUrl($file->toUrl());
+       }
+     }
+     else {
+diff --git a/src/Form/FileDeleteMultipleForm.php b/src/Form/FileDeleteMultipleForm.php
+index 0b67ccc..b67fd3f 100644
+--- a/src/Form/FileDeleteMultipleForm.php
++++ b/src/Form/FileDeleteMultipleForm.php
+@@ -2,8 +2,7 @@
+ 
+ namespace Drupal\file_entity\Form;
+ 
+-use Drupal\Component\Utility\SafeMarkup;
+-use Drupal\Core\Entity\EntityManagerInterface;
++use Drupal\Component\Utility\Html;
+ use Drupal\Core\Entity\EntityTypeManagerInterface;
+ use Drupal\Core\Form\ConfirmFormBase;
+ use Drupal\Core\TempStore\PrivateTempStoreFactory;
+@@ -107,7 +106,7 @@ class FileDeleteMultipleForm extends ConfirmFormBase {
+     $form['files'] = array(
+       '#theme' => 'item_list',
+       '#items' => array_map(function (FileInterface $file) {
+-        return SafeMarkup::checkPlain($file->label());
++        return Html::escape($file->label());
+       }, $this->files),
+     );
+     $form = parent::buildForm($form, $form_state);
+diff --git a/src/Form/FileEditForm.php b/src/Form/FileEditForm.php
+index b0eb94b..a81cba7 100644
+--- a/src/Form/FileEditForm.php
++++ b/src/Form/FileEditForm.php
+@@ -2,14 +2,19 @@
+ 
+ namespace Drupal\file_entity\Form;
+ 
++use Drupal\Component\Datetime\TimeInterface;
+ use Drupal\Core\Entity\ContentEntityForm;
+-use Drupal\Core\Entity\Entity;
++use Drupal\Core\Entity\EntityRepositoryInterface;
++use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
++use Drupal\Core\File\FileSystemInterface;
+ use Drupal\Core\Form\FormStateInterface;
++use Drupal\Core\Render\RendererInterface;
+ use Drupal\file\Entity\File;
+ use Drupal\file\FileInterface;
+ use Drupal\file_entity\Entity\FileEntity;
+ use Drupal\file_entity\Entity\FileType;
+ use Drupal\file_entity\UploadValidatorsTrait;
++use Symfony\Component\DependencyInjection\ContainerInterface;
+ 
+ /**
+  * Form controller for file type forms.
+@@ -18,6 +23,31 @@ class FileEditForm extends ContentEntityForm {
+ 
+   use UploadValidatorsTrait;
+ 
++  /**
++   * The renderer.
++   *
++   * @var \Drupal\Core\Render\RendererInterface
++   */
++  protected $renderer;
++
++  /**
++   * The file system service.
++   *
++   * @var \Drupal\Core\File\FileSystemInterface
++   */
++  protected $fileSystem;
++
++  /**
++   * {@inheritdoc}
++   */
++  public static function create(ContainerInterface $container) {
++    /** @var static $form */
++    $form = parent::create($container);
++    $form->renderer = $container->get('renderer');
++    $form->fileSystem = $container->get('file_system');
++    return $form;
++  }
++
+   /**
+    * {@inheritdoc}
+    */
+@@ -65,7 +95,7 @@ class FileEditForm extends ContentEntityForm {
+           '#description' => $this->t('This file will replace the existing file. This action cannot be undone.'),
+           '#upload_validators' => $form['replace_upload']['#upload_validators'],
+         );
+-        $form['replace_upload']['#description'] = drupal_render($file_upload_help);
++        $form['replace_upload']['#description'] = $this->renderer->render($file_upload_help);
+       }
+     }
+ 
+@@ -83,20 +113,20 @@ class FileEditForm extends ContentEntityForm {
+     $t_args = array('%title' => $file->label());
+ 
+     if ($insert) {
+-      drupal_set_message(t('%title has been created.', $t_args));
++      $this->messenger()->addMessage(t('%title has been created.', $t_args));
+     }
+     else {
+-      drupal_set_message(t('%title has been updated.', $t_args));
++      $this->messenger()->addMessage(t('%title has been updated.', $t_args));
+     }
+ 
+     // Check if file ID exists.
+     if ($file->id()) {
+-      $form_state->setRedirectUrl($file->urlInfo());
++      $form_state->setRedirectUrl($file->toUrl());
+     }
+     else {
+       // In the unlikely case something went wrong on save, the file will be
+       // rebuilt and file form redisplayed the same way as in preview.
+-      drupal_set_message(t('The post could not be saved.'), 'error');
++      $this->messenger()->addMessage(t('The post could not be saved.'), 'error');
+       $form_state->setRebuild();
+     }
+   }
+@@ -135,7 +165,7 @@ class FileEditForm extends ContentEntityForm {
+       }
+       $log_args = array('@old' => $this->entity->getFilename(), '@new' => $entity_replacement->getFileName());
+       // Move file from temp to permanent home.
+-      if (file_unmanaged_copy($entity_replacement->getFileUri(), $this->entity->getFileUri(), FILE_EXISTS_REPLACE)) {
++      if ($this->fileSystem->copy($entity_replacement->getFileUri(), $this->entity->getFileUri(), FileSystemInterface::EXISTS_REPLACE)) {
+         $entity_replacement->delete();
+         \Drupal::logger('file_entity')->info('File @old was replaced by @new', $log_args);
+       }
+diff --git a/src/Form/FileSettingsForm.php b/src/Form/FileSettingsForm.php
+index 551a109..896e0fb 100644
+--- a/src/Form/FileSettingsForm.php
++++ b/src/Form/FileSettingsForm.php
+@@ -2,6 +2,7 @@
+ 
+ namespace Drupal\file_entity\Form;
+ 
++use Drupal\Component\Utility\Environment;
+ use Drupal\Core\Form\ConfigFormBase;
+ use Drupal\Core\Form\FormStateInterface;
+ 
+@@ -38,7 +39,7 @@ class FileSettingsForm extends ConfigFormBase {
+       '#type' => 'textfield',
+       '#title' => t('Maximum upload size'),
+       '#default_value' => \Drupal::config('file_entity.settings')->get('max_filesize'),
+-      '#description' => t('Enter a value like "512" (bytes), "80 KB" (kilobytes) or "50 MB" (megabytes) in order to restrict the allowed file size. If left empty the file sizes will be limited only by PHP\'s maximum post and file upload sizes (current max limit <strong>%limit</strong>).', array('%limit' => format_size(file_upload_max_size()))),
++      '#description' => t('Enter a value like "512" (bytes), "80 KB" (kilobytes) or "50 MB" (megabytes) in order to restrict the allowed file size. If left empty the file sizes will be limited only by PHP\'s maximum post and file upload sizes (current max limit <strong>%limit</strong>).', array('%limit' => format_size(Environment::getUploadMaxSize()))),
+       '#element_validate' => ['\Drupal\file\Plugin\Field\FieldType\FileItem::validateMaxFilesize'],
+       '#size' => 10,
+     );
+@@ -134,6 +135,6 @@ class FileSettingsForm extends ConfigFormBase {
+       ->set('wizard_skip_fields', $form_state->getValue('wizard_skip_fields'))
+       ->save();
+ 
+-    drupal_set_message(t('File Settings have been succesfully saved.'));
++    $this->messenger()->addMessage(t('File Settings have been succesfully saved.'));
+   }
+ }
+diff --git a/src/Form/FileTypeDisableForm.php b/src/Form/FileTypeDisableForm.php
+index 0283bf3..cee0788 100644
+--- a/src/Form/FileTypeDisableForm.php
++++ b/src/Form/FileTypeDisableForm.php
+@@ -36,7 +36,7 @@ class FileTypeDisableForm extends EntityConfirmFormBase {
+     /** @var FileType $type */
+     $type = $this->entity;
+     $type->disable()->save();
+-    drupal_set_message(t(
++    $this->messenger()->addMessage(t(
+       'The file type %label has been disabled.',
+       array('%label' => $type->label())
+     ));
+diff --git a/src/Form/FileTypeEnableForm.php b/src/Form/FileTypeEnableForm.php
+index f282c9c..d333471 100644
+--- a/src/Form/FileTypeEnableForm.php
++++ b/src/Form/FileTypeEnableForm.php
+@@ -36,7 +36,7 @@ class FileTypeEnableForm extends EntityConfirmFormBase {
+     /** @var FileType $type */
+     $type = $this->entity;
+     $type->enable()->save();
+-    drupal_set_message(t(
++    $this->messenger()->addMessage(t(
+       'The file type %label has been enabled.',
+       array('%label' => $type->label())
+     ));
+diff --git a/src/Form/FileTypeForm.php b/src/Form/FileTypeForm.php
+index 3d74f13..89356ad 100644
+--- a/src/Form/FileTypeForm.php
++++ b/src/Form/FileTypeForm.php
+@@ -109,10 +109,10 @@ class FileTypeForm extends EntityForm {
+     $t_args = array('%name' => $this->entity->label());
+ 
+     if ($status == SAVED_UPDATED) {
+-      drupal_set_message(t('The file type %name has been updated.', $t_args));
++      $this->messenger()->addMessage(t('The file type %name has been updated.', $t_args));
+     }
+     elseif ($status == SAVED_NEW) {
+-      drupal_set_message(t('The file type %name has been added.', $t_args));
++      $this->messenger()->addMessage(t('The file type %name has been added.', $t_args));
+       \Drupal::logger('file_entity')->notice(t('Added file type %name.', $t_args));
+     }
+ 
+diff --git a/src/Normalizer/FileEntityNormalizer.php b/src/Normalizer/FileEntityNormalizer.php
+index 1376864..e2077b2 100644
+--- a/src/Normalizer/FileEntityNormalizer.php
++++ b/src/Normalizer/FileEntityNormalizer.php
+@@ -2,7 +2,8 @@
+ 
+ namespace Drupal\file_entity\Normalizer;
+ 
+-use Drupal\Component\Utility\SafeMarkup;
++use Drupal\Component\Render\FormattableMarkup;
++use Drupal\Core\File\FileSystemInterface;
+ use Drupal\hal\Normalizer\ContentEntityNormalizer;
+ 
+ /**
+@@ -40,13 +41,13 @@ class FileEntityNormalizer extends ContentEntityNormalizer {
+     // Decode and save to file.
+     $file_contents = base64_decode($file_data);
+     $entity = parent::denormalize($data, $class, $format, $context);
+-    $dirname = drupal_dirname($entity->getFileUri());
+-    file_prepare_directory($dirname, FILE_CREATE_DIRECTORY);
+-    if ($uri = file_unmanaged_save_data($file_contents, $entity->getFileUri())) {
++    $dirname = \Drupal::service('file_system')->dirname($entity->getFileUri());
++    \Drupal::service('file_system')->prepareDirectory($dirname, FileSystemInterface::CREATE_DIRECTORY);
++    if ($uri = \Drupal::service('file_system')->saveData($file_contents, $entity->getFileUri())) {
+       $entity->setFileUri($uri);
+     }
+     else {
+-      throw new \RuntimeException(SafeMarkup::format('Failed to write @filename.', array('@filename' => $entity->getFilename())));
++      throw new \RuntimeException(new FormattableMarkup('Failed to write @filename.', array('@filename' => $entity->getFilename())));
+     }
+     return $entity;
+   }
+diff --git a/src/Plugin/Field/FieldFormatter/FileAudioFormatter.php b/src/Plugin/Field/FieldFormatter/FileAudioFormatter.php
+index 24e191d..472c25a 100644
+--- a/src/Plugin/Field/FieldFormatter/FileAudioFormatter.php
++++ b/src/Plugin/Field/FieldFormatter/FileAudioFormatter.php
+@@ -50,9 +50,7 @@ class FileAudioFormatter extends FileFormatterBase implements ContainerFactoryPl
+    *   The view mode.
+    * @param array $third_party_settings
+    *   Any third party settings settings.
+-   * @param \Drupal\Core\Entity\EntityManagerInterface $entity_manager
+-   *   The entity manager.
+-   * @param Drupal\Core\Render\RendererInterface $renderer
++   * @param \Drupal\Core\Render\RendererInterface $renderer
+    *   The rendered service
+    */
+   public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, $label, $view_mode, array $third_party_settings, RendererInterface $renderer) {
+diff --git a/src/Plugin/Field/FieldFormatter/FileDownloadLinkFormatter.php b/src/Plugin/Field/FieldFormatter/FileDownloadLinkFormatter.php
+index 1d4df0f..8f4b3b2 100644
+--- a/src/Plugin/Field/FieldFormatter/FileDownloadLinkFormatter.php
++++ b/src/Plugin/Field/FieldFormatter/FileDownloadLinkFormatter.php
+@@ -67,9 +67,7 @@ class FileDownloadLinkFormatter extends FileFormatterBase implements ContainerFa
+    *   The view mode.
+    * @param array $third_party_settings
+    *   Any third party settings settings.
+-   * @param \Drupal\Core\Entity\EntityManagerInterface $entity_manager
+-   *   The entity manager.
+-   * @param Drupal\Core\Render\RendererInterface $renderer
++   * @param \Drupal\Core\Render\RendererInterface $renderer
+    *   The rendered service
+    */
+   public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, $label, $view_mode, array $third_party_settings, RendererInterface $renderer, ModuleHandlerInterface $module_handler, Token $token) {
+diff --git a/src/Plugin/Field/FieldFormatter/FileImageFormatter.php b/src/Plugin/Field/FieldFormatter/FileImageFormatter.php
+index 40c8f7d..0aa812a 100644
+--- a/src/Plugin/Field/FieldFormatter/FileImageFormatter.php
++++ b/src/Plugin/Field/FieldFormatter/FileImageFormatter.php
+@@ -76,7 +76,7 @@ class FileImageFormatter extends ImageFormatter {
+       $configuration['view_mode'],
+       $configuration['third_party_settings'],
+       $container->get('current_user'),
+-      $container->get('entity.manager')->getStorage('image_style'),
++      $container->get('entity_type.manager')->getStorage('image_style'),
+       $container->get('entity_field.manager')
+     );
+   }
+diff --git a/src/Plugin/Field/FieldFormatter/FileImageResponsiveFormatter.php b/src/Plugin/Field/FieldFormatter/FileImageResponsiveFormatter.php
+index 7d1f78f..0a22fbd 100644
+--- a/src/Plugin/Field/FieldFormatter/FileImageResponsiveFormatter.php
++++ b/src/Plugin/Field/FieldFormatter/FileImageResponsiveFormatter.php
+@@ -100,8 +100,8 @@ class FileImageResponsiveFormatter extends ImageFormatter {
+       $configuration['label'],
+       $configuration['view_mode'],
+       $configuration['third_party_settings'],
+-      $container->get('entity.manager')->getStorage('responsive_image_style'),
+-      $container->get('entity.manager')->getStorage('image_style'),
++      $container->get('entity_type.manager')->getStorage('responsive_image_style'),
++      $container->get('entity_type.manager')->getStorage('image_style'),
+       $container->get('link_generator'),
+       $container->get('current_user')
+     );
+diff --git a/src/Plugin/Field/FieldFormatter/FileVideoFormatter.php b/src/Plugin/Field/FieldFormatter/FileVideoFormatter.php
+index d80b8bf..4f9ff21 100644
+--- a/src/Plugin/Field/FieldFormatter/FileVideoFormatter.php
++++ b/src/Plugin/Field/FieldFormatter/FileVideoFormatter.php
+@@ -50,9 +50,7 @@ class FileVideoFormatter extends FileFormatterBase implements ContainerFactoryPl
+    *   The view mode.
+    * @param array $third_party_settings
+    *   Any third party settings settings.
+-   * @param \Drupal\Core\Entity\EntityManagerInterface $entity_manager
+-   *   The entity manager.
+-   * @param Drupal\Core\Render\RendererInterface $renderer
++   * @param \Drupal\Core\Render\RendererInterface $renderer
+    *   The rendered service
+    */
+   public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, $label, $view_mode, array $third_party_settings, RendererInterface $renderer) {
+diff --git a/src/Plugin/views/field/LinkDelete.php b/src/Plugin/views/field/LinkDelete.php
+index d706c12..7b5c369 100644
+--- a/src/Plugin/views/field/LinkDelete.php
++++ b/src/Plugin/views/field/LinkDelete.php
+@@ -3,6 +3,7 @@
+ namespace Drupal\file_entity\Plugin\views\field;
+ 
+ use Drupal\views\ResultRow;
++use Drupal\Core\Routing\RedirectDestinationTrait;
+ 
+ /**
+  * Field handler to present a link to delete the file.
+@@ -13,6 +14,8 @@ use Drupal\views\ResultRow;
+  */
+ class LinkDelete extends Link {
+ 
++  use RedirectDestinationTrait;
++
+   /**
+    * Prepares the link to delete the media item.
+    *
+@@ -31,7 +34,7 @@ class LinkDelete extends Link {
+     if ($file->access('delete')) {
+       $this->options['alter']['make_link'] = TRUE;
+       $this->options['alter']['path'] = 'file/' . $file->id() . '/delete';
+-      $this->options['alter']['query'] = drupal_get_destination();
++      $this->options['alter']['query'] = $this->getDestinationArray();
+ 
+       $text = !empty($this->options['text']) ? $this->options['text'] : t('Delete');
+     }
+diff --git a/src/Plugin/views/field/LinkEdit.php b/src/Plugin/views/field/LinkEdit.php
+index 3552c18..caa9050 100644
+--- a/src/Plugin/views/field/LinkEdit.php
++++ b/src/Plugin/views/field/LinkEdit.php
+@@ -3,6 +3,7 @@
+ namespace Drupal\file_entity\Plugin\views\field;
+ 
+ use Drupal\views\ResultRow;
++use Drupal\Core\Routing\RedirectDestinationTrait;
+ 
+ /**
+  * Field handler to present a link to edit the file.
+@@ -13,6 +14,8 @@ use Drupal\views\ResultRow;
+  */
+ class LinkEdit extends Link {
+ 
++  use RedirectDestinationTrait;
++
+   /**
+    * Prepares the link to editing the file entity.
+    *
+@@ -31,7 +34,7 @@ class LinkEdit extends Link {
+     if ($file->access('update')) {
+       $this->options['alter']['make_link'] = TRUE;
+       $this->options['alter']['path'] = 'file/' . $file->id() . '/edit';
+-      $this->options['alter']['query'] = drupal_get_destination();
++      $this->options['alter']['query'] = $this->getDestinationArray();
+ 
+       $text = !empty($this->options['text']) ? $this->options['text'] : t('Edit');
+     }
+diff --git a/src/Plugin/views/filter/SchemeType.php b/src/Plugin/views/filter/SchemeType.php
+index 65c9d62..65aaf9e 100644
+--- a/src/Plugin/views/filter/SchemeType.php
++++ b/src/Plugin/views/filter/SchemeType.php
+@@ -45,7 +45,7 @@ class SchemeType extends InOperator {
+     $composite = $not_in ? ' AND ' : ' OR ';
+ 
+     foreach ($this->value as $schema) {
+-      $statements[] = 'uri ' . $schema_operator . ' \'' . db_like($schema) . '://%\'';
++      $statements[] = 'uri ' . $schema_operator . ' \'' . \Drupal::database()->escapeLike($schema) . '://%\'';
+     }
+ 
+     $this->query->addWhereExpression($this->options['group'], implode($composite, $statements));
+diff --git a/src/Tests/FileEntityAccessTest.php b/src/Tests/FileEntityAccessTest.php
+index 459241e..e732ba1 100644
+--- a/src/Tests/FileEntityAccessTest.php
++++ b/src/Tests/FileEntityAccessTest.php
+@@ -1,10 +1,11 @@
+ <?php
+ 
+-namespace Drupal\file_entity\Tests;
++namespace Drupal\Tests\file_entity\Functional;
+ 
+ use Drupal\file\FileInterface;
+ use Drupal\file_entity\FileEntityAccessControlHandler;
+ use Drupal\node\Entity\Node;
++use Drupal\Component\Render\FormattableMarkup;
+ 
+ /**
+  * Tests the access aspects of file entity.
+@@ -30,7 +31,7 @@ class FileEntityAccessTest extends FileEntityTestBase {
+   function setUp() {
+     parent::setUp();
+     $this->setUpFiles(array('uid' => 0));
+-    $this->accessControlHandler = $this->container->get('entity.manager')->getAccessControlHandler('file');
++    $this->accessControlHandler = $this->container->get('entity_type.manager')->getAccessControlHandler('file');
+ 
+     // Unset the fact that file_entity_install() adds the 'view files'
+     // permission to all user roles. This messes with being able to fully unit
+@@ -141,10 +142,10 @@ class FileEntityAccessTest extends FileEntityTestBase {
+     $file = reset($this->files['text']);
+ 
+     // This fails.. No clue why but, tested manually and works as should.
+-    //$web_user = $this->drupalCreateUser(array('view own files'));
+-    //$this->drupalLogin($web_user);
+-    //$this->drupalGet("file/{$file->id()}");
+-    //$this->assertResponse(403, 'Users without access can not access the file view page');
++    $web_user = $this->drupalCreateUser(array('view own files'));
++    $this->drupalLogin($web_user);
++    $this->drupalGet("file/{$file->id()}");
++    $this->assertResponse(403, 'Users without access can not access the file view page');
+     $web_user = $this->drupalCreateUser(array('view files'));
+     $this->drupalLogin($web_user);
+     $this->drupalGet("file/{$file->id()}");
+@@ -202,7 +203,7 @@ class FileEntityAccessTest extends FileEntityTestBase {
+       if ($authenticated_user) {
+         $account = $this->drupalCreateUser($case['permissions']);
+         $this->drupalLogin($account);
+-        $user_name = $account->getUsername();
++        $user_name = $account->getAccountName();
+         if (!empty($case['owner'])) {
+           $file->setOwner($account)->save();
+         }
+@@ -214,9 +215,9 @@ class FileEntityAccessTest extends FileEntityTestBase {
+         '%username' => $user_name,
+         '%uri' => $file->getFileUri(),
+       );
+-      $this->assertTrue(is_file($file->getFileUri()), format_string('File %name owned by %username successfully created at %uri.', $arguments));
++      $this->assertTrue(is_file($file->getFileUri()), new FormattableMarkup('File %name owned by %username successfully created at %uri.', $arguments));
+       $url = file_create_url($file->getFileUri());
+-      $message_file_info = ' ' . format_string('File %uri was checked.', array('%uri' => $file->getFileUri()));
++      $message_file_info = ' ' . new FormattableMarkup('File %uri was checked.', array('%uri' => $file->getFileUri()));
+ 
+       // Try to download the file.
+       $this->drupalGet($url);
+diff --git a/src/Tests/FileEntityAdminTest.php b/src/Tests/FileEntityAdminTest.php
+index 0d62c89..7f0bda6 100644
+--- a/src/Tests/FileEntityAdminTest.php
++++ b/src/Tests/FileEntityAdminTest.php
+@@ -1,6 +1,6 @@
+ <?php
+ 
+-namespace Drupal\file_entity\Tests;
++namespace Drupal\Tests\file_entity\Functional;
+ 
+ use Drupal\field\Entity\FieldConfig;
+ use Drupal\field\Entity\FieldStorageConfig;
+@@ -90,10 +90,11 @@ class FileEntityAdminTest extends FileEntityTestBase {
+     }
+ 
+     $this->drupalGet('admin/content/files');
+-    $list = $this->xpath('//table[@class="views-table views-view-table cols-10 responsive-enabled"]/tbody//tr');
++    $xpath = '//form[@id="views-form-file-entity-files-overview"]/table[@class="cols-10 responsive-enabled"]/tbody//tr/td[contains(@class, "views-field-filename")]';
++    $list = $this->xpath($xpath);
+     $entries = [];
+     foreach ($list as $entry) {
+-      $entries[] = trim((string) $entry->td[1]->a);
++      $entries[] = trim((string) $entry->getText());
+     }
+     $this->assertEqual($files_query, $entries, 'Files are sorted in the view according to the default query.');
+ 
+@@ -105,10 +106,10 @@ class FileEntityAdminTest extends FileEntityTestBase {
+     }
+ 
+     $this->drupalGet('admin/content/files', array('query' => array('sort' => 'asc', 'order' => 'filename')));
+-    $list = $this->xpath('//table[@class="views-table views-view-table cols-10 responsive-enabled"]/tbody//tr');
++    $list = $this->xpath($xpath);
+     $entries = [];
+     foreach ($list as $entry) {
+-      $entries[] = trim((string) $entry->td[1]->a);
++      $entries[] = trim((string) $entry->getText());
+     }
+     $this->assertEqual($files_query, $entries, 'Files are sorted in the view the same as they are in the query.');
+   }
+@@ -150,7 +151,7 @@ class FileEntityAdminTest extends FileEntityTestBase {
+       $this->assertLinkByHref('file/' . $file->id() . '/edit');
+       $this->assertLinkByHref('file/' . $file->id() . '/delete');
+       // Verify tableselect.
+-      $this->assertFieldByName("bulk_form[$i]", NULL, t('Bulk form checkbox found.'));
++      $this->assertFieldByName("bulk_form[$i]", NULL, 'Bulk form checkbox found.');
+     }
+ 
+     // Verify no operation links are displayed for regular users.
+@@ -168,28 +169,30 @@ class FileEntityAdminTest extends FileEntityTestBase {
+     $this->assertNoLinkByHref('file/' . $files['public_document']->id() . '/delete');
+ 
+     // Verify no tableselect.
+-    $this->assertNoFieldByName('bulk_form[' . $files['public_image']->id() . ']', '', t('No bulk form checkbox found.'));
++    // @todo Drupal 8 always shows bulk selection, test specific actions
++    //   instead.
++    // $this->assertNoFieldByName('bulk_form[' . $files['public_image']->id() . ']', '', 'No bulk form checkbox found.');
+ 
+     // Verify private file is displayed with permission.
+     $this->drupalLogout();
+     $this->drupalLogin($this->userViewOwn);
+     $this->drupalGet('admin/content/files');
+     $this->assertResponse(200);
+-    $this->assertLinkByHref($files['private_document']->url());
++    $this->assertLinkByHref($files['private_document']->toUrl()->toString());
+     // Verify no operation links are displayed.
+-    $this->drupalGet($files['private_document']->url('edit-form'));
++    $this->drupalGet($files['private_document']->toUrl('edit-form'));
+     $this->assertResponse(403, 'User doesn\'t have permission to edit files');
+-    $this->drupalGet($files['private_document']->url('delete-form'));
++    $this->drupalGet($files['private_document']->toUrl('delete-form'));
+     $this->assertResponse(403, 'User doesn\'t have permission to delete files');
+ 
+     // Verify user cannot see private file of other users.
+-    $this->assertNoLinkByHref($files['private_image']->url());
+-    $this->assertNoLinkByHref($files['private_image']->url('edit-form'));
+-    $this->assertNoLinkByHref($files['private_image']->url('delete-form'));
++    $this->assertNoLinkByHref($files['private_image']->toUrl()->toString());
++    $this->assertNoLinkByHref($files['private_image']->toUrl('edit-form')->toString());
++    $this->assertNoLinkByHref($files['private_image']->toUrl('delete-form')->toString());
+     $this->assertNoLinkByHref($files['private_image']->downloadUrl()->toString());
+ 
+     // Verify no tableselect.
+-    $this->assertNoFieldByName('bulk_form[' . $files['private_document']->id() . ']', '', t('No bulk form checkbox found.'));
++    $this->assertNoFieldByName('bulk_form[' . $files['private_document']->id() . ']', '', 'No bulk form checkbox found.');
+ 
+     // Verify private file is displayed with permission.
+     $this->drupalLogout();
+@@ -240,7 +243,7 @@ class FileEntityAdminTest extends FileEntityTestBase {
+     $this->assertLinkByHref('file/2/delete');
+     $this->drupalGet('file/1/delete');
+     $this->assertTitle(t('Are you sure you want to delete the file @filename? | Drupal', array('@filename' => FileEntity::load(1)->label())));
+-    $this->drupalPostForm(NULL, array(), t('Delete'));
++    $this->drupalPostForm(NULL, array(), 'Delete');
+     $this->assertNoLinkByHref('file/1/delete');
+     $this->assertLinkByHref('file/2/delete');
+ 
+@@ -258,9 +261,9 @@ class FileEntityAdminTest extends FileEntityTestBase {
+       'bulk_form[1]' => 1,
+       'bulk_form[2]' => 1,
+     );
+-    $this->drupalPostForm(NULL, $edit, t('Apply to selected items'));
++    $this->drupalPostForm(NULL, $edit, 'Apply to selected items');
+ 
+-    \Drupal::entityManager()->getStorage('file')->resetCache();
++    \Drupal::entityTypeManager()->getStorage('file')->resetCache();
+     $this->assertFalse(FileEntity::load(2)->isPermanent());
+     $this->assertFalse(FileEntity::load(3)->isPermanent());
+     $this->assertFalse(FileEntity::load(4)->isPermanent());
+@@ -272,9 +275,9 @@ class FileEntityAdminTest extends FileEntityTestBase {
+       'bulk_form[0]' => 1,
+       'bulk_form[1]' => 1,
+     );
+-    $this->drupalPostForm(NULL, $edit, t('Apply to selected items'));
++    $this->drupalPostForm(NULL, $edit, 'Apply to selected items');
+ 
+-    \Drupal::entityManager()->getStorage('file')->resetCache();
++    \Drupal::entityTypeManager()->getStorage('file')->resetCache();
+     $this->assertTrue(FileEntity::load(2)->isPermanent());
+     $this->assertTrue(FileEntity::load(3)->isPermanent());
+     $this->assertFalse(FileEntity::load(4)->isPermanent());
+@@ -287,12 +290,12 @@ class FileEntityAdminTest extends FileEntityTestBase {
+       'bulk_form[0]' => 1,
+       'bulk_form[1]' => 1,
+     );
+-    $this->drupalPostForm(NULL, $edit, t('Apply to selected items'));
++    $this->drupalPostForm(NULL, $edit, 'Apply to selected items');
+     $this->assertTitle(t('Are you sure you want to delete these files? | Drupal'));
+     $this->assertLink('Cancel');
+-    $this->drupalPostForm(NULL, array(), t('Delete'));
++    $this->drupalPostForm(NULL, array(), 'Delete');
+ 
+-    \Drupal::entityManager()->getStorage('file')->resetCache();
++    \Drupal::entityTypeManager()->getStorage('file')->resetCache();
+     $this->assertNull(FileEntity::load(2), 'File 2 is deleted.');
+     $this->assertNull(FileEntity::load(3), 'File 3 is deleted.');
+     $this->assertNotNull(FileEntity::load(4), 'File 4 is not deleted.');
+@@ -343,8 +346,8 @@ class FileEntityAdminTest extends FileEntityTestBase {
+       ),
+     ));
+     $node->save();
+-    \Drupal::entityManager()->getStorage('node')->resetCache();
+-    \Drupal::entityManager()->getStorage('file')->resetCache();
++    \Drupal::entityTypeManager()->getStorage('node')->resetCache();
++    \Drupal::entityTypeManager()->getStorage('file')->resetCache();
+ 
+     // Check that the usage link is updated.
+     $this->drupalGet('admin/content/files');
+diff --git a/src/Tests/FileEntityCreationTest.php b/src/Tests/FileEntityCreationTest.php
+index b77779d..d676c24 100644
+--- a/src/Tests/FileEntityCreationTest.php
++++ b/src/Tests/FileEntityCreationTest.php
+@@ -1,11 +1,13 @@
+ <?php
+ 
+-namespace Drupal\file_entity\Tests;
++namespace Drupal\Tests\file_entity\Functional;
+ 
+ use Drupal\Core\Language\LanguageInterface;
+ use Drupal\Core\Site\Settings;
++use Drupal\file\FileInterface;
+ use Drupal\file_entity\Entity\FileEntity;
+ use Drupal\Core\Archiver\Tar;
++use Drupal\file_entity\Entity\FileType;
+ 
+ /**
+  * Tests creating and saving a file.
+@@ -46,7 +48,7 @@ class FileEntityCreationTest extends FileEntityTestBase {
+     $test_file = $this->getTestFile('text');
+     // Create a file.
+     $edit = array();
+-    $edit['files[upload]'] = drupal_realpath($test_file->uri);
++    $edit['files[upload]'] = \Drupal::service('file_system')->realpath($test_file->uri);
+     $this->drupalPostForm('file/add', $edit, t('Next'));
+ 
+     // Check that the document file has been uploaded.
+@@ -54,7 +56,7 @@ class FileEntityCreationTest extends FileEntityTestBase {
+ 
+     // Check that the file exists in the database.
+     $file = $this->getFileByFilename('text-0_0.txt');
+-    $this->assertTrue($file, t('File found in database.'));
++    $this->assertInstanceOf(FileInterface::class, $file, t('File found in database.'));
+   }
+ 
+   /**
+@@ -68,14 +70,14 @@ class FileEntityCreationTest extends FileEntityTestBase {
+     $test_file = $this->getTestFile('text');
+     // Create a file.
+     $edit = array();
+-    $edit['files[upload]'] = drupal_realpath($test_file->uri);
++    $edit['files[upload]'] = \Drupal::service('file_system')->realpath($test_file->uri);
+     $this->drupalGet('file/add');
+-    $this->assertFalse($this->xpath('//input[@id="edit-upload-remove-button"]'), 'Remove');
++    $this->assertEmpty($this->xpath('//input[@id="edit-upload-remove-button"]'), 'Remove');
+     $this->drupalPostForm(NULL, $edit, t('Next'));
+ 
+     // Check if your on form step 2, scheme selecting.
+     // At this point it should not skip this form.
+-    $this->assertTrue($this->xpath('//input[@name="scheme"]'), "Loaded select destination scheme page.");
++    $this->assertNotEmpty($this->xpath('//input[@name="scheme"]'), "Loaded select destination scheme page.");
+ 
+     // Test if the public radio button is selected by default.
+     $this->assertFieldChecked('edit-scheme-public', 'Public Scheme is checked');
+@@ -90,7 +92,7 @@ class FileEntityCreationTest extends FileEntityTestBase {
+ 
+     // Check that the file exists in the database.
+     $file = $this->getFileByFilename('text-0_0.txt');
+-    $this->assertTrue($file, t('File found in database.'));
++    $this->assertInstanceOf(FileInterface::class, $file, t('File found in database.'));
+ 
+     // Check if the file is stored in the private folder.
+     $this->assertTrue(substr($file->getFileUri(), 0, 10) === 'private://', 'File uploaded in private folder.');
+@@ -106,7 +108,7 @@ class FileEntityCreationTest extends FileEntityTestBase {
+ 
+     // Create an image.
+     $test_file = $this->getTestFile('image');
+-    $edit = array('files[upload]' => drupal_realpath($test_file->uri));
++    $edit = array('files[upload]' => \Drupal::service('file_system')->realpath($test_file->uri));
+     $this->drupalPostForm('file/add', $edit, t('Next'));
+ 
+     $data = array(
+@@ -141,17 +143,31 @@ class FileEntityCreationTest extends FileEntityTestBase {
+    * Test archive upload.
+    */
+   public function testArchiveUpload() {
+-    $file_storage = \Drupal::service('entity.manager')->getStorage('file');
++    // Create a archive type.
++    $archive_type = FileType::create([
++      'id' => 'archive',
++      'label' => 'Archive',
++      'status' => TRUE,
++      'mimetypes' => [
++        'application/gzip'
++      ],
++    ]);
++
++    $archive_type->save();
++
++    $file_storage = \Drupal::entityTypeManager()->getStorage('file');
+     // Create files for the archive.
+-    file_unmanaged_save_data($this->randomString(), 'temporary://test_text.txt');
+-    file_unmanaged_save_data($this->randomString(), 'temporary://test_png.png');
+-    file_unmanaged_save_data($this->randomString(), 'temporary://test_jpg.jpg');
++    /** @var \Drupal\Core\File\FileSystemInterface $file_system */
++    $file_system = \Drupal::service('file_system');
++    $file_system->saveData($this->randomString(), 'temporary://test_text.txt');
++    $file_system->saveData($this->randomString(), 'temporary://test_png.png');
++    $file_system->saveData($this->randomString(), 'temporary://test_jpg.jpg');
+ 
+-    $text_file_path = file_directory_temp() . '/test_text.txt';
+-    $png_file_path = file_directory_temp() . '/test_png.png';
+-    $jpg_file_path = file_directory_temp() . '/test_jpg.jpg';
++    $text_file_path = $file_system->getTempDirectory() . '/test_text.txt';
++    $png_file_path = $file_system->getTempDirectory() . '/test_png.png';
++    $jpg_file_path = $file_system->getTempDirectory() . '/test_jpg.jpg';
+ 
+-    $archive_path = file_directory_temp() . '/archive.tar.gz';
++    $archive_path = $file_system->getTempDirectory() . '/archive.tar.gz';
+     $archiver = new Tar($archive_path);
+     $archiver->add($text_file_path);
+     $archiver->add($png_file_path);
+@@ -173,13 +189,13 @@ class FileEntityCreationTest extends FileEntityTestBase {
+     $this->assertFalse(!empty($file_storage->loadByProperties(['filename' => 'test_text.txt'])), "File that doesn't match the pattern is not in the database.");
+     $this->assertFalse(!empty($file_storage->loadByProperties(['filename' => 'archive.tar.gz'])), "Archive is removed since we checked the remove_archive checkbox.");
+ 
+-    $all_files = file_scan_directory('public://', '/.*/');
++    $all_files = $file_system->scanDirectory('public://', '/.*/');
+     $this->assertTrue(array_key_exists('public://archive.tar/' . $jpg_file_path, $all_files), "File that matches the pattern is in the public directory.");
+     $this->assertFalse(array_key_exists('public://archive.tar/' . $png_file_path, $all_files), "File that doesn't match the pattern is removed from the public directory.");
+     $this->assertFalse(array_key_exists('public://archive.tar/' . $text_file_path, $all_files), "File that doesn't match the pattern is removed from the public directory.");
+     $this->assertFalse(array_key_exists('public://archive.tar.gz', $all_files), "Archive is removed from the public directory since we checked the remove_archive checkbox.");
+ 
+-    $archive_path = file_directory_temp() . '/archive2.tar.gz';
++    $archive_path = $file_system->getTempDirectory() . '/archive2.tar.gz';
+     $archiver = new Tar($archive_path);
+     $archiver->add($text_file_path);
+ 
+@@ -193,7 +209,7 @@ class FileEntityCreationTest extends FileEntityTestBase {
+     $this->assertTrue($file = !empty($file_storage->loadByProperties(['filename' => 'archive2.tar.gz'])), "Archive is in the database since value for remove_checkbox is FALSE.");
+     $this->assertTrue($file ? $this->getFileByFilename('archive2.tar.gz')->isPermanent() : FALSE, "Archive is permanent since value for remove_checkbox is FALSE.");
+ 
+-    $all_files = file_scan_directory('public://', '/.*/');
++    $all_files = $file_system->scanDirectory('public://', '/.*/');
+     $this->assertTrue(array_key_exists('public://archive2.tar.gz', $all_files), "Archive is in the public directory since value for remove_checkbox is FALSE.");
+   }
+ 
+diff --git a/src/Tests/FileEntityEditTest.php b/src/Tests/FileEntityEditTest.php
+index 838256c..cf7727a 100644
+--- a/src/Tests/FileEntityEditTest.php
++++ b/src/Tests/FileEntityEditTest.php
+@@ -1,8 +1,9 @@
+ <?php
+ 
+-namespace Drupal\file_entity\Tests;
+-use Drupal\Core\Url;
++namespace Drupal\Tests\file_entity\Functional;
++
+ use Drupal\file\Entity\File;
++use Drupal\file\FileInterface;
+ 
+ /**
+  * Create a file and test file edit functionality.
+@@ -36,7 +37,7 @@ class FileEntityEditTest extends FileEntityTestBase {
+ 
+     // Create file to edit.
+     $edit = array();
+-    $edit['files[upload]'] = drupal_realpath($test_file->uri);
++    $edit['files[upload]'] = \Drupal::service('file_system')->realpath($test_file->uri);
+     $this->drupalPostForm('file/add', $edit, t('Next'));
+     if ($this->xpath('//input[@name="scheme"]')) {
+       $this->drupalPostForm(NULL, array(), t('Next'));
+@@ -44,11 +45,11 @@ class FileEntityEditTest extends FileEntityTestBase {
+ 
+     // Check that the file exists in the database.
+     $file = $this->getFileByFilename('text-0_0.txt');
+-    $this->assertTrue($file, t('File found in database.'));
++    $this->assertInstanceof(FileInterface::class, $file, t('File found in database.'));
+ 
+     // Check that "edit" link points to correct page.
+     $this->clickLink(t('Edit'));
+-    $edit_url = $file->url('edit-form', ['absolute' => TRUE]);
++    $edit_url = $file->toUrl('edit-form', ['absolute' => TRUE])->toString();
+     $actual_url = $this->getURL();
+     $this->assertEqual($edit_url, $actual_url, t('On edit page.'));
+ 
+@@ -80,7 +81,7 @@ class FileEntityEditTest extends FileEntityTestBase {
+     // Create file to edit.
+     $test_file = $this->getTestFile('text');
+     $edit = array();
+-    $edit['files[upload]'] = drupal_realpath($test_file->uri);
++    $edit['files[upload]'] = \Drupal::service('file_system')->realpath($test_file->uri);
+     $this->drupalPostForm('file/add', $edit, t('Next'));
+     $this->drupalPostForm(NULL, array(), t('Next'));
+ 
+@@ -99,7 +100,7 @@ class FileEntityEditTest extends FileEntityTestBase {
+     $edit = array();
+     $edit['uid[0][target_id]'] = 'Anonymous (0)';
+     $this->drupalPostForm('file/' . $file->id() . '/edit', $edit, t('Save'));
+-    \Drupal::entityManager()->getStorage('file')->resetCache();
++    \Drupal::entityTypeManager()->getStorage('file')->resetCache();
+     $file = File::load($file->id());
+     $this->assertIdentical($file->getOwnerId(), '0', 'File associated with anonymous user.');
+ 
+@@ -108,7 +109,7 @@ class FileEntityEditTest extends FileEntityTestBase {
+     $edit = array();
+     $edit['uid[0][target_id]'] = $this->web_user->label();
+     $this->drupalPostForm('file/' . $file->id() . '/edit', $edit, t('Save'));
+-    \Drupal::entityManager()->getStorage('file')->resetCache();
++    \Drupal::entityTypeManager()->getStorage('file')->resetCache();
+     $file = File::load($file->id());
+     $this->assertIdentical($file->getOwnerId(), $this->web_user->id(), 'File associated with normal user.');
+ 
+diff --git a/src/Tests/FileEntityFileTypeClassificationTest.php b/src/Tests/FileEntityFileTypeClassificationTest.php
+index 3e2e95d..3588855 100644
+--- a/src/Tests/FileEntityFileTypeClassificationTest.php
++++ b/src/Tests/FileEntityFileTypeClassificationTest.php
+@@ -1,9 +1,11 @@
+ <?php
+ 
+-namespace Drupal\file_entity\Tests;
++namespace Drupal\Tests\file_entity\Functional;
+ 
+ use Drupal\file\Entity\File;
+-use Drupal\simpletest\WebTestBase;
++use Drupal\Tests\BrowserTestBase;
++use Drupal\Tests\TestFileCreationTrait;
++use Drupal\Tests\Traits\Core\CronRunTrait;
+ use Drupal\views\Views;
+ 
+ /**
+@@ -11,7 +13,10 @@ use Drupal\views\Views;
+  *
+  * @group file_entity
+  */
+-class FileEntityFileTypeClassificationTest extends WebTestBase {
++class FileEntityFileTypeClassificationTest extends BrowserTestBase {
++
++  use CronRunTrait;
++  use TestFileCreationTrait;
+ 
+   /**
+    * Modules to enable.
+@@ -20,6 +25,11 @@ class FileEntityFileTypeClassificationTest extends WebTestBase {
+    */
+   public static $modules = array('file');
+ 
++  /**
++   * {@inheritdoc}
++   */
++  protected $defaultTheme = 'stark';
++
+   /**
+    * Get the file type of a given file.
+    *
+@@ -30,7 +40,7 @@ class FileEntityFileTypeClassificationTest extends WebTestBase {
+    *   The file's file type as a string.
+    */
+   function getFileType($file) {
+-    $type = db_select('file_managed', 'fm')
++    $type = \Drupal::database()->select('file_managed', 'fm')
+       ->fields('fm', array('type'))
+       ->condition('fid', $file->id(), '=')
+       ->execute()
+@@ -44,10 +54,10 @@ class FileEntityFileTypeClassificationTest extends WebTestBase {
+    */
+   function testFileTypeClassification() {
+     // Get test text and image files.
+-    $file = current($this->drupalGetTestFiles('text'));
++    $file = current($this->getTestFiles('text'));
+     $text_file = File::create((array) $file);
+     $text_file->save();
+-    $file = current($this->drupalGetTestFiles('image'));
++    $file = current($this->getTestFiles('image'));
+     $image_file = File::create((array) $file);
+     $image_file->save();
+ 
+diff --git a/src/Tests/FileEntityPathautoTest.php b/src/Tests/FileEntityPathautoTest.php
+index d613c6e..54712b3 100644
+--- a/src/Tests/FileEntityPathautoTest.php
++++ b/src/Tests/FileEntityPathautoTest.php
+@@ -1,9 +1,9 @@
+ <?php
+ 
+-namespace Drupal\file_entity\Tests;
++namespace Drupal\Tests\file_entity\Functional;
+ 
+-use Drupal\Component\Utility\Unicode;
+ use Drupal\pathauto\Entity\PathautoPattern;
++use Drupal\Tests\Traits\Core\PathAliasTestTrait;
+ 
+ /**
+  * Tests Pathauto support.
+@@ -14,6 +14,8 @@ use Drupal\pathauto\Entity\PathautoPattern;
+  */
+ class FileEntityPathautoTest extends FileEntityTestBase {
+ 
++  use PathAliasTestTrait;
++
+   /**
+    * Modules to enable.
+    *
+@@ -26,7 +28,7 @@ class FileEntityPathautoTest extends FileEntityTestBase {
+    */
+   public function testPathauto() {
+     $pattern = PathautoPattern::create([
+-      'id' => Unicode::strtolower($this->randomMachineName()),
++      'id' => mb_strtolower($this->randomMachineName()),
+       'type' => 'canonical_entities:file',
+       'pattern' => '/files/[file:name]',
+       'weight' => 0,
+@@ -35,8 +37,7 @@ class FileEntityPathautoTest extends FileEntityTestBase {
+ 
+     $file = $this->createFileEntity(['filename' => 'example.png']);
+ 
+-    $path = \Drupal::service('path.alias_storage')->load(array('source' => '/' . $file->urlInfo()->getInternalPath()));
+-    $this->assertEqual($path['alias'], '/files/examplepng', t('Alias for file found.'));
++    $this->assertPathAliasExists('/files/examplepng');
+   }
+ 
+ }
+diff --git a/src/Tests/FileEntityReplaceTest.php b/src/Tests/FileEntityReplaceTest.php
+index 1247518..dedc6d5 100644
+--- a/src/Tests/FileEntityReplaceTest.php
++++ b/src/Tests/FileEntityReplaceTest.php
+@@ -1,6 +1,6 @@
+ <?php
+ 
+-namespace Drupal\file_entity\Tests;
++namespace Drupal\Tests\file_entity\Functional;
+ 
+ use Drupal\file\Entity\File;
+ 
+@@ -45,7 +45,7 @@ class FileEntityReplaceTest extends FileEntityTestBase {
+ 
+     // Test that the file saves when uploading a replacement file.
+     $edit = array();
+-    $edit['files[replace_upload]'] = drupal_realpath($replacement->getFileUri());
++    $edit['files[replace_upload]'] = \Drupal::service('file_system')->realpath($replacement->getFileUri());
+     $this->drupalPostForm('file/' . $file->id() . '/edit', $edit, t('Save'));
+     $this->assertText(t('@file has been updated.', array('@file' => $file->getFilename()))/*, 'File was updated with file upload.'*/);
+ 
+@@ -58,11 +58,11 @@ class FileEntityReplaceTest extends FileEntityTestBase {
+     $this->assertNotEqual($file->getSize(), $original->getSize(), 'Updated file size changed from previous file.');
+     $this->assertEqual($file->getSize(), $replacement->getSize(), 'Updated file size matches uploaded file.');
+     $this->assertEqual(file_get_contents($file->getFileUri()), file_get_contents($replacement->getFileUri()), 'Updated file contents matches uploaded file.');
+-    $this->assertFalse(\Drupal::entityQuery('file')->condition('status', 0)->execute(), 'Temporary file used for replacement was deleted.');
++    $this->assertEmpty(\Drupal::entityQuery('file')->condition('status', 0)->execute(), 'Temporary file used for replacement was deleted.');
+ 
+     // Get an image file.
+     $image = reset($this->files['image']);
+-    $edit['files[replace_upload]'] = drupal_realpath($image->getFileUri());
++    $edit['files[replace_upload]'] = \Drupal::service('file_system')->realpath($image->getFileUri());
+ 
+     // Test that validation works by uploading a non-text file as a replacement.
+     $this->drupalPostForm('file/' . $file->id() . '/edit', $edit, t('Save'));
+@@ -73,7 +73,7 @@ class FileEntityReplaceTest extends FileEntityTestBase {
+ 
+     // Test the file upload.
+     $edit = array();
+-    $edit['files[replace_upload]'] = drupal_realpath($replacement->getFileUri());
++    $edit['files[replace_upload]'] = \Drupal::service('file_system')->realpath($replacement->getFileUri());
+     $this->drupalPostForm('file/' . $file->id() . '/edit', $edit, t('Upload'));
+     $this->assertText('text-2.txt');
+     $this->drupalPostForm(NULL, array(), t('Save'));
+@@ -83,11 +83,11 @@ class FileEntityReplaceTest extends FileEntityTestBase {
+     /** @var \Drupal\file\FileInterface $file2 */
+     $file2 = File::create(array('type' => 'image'));
+     $file2->setFileUri('http://' . $this->randomMachineName());
+-    $file2->getFilename(drupal_basename($file2->getFileUri()));
++    $file2->getFilename(\Drupal::service('file_system')->basename($file2->getFileUri()));
+     $file2->setMimeType('image/oembed');
+     $file2->setOwnerId(1);
+     $file2->getSize(0);
+-    $this->assertTrue($file2->save(), 'Non-local file was added to the database.');
++    $file2->save();
+ 
+     // Test that Upload widget does not appear for non-local file.
+     $this->drupalGet('file/' . $file2->id() . '/edit');
+diff --git a/src/Tests/FileEntityServicesTest.php b/src/Tests/FileEntityServicesTest.php
+index 6064680..b947254 100644
+--- a/src/Tests/FileEntityServicesTest.php
++++ b/src/Tests/FileEntityServicesTest.php
+@@ -1,21 +1,24 @@
+ <?php
+ 
+-namespace Drupal\file_entity\Tests;
++namespace Drupal\Tests\file_entity\Functional;
+ 
+ use Drupal\Component\Serialization\Json;
++use Drupal\Core\Session\AccountInterface;
+ use Drupal\Core\Url;
+ use Drupal\field\Entity\FieldConfig;
+ use Drupal\field\Entity\FieldStorageConfig;
+ use Drupal\file\Entity\File;
+ use Drupal\node\Entity\Node;
+-use Drupal\rest\Tests\RESTTestBase;
++use Drupal\rest\Entity\RestResourceConfig;
++use GuzzleHttp\Exception\ClientException;
++use GuzzleHttp\RequestOptions;
+ 
+ /**
+  * Tests File entity REST services
+  *
+  * @group file_entity
+  */
+-class FileEntityServicesTest extends RESTTestBase {
++class FileEntityServicesTest extends FileEntityTestBase {
+ 
+   /**
+    * Modules to enable.
+@@ -25,22 +28,37 @@ class FileEntityServicesTest extends RESTTestBase {
+   public static $modules = array(
+     'node',
+     'hal',
+-    'rest',
+-    'file_entity'
++    'rest'
+   );
+ 
+   /**
+    * Tests that a file field is correctly handled with REST.
+    */
+   public function testFileFieldREST() {
+-    $this->enableService('entity:node', 'GET');
+ 
+-    // Create user and log in.
+-    $account = $this->drupalCreateUser(array(
++    $format = 'hal_json';
++
++    $resource = RestResourceConfig::create([
++      'id' => 'node',
++      'plugin_id' => 'entity:node',
++      'granularity' => 'resource',
++      'configuration' => [
++        'methods' => ['GET', 'POST'],
++        'formats' => [$format],
++        'authentication' => ['cookie'],
++      ],
++      'status' => TRUE,
++    ]);
++    $resource->save();
++    \Drupal::service('router.builder')->rebuildIfNeeded();
++
++    $this->drupalCreateContentType(['name' => 'resttest', 'type' => 'resttest']);
++
++    // Grant create access to anonymous role.
++    user_role_grant_permissions(AccountInterface::ANONYMOUS_ROLE, [
+       'access content',
+       'create resttest content',
+-    ));
+-    $this->drupalLogin($account);
++    ]);
+ 
+     // Add a file field to the resttest content type.
+     $file_field_storage = FieldStorageConfig::create(array(
+@@ -49,17 +67,17 @@ class FileEntityServicesTest extends RESTTestBase {
+       'field_name' => 'field_file',
+     ));
+     $file_field_storage->save();
+-    $file_field_instance = FieldConfig::create(array(
++    $file_field = FieldConfig::create(array(
+       'field_storage' => $file_field_storage,
+       'entity_type' => 'node',
+       'bundle' => 'resttest',
+     ));
+-    $file_field_instance->save();
++    $file_field->save();
+ 
+     // Create a file.
+     $file_uri = 'public://' . $this->randomMachineName() . '.txt';
+     file_put_contents($file_uri, 'This is some file contents');
+-    $file = File::create(array('uri' => $file_uri, 'status' => FILE_STATUS_PERMANENT, 'uid' => $account->id()));
++    $file = File::create(array('uri' => $file_uri, 'status' => FILE_STATUS_PERMANENT, 'uid' => 1));
+     $file->save();
+ 
+     // Create a node with a file.
+@@ -76,18 +94,26 @@ class FileEntityServicesTest extends RESTTestBase {
+     $node->save();
+ 
+     // GET node.
+-    $response_json = $this->httpRequest($node->urlInfo()->setRouteParameter('_format', $this->defaultFormat), 'GET', NULL);
+-    $this->assertResponse(200);
+-    $response_data = Json::decode($response_json);
++    $client = $this->getHttpClient();
++    $url = $node->toUrl()->setAbsolute(TRUE)->setRouteParameter('_format', $format);
++    $response = $client->request('GET', $url->toString());
++    $this->assertEquals(200, $response->getStatusCode());
++    $response_data = Json::decode((string) $response->getBody());
+ 
+     // Test that field_file refers to the file entity.
+     $normalized_field = $response_data['_embedded'][$this->getAbsoluteUrl('/rest/relation/node/resttest/field_file')];
+-    $this->assertEqual($normalized_field[0]['_links']['self']['href'], $file->urlInfo()->setAbsolute()->setRouteParameter('_format', $this->defaultFormat)->toString());
++    $this->assertEquals($file->toUrl()->setAbsolute()->setRouteParameter('_format', $format)->toString(), $normalized_field[0]['_links']['self']['href']);
++    $this->assertEquals('An attached file', $normalized_field[0]['description']);
+ 
+     // Remove the node.
+     $node->delete();
+-    $this->httpRequest($node->urlInfo()->setRouteParameter('_format', $this->defaultFormat), 'GET', NULL);
+-    $this->assertResponse(404);
++    try {
++      $client->request('GET', $url->toString());
++      $this->fail('Client exception not thrown');
++    }
++    catch (ClientException $e) {
++      $this->assertEquals(404, $e->getResponse()->getStatusCode());
++    }
+ 
+     // POST node to create new.
+     unset($response_data['nid']);
+@@ -101,14 +127,19 @@ class FileEntityServicesTest extends RESTTestBase {
+     unset($response_data['_embedded'][$this->getAbsoluteUrl('/rest/relation/node/resttest/revision_uid')]);
+ 
+     $serialized = Json::encode($response_data);
+-    $this->enableService('entity:node', 'POST');
+-    $this->httpRequest(Url::fromRoute('rest.entity.node.POST')->setRouteParameter('_format', $this->defaultFormat), 'POST', $serialized);
+-    $this->assertResponse(201);
++
++    $request_options = [];
++    $request_options[RequestOptions::BODY] = $serialized;
++    $request_options[RequestOptions::HEADERS]['Content-Type'] = 'application/hal+json';
++
++    $post_url = Url::fromUri('base:/node')->setOption('query', ['_format' => $format])->setAbsolute();
++    $response = $client->request('POST', $post_url->toString(), $request_options);
++    $this->assertEquals(201, $response->getStatusCode());
+ 
+     // Test that the new node has a valid file field.
+     $nodes = Node::loadMultiple();
+     $last_node = array_pop($nodes);
+-    $this->assertEqual($last_node->get('field_file')->target_id, $file->id());
++    $this->assertEquals($last_node->get('field_file')->target_id, $file->id());
+   }
+ 
+ }
+diff --git a/src/Tests/FileEntitySettingsTest.php b/src/Tests/FileEntitySettingsTest.php
+deleted file mode 100644
+index 6e7a7ae..0000000
+--- a/src/Tests/FileEntitySettingsTest.php
++++ /dev/null
+@@ -1,60 +0,0 @@
+-<?php
+-
+-namespace Drupal\file_entity\Tests;
+-
+-/**
+- * Tests file entity settings.
+- *
+- * @group file_entity
+- */
+-class FileEntitySettingsTest extends FileEntityTestBase {
+-
+-  /**
+-   * Modules to install.
+-   *
+-   * @var array
+-   */
+-  public static $modules = ['field_ui'];
+-
+-  /**
+-   * Tests file image formatter settings.
+-   */
+-  public function testFileImageFormatterSettings() {
+-    $account = $this->drupalCreateUser([
+-      'administer file display'
+-    ]);
+-    $this->drupalLogin($account);
+-    $this->drupalGet('admin/structure/file-types/manage/image/edit/display');
+-    $this->assertText('Field used for the image title attribute: field_image_title_text', 'Settings summary for title field is displayed correctly.');
+-    $this->assertText('Field used for the image title attribute: field_image_title_text', 'Settings summary for alt field is displayed correctly.');
+-
+-    $this->drupalPostAjaxForm(NULL, [], 'uri_settings_edit');
+-    $this->assertRaw('fields[uri][settings_edit_form][settings][title]', 'Field for setting title field is available.');
+-    $this->assertRaw('fields[uri][settings_edit_form][settings][alt]', 'Field for setting alt field is available.');
+-
+-    $edit = [
+-      'fields[uri][settings_edit_form][settings][title]' => '_none',
+-      'fields[uri][settings_edit_form][settings][alt]' => '_none',
+-    ];
+-    $this->drupalPostAjaxForm(NULL, $edit, ['uri_plugin_settings_update' => t('Update')]);
+-    $this->drupalPostForm(NULL, [], t('Save'));
+-    $this->assertText('Title attribute is hidden.');
+-    $this->assertText('Alt attribute is hidden.');
+-
+-    $this->drupalLogin($this->drupalCreateUser(['create files']));
+-    $test_file = $this->getTestFile('image');
+-    $this->drupalGet('file/add');
+-    $edit = [
+-      'files[upload]' => $this->container->get('file_system')->realpath($test_file->uri),
+-    ];
+-    $this->drupalPostForm(NULL, $edit, t('Next'));
+-    $this->drupalPostForm(NULL, [], t('Next'));
+-    $edit = [
+-      'field_image_alt_text[0][value]' => 'Alt text',
+-      'field_image_title_text[0][value]' => 'Title text',
+-    ];
+-    $this->drupalPostForm(NULL, $edit, t('Save'));
+-    $this->assertNoRaw('alt="Alt text"', 'Alt attribute is hidden.');
+-    $this->assertNoRaw('title="Title text"', 'Title attribute is hidden.');
+-  }
+-}
+diff --git a/src/Tests/FileEntityTestBase.php b/src/Tests/FileEntityTestBase.php
+deleted file mode 100644
+index 949d6f7..0000000
+--- a/src/Tests/FileEntityTestBase.php
++++ /dev/null
+@@ -1,201 +0,0 @@
+-<?php
+-
+-namespace Drupal\file_entity\Tests;
+-
+-use Drupal\Core\Config\Config;
+-use Drupal\file\Entity\File;
+-use Drupal\file\FileInterface;
+-use Drupal\file_entity\Entity\FileType;
+-use Drupal\file_entity\Entity\FileEntity;
+-use Drupal\simpletest\WebTestBase;
+-
+-/**
+- * Base class for file entity tests.
+- */
+-abstract class FileEntityTestBase extends WebTestBase {
+-
+-  /**
+-   * @var array
+-   */
+-  public static $modules = array('file_entity');
+-
+-  /**
+-   * File entity config.
+-   *
+-   * @var Config
+-   */
+-  protected $config;
+-
+-  /**
+-   * @var FileInterface[][]
+-   */
+-  protected $files = array();
+-
+-  /**
+-   * {@inheritdoc}
+-   */
+-  protected function setUp() {
+-    parent::setUp();
+-    $this->config = $this->config('file_entity.settings');
+-  }
+-
+-  /**
+-   * Set up some sample text and image files.
+-   */
+-  protected function setUpFiles($defaults = array()) {
+-    // Populate defaults array.
+-    $defaults += array(
+-      'uid' => 1,
+-      'status' => FILE_STATUS_PERMANENT,
+-    );
+-
+-    $types = array('text', 'image');
+-    foreach ($types as $type) {
+-      foreach ($this->drupalGetTestFiles($type) as $file) {
+-        foreach ($defaults as $key => $value) {
+-          $file->$key = $value;
+-        }
+-        $file = File::create((array) $file);
+-        $file->save();
+-        $this->files[$type][] = $file;
+-      }
+-    }
+-  }
+-
+-  /**
+-   * Creates a test file type.
+-   *
+-   * @param array $overrides
+-   *   (optional) An array of values indexed by FileType property names.
+-   *
+-   * @return \Drupal\Core\Entity\EntityInterface|static
+-   */
+-  protected function createFileType($type = array()) {
+-    $type += array(
+-      'id' => strtolower($this->randomMachineName()),
+-      'label' => 'Test',
+-      'mimetypes' => array('image/jpeg', 'image/gif', 'image/png', 'image/tiff'),
+-    );
+-    $entity = FileType::create($type);
+-    $entity->save();
+-    return $entity;
+-  }
+-
+-  /**
+-   * Helper for testFileEntityPrivateDownloadAccess() test.
+-   *
+-   * Defines several cases for accesing private files.
+-   *
+-   * @return array
+-   *   Array of associative arrays, each one having the next keys:
+-   *   - "message" string with the assertion message.
+-   *   - "permissions" array of permissions or NULL for anonymous user.
+-   *   - "expect" expected HTTP response code.
+-   *   - "owner" Optional boolean indicating if the user is a file owner.
+-   */
+-  protected function getPrivateDownloadAccessCases() {
+-    return array(
+-      array(
+-        'message' => "File owners cannot download their own files unless they are granted the 'view own private files' permission.",
+-        'permissions' => array(),
+-        'expect' => 403,
+-        'owner' => TRUE,
+-      ),
+-      array(
+-        'message' => "File owners can download their own files as they have been granted the 'view own private files' permission.",
+-        'permissions' => array('view own private files'),
+-        'expect' => 200,
+-        'owner' => TRUE,
+-      ),
+-      array(
+-        'message' => "Anonymous users cannot download private files.",
+-        'permissions' => NULL,
+-        'expect' => 403,
+-      ),
+-      array(
+-        'message' => "Authenticated users cannot download each other's private files.",
+-        'permissions' => array(),
+-        'expect' => 403,
+-      ),
+-      array(
+-        'message' => "Users who can view public files are not able to download private files.",
+-        'permissions' => array('view files'),
+-        'expect' => 403,
+-      ),
+-      array(
+-        'message' => "Users who bypass file access can download any file.",
+-        'permissions' => array('bypass file access'),
+-        'expect' => 200,
+-      ),
+-    );
+-  }
+-
+-  /**
+-   * Retrieves a sample file of the specified type.
+-   */
+-  function getTestFile($type_name, $size = NULL) {
+-    // Get a file to upload.
+-    $file = current($this->drupalGetTestFiles($type_name, $size));
+-
+-    // Add a filesize property to files as would be read by file_load().
+-    $file->filesize = filesize($file->uri);
+-
+-    return $file;
+-  }
+-
+-  /**
+-   * Get a file from the database based on its filename.
+-   *
+-   * @param $filename
+-   *   A file filename, usually generated by $this->randomMachineName().
+-   * @param $reset
+-   *   (optional) Whether to reset the internal file_load() cache.
+-   *
+-   * @return \Drupal\file\FileInterface
+-   *   A file object matching $filename.
+-   */
+-  function getFileByFilename($filename, $reset = FALSE) {
+-    $files = entity_load_multiple_by_properties('file', array('filename' => $filename), $reset);
+-    // Load the first file returned from the database.
+-    $returned_file = reset($files);
+-    return $returned_file;
+-  }
+-
+-  /**
+-   * Create a file in the database and on disk, asserting its success.
+-   *
+-   * @param array $values
+-   *   (optional) Values of the new file. Default values are supplied.
+-   *
+-   * @return FileEntity
+-   *   The newly created file.
+-   */
+-  protected function createFileEntity($values = array()) {
+-    // Populate defaults array.
+-    $values += array(
+-      // Prefix filename with non-latin characters to ensure that all
+-      // file-related tests work with international filenames.
+-      'filename' => 'Файл для тестирования ' . $this->randomMachineName(),
+-      'filemime' => 'text/plain',
+-      'uid' => 1,
+-      'created' => REQUEST_TIME,
+-      'status' => FILE_STATUS_PERMANENT,
+-      'contents' => "file_put_contents() doesn't seem to appreciate empty strings so let's put in some data.",
+-      'scheme' => file_default_scheme(),
+-    );
+-
+-    $values['uri'] = $values['scheme'] . '://' . $values['filename'];
+-
+-    file_put_contents($values['uri'], $values['contents']);
+-    $this->assertTrue(is_file($values['uri']), t('The test file exists on the disk.'), 'Create test file');
+-
+-    $file = FileEntity::create($values);
+-
+-    // Save the file and assert success.
+-    $result = $file->save();
+-    $this->assertIdentical(SAVED_NEW, $result, t('The file was added to the database.'), 'Create test file');
+-
+-    return $file;
+-  }
+-
+-}
+diff --git a/src/Tests/FileEntityTokenTest.php b/src/Tests/FileEntityTokenTest.php
+index abb277a..6a4e1da 100644
+--- a/src/Tests/FileEntityTokenTest.php
++++ b/src/Tests/FileEntityTokenTest.php
+@@ -1,6 +1,6 @@
+ <?php
+ 
+-namespace Drupal\file_entity\Tests;
++namespace Drupal\Tests\file_entity\Functional;
+ 
+ use Drupal\Core\Render\BubbleableMetadata;
+ 
+diff --git a/src/Tests/FileEntityTypeTest.php b/src/Tests/FileEntityTypeTest.php
+index e1e7815..8bb7e1f 100644
+--- a/src/Tests/FileEntityTypeTest.php
++++ b/src/Tests/FileEntityTypeTest.php
+@@ -1,10 +1,10 @@
+ <?php
+ 
+-namespace Drupal\file_entity\Tests;
++namespace Drupal\Tests\file_entity\Functional;
+ 
+-use Drupal\Component\Utility\Unicode;
+ use Drupal\field\Entity\FieldConfig;
+ use Drupal\field\Entity\FieldStorageConfig;
++use Drupal\file\FileInterface;
+ use Drupal\file_entity\Entity\FileType;
+ 
+ /**
+@@ -56,7 +56,7 @@ class FileEntityTypeTest extends FileEntityTestBase {
+     );
+ 
+     // Attach a text field to one of the file types.
+-    $field_name = Unicode::strtolower($this->randomMachineName());
++    $field_name = mb_strtolower($this->randomMachineName());
+     $field_storage = FieldStorageConfig::create(array(
+       'field_name' => $field_name,
+       'entity_type' => 'file',
+@@ -69,7 +69,7 @@ class FileEntityTypeTest extends FileEntityTestBase {
+       'bundle' => 'image2',
+     ));
+     $field_instance->save();
+-    entity_get_form_display('file', 'image2', 'default')
++    \Drupal::service('entity_display.repository')->getFormDisplay('file', 'image2')
+       ->setComponent($field_name, array(
+         'type' => 'text_textfield',
+       ))
+@@ -83,7 +83,7 @@ class FileEntityTypeTest extends FileEntityTestBase {
+     // Step 1: Upload file.
+     $file = reset($this->files['image']);
+     $edit = array();
+-    $edit['files[upload]'] = drupal_realpath($file->getFileUri());
++    $edit['files[upload]'] = \Drupal::service('file_system')->realpath($file->getFileUri());
+     $this->drupalPostForm('file/add', $edit, t('Next'));
+ 
+     // Step 2: Select file type candidate.
+@@ -109,7 +109,7 @@ class FileEntityTypeTest extends FileEntityTestBase {
+ 
+     // Check that the file exists in the database.
+     $file = $this->getFileByFilename($edit['filename[0][value]']);
+-    $this->assertTrue($file, t('File found in database.'));
++    $this->assertInstanceOf(FileInterface::class, $file, t('File found in database.'));
+ 
+     // Checks if configurable field exists in the database.
+     $this->assertTrue($file->hasField($field_name), 'Found configurable field in database');
+@@ -120,7 +120,7 @@ class FileEntityTypeTest extends FileEntityTestBase {
+    */
+   public function testTypeWithoutCandidates() {
+     // Attach a text field to the default image file type.
+-    $field_name = Unicode::strtolower($this->randomMachineName());
++    $field_name = mb_strtolower($this->randomMachineName());
+     $field_storage = FieldStorageConfig::create(array(
+       'field_name' => $field_name,
+       'entity_type' => 'file',
+@@ -133,7 +133,7 @@ class FileEntityTypeTest extends FileEntityTestBase {
+       'bundle' => 'image',
+     ));
+     $field_instance->save();
+-    entity_get_form_display('file', 'image', 'default')
++    \Drupal::entityTypeManager()->getStorage('entity_form_display')->load('file.image.default')
+       ->setComponent($field_name, array(
+       'type' => 'text_textfield',
+       ))
+@@ -146,7 +146,7 @@ class FileEntityTypeTest extends FileEntityTestBase {
+     // Step 1: Upload file.
+     $file = reset($this->files['image']);
+     $edit = array();
+-    $edit['files[upload]'] = drupal_realpath($file->getFileUri());
++    $edit['files[upload]'] = \Drupal::service('file_system')->realpath($file->getFileUri());
+     $this->drupalPostForm('file/add', $edit, t('Next'));
+ 
+     // Step 2: Scheme selection.
+@@ -163,7 +163,7 @@ class FileEntityTypeTest extends FileEntityTestBase {
+ 
+     // Check that the file exists in the database.
+     $file = $this->getFileByFilename($edit['filename[0][value]']);
+-    $this->assertTrue($file, t('File found in database.'));
++    $this->assertInstanceOf(FileInterface::class, $file, t('File found in database.'));
+ 
+     // Checks if configurable field exists in the database.
+     $this->assertTrue($file->hasField($field_name), 'Found configurable field in database');
+diff --git a/src/Tests/FileEntityUnitTest.php b/src/Tests/FileEntityUnitTest.php
+index cd6c5c3..ba67329 100644
+--- a/src/Tests/FileEntityUnitTest.php
++++ b/src/Tests/FileEntityUnitTest.php
+@@ -1,6 +1,6 @@
+ <?php
+ 
+-namespace Drupal\file_entity\Tests;
++namespace Drupal\Tests\file_entity\Functional;
+ 
+ use Drupal\file\Entity\File;
+ use Symfony\Component\HttpFoundation\File\MimeType\MimeTypeExtensionGuesser;
+@@ -8,6 +8,8 @@ use Symfony\Component\HttpFoundation\File\MimeType\MimeTypeExtensionGuesser;
+ /**
+  * Test basic file entity functionality.
+  *
++ * @todo Convert to Unit or Kernel test?
++ *
+  * @group file_entity
+  */
+ class FileEntityUnitTest extends FileEntityTestBase {
+@@ -78,8 +80,8 @@ class FileEntityUnitTest extends FileEntityTestBase {
+ 
+     // Test hook_file load.
+     // Clear the cache and load fresh files objects to test file_load behavior.
+-    \Drupal::entityManager()->getStorage('file')->resetCache();
+-    foreach (file_load_multiple(array_keys($files)) as $file) {
++    \Drupal::entityTypeManager()->getStorage('file')->resetCache();
++    foreach (File::loadMultiple(array_keys($files)) as $file) {
+       $this->assertTrue(
+         $file->hasMetadata('height'),
+         'Image dimensions retrieved on file load for an image file.'
+@@ -99,7 +101,7 @@ class FileEntityUnitTest extends FileEntityTestBase {
+         'Loaded image width is equal to saved image width.'
+       );
+     }
+-    foreach (file_load_multiple($text_fids) as $file) {
++    foreach (File::loadMultiple($text_fids) as $file) {
+       $this->assertFalse(
+         $file->hasMetadata('height'),
+         'No image height retrieved on file load for an text file.'
+@@ -129,7 +131,7 @@ class FileEntityUnitTest extends FileEntityTestBase {
+       'Image file width updated by file save.'
+     );
+     // Clear the cache and reload the file.
+-    \Drupal::entityManager()->getStorage('file')->resetCache();
++    \Drupal::entityTypeManager()->getStorage('file')->resetCache();
+     $file = File::load($file->id());
+     $this->assertEqual(
+       $file->getMetadata('height'),
+@@ -144,8 +146,7 @@ class FileEntityUnitTest extends FileEntityTestBase {
+ 
+     //Test hook_file_delete().
+     $file->delete();
+-    $this->assertFalse(
+-      db_query(
++    $this->assertEquals(0, \Drupal::database()->query(
+         'SELECT COUNT(*) FROM {file_metadata} WHERE fid = :fid',
+         array(':fid' => 'fid')
+       )->fetchField(),
+diff --git a/src/UploadValidatorsTrait.php b/src/UploadValidatorsTrait.php
+index 6646739..0eb9f41 100644
+--- a/src/UploadValidatorsTrait.php
++++ b/src/UploadValidatorsTrait.php
+@@ -3,6 +3,7 @@
+ namespace Drupal\file_entity;
+ 
+ use Drupal\Component\Utility\Bytes;
++use Drupal\Component\Utility\Environment;
+ 
+ /**
+  * Trait for validating form uploads.
+@@ -30,7 +31,7 @@ trait UploadValidatorsTrait {
+     }
+ 
+     // Cap the upload size according to the system or user defined limit.
+-    $max_filesize = file_upload_max_size();
++    $max_filesize = Environment::getUploadMaxSize();
+     $user_max_filesize = Bytes::toInt(\Drupal::config('file_entity.settings')
+       ->get('max_filesize'));
+ 
+diff --git a/tests/src/Functional/FileEntityCacheTagsTest.php b/tests/src/Functional/FileEntityCacheTagsTest.php
+index 992f2a0..366db9e 100644
+--- a/tests/src/Functional/FileEntityCacheTagsTest.php
++++ b/tests/src/Functional/FileEntityCacheTagsTest.php
+@@ -2,7 +2,7 @@
+ 
+ namespace Drupal\Tests\file_entity\Functional;
+ 
+-use Drupal\Component\Utility\SafeMarkup;
++use Drupal\Component\Render\FormattableMarkup;
+ use Drupal\Core\Field\FieldStorageDefinitionInterface;
+ use Drupal\Core\Url;
+ use Drupal\field\Entity\FieldConfig;
+@@ -151,7 +151,7 @@ class FileEntityCacheTagsTest extends FileEntityTestBase {
+    */
+   protected function verifyPageCache(Url $url, $hit_or_miss, $tags = FALSE) {
+     $this->drupalGet($url);
+-    $message = SafeMarkup::format('Page cache @hit_or_miss for %path.', array('@hit_or_miss' => $hit_or_miss, '%path' => $url->toString()));
++    $message = new FormattableMarkup('Page cache @hit_or_miss for %path.', array('@hit_or_miss' => $hit_or_miss, '%path' => $url->toString()));
+     $this->assertEqual($this->drupalGetHeader('X-Drupal-Cache'), $hit_or_miss, $message);
+     if ($hit_or_miss === 'HIT' && is_array($tags)) {
+       $absolute_url = $url->setAbsolute()->toString();
+diff --git a/tests/src/Functional/FileEntityTestBase.php b/tests/src/Functional/FileEntityTestBase.php
+index c9791ae..19a4068 100644
+--- a/tests/src/Functional/FileEntityTestBase.php
++++ b/tests/src/Functional/FileEntityTestBase.php
+@@ -8,12 +8,15 @@ use Drupal\file\FileInterface;
+ use Drupal\file_entity\Entity\FileType;
+ use Drupal\file_entity\Entity\FileEntity;
+ use Drupal\Tests\BrowserTestBase;
++use Drupal\Tests\TestFileCreationTrait;
+ 
+ /**
+  * Base class for file entity tests.
+  */
+ abstract class FileEntityTestBase extends BrowserTestBase {
+ 
++  use TestFileCreationTrait;
++
+   /**
+    * @var array
+    */
+@@ -31,6 +34,11 @@ abstract class FileEntityTestBase extends BrowserTestBase {
+    */
+   protected $files = array();
+ 
++  /**
++   * {@inheritdoc}
++   */
++  protected $defaultTheme = 'stark';
++
+   /**
+    * {@inheritdoc}
+    */
+@@ -51,7 +59,7 @@ abstract class FileEntityTestBase extends BrowserTestBase {
+ 
+     $types = array('text', 'image');
+     foreach ($types as $type) {
+-      foreach ($this->drupalGetTestFiles($type) as $file) {
++      foreach ($this->getTestFiles($type) as $file) {
+         foreach ($defaults as $key => $value) {
+           $file->$key = $value;
+         }
+@@ -135,7 +143,7 @@ abstract class FileEntityTestBase extends BrowserTestBase {
+    */
+   function getTestFile($type_name, $size = NULL) {
+     // Get a file to upload.
+-    $file = current($this->drupalGetTestFiles($type_name, $size));
++    $file = current($this->getTestFiles($type_name, $size));
+ 
+     // Add a filesize property to files as would be read by file_load().
+     $file->filesize = filesize($file->uri);
+@@ -155,7 +163,7 @@ abstract class FileEntityTestBase extends BrowserTestBase {
+    *   A file object matching $filename.
+    */
+   function getFileByFilename($filename, $reset = FALSE) {
+-    $files = entity_load_multiple_by_properties('file', array('filename' => $filename), $reset);
++    $files = \Drupal::entityTypeManager()->getStorage('file')->loadByProperties(['filename' => $filename], $reset);
+     // Load the first file returned from the database.
+     $returned_file = reset($files);
+     return $returned_file;
+@@ -178,10 +186,9 @@ abstract class FileEntityTestBase extends BrowserTestBase {
+       'filename' => 'Файл для тестирования ' . $this->randomMachineName(),
+       'filemime' => 'text/plain',
+       'uid' => 1,
+-      'created' => REQUEST_TIME,
+       'status' => FILE_STATUS_PERMANENT,
+       'contents' => "file_put_contents() doesn't seem to appreciate empty strings so let's put in some data.",
+-      'scheme' => file_default_scheme(),
++      'scheme' => \Drupal::config('system.file')->get('default_scheme'),
+     );
+ 
+     $values['uri'] = $values['scheme'] . '://' . $values['filename'];
+diff --git a/tests/src/Kernel/FileEntityNormalizerTest.php b/tests/src/Kernel/FileEntityNormalizerTest.php
+index f3b7675..9aee743 100644
+--- a/tests/src/Kernel/FileEntityNormalizerTest.php
++++ b/tests/src/Kernel/FileEntityNormalizerTest.php
+@@ -17,7 +17,7 @@ use Symfony\Component\Routing\RouteCollection;
+ /**
+  * Tests the File entity normalizer.
+  *
+- * @see Drupal\file_entity\Normalizer\FileEntityNormalizer
++ * @see \Drupal\file_entity\Normalizer\FileEntityNormalizer
+  *
+  * @group file_entity
+  */
+@@ -107,7 +107,7 @@ class FileEntityNormalizerTest extends KernelTestBase {
+     $deserialized = $this->container->get('serializer')->deserialize($serialized, 'Drupal\node\Entity\Node', 'hal_json');
+ 
+     // Compare.
+-    $this->assertEqual($node->toArray()['field_file'], $deserialized->toArray()['field_file'], "File field persists.");
++    $this->assertEquals($node->toArray()['field_file'], $deserialized->toArray()['field_file'], "File field persists.");
+   }
+ 
+ 
+@@ -134,9 +134,9 @@ class FileEntityNormalizerTest extends KernelTestBase {
+ 
+       // Remove file.
+       $file->delete();
+-      $this->container->get('entity.manager')->getStorage('file')->resetCache();
++      $this->container->get('entity_type.manager')->getStorage('file')->resetCache();
+       $this->assertFalse(file_exists($file_obj->uri), "Deleted file $file_obj->uri from disk");
+-      $this->assertFalse(File::load($file->id()), "Deleted file {$file->id()} entity");
++      $this->assertNull(File::load($file->id()), "Deleted file {$file->id()} entity");
+ 
+       // Deserialize again.
+       $deserialized = $this->container->get('serializer')->deserialize($serialized, 'Drupal\file\Entity\File', 'hal_json');
+@@ -150,10 +150,10 @@ class FileEntityNormalizerTest extends KernelTestBase {
+ 
+       // Assert file is equal.
+       foreach (array('filename', 'uri', 'filemime', 'filesize', 'type') as $property) {
+-        $this->assertEqual($file->get($property)->value, $last_file->get($property)->value);
++        $this->assertEquals($file->get($property)->value, $last_file->get($property)->value);
+       }
+-      $this->assertEqual($file->get('type')->target_id, $last_file->get('type')->target_id);
+-      $this->assertEqual($file_contents, file_get_contents($last_file->getFileUri()), 'File contents are equal');
++      $this->assertEquals($file->get('type')->target_id, $last_file->get('type')->target_id);
++      $this->assertEquals($file_contents, file_get_contents($last_file->getFileUri()), 'File contents are equal');
+     }
+   }
+ 
+@@ -208,7 +208,7 @@ class FileEntityNormalizerTest extends KernelTestBase {
+     $deserialized = $this->container->get('serializer')->deserialize($serialized, 'Drupal\node\Entity\Node', 'hal_json');
+ 
+     // Compare.
+-    $this->assertEqual($node->toArray()['field_image'], $deserialized->toArray()['field_image'], "Image field persists.");
++    $this->assertEquals($node->toArray()['field_image'], $deserialized->toArray()['field_image'], "Image field persists.");
+   }
+ 
+   /**
+@@ -219,11 +219,12 @@ class FileEntityNormalizerTest extends KernelTestBase {
+    *   and 'name' properties corresponding to the test files.
+    */
+   protected function getTestFiles() {
+-    $original = drupal_get_path('module', 'simpletest') . '/files';
+-    $files = file_scan_directory($original, '/(html|image|javascript|php|sql)-.*/');
++    /** @var \Drupal\Core\File\FileSystemInterface $file_system */
++    $file_system = \Drupal::service('file_system');
++    $files = $file_system->scanDirectory(DRUPAL_ROOT . '/core/tests/fixtures/files/', '/(html|image|javascript|php|sql)-.*/');
+     foreach ($files as $file) {
+       unset($files[$file->uri]);
+-      $new_path = file_unmanaged_copy($file->uri, PublicStream::basePath());
++      $new_path = $file_system->copy($file->uri, PublicStream::basePath());
+       $file->uri = $new_path;
+       $files[$new_path] = $file;
+     }

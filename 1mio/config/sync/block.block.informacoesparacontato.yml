@@ -1,0 +1,25 @@
+uuid: 9cff97fa-6cb8-47f3-a272-6186db0e562c
+langcode: pt-br
+status: true
+dependencies:
+  content:
+    - 'block_content:basic:18c812bb-6d65-432e-ac57-d67418cb4259'
+  module:
+    - block_content
+  theme:
+    - umio
+id: informacoesparacontato
+theme: umio
+region: footer_right
+weight: -6
+provider: null
+plugin: 'block_content:18c812bb-6d65-432e-ac57-d67418cb4259'
+settings:
+  id: 'block_content:18c812bb-6d65-432e-ac57-d67418cb4259'
+  label: 'Informações para contato'
+  label_display: visible
+  provider: block_content
+  status: true
+  info: ''
+  view_mode: full
+visibility: {  }

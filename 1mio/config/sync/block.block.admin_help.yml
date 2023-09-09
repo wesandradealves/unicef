@@ -1,0 +1,22 @@
+uuid: e45e08f1-7643-4e07-b3cb-38d9d543c77d
+langcode: pt-br
+status: true
+dependencies:
+  module:
+    - help
+  theme:
+    - admin
+_core:
+  default_config_hash: 8I8iACSa0sKO3k3jlvUG1ge52rfcKX7USJAQYnzuBgg
+id: admin_help
+theme: admin
+region: help
+weight: -30
+provider: null
+plugin: help_block
+settings:
+  id: help_block
+  label: Ajuda
+  label_display: '0'
+  provider: help
+visibility: {  }

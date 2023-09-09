@@ -1,0 +1,48 @@
+{#
+/**
+ * @file
+ * Theme override for an 'input' #type form element.
+ *
+ * Available variables:
+ * - attributes: A list of HTML attributes for the input element.
+ * - children: Optional additional rendered elements.
+ *
+ * @see template_preprocess_input()
+ * @see claro_preprocess_input()
+ */
+#}
+{% set default_inputs = [
+    'field-plugin-settings-edit'
+  ]
+%}
+{% apply spaceless %}
+{% if autocomplete_message %}
+  <div class="claro-autocomplete">
+    <input{{ attributes }}/>
+    <div class="claro-autocomplete__message hidden" data-drupal-selector="autocomplete-message">{{ autocomplete_message }}</div>
+  </div>
+  {{ children }}
+{% else %}
+  {% set default_input = FALSE %}
+  {% for class in default_inputs %}
+    {% if attributes.hasClass(class) %}
+      {% set default_input = true %}
+    {% endif %}
+  {% endfor %}
+  {% if default_input %}
+    <input{{ attributes }}/>{{ children }}
+  {% elseif attributes.hasClass('form-submit')  %}
+    {% set classes = [
+      'btn',
+      attributes['data-drupal-selector'] == 'edit-preview' ? 'btn-outline-primary' : 'btn-primary'
+    ]%}
+    {% set remove_classes = [
+      'button',
+      'button--primary'
+    ]%}
+    <input{{ attributes.addClass(classes).removeClass(remove_classes) }}/>{{ children }}
+  {% else %}
+    <input{{ attributes.addClass('form-control') }}/>{{ children }}
+  {% endif %}
+{% endif %}
+{% endapply %}

@@ -1,0 +1,10 @@
+uuid: 35c51dcc-5bea-46c1-910e-fe7fa4926e6f
+langcode: pt-br
+status: true
+dependencies:
+  module:
+    - user
+id: user.talent_acquisition_profile
+label: 'Perfil TA'
+targetEntityType: user
+cache: true

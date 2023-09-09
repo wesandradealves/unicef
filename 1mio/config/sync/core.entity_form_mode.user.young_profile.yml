@@ -1,0 +1,10 @@
+uuid: bcac0154-8d80-4550-996f-fc4e656bac9b
+langcode: pt-br
+status: true
+dependencies:
+  module:
+    - user
+id: user.young_profile
+label: 'Perfil Jovem'
+targetEntityType: user
+cache: true

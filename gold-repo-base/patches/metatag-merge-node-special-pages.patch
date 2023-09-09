@@ -1,0 +1,180 @@
+diff --git a/metatag.module b/metatag.module
+index e2bb23a..8159f02 100644
+--- a/metatag.module
++++ b/metatag.module
+@@ -539,36 +539,32 @@ function metatag_get_default_tags($entity = NULL)
+     return NULL;
+   }
+
+-  // Check if this is a special page.
+-  $special_metatags = $metatag_manager->getSpecialMetatags();
+-  if (isset($special_metatags)) {
+-    $metatags->overwriteTags($special_metatags->get('tags'));
++  // Next check if there is this page is an entity that has meta tags.
++  if (!$entity) {
++    $entity = metatag_get_route_entity();
+   }
+
+-  // Next check if there is this page is an entity that has meta tags.
+-  else {
+-    if (!$entity) {
+-      $entity = metatag_get_route_entity();
++  if (!empty($entity) && $entity instanceof ContentEntityInterface) {
++    $entity_metatags = $global_metatag_manager->load($entity->getEntityTypeId());
++    if ($entity_metatags != NULL) {
++      // Merge with global defaults.
++      $metatags->overwriteTags($entity_metatags->get('tags'));
+     }
+
+-    if (!empty($entity) && $entity instanceof ContentEntityInterface) {
+-      /** @var \Drupal\metatag\Entity\MetatagDefaults|null $entity_metatags */
+-      $entity_metatags = $global_metatag_manager->load($entity->getEntityTypeId());
+-      if ($entity_metatags != NULL && $entity_metatags->status()) {
+-        // Merge with global defaults.
+-        $metatags->overwriteTags($entity_metatags->get('tags'));
+-      }
+-
+-      // Finally, check if bundle overrides should be added.
+-      /** @var \Drupal\metatag\Entity\MetatagDefaults|null $bundle_metatags */
+-      $bundle_metatags = $global_metatag_manager->load($entity->getEntityTypeId() . '__' . $entity->bundle());
+-      if ($bundle_metatags != NULL && $bundle_metatags->status()) {
+-        // Merge with existing defaults.
+-        $metatags->overwriteTags($bundle_metatags->get('tags'));
+-      }
++    // Finally, check if bundle overrides should be added.
++    $bundle_metatags = $global_metatag_manager->load($entity->getEntityTypeId() . '__' . $entity->bundle());
++    if ($bundle_metatags != NULL) {
++      // Merge with existing defaults.
++      $metatags->overwriteTags($bundle_metatags->get('tags'));
+     }
+   }
+
++  // Check if this is a special page.
++  $special_metatags = \Drupal::service('metatag.manager')->getSpecialMetatags($entity);
++  if (isset($special_metatags)) {
++    $metatags->overwriteTags($special_metatags->get('tags'));
++  }
++
+   $tags = $metatags->get('tags');
+   if ($current_language) {
+     $language_manager->setConfigOverrideLanguage($current_language);
+diff --git a/src/MetatagManager.php b/src/MetatagManager.php
+index 941a486..0f2eb05 100644
+--- a/src/MetatagManager.php
++++ b/src/MetatagManager.php
+@@ -4,6 +4,7 @@ namespace Drupal\metatag;
+
+ use Drupal\Component\Render\PlainTextOutput;
+ use Drupal\Core\Entity\ContentEntityInterface;
++use Drupal\Core\Entity\EntityInterface;
+ use Drupal\Core\Entity\EntityTypeManagerInterface;
+ use Drupal\Core\Language\LanguageInterface;
+ use Drupal\Core\Logger\LoggerChannelFactoryInterface;
+@@ -365,31 +365,30 @@ class MetatagManager implements MetatagManagerInterface {
+       return;
+     }
+
+-    // Check if this is a special page.
+-    $special_metatags = $this->getSpecialMetatags();
++    // Next check if there is this page is an entity that has meta tags.
++    // @todo Think about using other defaults, e.g. views. Maybe use plugins?
+
++    if (is_null($entity)) {
++      $entity = metatag_get_route_entity();
++    }
++
++    if (!empty($entity)) {
++      // Get default metatags for a given entity.
++      $entity_defaults = $this->getEntityDefaultMetatags($entity);
++      if ($entity_defaults != NULL) {
++        $metatags->set('tags', array_merge($metatags->get('tags'), $entity_defaults));
++      }
++    }
++    // Check if this is a special page.
++    $special_metatags = $this->getSpecialMetatags($entity);
+     // Merge with all globals defaults.
+     if ($special_metatags) {
+       $metatags->set('tags', array_merge($metatags->get('tags'), $special_metatags->get('tags')));
+     }
+
+-    // Next check if there is this page is an entity that has meta tags.
+-    // @todo Think about using other defaults, e.g. views. Maybe use plugins?
+-    else {
+-      if (is_null($entity)) {
+-        $entity = metatag_get_route_entity();
+-      }
++    $tags = $metatags->get('tags');
+
+-      if (!empty($entity)) {
+-        // Get default meta tags for a given entity.
+-        $entity_defaults = $this->getEntityDefaultMetatags($entity);
+-        if ($entity_defaults != NULL) {
+-          $metatags->set('tags', array_merge($metatags->get('tags'), $entity_defaults));
+-        }
+-      }
+-    }
+-
+-    return $metatags->get('tags');
++    return $tags;
+   }
+
+   /**
+@@ -404,30 +403,45 @@ class MetatagManager implements MetatagManagerInterface {
+   }
+
+   /**
+-   * Returns special meta tags.
++   * Return metatags for special route or page.
+    *
+-   * @return \Drupal\metatag\Entity\MetatagDefaults|null
+-   *   The defaults for this page, if it's a special page.
++   * @param \Drupal\Core\Entity\EntityInterface|null $entity
++   *   Optional entity to check as special route or page.
++   *
++   * @return \Drupal\Core\Entity\EntityInterface|null
++   *   The metatag defaults for this special route or page.
+    */
+-  public function getSpecialMetatags() {
+-    $metatags = NULL;
++  public function getSpecialMetatags(EntityInterface $entity = NULL) {
+
+     if (\Drupal::service('path.matcher')->isFrontPage()) {
+-      $metatags = $this->metatagDefaults->load('front');
++      return $this->metatagDefaults->load('front');
+     }
+-    elseif (\Drupal::service('current_route_match')->getRouteName() == 'system.403') {
+-      $metatags = $this->metatagDefaults->load('403');
++    if (\Drupal::service('current_route_match')->getRouteName() == 'system.403') {
++      return $this->metatagDefaults->load('403');
+     }
+-    elseif (\Drupal::service('current_route_match')->getRouteName() == 'system.404') {
+-      $metatags = $this->metatagDefaults->load('404');
++    if (\Drupal::service('current_route_match')->getRouteName() == 'system.404') {
++      return $this->metatagDefaults->load('404');
+     }
+
+-    if ($metatags && !$metatags->status()) {
+-      // Do not return disabled special metatags.
++    if (!$entity || !($entity instanceof ContentEntityInterface) || $entity->isNew()) {
+       return NULL;
+     }
+
+-    return $metatags;
++    $entity_url = base_path() . $entity->toUrl('canonical', ['absolute' => TRUE])->getInternalPath();
++    $system_config = \Drupal::configFactory()
++      ->get('system.site');
++
++    if ($system_config->get('page.front') === $entity_url) {
++      return $this->metatagDefaults->load('front');
++    }
++    if ($system_config->get('page.403') === $entity_url) {
++      return $this->metatagDefaults->load('403');
++    }
++    if ($system_config->get('page.404') === $entity_url) {
++      return $this->metatagDefaults->load('403');
++    }
++
++    return NULL;
+   }
+
+   /**

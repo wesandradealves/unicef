@@ -1,0 +1,19 @@
+uuid: bd9c6db4-450c-4534-8f2f-a9f69a5061f1
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_company_values_statement
+    - node.type.company
+id: node.company.field_company_values_statement
+field_name: field_company_values_statement
+entity_type: node
+bundle: company
+label: 'Valores da Empresa'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string_long

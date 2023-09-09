@@ -1,0 +1,22 @@
+uuid: 6d301861-9565-42f1-b43d-ba36b08b9620
+langcode: pt-br
+status: true
+dependencies:
+  module:
+    - node
+id: path_vacancy
+label: Vagas
+type: 'canonical_entities:node'
+pattern: '/vagas/[node:nid]'
+selection_criteria:
+  df010a69-7803-4086-a8cb-e00d84787aed:
+    id: node_type
+    negate: false
+    uuid: df010a69-7803-4086-a8cb-e00d84787aed
+    context_mapping:
+      node: node
+    bundles:
+      vacancy: vacancy
+selection_logic: and
+weight: -5
+relationships: {  }

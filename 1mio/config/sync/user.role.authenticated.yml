@@ -1,0 +1,32 @@
+uuid: 95c8e254-a1df-4678-97f2-bc9835bb0d6f
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - filter.format.basic_html
+  module:
+    - comment
+    - comment_delete
+    - contact
+    - eu_cookie_compliance
+    - filter
+    - shortcut
+    - system
+_core:
+  default_config_hash: btW6TFHajhy7Eo6YUvdFiPh4TcPggo8GBXYctjV6zag
+id: authenticated
+label: 'Usuário autenticado'
+weight: 1
+is_admin: false
+permissions:
+  - 'access comments'
+  - 'access content'
+  - 'access shortcuts'
+  - 'access site-wide contact form'
+  - 'access user profiles'
+  - 'delete comment replies'
+  - 'delete own comment'
+  - 'delete own comment anytime'
+  - 'display eu cookie compliance popup'
+  - 'skip comment approval'
+  - 'use text format basic_html'

@@ -1,0 +1,84 @@
+.view-id-partner_cities {
+
+  @include media-breakpoint-up(sm) {
+    @include make-col(10);
+    @include make-col-offset(1);
+  }
+
+  @include media-breakpoint-up(xl) {
+    @include make-col(6);
+    @include make-col-offset(3);
+  }
+
+  .view-filters {
+    margin: 30px 0 20px;
+  }
+
+  #views-exposed-form-partner-cities-default {
+    .form--inline {
+      display: flex;
+      align-items: flex-end;
+      @include media-breakpoint-down(md) {
+        display: block;
+        width: 100%;
+      }
+      .form-type-select {
+        width: 100%;
+        @include media-breakpoint-up(md) {
+          width: 50%;
+        }
+        .form-select {
+          font-weight: 700;
+          font-size: 1rem;
+          color: $gray-primary-25;
+          border-radius: 35px;
+        }
+      }
+      .form-submit {
+        &.btn {
+          height: 38px;
+        }
+      }
+    }
+  }
+
+  .views-view-table {
+    width: 100%;
+    margin-bottom: 40px;
+    thead {
+      tr {
+        th {
+          font-size: 1.5rem;
+          font-weight: 700;
+          color: $blue-primary-main;
+        }
+      }
+    }
+
+    tbody  tr {
+      border-bottom: 1px solid $gray-primary-20;
+      td {
+        width: 50%;
+        @include media-breakpoint-up(md) {
+          width: initial;
+        }
+        padding: 10px 0;
+        font-weight: 700;
+        font-size: 1rem;
+        color: $gray-primary-75;
+      }
+    }
+  }
+
+  .pager {
+    .pager__items {
+      a {
+        text-decoration: none;
+        span {
+          color: $gray-primary-75;
+          font-size: 1.5rem;
+        }
+      }
+    }
+  }
+}

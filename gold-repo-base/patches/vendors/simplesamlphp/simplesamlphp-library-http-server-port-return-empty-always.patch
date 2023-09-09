@@ -1,0 +1,21 @@
+diff --git a/lib/SimpleSAML/Utils/HTTP.php b/lib/SimpleSAML/Utils/HTTP.php
+index 593ae97..cc260ab 100644
+--- a/lib/SimpleSAML/Utils/HTTP.php
++++ b/lib/SimpleSAML/Utils/HTTP.php
+@@ -98,16 +98,6 @@ class HTTP
+      */
+     private static function getServerPort()
+     {
+-        $port = (isset($_SERVER['SERVER_PORT'])) ? $_SERVER['SERVER_PORT'] : '80';
+-        if (self::getServerHTTPS()) {
+-            if ($port !== '443') {
+-                return ':'.$port;
+-            }
+-        } else {
+-            if ($port !== '80') {
+-                return ':'.$port;
+-            }
+-        }
+         return '';
+     }
+ 

@@ -1,0 +1,93 @@
+<?php
+
+/**
+ * @file
+ * Primary module hooks for 1MIO Comments module.
+ *
+ * @DCG
+ * This file is no longer required in Drupal 8.
+ * @see https://www.drupal.org/node/2217931
+ */
+
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Url;
+use Drupal\node\Entity\Node;
+
+/**
+ * Implements hook_form_alter().
+ */
+function umio_comments_form_alter(array &$form, FormStateInterface $form_state, string $form_id): void {
+  if ($form_id === 'comment_comment_delete_form') {
+    $form['#process'][] = '_umio_comments_delete_form_remove_options';
+  }
+
+  if ($form_id === 'comment_comment_form') {
+    $form['comment_body']['widget'][0]['value']['#placeholder'] = t('Leave a comment');
+    $form['actions']['submit']['#value'] = t('Send');
+    // Getting the current user id and comparing it to the post author.
+    $currentUserId = Drupal::currentUser()->id();
+    $routeMatch = \Drupal::routeMatch();
+
+    $object = $routeMatch->getParameter('node');
+    if (!$object) {
+      $object_id = $routeMatch->getParameter('pid');
+      if (!$object_id) {
+        $object = $routeMatch->getParameter('entity');
+      } else {
+        $object = \Drupal::entityTypeManager()->getStorage('comment')->load($object_id);
+      }
+    }
+    $authorId = $object->getOwnerId();
+    if ($object) {
+      if ($currentUserId == $authorId) {
+        $form['#attributes']['class'][] = 'own-form';
+        $form['#attached']['library'][] = 'umio_comments/umio_comments.comment_customization';
+      }
+    }
+  }
+}
+
+/**
+ * @param array $element
+ *   The element of the form.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   The state of the form.
+ */
+function _umio_comments_delete_form_remove_options(array &$element, FormStateInterface $form_state): array {
+  $element['#title'] = t('Are you sure you want to delete this comment?');
+  $element['description']['#markup'] = '';
+  $element['delete_operation']['#access'] = FALSE;
+  $element['delete_operation']['#required'] = FALSE;
+
+  return $element;
+}
+
+/**
+ * Implements template_preprocess_comment().
+ */
+function umio_comments_preprocess_comment(array &$variables): void {
+  /** @var \Drupal\comment\CommentInterface $comment */
+  $comment = $variables['elements']['#comment'];
+  $timeStamp = $comment->getCreatedTime();
+  $socialService = \Drupal::service('umio_user.social_service');
+  $variables['created'] = $socialService->getNodeCreatedField($timeStamp);
+
+  $nodeId = $comment->getCommentedEntityId();
+  $node = Node::load($nodeId);
+  $variables['current_user'] = \Drupal::service('current_user');
+  $variables['node_author'] = $node->getOwnerId();
+}
+
+/**
+ * Implements hook_preprocess_page().
+ */
+function umio_comments_preprocess_page(array &$variables): void {
+  $current_route = \Drupal::routeMatch();
+  $route_name = $current_route->getRouteName();
+
+  if ($route_name === 'comment.reply') {
+    $parameters = $current_route->getParameters();
+    $node = $parameters->get('entity');
+    $variables['back_anchor'] = Url::fromRoute('entity.node.canonical', ['node' => $node->id()]);
+  }
+}

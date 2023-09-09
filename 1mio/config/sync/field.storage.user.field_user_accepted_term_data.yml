@@ -1,0 +1,20 @@
+uuid: 983257c8-2233-4f15-aa63-6a89fc6f5040
+langcode: pt-br
+status: true
+dependencies:
+  module:
+    - datetime
+    - user
+id: user.field_user_accepted_term_data
+field_name: field_user_accepted_term_data
+entity_type: user
+type: datetime
+settings:
+  datetime_type: date
+module: datetime
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

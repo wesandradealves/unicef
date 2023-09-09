@@ -1,0 +1,25 @@
+uuid: 3951633f-24a5-444d-81bc-3c03f47fb046
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_company_main_office
+    - node.type.company
+id: node.company.field_company_main_office
+field_name: field_company_main_office
+entity_type: node
+bundle: company
+label: 'Empresa Matriz'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: views
+  handler_settings:
+    view:
+      view_name: view_company_mainoffice
+      display_name: entity_reference_1
+      arguments: {  }
+field_type: entity_reference

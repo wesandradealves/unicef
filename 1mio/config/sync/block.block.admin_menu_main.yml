@@ -1,0 +1,33 @@
+uuid: b45bd73e-bc07-46eb-9e98-91f77f6f3e82
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - system.menu.main
+  module:
+    - system
+    - user
+  theme:
+    - admin
+id: admin_menu_main
+theme: admin
+region: header
+weight: -5
+provider: null
+plugin: 'system_menu_block:main'
+settings:
+  id: 'system_menu_block:main'
+  label: 'Navegação principal'
+  label_display: '0'
+  provider: system
+  level: 1
+  depth: 0
+  expand_all_items: false
+visibility:
+  user_role:
+    id: user_role
+    negate: false
+    context_mapping:
+      user: '@user.current_user_context:current_user'
+    roles:
+      authenticated: authenticated

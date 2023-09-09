@@ -1,0 +1,145 @@
+#!/usr/bin/env bash
+echo "using travis dir: ${TRAVIS_BUILD_DIR}"
+# This scripts is called when building an individual site. Ie. this site is running through Travis and builds the supporting structure, not vice-
+# versa where the structure is pushed through Travis and then it builds the sites within it
+
+TEMP_ORG_FILES="original_repo_files"
+
+TEMP_SITE_NAME="tmpsitename"
+
+# Todo check if sites directory exist. else put this in sites folder.
+
+cd ${TRAVIS_BUILD_DIR}
+
+if [ -f ${TEMP_ORG_FILES}/index.php ]; then
+  TEMP_SITE_NAME="docroot"
+  # Remove folders created by travis.
+  rm -rf docroot/themes
+elif [ -f ${TEMP_ORG_FILES}/blt.yml ]; then
+  TEMP_SITE_NAME=$(php -r "print_r(yaml_parse_file('${TEMP_ORG_FILES}/blt.yml')['drush']['uri']);")
+  TEMP_SITE_HOST_NAME=$(php -r "print_r(yaml_parse_file('${TEMP_ORG_FILES}/blt.yml')['site_host_name']);")
+fi
+
+if [ -f ${TEMP_ORG_FILES}/blt.yml ]; then
+  cp $TEMP_ORG_FILES/blt.yml site-blt.yml
+fi
+
+# Place code to proper place.
+if [ -f ${TEMP_ORG_FILES}/index.php ]; then
+  mv $TEMP_ORG_FILES $TEMP_SITE_NAME
+elif [[ -d ${TEMP_ORG_FILES} ]]; then
+  # rm -r $TEMP_SITE_NAME/scripts
+  cp -arvf $TEMP_ORG_FILES/scripts/* docroot/scripts
+  rm -r $TEMP_ORG_FILES/scripts
+
+  # rename to site name directory.
+  mv $TEMP_ORG_FILES $TEMP_SITE_NAME
+  # move to sites folder.
+  mv $TEMP_SITE_NAME docroot/sites/
+  # Remove scripts directory
+fi
+
+rm -rf docroot/.gitignore
+# remove simplesaml symlink and get from docroot.
+rm -rf simplesamlphp
+mv docroot/simplesamlphp simplesamlphp
+
+# Merge other multisites
+multisite_array_size=$(php -r "echo count(yaml_parse_file('${TRAVIS_BUILD_DIR}/site-blt.yml')['all-multisites']);")
+if [[ $multisite_array_size ]]; then
+  (( multisite_array_size-- ))
+  i=0
+
+  while [[ $i -le $multisite_array_size ]]
+  do
+    site_name=$(php -r "print_r(yaml_parse_file('${TRAVIS_BUILD_DIR}/site-blt.yml')['all-multisites'][$i]['name']);")
+    site_git_repo=$(php -r "print_r(yaml_parse_file('${TRAVIS_BUILD_DIR}/site-blt.yml')['all-multisites'][$i]['git_repo']);")
+    site_branch=$(php -r "print_r(yaml_parse_file('${TRAVIS_BUILD_DIR}/site-blt.yml')['all-multisites'][$i]['branch']);")
+    site_host_name=$(php -r "print_r(yaml_parse_file('${TRAVIS_BUILD_DIR}/site-blt.yml')['all-multisites'][$i]['host_name']);")
+
+    if [ ! -d "${TRAVIS_BUILD_DIR}/docroot/sites/$site_name" ] ; then
+
+      mkdir --parents "${TRAVIS_BUILD_DIR}/docroot/sites/$site_name"
+      cd "${TRAVIS_BUILD_DIR}/docroot/sites/$site_name"
+
+      pwd
+
+      git init
+      git remote add multisite "$site_git_repo"
+      git pull multisite "$site_branch"
+
+        cd ${TRAVIS_BUILD_DIR}/docroot
+
+        if [[ ! -L ${site_name} ]]; then
+          if [ ${TRAVIS_PULL_REQUEST} = "false" ]; then
+            ln -s ../docroot $site_name
+          fi
+        fi
+
+        echo "\$sites['com.$site_name'] = '$site_name';" >> ${TRAVIS_BUILD_DIR}/docroot/sites/sites.php
+        echo "\$sites['org.$site_name'] = '$site_name';" >> ${TRAVIS_BUILD_DIR}/docroot/sites/sites.php
+        echo "\$sites['$site_host_name'] = '$site_name';" >> ${TRAVIS_BUILD_DIR}/docroot/sites/sites.php
+    fi
+
+    i=$(( i+1 ))
+  done
+fi
+
+cd ${TRAVIS_BUILD_DIR}/docroot/sites/
+allowed_multisite_array_string=$(php -r "print_r(yaml_parse_file('${TRAVIS_BUILD_DIR}/site-blt.yml')['multisites']);")
+for sitename in *
+do
+  if [[ -d "$sitename" ]]; then
+    # loop if needs to be deleted.
+    if [[ -f "$sitename/blt.yml" ]] ; then
+      # loop if needs to be deleted.
+      #remove sites not supported for this build.
+      if [[ -f "${TRAVIS_BUILD_DIR}/site-blt.yml" ]]; then
+        if [[ $allowed_multisite_array_string == *"$sitename"* ]]; then
+          echo "found site - $sitename"
+        else
+          rm -r "${TRAVIS_BUILD_DIR}/docroot/sites/$sitename"
+          echo "removed $sitename"
+        fi
+      fi
+    fi
+  fi
+done
+
+cd ${TRAVIS_BUILD_DIR}
+
+pwd
+
+cp composer.lock composer-backup.lock
+
+COMPOSER_MEMORY_LIMIT=-1 composer install
+
+COMPOSER_MEMORY_LIMIT=-1 composer update --lock
+
+# Retry for sites composer file
+COMPOSER_MEMORY_LIMIT=-1 composer install
+
+#reset files
+cd ${TRAVIS_BUILD_DIR}/docroot
+git checkout .htaccess
+
+cd ${TRAVIS_BUILD_DIR}
+
+# Recover drush alias.
+rm -rf drush/sites/
+ln -nfs ../docroot/drush/sites drush/sites
+
+if [ $TEMP_SITE_NAME != 'docroot' ]; then
+cd ${TRAVIS_BUILD_DIR}/docroot
+
+echo "\$sites['com.$TEMP_SITE_NAME'] = '$TEMP_SITE_NAME';" >> ${TRAVIS_BUILD_DIR}/docroot/sites/sites.php
+echo "\$sites['org.$TEMP_SITE_NAME'] = '$TEMP_SITE_NAME';" >> ${TRAVIS_BUILD_DIR}/docroot/sites/sites.php
+echo "\$sites['$TEMP_SITE_HOST_NAME'] = '$TEMP_SITE_NAME';" >> ${TRAVIS_BUILD_DIR}/docroot/sites/sites.php
+# Single domain make it default, not via symlink.
+# ln -s ../docroot $TEMP_SITE_NAME
+echo "\$sites['com'] = '$TEMP_SITE_NAME';" >> ${TRAVIS_BUILD_DIR}/docroot/sites/sites.php
+fi
+
+cd ${TRAVIS_BUILD_DIR} || exit
+
+set +v

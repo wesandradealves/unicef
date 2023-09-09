@@ -1,0 +1,13 @@
+.basic-page .node__content {
+  .field__item {
+    hyphens: auto;
+    word-break: normal;
+    text-align: justify;
+  }
+}
+
+.node__content {
+  .field__item {
+    word-break: break-all;
+  }
+}

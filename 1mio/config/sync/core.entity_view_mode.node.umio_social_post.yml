@@ -1,0 +1,10 @@
+uuid: 1e4d2cdf-a128-4068-918c-3edaf7d65a7d
+langcode: pt-br
+status: true
+dependencies:
+  module:
+    - node
+id: node.umio_social_post
+label: 'Post Social'
+targetEntityType: node
+cache: true

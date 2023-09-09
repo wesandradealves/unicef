@@ -1,0 +1,199 @@
+<?php
+
+/**
+ * @file
+ */
+
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Url;
+use Drupal\node\Entity\Node;
+use Drupal\user\Entity\User;
+use Drupal\views\ViewExecutable;
+use Symfony\Component\HttpFoundation\Request;
+
+/**
+ * @var array
+ */
+const VACANCY_FORMS = [
+  'node_vacancy_form',
+  'node_vacancy_edit_form',
+];
+
+/**
+ * Implements hook_theme().
+ */
+function umio_vacancy_theme(): array {
+  return [
+    'page_umio_vacancy_create' => [
+      'render element' => 'children',
+      'template' => 'umio_vacancy--index',
+    ],
+  ];
+}
+
+/**
+ * Implements hook_preprocess_page().
+ */
+function umio_vacancy_preprocess_page(array &$variables): void {
+  $current_route = \Drupal::routeMatch();
+  $route_name = $current_route->getRouteName();
+
+  if ($route_name == 'umio_vacancy.index') {
+    unset($variables['page']['header']['admin_page_title']);
+  }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function umio_vacancy_form_alter(array &$form, FormStateInterface $form_state, string $form_id): void {
+  if (in_array($form_id, VACANCY_FORMS)) {
+    /** @var \Drupal\umio_vacancy\Service\VacancyFormService $formAlterService*/
+    $formAlterService = \Drupal::service('umio_vacancy.form');
+    $form = $formAlterService->formAlter($form);
+  }
+
+
+  // Return the same url query to the last page.
+  if ($form_id == 'node_preview_form_select') {
+
+    $request = \Drupal::request();
+    $referer = $request->headers->get('referer');
+    $base_url = Request::createFromGlobals()->getSchemeAndHttpHost();
+    $alias = substr($referer, strlen($base_url));
+    $refererUrl = Url::fromUri("internal:" . $alias);
+
+    $form['backlink']['#url'] = $refererUrl;
+  }
+
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function umio_vacancy_preprocess_node_edit_form(array &$variables): void {
+  if ($variables['form']['#form_id'] === 'node_vacancy_edit_form') {
+    /** @var \Drupal\umio_vacancy\Service\VacancyPreprocessEditFormService $formEditAlterService */
+    $formEditAlterService = \Drupal::service('umio_vacancy.edit_form');
+    $formEditAlterService->preprocessEditForm($variables);
+  }
+}
+
+/**
+ * Implements hook_menu_local_tasks_alter().
+ */
+function umio_vacancy_menu_local_tasks_alter(array &$data, string $route_name): void {
+  $currentUser = \Drupal::currentUser();
+  $roles = $currentUser->getRoles();
+  if (in_array('company_manager', $roles) ||
+      in_array('partner_talent_acquisition', $roles)
+  ) {
+    $routeParameters = \Drupal::routeMatch();
+    /** @var \Drupal\node\Entity\Node $node */
+    $node = $routeParameters->getParameters()->get('node');
+    if ($route_name === 'entity.node.edit_form' && $node->getType() === 'vacancy') {
+      unset($data['tabs']);
+    }
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_view_alter().
+ */
+function umio_vacancy_node_view_alter(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display): void {
+  $bundle = $display->getTargetBundle();
+  if ($bundle === 'vacancy' && $entity instanceof Node) {
+    $fieldSalaryOptions = $entity->get('field_vacancy_salary_options');
+    if (isset($fieldSalaryOptions->getValue()[0])) {
+      $salaryOptions = $fieldSalaryOptions->getValue()[0]['value'];
+      if ($salaryOptions === 'min_max') {
+        $build['field_vacancy_salary']['#access'] = FALSE;
+      }
+      else {
+        $build['field_vacancy_salary_max']['#access'] = FALSE;
+        $build['field_vacancy_salary_min']['#access'] = FALSE;
+      }
+    }
+  }
+}
+
+/**
+ * @var array $form
+ * @var \Drupal\Core\Form\FormStateInterface $form_state
+ */
+function umio_vacancy_validate_custom(array &$form, FormStateInterface $form_state): void {
+  /** @var \Drupal\Core\Datetime\DrupalDateTime */
+  $date = $form_state->getValue('field_vacancy_closing_date')[0]['value'];
+  if ($date->format('Y-m-d') <= date('Y-m-d')) {
+    $form_state->setErrorByName('field_vacancy_closing_date', t('Date must be higher than today.'));
+  }
+
+  $salaryOptions = $form_state->getValue('field_vacancy_salary_options')[0]['value'];
+  if ($salaryOptions === 'min_max') {
+    $min = $form_state->getValue('field_vacancy_salary_min')[0]['value'];
+    $max = $form_state->getValue('field_vacancy_salary_max')[0]['value'];
+    if ($max < $min) {
+      $form_state->setErrorByName('field_vacancy_salary_max', t('This field must be higher than min salary.'));
+    }
+  }
+}
+
+/**
+ * @var array $form
+ * @var \Drupal\Core\Form\FormStateInterface $form_state
+ */
+function umio_vacancy_node_vacancy_form_submit(array &$form, FormStateInterface $form_state): void {
+  $url = $form_state->getRedirect();
+  if ($url instanceof Url) {
+    $url->setOption('query', [
+      'modal' => 'vacancy_created',
+    ]);
+  }
+  $form_state->setRedirectUrl($url);
+}
+
+/**
+ * Implements hook_page_attachments().
+ */
+function umio_vacancy_page_attachments(array &$attachments): void {
+  $query = \Drupal::request()->query;
+  $modal = $query->get('modal');
+  if ($modal && $modal == 'vacancy_created') {
+    $attachments['#attached']['library'][] = 'umio_vacancy/umio_vacancy.display';
+  }
+}
+
+/**
+ * Implements hook_views_pre_render().
+ *
+ * This hook is also used in courses.
+ */
+function umio_vacancy_views_pre_render(ViewExecutable $view): void {
+  $user = User::load(\Drupal::currentUser()->id());
+  if ($view->id() === 'companies_user_logged') {
+    $userCompanyId = $user->get('field_user_company')->getValue();
+    if ($userCompanyId) {
+      $userCompanyId = $userCompanyId[0]['target_id'];
+    }
+
+    if ($userCompanyId) {
+      foreach ($view->result as $key => $company) {
+        /** @var \Drupal\node\Entity\Node  */
+        $nodeCompany = $company->_entity;
+        $mainOffice = $nodeCompany->get('field_company_main_office')->getValue();
+        if ($mainOffice) {
+          $mainOffice = $mainOffice[0]['target_id'];
+          if ($mainOffice !== $userCompanyId) {
+            unset($view->result[$key]);
+          }
+        }
+        elseif ($nodeCompany->id() !== $userCompanyId) {
+          unset($view->result[$key]);
+        }
+      }
+    }
+  }
+
+}

@@ -1,0 +1,27 @@
+uuid: ffe8f712-346c-4091-8869-00e91a842019
+langcode: pt-br
+status: true
+dependencies:
+  module:
+    - node
+    - options
+id: node.field_vacancy_salary_options
+field_name: field_vacancy_salary_options
+entity_type: node
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: unique
+      label: 'Valor único'
+    -
+      value: min_max
+      label: 'Valor mínimo e máximo'
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

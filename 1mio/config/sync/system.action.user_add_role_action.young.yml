@@ -1,0 +1,14 @@
+uuid: eeda26a4-59c4-4f1d-b071-99ec75390527
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - user.role.young
+  module:
+    - user
+id: user_add_role_action.young
+label: 'Adiciona o papel Jovem para o(s) usuário(s) selecionado(s)'
+type: user
+plugin: user_add_role_action
+configuration:
+  rid: young

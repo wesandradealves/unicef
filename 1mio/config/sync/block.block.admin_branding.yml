@@ -1,0 +1,33 @@
+uuid: f2383179-4d56-425d-9945-26bebe2f2596
+langcode: pt-br
+status: true
+dependencies:
+  module:
+    - system
+    - user
+  theme:
+    - admin
+id: admin_branding
+theme: admin
+region: header
+weight: -6
+provider: null
+plugin: system_branding_block
+settings:
+  id: system_branding_block
+  label: Logo
+  label_display: '0'
+  provider: system
+  use_site_logo: true
+  use_site_name: false
+  use_site_slogan: false
+visibility:
+  user_role:
+    id: user_role
+    negate: false
+    context_mapping:
+      user: '@user.current_user_context:current_user'
+    roles:
+      administrator: administrator
+      company_manager: company_manager
+      partner_talent_acquisition: partner_talent_acquisition

@@ -1,0 +1,111 @@
+name: 1mio
+recipe: drupal9
+config:
+  php: '7.4'
+  webroot: docroot
+  xdebug: true
+  config:
+    php: lando/php/php.ini
+services:
+  appserver:
+    build:
+      - composer install
+      - chmod +x /app/lando/install.sh
+    run:
+      - /app/lando/install.sh
+  node:
+    type: node
+    run:
+      - cd /app/docroot/themes/custom/admin && npm install
+      - cd /app/docroot/themes/custom/umio && npm install
+      - cd /app/docroot/themes/custom/umio_base && npm install
+  index:
+    type: solr:8.2
+    portforward: true
+    core: collection1
+    config:
+      dir: docroot/modules/contrib/search_api_solr/jump-start/solr8/config-set
+tooling:
+  node:
+    service: node
+    description: Run node.
+    cmd: node
+  npm:
+    service: node
+    description: Run npm.
+    cmd: npm
+  npm-install:
+    service: node
+    description: Run npm install to themes
+    cmd:
+      - cd /app/docroot/themes/custom/admin && npm install
+      - cd /app/docroot/themes/custom/umio && npm install
+      - cd /app/docroot/themes/custom/umio_base && npm install
+  build:
+    service: node
+    description: Run Gulp to generate CSS Prod file.
+    cmd:
+      - cd /app/docroot/themes/custom/admin && npm run gulp build
+      - cd /app/docroot/themes/custom/umio && npm run gulp build
+      - cd /app/docroot/themes/custom/umio_base && npm run gulp build
+  build-base:
+    service: node
+    description: Run Gulp to generate CSS Prod file. (Base Theme)
+    cmd:
+      - cd /app/docroot/themes/custom/umio_base && npm run gulp build
+  build-admin:
+    service: node
+    description: Run Gulp to generate CSS Prod file. (Admin Theme)
+    cmd:
+      - cd /app/docroot/themes/custom/admin && npm run gulp build
+  build-theme:
+    service: node
+    description: Run Gulp to generate CSS Prod file. (Main Theme)
+    cmd:
+      - cd /app/docroot/themes/custom/umio && npm run gulp build
+  buildDev:
+    service: node
+    description: Run Gulp to generate CSS Dev file.
+    cmd:
+      - cd /app/docroot/themes/custom/umio_base && npm run gulp buildDev
+  phpcs:
+    service: appserver
+    description: Run PHPCS
+    cmd:
+      - phpcs --standard=Drupal --extensions=inc,install,php,profile,test,theme,yml docroot/modules/custom
+  phpcsfix:
+    service: appserver
+    description: Run PHPCS fixer
+    cmd:
+      - phpcbf --standard=Drupal --extensions=inc,install,php,profile,test,theme,yml docroot/modules/custom
+  phpunit:
+    service: appserver
+    description: Run Tests
+    cmd:
+      - phpunit --testsuite custom-module
+  phpunitdebug:
+    service: appserver
+    cmd:
+      - php -d xdebug.remote_port=9003 vendor/bin/phpunit --testsuite custom-module
+  phpstan:
+    service: appserver
+    description: Run PHPStan
+    cmd:
+      - phpstan analyse -l 6 docroot/modules/custom
+  locale-update:
+    service: appserver
+    description: Run Drush locale check and updates
+    cmd:
+      - drush locale:check && drush locale:update && drush cr
+
+  sync-all:
+    service: appserver
+    description: Run drush sql:sync and drush rsync
+    cmd:
+      - echo Synchronizing your local database with @onemillionop.dev
+      - drush sql:sync @onemillionop.dev @local -y
+      - echo "\n Synchronizing your local files with @onemillionop.dev"
+      - drush rsync @onemillionop.dev:%files @local:%files -y
+      - drush rsync @onemillionop.dev:/mnt/files/onemillionop.dev/sites/default/files-private @local:sites/default -y
+      - drush cr
+      - echo "\n"

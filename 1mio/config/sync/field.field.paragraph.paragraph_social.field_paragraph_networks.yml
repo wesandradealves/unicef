@@ -1,0 +1,183 @@
+uuid: 58c51671-958b-4366-8aeb-fd3829a19296
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_paragraph_networks
+    - paragraphs.paragraphs_type.paragraph_social
+  module:
+    - social_media_links_field
+id: paragraph.paragraph_social.field_paragraph_networks
+field_name: field_paragraph_networks
+entity_type: paragraph
+bundle: paragraph_social
+label: 'Redes Sociais'
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    platform: null
+    value: null
+    platform_values:
+      googleplus:
+        value: ''
+      contact:
+        value: ''
+      tiktok:
+        value: ''
+      vkontakte:
+        value: ''
+      whatsapp:
+        value: ''
+      website:
+        value: ''
+      gitlab:
+        value: ''
+      facebook:
+        value: ''
+      pinterest:
+        value: ''
+      linkedin:
+        value: ''
+      drupal:
+        value: ''
+      tumblr:
+        value: ''
+      youtube:
+        value: ''
+      behance:
+        value: ''
+      xing:
+        value: ''
+      rss:
+        value: ''
+      vimeo:
+        value: ''
+      twitter:
+        value: ''
+      bitbucket:
+        value: ''
+      email:
+        value: ''
+      flickr:
+        value: ''
+      slideshare:
+        value: ''
+      instagram:
+        value: ''
+      youtube_channel:
+        value: ''
+      github:
+        value: ''
+      discord:
+        value: ''
+default_value_callback: ''
+settings:
+  iconset: 'fontawesome:2x'
+  platforms:
+    googleplus:
+      description: ''
+      weight: '-10'
+      enabled: 0
+    behance:
+      description: ''
+      weight: '-9'
+      enabled: 0
+    github:
+      description: ''
+      weight: '-8'
+      enabled: 0
+    youtube_channel:
+      description: ''
+      weight: '-7'
+      enabled: 0
+    instagram:
+      enabled: '1'
+      description: ''
+      weight: '-6'
+    slideshare:
+      description: ''
+      weight: '-5'
+      enabled: 0
+    flickr:
+      description: ''
+      weight: '-4'
+      enabled: 0
+    email:
+      description: ''
+      weight: '-3'
+      enabled: 0
+    bitbucket:
+      description: ''
+      weight: '-2'
+      enabled: 0
+    twitter:
+      enabled: '1'
+      description: ''
+      weight: '-1'
+    vimeo:
+      description: ''
+      weight: '0'
+      enabled: 0
+    rss:
+      description: ''
+      weight: '1'
+      enabled: 0
+    xing:
+      description: ''
+      weight: '2'
+      enabled: 0
+    youtube:
+      description: ''
+      weight: '3'
+      enabled: 0
+    contact:
+      description: ''
+      weight: '4'
+      enabled: 0
+    tumblr:
+      description: ''
+      weight: '5'
+      enabled: 0
+    drupal:
+      description: ''
+      weight: '6'
+      enabled: 0
+    linkedin:
+      enabled: '1'
+      description: ''
+      weight: '7'
+    pinterest:
+      description: ''
+      weight: '8'
+      enabled: 0
+    facebook:
+      enabled: '1'
+      description: ''
+      weight: '9'
+    gitlab:
+      description: ''
+      weight: '10'
+      enabled: 0
+    website:
+      description: ''
+      weight: '11'
+      enabled: 0
+    whatsapp:
+      description: ''
+      weight: '12'
+      enabled: 0
+    vkontakte:
+      description: ''
+      weight: '13'
+      enabled: 0
+    tiktok:
+      enabled: '1'
+      description: ''
+      weight: '14'
+    discord:
+      description: ''
+      weight: '15'
+      enabled: 0
+field_type: social_media_links_field

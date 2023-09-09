@@ -1,0 +1,23 @@
+uuid: 0a8b7fbc-694a-49c2-b416-d1f0677c6ae4
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_location
+    - paragraphs.paragraphs_type.counter_priority_profiles
+id: paragraph.counter_priority_profiles.field_location
+field_name: field_location
+entity_type: paragraph
+bundle: counter_priority_profiles
+label: 'Localização (adolescentes e jovens moradores de periferias urbanas e zonas rurais)'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: 0
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

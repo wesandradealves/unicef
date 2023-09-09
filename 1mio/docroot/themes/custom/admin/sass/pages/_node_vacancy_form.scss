@@ -1,0 +1,23 @@
+.node-vacancy-form, .node-vacancy-edit-form {
+  .form-boolean-group {
+    display: flex;
+    gap: 1rem;
+  }
+
+  .field--type-decimal {
+    .form-type--number {
+      position: relative;
+      .form-item__prefix {
+        grid-area: input;
+        position: absolute;
+        top: 19px;
+        transform: translate(0, -50%);
+        padding-left: .375rem;
+      }
+      .form-control {
+        padding-left: 2rem;
+        margin-top: 0;
+      }
+    }
+  }
+}

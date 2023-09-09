@@ -1,0 +1,17 @@
+{# Btn link share post #}
+<div class="pt-2">
+  {% if logged_in and (user.account.roles[1] == 'partner_talent_acquisition')  %}
+    <div class="social-post-feed--link-shared pt-3 pb-3">
+      <div class="row m-0">
+        <div class="col-12 col-xl-6 offset-xl-3">
+            <a href="/node/add/social_post">
+              <div class="link-shared--container">
+                <i class="ph-megaphone"></i>
+                <span>{{ title }}</span>
+              </div>
+            </a>
+        </div>
+      </div>
+    </div>
+  {% endif %}
+</div>

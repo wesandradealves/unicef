@@ -1,0 +1,97 @@
+diff --git a/modules/lightning_scheduler/src/Plugin/Field/FieldWidget/ModerationStateWidget.php b/modules/lightning_scheduler/src/Plugin/Field/FieldWidget/ModerationStateWidget.php
+index d0ec550..072328c 100644
+--- a/modules/lightning_scheduler/src/Plugin/Field/FieldWidget/ModerationStateWidget.php
++++ b/modules/lightning_scheduler/src/Plugin/Field/FieldWidget/ModerationStateWidget.php
+@@ -2,6 +2,7 @@
+
+ namespace Drupal\lightning_scheduler\Plugin\Field\FieldWidget;
+
++use Drupal\Component\Plugin\Context\Context;
+ use Drupal\Component\Serialization\Json;
+ use Drupal\content_moderation\ModerationInformation;
+ use Drupal\content_moderation\Plugin\Field\FieldWidget\ModerationStateWidget as BaseModerationStateWidget;
+@@ -11,11 +12,15 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
+ use Drupal\Core\Field\FieldDefinitionInterface;
+ use Drupal\Core\Field\FieldItemListInterface;
+ use Drupal\Core\Form\FormStateInterface;
++use Drupal\Core\Language\LanguageInterface;
++use Drupal\Core\Plugin\Context\ContextDefinition;
+ use Drupal\Core\Session\AccountInterface;
+ use Drupal\datetime\Plugin\Field\FieldType\DateTimeItemInterface;
+ use Drupal\lightning_scheduler\TransitionManager;
+ use Drupal\lightning_scheduler\TransitionSet;
+ use Symfony\Component\DependencyInjection\ContainerInterface;
++use Drupal\Core\Entity\EntityRepository;
++use Drupal\Core\Language\LanguageManager;
+
+ /**
+  * Scheduler extension of Content Moderation's widget.
+@@ -43,6 +48,20 @@ class ModerationStateWidget extends BaseModerationStateWidget {
+    */
+   protected $configFactory;
+
++  /**
++   * The entity repository.
++   *
++   * @var \Drupal\Core\Entity\EntityRepository
++   */
++  protected $entityRepository;
++
++  /**
++   * The language manager.
++   *
++   * @var \Drupal\Core\Language\LanguageManager
++   */
++  protected $languageManager;
++
+   /**
+    * Constructs a new ModerationStateWidget object.
+    *
+@@ -68,11 +87,17 @@ class ModerationStateWidget extends BaseModerationStateWidget {
+    *   The transition manager.
+    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
+    *   The config factory.
++   * @param \Drupal\Core\Entity\EntityRepository $entity_repository
++   *   The entity repository.
++   * @param \Drupal\Core\Language\LanguageManager $language_manager
++   *   The language manager.
+    */
+-  public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, array $third_party_settings, AccountInterface $current_user, EntityTypeManagerInterface $entity_type_manager, ModerationInformation $moderation_information, StateTransitionValidationInterface $validator, TransitionManager $transition_manager, ConfigFactoryInterface $config_factory) {
++  public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, array $third_party_settings, AccountInterface $current_user, EntityTypeManagerInterface $entity_type_manager, ModerationInformation $moderation_information, StateTransitionValidationInterface $validator, TransitionManager $transition_manager, ConfigFactoryInterface $config_factory, EntityRepository $entity_repository, LanguageManager $language_manager) {
+     parent::__construct($plugin_id, $plugin_definition, $field_definition, $settings, $third_party_settings, $current_user, $entity_type_manager, $moderation_information, $validator);
+     $this->transitionManager = $transition_manager;
+     $this->configFactory = $config_factory;
++    $this->entityRepository = $entity_repository;
++    $this->languageManager = $language_manager;
+   }
+
+   /**
+@@ -90,7 +115,9 @@ class ModerationStateWidget extends BaseModerationStateWidget {
+       $container->get('content_moderation.moderation_information'),
+       $container->get('content_moderation.state_transition_validation'),
+       $container->get('lightning_scheduler.transition_manager'),
+-      $container->get('config.factory')
++      $container->get('config.factory'),
++      $container->get('entity.repository'),
++      $container->get('language_manager')
+     );
+   }
+
+@@ -116,11 +143,12 @@ class ModerationStateWidget extends BaseModerationStateWidget {
+       $latest_revision = $entity;
+     }
+     else {
+-      $latest_revision = $this->moderationInformation
+-        ->getLatestRevision(
+-          $entity->getEntityTypeId(),
+-          $entity->id()
+-        ) ?: $entity;
++      $new_context =  new Context(new ContextDefinition('language'), $this->languageManager->getCurrentLanguage(LanguageInterface::TYPE_URL));
++      $contexts = [
++        '@language.current_language_context:' . LanguageInterface::TYPE_CONTENT => $new_context,
++        '@language.current_language_context:' . LanguageInterface::TYPE_INTERFACE => $new_context
++      ];
++      $latest_revision = $this->entityRepository->getActive($entity->getEntityTypeId(), $entity->id(), $contexts);
+     }
+
+     $transition_set = new TransitionSet(

@@ -1,0 +1,22 @@
+uuid: e78a512f-f460-481d-84a2-d8b1964feb70
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - node.type.company
+id: node.company.status
+field_name: status
+entity_type: node
+bundle: company
+label: Publicado
+description: ''
+required: false
+translatable: true
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: Habilitado
+  off_label: Desligado
+field_type: boolean

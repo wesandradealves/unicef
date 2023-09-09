@@ -1,0 +1,31 @@
+{#
+/**
+ * @file
+ * Theme override for an 'input' #type form element.
+ *
+ * Available variables:
+ * - attributes: A list of HTML attributes for the input element.
+ * - children: Optional additional rendered elements.
+ *
+ * @see template_preprocess_input()
+ */
+#}
+
+<label class="form-control-file-image-preview form-control-managed-file-wrapper" for="{{ attributes.id }}">
+  <img
+    class="form-control--profile-picture--default"
+    href="#" >
+</label>
+
+<label class="form-control-managed-file-wrapper" for="{{ attributes.id }}" id="{{ "#{attributes.id}-label" }}">
+
+  <div class="upload-profile-picture d-flex">
+    <i class="ph-camera ph-2x d-flex align-items-center"></i>
+    <p class="d-flex align-items-center">{{ "Upload profile picture"|t }}</p>
+  </div>
+
+  <input{{ attributes.addClass(["form-control-managed-file", "d-none"]) }} />
+
+  {{ children }}
+
+</label>

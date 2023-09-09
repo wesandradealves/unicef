@@ -1,0 +1,212 @@
+.page-content-form {
+  input[value="Remover"] {
+    margin-top: unset;
+    margin-right: 0;
+    margin-left: 0;
+    width: 100%;
+    @include media-breakpoint-up(lg) {
+      width: 196px;
+    }
+  }
+
+  div[data-drupal-messages=""] {
+    display: none;
+  }
+
+  #edit-actions {
+    display: block;
+    justify-content: unset;
+    padding-top: 1rem;
+    margin-bottom: 9rem;
+    @include media-breakpoint-up(lg) {
+      display: flex;
+    }
+  }
+
+  .form-actions {
+    .btn-submit,
+    .btn-next {
+      margin: 0 auto;
+      @include media-breakpoint-up(lg) {
+        margin: unset;
+      }
+    }
+
+    .btn-primary {
+      &:active {
+        color: $blue-primary-dark;
+        background-color: $blue-primary-light;
+      }
+    }
+
+    .btn-previous {
+      @include make-outline-primary-button();
+      margin-bottom: 10px;
+      @include media-breakpoint-up(lg) {
+        margin-bottom: 0;
+        margin-right: 10px;
+      }
+
+      &:hover {
+        color: $gray-primary-10;
+        background-color: $blue-primary-main;
+        border-color: $blue-primary-main;
+      }
+      &:active {
+        color: $blue-primary-dark;
+        background-color: $blue-primary-light;
+      }
+    }
+    .btn {
+      width: 100%;
+      @include media-breakpoint-up(lg) {
+        width: 196px;
+      }
+    }
+  }
+
+  .legend-form-required {
+    fieldset > legend > span::after {
+      content: "*";
+      color: $alert-red-50;
+      width: 6px;
+      height: 6px;
+      margin: 0 0.3em;
+    }
+  }
+
+  .form-page-info {
+    margin-top: 1.25rem;
+    margin-bottom: 1rem;
+    height: 4.5rem;
+    display: flex;
+    align-items: center;
+
+    .page-info-icon {
+      width: 2rem;
+      height: 2rem;
+      border-radius: 2rem;
+      background-color: $blue-primary-main;
+      margin-right: 0.938rem;
+      padding: 0.5rem;
+    }
+
+    .page-info-text {
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+  }
+
+  .form-page-title {
+    display: flex;
+    flex-direction: column;
+    @include media-breakpoint-up(md) {
+      height: 12.5rem;
+    }
+    .page-title-title {
+      padding-top: 0.625rem;
+      padding-bottom: 0.625rem;
+      font-size: 2rem;
+      font-weight: 700;
+    }
+    .page-title-description {
+      height: auto;
+      font-size: 1.5rem;
+      color: $gray-primary-25;
+    }
+  }
+
+  .page-icon-title {
+    display: flex;
+    align-items: center;
+    .page-info-icon {
+      margin-right: 0.5rem;
+    }
+    .create-account-hand-icon {
+      margin: 0 0.98rem;
+    }
+    .page-info-icon i {
+      font-size: 2em;
+    }
+  }
+
+  .form-group {
+    .select2-container {
+      min-height: 1rem;
+    }
+  }
+
+  .form-managed-file {
+    .file {
+      border: 1px dashed $gray-primary-25;
+      box-sizing: border-box;
+      border-radius: 8px;
+      width: 100%;
+      justify-content: center;
+      display: flex;
+      background-position-x: center;
+      padding-top: 2rem;
+      padding-bottom: 1.5rem;
+      a {
+        padding-top: 1.8rem;
+      }
+    }
+    .file--x-office-document {
+      background-position-y: 30px;
+    }
+  }
+
+  .form-textarea-wrapper {
+    .form-textarea {
+      outline: none;
+    }
+  }
+
+  .js-form-managed-file {
+    padding-top: 2.5rem;
+  }
+
+  .form-item-field-password-confirm {
+    margin-bottom: 40px;
+    .form-item-field-password-confirm-pass1 {
+      min-height: 90px;
+      max-height: 90px;
+      margin-bottom: 0;
+    }
+
+    .form-item-field-password-confirm-pass2 {
+      min-height: 110px;
+      min-height: 110px;
+      margin-top: 0;
+    }
+  }
+
+  .inline-flex-group {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .link-class, .link-class::selection, .link-class:active, .link-class:focus {
+    padding: 0;
+    background: transparent;
+    color: #2ca4ff;
+    border: 0px;
+    margin: 0;
+    font-weight: 700;
+  }
+
+  .register-city-manager-additional-form {
+    .form-managed-file {
+      padding-top: 0;
+    }
+  }
+}
+
+#register-company-manager-additional-form {
+  .form-item-field-company, .content-institution-or-branch, .text-muted {
+    @include media-breakpoint-up(lg) {
+      width: 59%;
+    }
+  }
+}

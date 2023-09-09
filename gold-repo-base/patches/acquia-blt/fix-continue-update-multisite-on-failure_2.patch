@@ -1,0 +1,55 @@
+diff --git a/src/Robo/Commands/Artifact/DeployCommand.php b/src/Robo/Commands/Artifact/DeployCommand.php
+index 4f46def..2becbac 100644
+--- a/src/Robo/Commands/Artifact/DeployCommand.php
++++ b/src/Robo/Commands/Artifact/DeployCommand.php
+@@ -540,14 +540,14 @@ class DeployCommand extends BltTasks {
+       ->run();
+     $this->taskFilesystemStack()
+       ->copy($this->getConfigValue('repo.root') . '/composer.json', $this->deployDir . '/composer.json', TRUE)
+-      ->copy($this->getConfigValue('repo.root') . '/composer.lock', $this->deployDir . '/composer.lock', TRUE)
++      ->copy($this->getConfigValue('repo.root') . '/composer-backup.lock', $this->deployDir . '/composer.lock', TRUE)
+       ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_VERBOSE)
+       ->run();
+     $command = 'composer install --no-dev --no-interaction --optimize-autoloader';
+     if ($this->ignorePlatformReqs) {
+       $command .= ' --ignore-platform-reqs';
+     }
+-    $execution_result = $this->taskExecStack()->exec($command)
++    $execution_result = $this->taskExecStack()->exec($command)->exec('COMPOSER_MEMORY_LIMIT=-1 composer update --no-dev --lock --no-interaction --optimize-autoloader')
+       ->dir($this->deployDir)
+       ->run();
+     if (!$execution_result->wasSuccessful()) {
+@@ -793,9 +793,18 @@ class DeployCommand extends BltTasks {
+   public function updateAll() {
+     // Disable alias since we are targeting specific uri.
+     $this->config->set('drush.alias', '');
+-
++    $blt_deploy_progress_file = getenv('HOME') . "/blt-deploy-inprogress-". getenv('AH_SITE_ENVIRONMENT');
++    file_put_contents($blt_deploy_progress_file, '');
+     foreach ($this->getConfigValue('multisites') as $multisite) {
+-      $this->updateSite($multisite);
++      try {
++        $this->updateSite($multisite);
++      }
++      catch (BltException $e) {
++        echo 'Exception on site ' . $multisite . ': ', $e->getMessage(), "\n";
++      };
++      if (!file_exists($blt_deploy_progress_file)) {
++        break;
++      }
+     }
+   }
+
+diff --git a/src/Robo/Commands/Drupal/ConfigCommand.php b/src/Robo/Commands/Drupal/ConfigCommand.php
+index ac08bec..4df36a6 100644
+--- a/src/Robo/Commands/Drupal/ConfigCommand.php
++++ b/src/Robo/Commands/Drupal/ConfigCommand.php
+@@ -117,7 +117,7 @@ class ConfigCommand extends BltTasks {
+     $task->drush("cache-rebuild");
+     $result = $task->run();
+     if (!$result->wasSuccessful()) {
+-      throw new BltException("Failed to import configuration!");
++      echo 'cache-rebuild: Failed to import configuration', "\n";
+     }
+ 
+     $this->checkConfigOverrides();

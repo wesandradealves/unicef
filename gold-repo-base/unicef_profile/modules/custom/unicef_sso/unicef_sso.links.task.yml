@@ -1,0 +1,4 @@
+unicef_sso.account:
+  title: UNICEF users login
+  route_name: simplesamlphp_auth.saml_login
+  base_route: user.page

@@ -1,0 +1,37 @@
+# Vacancy Routings
+umio_batch_import.vacancy_settings:
+  path: '/admin/config/system/vacancy'
+  defaults:
+    _form: '\Drupal\umio_batch_import\Form\Vacancy\SettingsForm'
+    _title: 'Vacancy batch import Settings'
+  requirements:
+    _role: 'administrator'
+
+umio_batch_import.vacancy_batch_import:
+  path: '/admin/vacancy/batch-import'
+  defaults:
+    _title: 'Batch vacancies'
+    _form: '\Drupal\umio_batch_import\Form\Vacancy\VacancyBatchImportForm'
+  requirements:
+    _role: 'administrator+user_manager+partner_talent_acquisition'
+  options:
+    _admin_route: true
+
+# City Routings
+umio_batch_import.city_stamp_settings:
+  path: '/admin/config/system/city-stamp'
+  defaults:
+    _form: '\Drupal\umio_batch_import\Form\CityStamp\SettingsForm'
+    _title: 'City batch import Settings'
+  requirements:
+    _role: 'administrator'
+
+umio_batch_import.city_stamp_batch_import:
+  path: '/admin/city-stamp/batch-import'
+  defaults:
+    _title: 'Batch cities'
+    _form: '\Drupal\umio_batch_import\Form\CityStamp\CityStampBatchImportForm'
+  requirements:
+    _role: 'administrator'
+  options:
+    _admin_route: true

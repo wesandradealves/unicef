@@ -1,0 +1,41 @@
+.hero-banner--my-publications {
+  height: 223px;
+  max-height: 223px;
+  background-color: $gray-primary-15;
+  .hero-banner--background {
+    border-radius: 0 0 40px 0;
+    background-color: $blue-primary-main;
+  }
+
+  .my-publications--container {
+    height: 223px;
+    display: flex;
+    align-items: center;
+
+    .banner-my-publications--container {
+      align-items: center;
+      .icon-content {
+        background-color: $gray-primary-10;
+        border-radius: 74px;
+        i {
+          padding: 10px;
+          color: $blue-primary-main;
+          -webkit-transform: scaleX(-1);
+          transform: scaleX(-1);
+          &::before {
+            font-size: 4.5rem;
+          }
+        }
+      }
+      h1 {
+        font-weight: 800;
+        color: $gray-primary-10;
+        font-size: 2.25rem;
+        width: 0;
+        overflow: visible;
+        margin-left: 45px;
+        margin-top: .375rem;
+      }
+    }
+  }
+}

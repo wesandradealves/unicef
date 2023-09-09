@@ -1,0 +1,55 @@
+{#
+/**
+ * @file
+ * Default theme implementation for a region.
+ *
+ * Available variables:
+ * - content: The content for this region, typically blocks.
+ * - attributes: Remaining HTML attributes for the element, including:
+ *   - class: HTML classes that can be used to style contextually through CSS.
+ *
+ * @see template_preprocess_region()
+ *
+ * @ingroup themeable
+ */
+#}
+
+<div class="landing-page--participate-container">
+  <div class="container-description-image">
+    <div class="container-description-image-icons">
+
+          {# Text without Container #}
+          <div class='container-description--text'>
+            <div class='container-description--text-handler'>
+              <p class='title'>{{ title_text }}</p>
+              <p class='content-description'>{{ description_first_paragraph }}</p>
+              <p class='content-description'>{{ description_second_paragraph }}</p>
+              <p class='content-description'>{{ description_third_paragraph }}</p>
+            </div>
+            <div class='description-line'></div>
+          </div>
+
+          {# Icons #}
+          <div class="icon-container">
+            <div class="icon-content">
+              <img class='icon-image' src={{'/' ~ directory ~ '/images/new_layout/illustration-building-ico.svg'}} alt='companies_icon'?>
+              <span>{{ iconText.iconOne }}</span>
+            </div>
+            <div class="icon-content">
+              <img class='icon-image'  src={{'/' ~ directory ~ '/images/new_layout/illustration-society-ico.svg'}} alt='people_icon'?>
+              <span>{{ iconText.iconTwo }}</span>
+            </div>
+            <div class="icon-content">
+              <img class='icon-image'  src={{'/' ~ directory ~ '/images/new_layout/illustration-governament-ico.svg'}} alt='governament_icon'?>
+              <span>{{ iconText.iconThree }}</span>
+            </div>
+          </div>
+    </div>
+  </div>
+
+  {# BUTTON CONTAINER #}
+  <div class="link-landing-page--participate-container">
+    <a class="link-landing-page--participate" href="{{ url('umio_user.register') }}" alt="{{ link_text }}">{{ link_text }}</a>
+  </div>
+</div>
+

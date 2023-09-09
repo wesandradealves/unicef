@@ -1,0 +1,20 @@
+uuid: ab3fa5f3-8b5f-4144-ab55-d3eed3a8a988
+langcode: pt-br
+status: true
+dependencies:
+  module:
+    - datetime
+    - node
+id: node.field_company_start_activity
+field_name: field_company_start_activity
+entity_type: node
+type: datetime
+settings:
+  datetime_type: date
+module: datetime
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

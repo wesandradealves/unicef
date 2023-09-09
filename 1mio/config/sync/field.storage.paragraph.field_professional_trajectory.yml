@@ -1,0 +1,20 @@
+uuid: 48059e38-4ad7-416e-b86b-88a31bfd28d5
+langcode: pt-br
+status: true
+dependencies:
+  module:
+    - entity_reference_revisions
+    - paragraphs
+id: paragraph.field_professional_trajectory
+field_name: field_professional_trajectory
+entity_type: paragraph
+type: entity_reference_revisions
+settings:
+  target_type: paragraph
+module: entity_reference_revisions
+locked: false
+cardinality: -1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

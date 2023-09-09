@@ -1,0 +1,25 @@
+uuid: 4b4e3ca7-22f0-46f3-97ca-e382ca9b74a0
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_vacancy_quantity
+    - node.type.vacancy
+id: node.vacancy.field_vacancy_quantity
+field_name: field_vacancy_quantity
+entity_type: node
+bundle: vacancy
+label: 'Quantidade de vagas'
+description: 'Quantas vagas são oferecidas?'
+required: true
+translatable: false
+default_value:
+  -
+    value: 1
+default_value_callback: ''
+settings:
+  min: 1
+  max: 10000
+  prefix: ''
+  suffix: ''
+field_type: integer

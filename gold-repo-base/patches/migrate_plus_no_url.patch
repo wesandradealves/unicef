@@ -1,0 +1,13 @@
+diff --git a/src/DataParserPluginBase.php b/src/DataParserPluginBase.php
+index d133ba3..bbbad72 100644
+--- a/src/DataParserPluginBase.php
++++ b/src/DataParserPluginBase.php
+@@ -158,7 +158,7 @@ abstract class DataParserPluginBase extends PluginBase implements DataParserPlug
+         }
+       }
+ 
+-      if ($this->openSourceUrl($this->urls[$this->activeUrl])) {
++      if (isset($this->urls[$this->activeUrl]) && $this->openSourceUrl($this->urls[$this->activeUrl])) {
+         // We have a valid source.
+         return TRUE;
+       }

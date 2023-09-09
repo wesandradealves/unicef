@@ -1,0 +1,126 @@
+.astronaut-animation--container {
+  width: 100%;
+  height: 100%;
+
+
+  @include media-breakpoint-up(md){
+    position: absolute;
+    bottom: 0;
+    max-height: 220px;
+  }
+  @media(min-width: 840px){
+    right: -75px;
+    bottom: initial;
+    top: 40px;
+    width: 50%;
+    max-height: 248px;
+  }
+  @include media-breakpoint-up(lg){
+    max-height: 350px;
+  }
+
+  #braco-frente {
+    animation: braco-frente 3s infinite linear alternate;
+    transform-origin: right;
+    transform-box: fill-box;
+  }
+
+  @keyframes braco-frente {
+    from {
+      transform: rotateZ(00deg);
+    }
+    to {
+      transform: rotateZ(-20deg);
+    }
+  }
+
+  #braco-atras {
+    animation: braco-atras 2s infinite linear alternate;
+    transform-origin: bottom;
+    transform-box: fill-box;
+  }
+
+  @keyframes braco-atras {
+    from {
+      transform: rotatez(00deg);
+    }
+    to {
+      transform: rotatez(10deg);
+    }
+  }
+
+  #perna-frente {
+    animation: perna-frente 2s infinite linear alternate;
+    transform-origin: top;
+    transform-box: fill-box;
+  }
+
+  @keyframes perna-frente {
+    from {
+      transform: rotatez(00deg);
+    }
+    to {
+      transform: rotatez(-10deg);
+    }
+  }
+
+  #perna-atras {
+    animation: perna-atras 3s infinite linear alternate;
+    transform-origin: top;
+    transform-box: fill-box;
+  }
+
+  @keyframes perna-atras {
+    from {
+      transform: rotatez(00deg);
+    }
+    to {
+      transform: rotatez(10deg);
+    }
+  }
+
+  #estrela-g {
+    animation: estrela-g 1s infinite ease-in-out alternate;
+    transform-origin: center;
+    transform-box: fill-box;
+  }
+
+  @keyframes estrela-g {
+    from {
+      transform: scale(0.5);
+    }
+    to {
+      transform: scale(1);
+    }
+  }
+
+  #estrela-m {
+    animation: estrela-m 2s infinite ease-in-out alternate;
+    transform-origin: center;
+    transform-box: fill-box;
+  }
+
+  @keyframes estrela-m {
+    from {
+      transform: scale(0.5);
+    }
+    to {
+      transform: scale(1);
+    }
+  }
+
+  #estrela-p {
+    animation: estrela-p 3s infinite ease-in-out alternate;
+    transform-origin: center;
+    transform-box: fill-box;
+  }
+
+  @keyframes estrela-p {
+    from {
+      transform: scale(0.5);
+    }
+    to {
+      transform: scale(1);
+    }
+  }
+}

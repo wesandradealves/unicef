@@ -1,0 +1,102 @@
+uuid: c6606be5-9478-4b9b-af36-77fac172f7c4
+langcode: pt-br
+status: true
+dependencies:
+  module:
+    - node
+    - options
+id: node.field_vacancy_state
+field_name: field_vacancy_state
+entity_type: node
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: AC
+      label: AC
+    -
+      value: AL
+      label: AL
+    -
+      value: AM
+      label: AM
+    -
+      value: AP
+      label: AP
+    -
+      value: BA
+      label: BA
+    -
+      value: CE
+      label: CE
+    -
+      value: DF
+      label: DF
+    -
+      value: ES
+      label: ES
+    -
+      value: GO
+      label: GO
+    -
+      value: MA
+      label: MA
+    -
+      value: MG
+      label: MG
+    -
+      value: MS
+      label: MS
+    -
+      value: MT
+      label: MT
+    -
+      value: PA
+      label: PA
+    -
+      value: PB
+      label: PB
+    -
+      value: PE
+      label: PE
+    -
+      value: PI
+      label: PI
+    -
+      value: PR
+      label: PR
+    -
+      value: RJ
+      label: RJ
+    -
+      value: RN
+      label: RN
+    -
+      value: RO
+      label: RO
+    -
+      value: RR
+      label: RR
+    -
+      value: RS
+      label: RS
+    -
+      value: SC
+      label: SC
+    -
+      value: SE
+      label: SE
+    -
+      value: SP
+      label: SP
+    -
+      value: TO
+      label: TO
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

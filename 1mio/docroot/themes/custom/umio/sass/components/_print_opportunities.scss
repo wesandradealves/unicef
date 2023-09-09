@@ -1,0 +1,148 @@
+@media print {
+  @page {
+      size: auto;
+      margin: 0.5in;
+      widows: 1;
+  }
+  .only-printable-element,
+  .umio-card--qr-code.only-printable-element,
+  #block-umio-content > .views-element-container > .only-printable-element {
+    display: unset;
+  }
+  .theme-umio .layout-container .page-content {
+    padding-bottom: unset;
+    border-bottom-right-radius: unset;
+    background-color: unset;
+  }
+  html {
+    :not(.chrome-browser-specifications) {
+      .page__feeds,
+      .block-umio-local-tasks > .tabs,
+      .edit-search-field-wrapper,
+      .view-feeds-jovens,
+      .view-filters {
+          margin: 0 !important;
+          padding: 0 !important;
+      }
+    }
+  }
+  .feed--content {
+    widows: 1;
+  }
+  .page__feeds {
+    * {
+      box-sizing: unset !important;
+      background: unset !important;
+      color: $dark !important;
+    }
+  }
+  html > body.administrator.theme-umio {
+    padding-top: 0 !important;
+  }
+  div > div.view-content > .clearfix::after {
+    border: unset;
+  }
+  #block-umio-content {
+    div.views-element-container {
+      .only-printable-element {
+        .umio--views-view--feeds-printable-header {
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+          align-items: center;
+          padding-bottom: 0.5rem;
+          h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+          }
+          span {
+            font-size: 0.75rem;
+            color: $gray-primary-50;
+          }
+        }
+      }
+    }
+  }
+  div.contextual {
+    display: none !important;
+  }
+  #sliding-popup.sliding-popup-bottom {
+    display: none;
+  }
+  div#umio-feed-content.feed--content {
+    .umio-card--grid-container {
+      widows: 1;
+
+      width: 100%;
+      grid-template-columns: unset;
+      grid-gap: unset;
+      display: unset;
+      grid-auto-flow: unset;
+
+      .umio-card--details,
+      .umio-card--title {
+        margin-top: 0 !important;
+        margin-bottom: 0 !important;
+        padding-bottom: 0 !important;
+      }
+      .umio-card--title {
+        flex: inherit;
+        height: 3rem;
+      }
+      .umio-card--title > h2 {
+        color: $dark;
+        font-size: 1.2rem;
+      }
+      .umio-card--qr-code {
+        img.module-name-center-image {
+          width: 6rem;
+        }
+        padding-top: 1.5rem;
+      }
+      .umio-card--card-info--salary--details {
+        margin-top: 1rem !important;
+        margin-bottom: 0 !important;
+      }
+      .umio-card--company--details > h3,
+      .umio-card--card-info--salary--details > div,
+      .umio-card--card-info--salary--details > span {
+        color: $dark;
+        font-weight: 400 !important;
+      }
+      .umio-card--title .umio-card--normal-font {
+        font-weight: 700;
+        word-wrap: unset;
+        max-width: unset;
+        overflow: unset;
+        text-overflow: unset;
+        white-space: unset;
+      }
+      div.position-relative {
+        &  {
+            height: 10rem;
+          }
+      }
+      article.umio-card.umio-card--normal-card {
+        &:not(.d-print-none) {
+          page-break-inside: avoid;
+          width: 50%;
+          display: inline-block;
+          margin: 0.5rem 0.5rem;
+        }
+      }
+      article.umio-card,
+      article.umio-card > section.umio-card {
+        background-color: unset !important;
+        border: 1px solid $gray-primary-50;
+        border-radius: 0 0 33%;
+        height: 19.5rem;
+        max-height: 19.5rem;
+        width: 19.5rem;
+        max-width: 19.5rem;
+      }
+    }
+  }
+}
+.only-printable-element {
+  display: none;
+}

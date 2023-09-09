@@ -1,0 +1,23 @@
+uuid: 1d91daca-970f-475f-ab41-1a7acdaa6ec8
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_socio_educational_system
+    - paragraphs.paragraphs_type.counter_priority_profiles
+id: paragraph.counter_priority_profiles.field_socio_educational_system
+field_name: field_socio_educational_system
+entity_type: paragraph
+bundle: counter_priority_profiles
+label: 'Egressos do sistema socioeducativo e adolescentes e jovens cumprindo medidas socioeducativas em meio aberto'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

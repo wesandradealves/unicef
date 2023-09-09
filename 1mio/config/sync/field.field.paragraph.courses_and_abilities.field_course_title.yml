@@ -1,0 +1,19 @@
+uuid: 7ea38964-161f-404d-bddf-f4d60b757bd4
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_course_title
+    - paragraphs.paragraphs_type.courses_and_abilities
+id: paragraph.courses_and_abilities.field_course_title
+field_name: field_course_title
+entity_type: paragraph
+bundle: courses_and_abilities
+label: Título
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

@@ -1,0 +1,11 @@
+uuid: 3fef7f80-f39d-4378-920f-b2cd051b61d9
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.vacancy_benefits
+id: taxonomy_term.vacancy_benefits
+target_entity_type_id: taxonomy_term
+target_bundle: vacancy_benefits
+default_langcode: site_default
+language_alterable: false

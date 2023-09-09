@@ -1,0 +1,23 @@
+uuid: aa8212d1-3179-4580-8204-3def40b5042f
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_lgbtia
+    - paragraphs.paragraphs_type.counter_priority_profiles
+id: paragraph.counter_priority_profiles.field_lgbtia
+field_name: field_lgbtia
+entity_type: paragraph
+bundle: counter_priority_profiles
+label: LGBTIA+
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: 0
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

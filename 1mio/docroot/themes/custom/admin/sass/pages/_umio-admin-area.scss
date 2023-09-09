@@ -1,0 +1,445 @@
+.umio-admin-area {
+  .view-empty {
+    text-align: center;
+    padding: 5rem 0;
+  }
+
+  #company-manager-edit-talent-acquisition,
+  #company-edit-company,
+  #company-branch-edit-form {
+    .form-item__label {
+      padding-bottom: 4px;
+    }
+
+    [id*="edit-field-user-address-0-top"],
+    [class*="form-item-field-user-address-0-subform-field-paragraph-address-0-address-address-line1"],
+    [class*="form-item-field-user-address-0-subform-field-paragraph-address-0-address-address-line2"],
+    [class*="form-item-field-user-address-0-subform-field-paragraph-address-0-address-dependent-locality"],
+    [class*="form-item-field-user-address-0-subform-field-paragraph-address-0-address-postal-code"] {
+      display: none;
+    }
+
+    #edit-field-user-address-0-subform-field-paragraph-address-0 {
+      & > div.details-wrapper {
+        margin: 1rem;
+      }
+    }
+
+    #edit-field-user-address-0-subform-field-paragraph-address-0-address-container3,
+    div[id^="edit-field-user-address-0-subform-field-paragraph-address-0-address-container3"],
+    div[id*="edit-field-user-address-0-subform-field-paragraph-address-0-address-container3"] {
+      @include media-breakpoint-up(md) {
+        display: flex;
+        justify-content: space-between;
+      }
+      [class*="form-item-field-user-address-0-subform-field-paragraph-address-0-address-administrative-area"],
+      [class*="form-item-field-user-address-0-subform-field-paragraph-address-0-address-locality"] {
+        padding: 0;
+        margin: 0;
+        width: 100%;
+        min-width: unset;
+        @include media-breakpoint-up(md) {
+          width: 45%;
+        }
+        .select2 {
+          height: 3.5rem;
+          border-radius: 0.5rem;
+          font-size: 1rem;
+          font-weight: 700;
+          color: $gray-primary-75;
+          .select2-selection {
+            height: 100%;
+          }
+        }
+      }
+      [class*="form-item-field-user-address-0-subform-field-paragraph-address-0-address-administrative-area"] {
+        @include media-breakpoint-only(xs) {
+          margin-bottom: 12px !important;
+        }
+      }
+      [class*="form-item-field-user-address-0-subform-field-paragraph-address-0-address-locality"] {
+        .locality {
+          margin-top: 0;
+        }
+      }
+    }
+
+    .paragraphs-subform {
+      details {
+        border: unset;
+        .details-wrapper {
+          padding: 0.5em 0;
+        }
+        summary {
+          display: none;
+        }
+      }
+    }
+
+    .js-form-item-field-user-company-role-started-0-value-date {
+      width: 100%;
+    }
+
+    [id*="edit-field-user-company-role-started-0-value-date"] {
+      min-width: unset;
+    }
+
+    [id*="edit-field-user-company-role-started-0-value"] {
+      text-align: center;
+    }
+
+    .form-content-locality-pre,
+    .form-field-telephone {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .form-control,
+    .form-select,
+    .select2,
+    .form-select-locality {
+      height: 4rem;
+      border-radius: 0.25rem;
+    }
+
+    .form-select-locality {
+      padding-top: 0.8rem;
+      margin-top: 0.5rem;
+    }
+    span.form-select-locality {
+      &.select2 {
+        margin-top: 0;
+      }
+    }
+
+    #form-item-locality-pre {
+      & > div.form-item--locality > input[name="locality"] {
+        margin-top: 0.4rem;
+      }
+    }
+
+    .form-content-field-city {
+      width: 50%;
+      margin-top: 0.1rem;
+    }
+
+    .form-textarea {
+      height: 6rem;
+    }
+
+    .telephone-extension-mask {
+      margin-top: 0;
+    }
+
+    .form-item label {
+      font-weight: bold;
+    }
+
+    .image-preview {
+      .form-control-file-image-preview {
+        align-items: center;
+        width: 104px;
+        height: 104px;
+        border-radius: 50%;
+        filter: drop-shadow(0 0 4px rgba(0, 0, 0, 0.12));
+        border: none;
+      }
+
+      img {
+        width: 104px;
+        height: 104px;
+        border-radius: 50%;
+        padding: 0.5rem;
+        object-fit: cover;
+        background-image: none;
+      }
+
+      input[name="field_company_logo_remove_button"] {
+        margin: 0;
+      }
+    }
+
+    input[name="field_company_cover_remove_button"] {
+      margin: 0;
+    }
+
+    div[id^="edit-field-company-logo"] > label:not(.form-control-file-image-preview) {
+      /* #edit-field-company-logo-upload-label */
+      background-image: url("../images/input-upload-file-logo-bg.png");
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: 320px;
+    }
+
+    div[id^="edit-field-company-cover"] > label:not(.form-control-file-image-preview) {
+      /* #edit-field-company-cover-upload-label */
+      background-image: url("../images/input-upload-file-cover-bg.png");
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: 320px;
+    }
+
+    div[id^="edit-field-company-commitment-term"] > label:not(.form-control-file-image-preview) {
+      /* #edit-field-company-commitment-term-upload-label */
+      background-image: url("../images/input-upload-file-commitment-term.png");
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: 250px;
+    }
+
+    .form-control-managed-file-wrapper {
+      position: relative;
+      overflow: visible;
+      height: 176px;
+      margin-bottom: 15px;
+      width: 100%;
+      z-index: 10;
+      left: 0;
+      right: 0;
+      top: 8px;
+      border: 1px dashed $gray-primary-25;
+      box-sizing: border-box;
+      border-radius: 8px;
+      display: flex;
+      justify-content: center;
+
+      & > input[type="file"].form-control-managed-file {
+        cursor: pointer;
+        height: 176px;
+        margin-bottom: 15px;
+        width: 100%;
+        opacity: 0;
+        z-index: 15;
+      }
+    }
+
+    .form-item--multiple {
+      .layer-wrapper {
+        .tabledrag-toggle-weight-wrapper {
+          display: none;
+        }
+
+        .draggable-table {
+          thead {
+            display: none;
+          }
+
+          .tabledrag-cell-content {
+            display: none;
+          }
+        }
+
+        .paragraph-type-top {
+          .paragraph-type-title {
+            display: none;
+          }
+        }
+      }
+    }
+
+    #field-user-professional-traject-0-subform-field-professional-trajectory-add-more-wrapper,
+    #field-user-professional-traject-0-subform-field-educational-training-add-more-wrapper
+      #field-user-professional-traject-0-subform-field-volunteer-work-add-more-wrapper {
+      .layer-wrapper {
+        padding: 0;
+      }
+    }
+
+    #field-user-professional-traject-0-subform-field-professional-trajectory-add-more-wrapper {
+      strong[data-drupal-selector^="edit-field-user-professional-traject-0-subform-field-professional-trajectory-title"] {
+        display: none;
+      }
+    }
+
+    div[id^="edit-field-user-professional-traject-0-subform-field-educational-training"] {
+      strong[data-drupal-selector^="edit-field-user-professional-traject-0-subform-field-educational-training-title"] {
+        display: none;
+      }
+    }
+
+    #field-user-professional-traject-0-subform-field-volunteer-work-add-more-wrapper {
+      strong[data-drupal-selector^="edit-field-user-professional-traject-0-subform-field-volunteer-work-title"] {
+        display: none;
+      }
+    }
+
+    div[id^="edit-field-user-professional-traject-0-subform-field-professional-trajectory"],
+    div[id^="edit-field-user-professional-traject-0-subform-field-educational-training"],
+    div[id^="edit-field-user-professional-traject-0-subform-field-volunteer-work"] {
+      strong[data-drupal-selector^="edit-field-user-professional-traject-0-subform-field-professional-trajectory-title"] {
+        display: none;
+      }
+
+      strong[data-drupal-selector^="edit-field-user-professional-traject-0-subform-field-volunteer-work-title"] {
+        display: none;
+      }
+      .form-actions {
+        justify-content: center;
+      }
+    }
+
+    div[id^="edit-field-user-professional-traject-0-subform-field-professional-trajectory-text"],
+    div[id^="edit-field-user-professional-traject-0-subform-field-educational-training-text"],
+    div[id^="edit-field-user-professional-traject-0-subform-field-volunteer-work-text"] {
+      display: none;
+    }
+
+    .field-multiple-table {
+      .has-multiple-fields-remove-button {
+        padding-right: 0 !important;
+      }
+      div[id^="edit-field-user-professional-traject-0-subform-field-professional-trajectory"],
+      div[id^="edit-field-user-professional-traject-0-subform-field-educational-training"],
+      div[id^="edit-field-user-professional-traject-0-subform-field-volunteer-work"] {
+        div[id^="edit-field-user-professional-traject-0-subform-field-professional-trajectory"],
+        div[id^="edit-field-user-professional-traject-0-subform-field-educational-training"],
+        div[id^="edit-field-user-professional-traject-0-subform-field-volunteer-work"] {
+          background-color: $gray-primary-12;
+          padding: 10px;
+        }
+      }
+
+      div[id^="field-user-professional-traject-0-subform-field-professional-trajectory"],
+      div[id^="field-user-professional-traject-0-subform-field-educational-training"],
+      div[id^="field-user-professional-traject-0-subform-field-volunteer-work"] {
+        border-radius: 20px;
+        overflow: auto;
+      }
+    }
+
+    div[id^="edit-field-user-social-0-top"] {
+      display: none;
+    }
+
+    div[id^="edit-field-user-professional-traject-0-top-paragraph-type-title"] {
+      overflow: initial;
+      display: none;
+    }
+
+    .form-item--field-user-professional-traject-0-subform-field-general-interest-0-value {
+      label[for="edit-field-user-professional-traject-0-subform-field-general-interest-0-value"] {
+        display: none;
+      }
+      margin-bottom: 50px;
+    }
+
+    .field--name-field-professional-trajectory,
+    .field--name-field-educational-training,
+    .field--name-field-volunteer-work {
+      border-bottom: 1px solid $gray-primary-20;
+      margin-bottom: 50px;
+      display: flex;
+      justify-content: center;
+      padding: 20px 0 25px;
+    }
+
+    .edit-young--form--group--title {
+      h4 {
+        font-size: 1rem;
+        font-weight: 700;
+        color: $gray-primary-50;
+      }
+    }
+
+    .form-item--field-user-profile-picture-0 {
+      .form-managed-file--image {
+        .form-managed-file__main {
+          display: initial;
+        }
+        .form-control-managed-file-wrapper:not(.form-control-file-image-preview) {
+          background-image: url("../images/input-upload-file-logo-bg.png");
+          background-position: center;
+          background-repeat: no-repeat;
+          background-size: contain;
+        }
+      }
+    }
+
+    div[data-drupal-selector="edit-actions"] {
+      justify-content: center;
+    }
+
+    .form-item--administrativearea {
+      margin-right: 1rem;
+      .form-item__label {
+        margin-top: 3px;
+      }
+      .select2-selection--single {
+        height: 100%;
+      }
+    }
+
+    .form-item--field-company-telephone {
+      margin-right: 1rem;
+    }
+
+    .layout-content {
+      padding-top: 2rem;
+      padding-bottom: 2rem;
+    }
+  }
+
+  .ta-dashboard {
+    h2 {
+      font-size: $font-size-2xl;
+    }
+    h3 {
+      font-size: $font-size-3xl;
+    }
+  }
+}
+
+.company-edit-company {
+  .layout-content {
+    padding-left: 0;
+  }
+}
+
+#company-branch-edit-form {
+  #form-item-locality-pre {
+    display: contents;
+  }
+  .fieldset {
+    .form-type--select {
+      width: 48%;
+    }
+  }
+}
+
+.view-report-priority-profile {
+  .view-header {
+    display: flex;
+    .views-exposed-form {
+      justify-content: center;
+      margin-bottom: 0;
+      padding-bottom: 0;
+      padding-top: 2rem;
+    }
+  }
+  .view-filters {
+    .views-exposed-form__item {
+      width: 100%;
+      margin-right: 0;
+      @include media-breakpoint-up(md) {
+        width: auto;
+        margin-right: 1rem;
+      }
+    }
+    .form-actions {
+      width: 100%;
+      justify-content: center;
+      @include media-breakpoint-up(md) {
+        width: auto;
+        justify-content: start;
+      }
+    }
+  }
+  .view-content {
+    .views-form {
+      max-width: 700px;
+      margin: 0 auto;
+      overflow: scroll;
+    }
+  }
+}

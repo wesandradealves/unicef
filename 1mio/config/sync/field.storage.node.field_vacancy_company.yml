@@ -1,0 +1,19 @@
+uuid: a82652b0-3701-4c54-aaf5-c09148a92e9a
+langcode: pt-br
+status: true
+dependencies:
+  module:
+    - node
+id: node.field_vacancy_company
+field_name: field_vacancy_company
+entity_type: node
+type: entity_reference
+settings:
+  target_type: node
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

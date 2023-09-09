@@ -1,0 +1,86 @@
+msgid "1MIO Vacancy"
+msgstr "1MIO Vagas"
+
+msgid "Vacancy"
+msgstr "Vagas"
+
+msgid "vacancies"
+msgstr "vaga(s)"
+
+msgid "Module for make changes in Vacancy content type."
+msgstr "Módulo para realizar modificações no tipo de conteúdo de Vagas."
+
+msgid "Before confirm, please justify why the vacancy <span>@title</span>, of type <span>@type</span>, offered by <span>@companyTitle</span>, can’t be approved"
+msgstr "Antes de confirmar, envie o motivo pelo qual a vaga de <span>@title</span> do tipo <span>@type</span>, da <span>@companyTitle</span> não pode ser aprovada:"
+
+msgid "By approving the opportunity, the <span>@title</span> of type <span>@type</span> offered by <span>@companyTitle</span> will be published."
+msgstr "Ao aprovar, a oportunidade <span>@title</span> do tipo <span>@type</span>, proposta por <span>@companyTitle</span> será automaticamente publicada."
+
+msgid "Yes! Approve"
+msgstr "Sim! Aprovar"
+
+msgid "Approve this vacancy"
+msgstr "Aprovar oportunidade"
+
+msgid "Delete vacancy"
+msgstr "Deletar vaga"
+
+msgid "Disapprove vacancy"
+msgstr "Desaprovar vaga"
+
+msgid "Comment"
+msgstr "Comentário"
+
+msgid "Active"
+msgstr "Ativo"
+
+msgid "Not approved"
+msgstr "Não aprovada"
+
+msgid "Waiting approve"
+msgstr "Aguardando aprovação"
+
+msgid "Approved"
+msgstr "Aprovada"
+
+msgid "Go to vacancy panel"
+msgstr "Ir para o painel de vagas"
+
+msgid "Go to company panel"
+msgstr "Ir para o painel de empresas"
+
+msgid "New Vacancy"
+msgstr "Nova Vaga"
+
+msgid "Sent at: @date"
+msgstr "Enviado em: @date"
+
+msgid "Vacancy approved can't be rejected!"
+msgstr "Vaga aprovada não pode ser rejeitada!"
+
+msgid "Expired"
+msgstr "Expirada"
+
+msgid "Day"
+msgstr "Dia"
+
+msgid "Days"
+msgstr "Dias"
+
+msgid "Are you sure you want to delete this vacancy?"
+msgstr "Você tem certeza que deseja deletar esse vaga?"
+
+msgid "Successfully deleted!"
+msgstr "Deletado com sucesso!"
+
+msgid "Vacancies from my company"
+msgstr "Vagas da minha empresa"
+
+msgid "Activities"
+msgstr "Atividades"
+
+msgid "Salary"
+msgstr "Salário"
+
+msgid "Benefits"
+msgstr "Benefícios"

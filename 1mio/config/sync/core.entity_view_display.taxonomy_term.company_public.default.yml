@@ -1,0 +1,31 @@
+uuid: fb1dc31b-43fb-4955-9cce-a4efcd362845
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - field.field.taxonomy_term.company_public.field_young_description
+    - taxonomy.vocabulary.company_public
+  module:
+    - text
+id: taxonomy_term.company_public.default
+targetEntityType: taxonomy_term
+bundle: company_public
+mode: default
+content:
+  description:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_young_description:
+    type: basic_string
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 1
+    region: content
+hidden:
+  langcode: true
+  search_api_excerpt: true

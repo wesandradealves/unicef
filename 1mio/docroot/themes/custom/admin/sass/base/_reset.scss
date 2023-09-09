@@ -1,0 +1,109 @@
+.form-item {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.company_manager,
+.partner_talent_acquisition {
+  &.gin--edit-form {
+    padding-right: 0 !important;
+  }
+}
+
+.field-plugin-settings-edit {
+  box-sizing: content-box;
+}
+
+.form-actions {
+  .button,
+  .action-link {
+    margin: 0;
+  }
+}
+
+.is-horizontal {
+  .tabs--primary,
+  .tabs--secondary {
+    margin-bottom: 0 !important;
+  }
+}
+
+.js {
+  &.no-touchevents {
+    .dropbutton--extrasmall {
+      height: 100% !important;
+    }
+  }
+}
+
+.gin--edit-form {
+  .page-wrapper__node-edit-form {
+    .block-page-title-block,
+    .block-local-tasks-block,
+    .block-system-main-block,
+    .messages-list,
+    .node-form,
+    .node-confirm-form,
+    .admin-list,
+    .help {
+      margin: 0 auto;
+      max-width: unset !important;
+    }
+  }
+}
+
+.form-element {
+  min-height: unset;
+}
+
+.layer-wrapper,
+.block-system>form,
+.panel,
+.admin-list,
+.view-watchdog .view-content,
+.views-exposed-form.views-exposed-form,
+.system-status-counter,
+.system-status-general-info,
+.system-status-report__requirements-group,
+.views-edit-view,
+.views-preview-wrapper,
+.view-block-content .view-content,
+.view-files .view-content,
+.system-themes-list,
+.modules-tabs,
+#views-entity-list {
+  box-shadow: unset;
+  border: none;
+  border-radius: unset;
+  padding: 1rem;
+  @include make-layout-content();
+}
+
+.gin--edit-form {
+  .page-wrapper__node-edit-form {
+    .node-form {
+      padding: 1rem;
+      @include make-layout-content();
+    }
+  }
+}
+
+.layer-wrapper,
+.block-system > form,
+.view-content .views-form,
+.views-exposed-form.views-exposed-form,
+.panel,
+.admin-list,
+.update,
+.view-files .view-content,
+.view-watchdog .view-content,
+.system-status-general-info,
+.system-status-report,
+.views-edit-view,
+.views-preview-wrapper,
+.view-block-content .view-content,
+.system-themes-list,
+#views-entity-list {
+  padding: 1rem;
+  @include make-layout-content();
+}

@@ -1,0 +1,64 @@
+uuid: 8d0a64c1-d916-4477-b141-12e93147e37e
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.educational_formation.field_education_begin
+    - field.field.paragraph.educational_formation.field_education_current
+    - field.field.paragraph.educational_formation.field_education_end
+    - field.field.paragraph.educational_formation.field_educational_institution
+    - field.field.paragraph.educational_formation.field_educational_title
+    - paragraphs.paragraphs_type.educational_formation
+  module:
+    - datetime
+id: paragraph.educational_formation.default
+targetEntityType: paragraph
+bundle: educational_formation
+mode: default
+content:
+  field_education_begin:
+    type: datetime_default
+    label: above
+    settings:
+      timezone_override: ''
+      format_type: medium
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  field_education_current:
+    type: boolean
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    weight: 4
+    region: content
+  field_education_end:
+    type: datetime_default
+    label: above
+    settings:
+      timezone_override: ''
+      format_type: medium
+    third_party_settings: {  }
+    weight: 3
+    region: content
+  field_educational_institution:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_educational_title:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  search_api_excerpt: true

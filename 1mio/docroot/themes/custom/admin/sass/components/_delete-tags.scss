@@ -1,0 +1,12 @@
+.has-multiple-fields-remove-button {
+  .multiple-fields-remove-button {
+    background: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3e%3cpath fill='none' d='M20 4L4 20M4 4l16 16' stroke='%23575757' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3e%3c/svg%3e");
+    height: 20px;
+    width: 20px;
+    &:hover {
+      background: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3e%3cpath fill='none' d='M20 4L4 20M4 4l16 16' stroke='%230794ff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3e%3c/svg%3e");
+      height: 20px;
+      width: 20px;
+    }
+  }
+}

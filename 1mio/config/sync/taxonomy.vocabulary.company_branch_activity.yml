@@ -1,0 +1,8 @@
+uuid: 10775146-8055-422e-834e-69ac8f02d230
+langcode: pt-br
+status: true
+dependencies: {  }
+name: 'Ramo de Atividade'
+vid: company_branch_activity
+description: ''
+weight: 0

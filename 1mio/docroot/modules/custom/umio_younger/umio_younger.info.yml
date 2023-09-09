@@ -1,0 +1,13 @@
+name: umio_younger
+type: module
+description: The module of the young role
+package: Custom
+core: 8.x
+core_version_requirement: ^8 || ^9
+
+'interface translation project': umio_younger
+'interface translation server pattern': modules/custom/umio_younger/translations/umio_younger.%language.po
+
+dependencies:
+  - umio_user:umio_user
+  - user_registrationpassword:user_registrationpassword

@@ -1,0 +1,21 @@
+uuid: 52f14482-2eaf-47b2-aea1-3c47ddd6755c
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_education_end
+    - paragraphs.paragraphs_type.educational_formation
+  module:
+    - datetime
+id: paragraph.educational_formation.field_education_end
+field_name: field_education_end
+entity_type: paragraph
+bundle: educational_formation
+label: Fim
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: datetime

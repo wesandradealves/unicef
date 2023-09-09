@@ -1,0 +1,95 @@
+uuid: eff1f955-3c8e-402e-877d-eea67881c62f
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.user.compact
+    - field.field.user.user.field_flag_public_sector
+    - field.field.user.user.field_flag_singup
+    - field.field.user.user.field_last_password_reset
+    - field.field.user.user.field_password_expiration
+    - field.field.user.user.field_pending_expire_sent
+    - field.field.user.user.field_user_accepted_term_data
+    - field.field.user.user.field_user_address
+    - field.field.user.user.field_user_birth_date
+    - field.field.user.user.field_user_company
+    - field.field.user.user.field_user_company_role
+    - field.field.user.user.field_user_company_role_started
+    - field.field.user.user.field_user_cpf
+    - field.field.user.user.field_user_curriculum
+    - field.field.user.user.field_user_gender
+    - field.field.user.user.field_user_name
+    - field.field.user.user.field_user_phone
+    - field.field.user.user.field_user_professional_traject
+    - field.field.user.user.field_user_profile_picture
+    - field.field.user.user.field_user_public_profile
+    - field.field.user.user.field_user_social
+    - field.field.user.user.field_user_status
+    - field.field.user.user.field_user_telephone
+    - field.field.user.user.field_user_telephone_extension
+    - field.field.user.user.field_user_vacancies_closed
+    - field.field.user.user.field_younger_skills
+  module:
+    - image
+    - user
+_core:
+  default_config_hash: '-cLsS3M3JycipXQt9rEb81_HxKneReoGuRh8ijcOPXs'
+id: user.user.compact
+targetEntityType: user
+bundle: user
+mode: compact
+content:
+  field_user_company:
+    type: entity_reference_label
+    label: hidden
+    settings:
+      link: false
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  field_user_name:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_user_profile_picture:
+    type: image
+    label: hidden
+    settings:
+      image_link: ''
+      image_style: ''
+      image_loading:
+        attribute: lazy
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  dbee: true
+  field_flag_public_sector: true
+  field_flag_singup: true
+  field_last_password_reset: true
+  field_password_expiration: true
+  field_pending_expire_sent: true
+  field_user_accepted_term_data: true
+  field_user_address: true
+  field_user_birth_date: true
+  field_user_company_role: true
+  field_user_company_role_started: true
+  field_user_cpf: true
+  field_user_curriculum: true
+  field_user_gender: true
+  field_user_phone: true
+  field_user_professional_traject: true
+  field_user_public_profile: true
+  field_user_social: true
+  field_user_status: true
+  field_user_telephone: true
+  field_user_telephone_extension: true
+  field_user_vacancies_closed: true
+  field_younger_skills: true
+  langcode: true
+  member_for: true
+  search_api_excerpt: true

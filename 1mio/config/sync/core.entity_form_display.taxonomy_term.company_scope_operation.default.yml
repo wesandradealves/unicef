@@ -1,0 +1,30 @@
+uuid: dc025ae3-4a38-4288-aafc-c9a4b9522a62
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.company_scope_operation
+id: taxonomy_term.company_scope_operation.default
+targetEntityType: taxonomy_term
+bundle: company_scope_operation
+mode: default
+content:
+  name:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  status:
+    type: boolean_checkbox
+    weight: 1
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+hidden:
+  description: true
+  langcode: true
+  path: true

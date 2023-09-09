@@ -1,0 +1,79 @@
+.hero-banner-opportunities {
+  background-color: $gray-primary-12;
+  border-radius: 0px 0px 40px 0px;
+  margin: 0 !important;
+
+  .hero-column {
+    padding-right: 0px;
+    padding-left: 24px;
+  }
+
+  .banner--opportunities--container {
+    height: 292px;
+    background-size: 170px;
+    background-position-x: right;
+    background-position-y: bottom;
+    background-repeat: no-repeat;
+    padding-top: 56px;
+  }
+
+  @include media-breakpoint-up(md) {
+    .banner--opportunities--container {
+      background-size: 400px;
+      background-position-y: -40px;
+    }
+  }
+
+  .banner--opportunities--logo {
+    display: block;
+    width: 115px;
+    height: 64px;
+    background-repeat: no-repeat;
+    background-size: contain;
+  }
+
+  @media (min-width: 768px) {
+    .banner--opportunities--logo {
+      width: 170px;
+      height: 95px;
+    }
+  }
+
+  h1 {
+    font-size: 16px;
+    font-weight: 700;
+    width: 50%;
+  }
+
+  @media (min-width: 768px) {
+    h1 {
+      width: 100%;
+    }
+  }
+
+  .banner--opportunities--sign-up {
+    padding: 10px 24px;
+    border-radius: 32px;
+    background-color: $blue-primary-main;
+    color: $gray-primary-10;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 700;
+
+    &:hover {
+      color: $gray-primary-10;
+      background-color: $blue-primary-dark;
+    }
+
+    &:active {
+      color: $blue-primary-dark;
+      background-color: $blue-primary-light;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .banner--opportunities--sign-up {
+      font-size: 14px;
+    }
+  }
+}

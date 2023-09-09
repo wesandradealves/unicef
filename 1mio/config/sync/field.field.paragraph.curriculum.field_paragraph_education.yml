@@ -1,0 +1,43 @@
+uuid: 283fbd79-3238-4a51-a7e7-c1d5f8238fab
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_paragraph_education
+    - paragraphs.paragraphs_type.curriculum
+    - paragraphs.paragraphs_type.educational_formation
+  module:
+    - entity_reference_revisions
+id: paragraph.curriculum.field_paragraph_education
+field_name: field_paragraph_education
+entity_type: paragraph
+bundle: curriculum
+label: 'Formação Educacional'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    target_bundles:
+      educational_formation: educational_formation
+    negate: 0
+    target_bundles_drag_drop:
+      courses_and_abilities:
+        weight: 6
+        enabled: false
+      curriculum:
+        weight: 7
+        enabled: false
+      educational_formation:
+        weight: 8
+        enabled: true
+      experience:
+        weight: 9
+        enabled: false
+      paragraph_address:
+        weight: 10
+        enabled: false
+field_type: entity_reference_revisions

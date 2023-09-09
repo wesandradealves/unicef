@@ -1,0 +1,7 @@
+name: UNICEF SSO
+description: 'Customizations of the SSO/SAML integration for the UNICEF websites'
+type: module
+core_version_requirement: ^8.8 || ^9
+package: UNICEF-Custom-GR
+dependencies:
+  - drupal:simplesamlphp_auth

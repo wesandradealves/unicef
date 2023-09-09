@@ -1,0 +1,42 @@
+{#
+/**
+ * @file
+ * Default theme implementation for a region.
+ *
+ * Available variables:
+ * - content: The content for this region, typically blocks.
+ * - attributes: Remaining HTML attributes for the element, including:
+ *   - class: HTML classes that can be used to style contextually through CSS.
+ *
+ * @see template_preprocess_region()
+ *
+ * @ingroup themeable
+ */
+#}
+
+<style>
+  .banner--opportunities--container {
+    background-image: url({{ image_banner_mobile }}) ;
+  }
+
+  @media (min-width: 768px) {
+    .banner--opportunities--container {
+      background-image: url({{ image_banner }});
+    }
+  }
+}
+</style>
+
+<section class="hero-banner-opportunities d-print-none px-md-0">
+  <div class="row m-0">
+    <div class="hero-column col-12 col-md-10 offset-md-1 col-xl-6 offset-xl-3">
+      <div class="banner--opportunities--container">
+        <span class="banner--opportunities--logo" style="background-image: url({{ image_logo }})"></span>
+        <h1 class="mt-3 mb-4">{{ title }}</h1>
+        {% if not logged_in %}
+          <a href="{{ cta.url }}" class="banner--opportunities--sign-up">{{ cta.label }}</a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,119 @@
+
+umio_admin_area.consultancy:
+  path: '/admin/consultancy'
+  defaults:
+    _controller: '\Drupal\system\Controller\SystemController::overview'
+    link_id: 'umio_admin_area.consultancy'
+    _title: 'Consultancy'
+  requirements:
+    _permission: 'access administration pages'
+
+# TA Admin area:
+umio_admin_area.ta_admin.my_account:
+  path: /ta-admin/meus-dados
+  defaults:
+    _title: My data
+    _form: 'Drupal\umio_admin_area\Form\EditTalentAcquisitionForm'
+  requirements:
+    _role: partner_talent_acquisition
+  options:
+    _admin_route: 'true'
+
+umio_admin_area.ta_admin.company:
+  path: /ta-admin/empresa
+  defaults:
+    _title_callback: '\Drupal\umio_admin_area\Controller\MenuTitleController::getTitle'
+    _form: 'Drupal\umio_admin_area\Form\EditCompanyForm'
+  requirements:
+    _role: partner_talent_acquisition
+  options:
+    _admin_route: 'true'
+
+umio_admin_area.company.branches.form:
+  path: /admin/empresa/filiais/{company}
+  defaults:
+    _title_callback: '\Drupal\umio_admin_area\Form\CompanyBranchFormEdit::vocabularyTitle'
+    _form: 'Drupal\umio_admin_area\Form\CompanyBranchFormEdit'
+  requirements:
+    _role: partner_talent_acquisition
+    _branch_access_check: 'true'
+    _only_company: 'true'
+  options:
+    _admin_route: 'true'
+
+umio_admin_area.ta_admin.company.branches:
+  path: /ta-admin/empresa/filiais
+  defaults:
+    _title: Branches
+    _controller: Drupal\umio_admin_area\Controller\CompanyBranchesManagementViewController::render
+  requirements:
+    _role: partner_talent_acquisition
+    _only_company: 'true'
+  options:
+    _admin_route: 'true'
+
+umio_admin_area.ta_admin.company_people:
+  path: /ta-admin/pessoas
+  defaults:
+    _title: People from my company
+    _controller: Drupal\umio_admin_area\Controller\PartnerManagementViewController::render
+  requirements:
+    _role: partner_talent_acquisition
+  options:
+    _admin_route: 'true'
+
+umio_admin_area.ta_admin.vacancies:
+  path: /ta-admin/vagas
+  defaults:
+    _title: Vacancies
+    _controller: Drupal\umio_admin_area\Controller\VacancyManagementViewController::render
+  requirements:
+    _role: partner_talent_acquisition
+  options:
+    _admin_route: true
+
+umio_admin_area.ta_admin.courses:
+  path: /ta-admin/cursos
+  defaults:
+    _title: Courses
+    _controller: Drupal\umio_admin_area\Controller\CourseManagementViewController::render
+  requirements:
+    _role: partner_talent_acquisition
+  options:
+    _admin_route: true
+
+umio_admin_area.ta_admin.dashboard:
+  path: /ta-admin/dashboard
+  defaults:
+    _title: Perfomance data
+    _controller: Drupal\umio_admin_area\Controller\PartnerDashboardController::render
+  requirements:
+    _role: partner_talent_acquisition
+  options:
+    _admin_route: true
+
+umio_admin_area.dashboard:
+  path: '/admin/dashboard'
+  defaults:
+    _controller: '\Drupal\umio_admin_area\Controller\DashboardController::render'
+    _title: 'Dashboard'
+  requirements:
+    _role: 'administrator+company_manager'
+
+umio_admin_area.update_cities:
+  path: '/cidades-parceiras/update'
+  defaults:
+    _controller: '\Drupal\umio_front_area\Controller\PartnersCityPanelViewController::updatePartnerCities'
+    _title: 'Update Partner Cities'
+  requirements:
+    _role: 'administrator+company_manager'
+
+umio_admin_area.talent_acquisition_invite:
+  path: '/ta-admin/convidar-parceiro'
+  defaults:
+    _title: 'Add new partner from my team'
+    _form: 'Drupal\umio_admin_area\Form\TalentAcquisitionInviteForm'
+  requirements:
+    _role: partner_talent_acquisition
+  options:
+    _admin_route: 'true'

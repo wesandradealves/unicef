@@ -1,0 +1,25 @@
+uuid: 5f818874-4029-4fcf-ac36-237dce7ec39a
+langcode: pt-br
+status: false
+dependencies:
+  config:
+    - system.menu.account
+  module:
+    - system
+  theme:
+    - umio
+id: umio_menu_account
+theme: umio
+region: header
+weight: -5
+provider: null
+plugin: 'system_menu_block:account'
+settings:
+  id: 'system_menu_block:account'
+  label: 'Menu de conta de usuário'
+  label_display: '0'
+  provider: system
+  level: 1
+  depth: 0
+  expand_all_items: false
+visibility: {  }

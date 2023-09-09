@@ -1,0 +1,11 @@
+uuid: 1794fbbb-c156-41ba-9586-eecde54be3cf
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.company_branch_activity
+id: taxonomy_term.company_branch_activity
+target_entity_type_id: taxonomy_term
+target_bundle: company_branch_activity
+default_langcode: site_default
+language_alterable: false

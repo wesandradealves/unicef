@@ -1,0 +1,45 @@
+umio_user.register:
+  path: /register
+  defaults:
+    _title: 'Criar conta'
+    _controller: Drupal\umio_user\Controller\UserRegisterController::registerPortal
+  requirements:
+    _role: "anonymous+administrator"
+
+umio_user.confirm_email:
+  path: /register/email/{email}
+  defaults:
+    _controller: Drupal\umio_user\Controller\UserRegisterController::emailConfirmation
+  requirements:
+    _role: "anonymous+administrator"
+
+umio_user.people_profile:
+  path: /admin/people/{uid}/profile
+  defaults:
+    _title: 'Pessoas da empresa'
+    _controller: Drupal\umio_user\Controller\PartnerManagementController::renderProfile
+  requirements:
+    _active_partner: 'true'
+    _same_company_user: 'true'
+
+# Approve user
+umio_user.approve:
+  path: '/admin/people/{uid}/approve'
+  defaults:
+    _form: '\Drupal\umio_user\Form\PartnerTalentAcquisition\ApproveForm'
+    _title: 'Approve User'
+  requirements:
+    _active_partner: 'true'
+    _not_same_logged_user: 'true'
+    _same_company_user: 'true'
+
+# Reject user
+umio_user.reject:
+  path: '/admin/people/{uid}/reject'
+  defaults:
+    _form: '\Drupal\umio_user\Form\PartnerTalentAcquisition\RejectForm'
+    _title: 'Reject User'
+  requirements:
+    _active_partner: 'true'
+    _not_same_logged_user: 'true'
+    _same_company_user: 'true'

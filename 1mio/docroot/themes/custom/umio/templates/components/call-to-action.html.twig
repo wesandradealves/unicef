@@ -1,0 +1,26 @@
+{#
+/**
+ * @file
+ * The call to action template.
+ */
+#}
+
+{# Define the space separator #}
+<div class="py-5"></div>
+
+{# Define the alert logged off message #}
+{% if logged_off_alert %}
+  <section class="call-to-action d-flex flex-row justify-content-center py-2">
+    <p class="font-weight-bold py-2">
+      {{ 'To sign up for this and other opportunities you must create an account.'|trans }}
+    </p>
+  </section>
+{% endif %}
+
+{# Define the CTA Button. #}
+<section class="call-to-action d-flex flex-row justify-content-center">
+  <a href="{{ url }}" class="btn" style="background-color: #9217cc;" target="_blank">
+    {% if icon %}<i class="{{ icon }} pe-2"></i>{% endif %}
+    {{ title }}
+  </a>
+</section>

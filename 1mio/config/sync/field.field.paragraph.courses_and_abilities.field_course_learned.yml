@@ -1,0 +1,19 @@
+uuid: c073c806-1e29-43e9-9d53-27fd136c3ff4
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_course_learned
+    - paragraphs.paragraphs_type.courses_and_abilities
+id: paragraph.courses_and_abilities.field_course_learned
+field_name: field_course_learned
+entity_type: paragraph
+bundle: courses_and_abilities
+label: 'Como aprendeu'
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

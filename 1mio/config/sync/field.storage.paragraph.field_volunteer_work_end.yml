@@ -1,0 +1,20 @@
+uuid: 0c8abd35-0149-44db-9672-530aff2dbb0a
+langcode: pt-br
+status: true
+dependencies:
+  module:
+    - datetime
+    - paragraphs
+id: paragraph.field_volunteer_work_end
+field_name: field_volunteer_work_end
+entity_type: paragraph
+type: datetime
+settings:
+  datetime_type: date
+module: datetime
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

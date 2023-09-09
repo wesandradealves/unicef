@@ -1,0 +1,9 @@
+name: '1MIO Vacancy'
+type: module
+description: 'Module for make changes in Vacancy content type.'
+package: Custom
+core: 8.x
+core_version_requirement: ^8 || ^9
+
+'interface translation project': umio_vacancy
+'interface translation server pattern': modules/custom/umio_vacancy/translations/umio_vacancy.%language.po

@@ -1,0 +1,21 @@
+uuid: c8a5a7af-3843-4704-af37-f2f7f1ebe9c6
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_course_end
+    - paragraphs.paragraphs_type.courses_and_abilities
+  module:
+    - datetime
+id: paragraph.courses_and_abilities.field_course_end
+field_name: field_course_end
+entity_type: paragraph
+bundle: courses_and_abilities
+label: Fim
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: datetime

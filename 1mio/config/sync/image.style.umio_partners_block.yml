@@ -1,0 +1,15 @@
+uuid: 690dba0e-ef95-435f-9ee9-65f0fef750e1
+langcode: pt-br
+status: true
+dependencies: {  }
+name: umio_partners_block
+label: 'Umio Partners block'
+effects:
+  0dd5acb9-3234-4d78-9d5b-0265113026ff:
+    uuid: 0dd5acb9-3234-4d78-9d5b-0265113026ff
+    id: image_scale
+    weight: 1
+    data:
+      width: 161
+      height: 161
+      upscale: false

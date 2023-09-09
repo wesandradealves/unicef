@@ -1,0 +1,5 @@
+# A whitelist of accounts that are allowed to authenticate with local
+# user account despite that the email ends with @unicef.org .
+# Enumerate email addresses, not usernames.
+local_unicef_accounts:
+  - 'qa_account_example@unicef.org'

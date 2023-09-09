@@ -1,0 +1,87 @@
+#quiz-form-page {
+  background-color: $green-piscine-primary-main;
+  .page-header {
+    .banner-container {
+      img {
+        max-width: 100%;
+      }
+    }
+    .header-description-container {
+      h1 {
+        font-style: normal;
+        font-weight: 700;
+        font-size: 1rem;
+        line-height: 1.5rem;
+        text-align: left;
+        letter-spacing: -0.02em;
+        color: $gray-primary-10;
+      }
+    }
+  }
+  .quiz-form {
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    fieldset.form-item {
+      order: 2;
+    }
+    p.error {
+      margin-top: 2rem;
+      font-size: 1.2rem;
+      line-height: 1.6rem;
+      font-weight: 700;
+      text-align: center;
+      color: $gray-primary-10;
+      order: 1;
+    }
+    .option {
+      cursor: pointer;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      &:hover {
+        box-shadow: 0 0 6px rgba(0, 0, 0, 0.6);
+      }
+    }
+    input {
+      order: 3;
+    }
+    .btn-primary {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      color: $gray-primary-10;
+      font-weight: 800;
+      background: $purple-primary-main;
+      border-radius: 78px;
+      margin: 3rem auto 4rem auto;
+      &:hover {
+        box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.6);
+        background-color: $purple-primary-dark;
+      }
+    }
+  }
+  @include media-breakpoint-up(md) {
+    .header-description-container {
+      h1 {
+        font-size: 1.2rem !important;
+      }
+    }
+    .quiz-form {
+      .btn-primary {
+        width: 50%;
+      }
+    }
+    .banner-container,
+    .header-description-container {
+      @include make-col(6);
+    }
+  }
+  @include media-breakpoint-up(xl) {
+    .container {
+      width: 50%;
+    }
+  }
+}

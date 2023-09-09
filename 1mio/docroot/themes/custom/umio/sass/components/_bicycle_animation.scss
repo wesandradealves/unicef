@@ -1,0 +1,100 @@
+.landingpage-bicycle-animation{
+  -webkit-transform: scaleX(-1);
+  transform: scaleX(-1);
+  position: absolute;
+  left: calc( 50% - 200px);
+  bottom: 0;
+
+  // The Main size (small screens)
+  height: 88%;
+  width: 75%;
+
+  @media(max-width: 320px){top: 25px; left: calc(62% - 200px);}
+  @media(min-width: 470px){left: calc( 45% - 200px);}
+  @media(min-width: 530px){left: calc( 39% - 200px);}
+  @media(min-width: 700px){left: calc( 30% - 200px);}
+
+  @include media-breakpoint-up(md){
+    width: 430px;
+    height: 268px;
+    left: calc(25% - 116px);
+    bottom: -35px;
+  }
+
+  @include media-breakpoint-up(lg){
+    bottom: -32px;
+    left: calc(30% - 116px);
+  }
+  @media (min-width: 1200px){left: calc(30% - 116px)}
+  @media (min-width: 1550px){left: calc(35% - 116px)}
+
+  #Pedal-Frente {
+    animation: Pedal-Frente 1s linear infinite alternate;
+    transform-origin: top;
+    transform-box: fill-box;
+  }
+
+  #Personagem-Torso {
+    animation: Personagem-Torso 1s ease-in-out infinite alternate;
+    transform-origin: bottom;
+  }
+
+  #Perna-Frente {
+    animation: Perna-Frente 1s linear infinite alternate;
+    transform-origin: top;
+    transform-box: fill-box;
+  }
+
+  #Roda-Direita {
+    animation: Roda 1s;
+  }
+  #Bicicleta {
+    animation: Bicicleta 1s ease-in-out infinite alternate;
+    transform-origin: bottom;
+  }
+
+  @keyframes Pedal-Frente {
+    from {
+      transform: rotateZ(-30deg);
+    }
+    to {
+      transform: rotateZ(40deg);
+    }
+  }
+
+  @keyframes Perna-Frente {
+    from {
+      transform: rotateZ(-10deg);
+    }
+    to {
+      transform: rotateZ(20deg);
+    }
+  }
+
+  @keyframes Roda-Direita {
+    from {
+      transform: rotateZ(0deg);
+    }
+    to {
+      transform: rotateZ(360deg);
+    }
+  }
+
+  @keyframes Bicicleta {
+    from {
+      transform: rotateX(0deg);
+    }
+    to {
+      transform: rotateX(20deg);
+    }
+  }
+
+  @keyframes Personagem-Torso {
+    from {
+      transform: rotateX(0deg);
+    }
+    to {
+      transform: rotateX(20deg);
+    }
+  }
+}

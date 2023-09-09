@@ -1,0 +1,10 @@
+uuid: 4da24446-1cc7-413a-a848-9168d6acefe3
+langcode: pt-br
+status: true
+dependencies: {  }
+id: curriculum
+label: Currículo
+icon_uuid: null
+icon_default: null
+description: ''
+behavior_plugins: {  }

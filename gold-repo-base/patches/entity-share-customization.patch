@@ -1,0 +1,431 @@
+diff --git a/modules/entity_share_client/css/entity_share_client.admin.css b/modules/entity_share_client/css/entity_share_client.admin.css
+index 52a754b..6328da2 100644
+--- a/modules/entity_share_client/css/entity_share_client.admin.css
++++ b/modules/entity_share_client/css/entity_share_client.admin.css
+@@ -4,3 +4,6 @@ td.entity-share-new {
+ td.entity-share-changed {
+   background-color: lightpink;
+ }
++td.entity-share-deleted {
++  background-color: #ffb4a5;
++}
+diff --git a/modules/entity_share_client/src/Form/PullForm.php b/modules/entity_share_client/src/Form/PullForm.php
+index 9603480..40c0489 100644
+--- a/modules/entity_share_client/src/Form/PullForm.php
++++ b/modules/entity_share_client/src/Form/PullForm.php
+@@ -363,8 +363,22 @@ class PullForm extends FormBase {
+    */
+   protected function getChannelOptions() {
+     $options = [];
++    $site_languages = array_keys($this->languageManager->getLanguages());
+     foreach ($this->channelsInfos as $channel_id => $channel_infos) {
+-      $options[$channel_id] = $channel_infos['label'];
++      // Get langcode of channel, it should be compatible with curent site.
++      $path = '';
++      $langcode = NULL;
++      $url = $channel_infos['url'];
++      $parameters = UrlHelper::parse($url);
++      if (isset($parameters['query']['filter']['langcode-filter']['condition']['path'])) {
++        $path = $parameters['query']['filter']['langcode-filter']['condition']['path'];
++      }
++      if (isset($parameters['query']['filter']['langcode-filter']['condition']['value'])) {
++        $langcode = $parameters['query']['filter']['langcode-filter']['condition']['value'];
++      }
++      if ($path == 'langcode' && in_array($langcode, $site_languages)) {
++        $options[$channel_id] = $channel_infos['label'];
++      }
+     }
+     return $options;
+   }
+diff --git a/modules/entity_share_client/src/Service/JsonapiHelper.php b/modules/entity_share_client/src/Service/JsonapiHelper.php
+index 013abd1..e6edc15 100644
+--- a/modules/entity_share_client/src/Service/JsonapiHelper.php
++++ b/modules/entity_share_client/src/Service/JsonapiHelper.php
+@@ -262,6 +262,50 @@ class JsonapiHelper implements JsonapiHelperInterface {
+   public function buildEntitiesOptions(array $json_data, RemoteInterface $remote, $channel_id) {
+     $options = [];
+     foreach (EntityShareUtility::prepareData($json_data) as $data) {
++      // Don't list option if deleted.
++      if (isset($data['attributes']['field_is_deleted']) && $data['attributes']['field_is_deleted']) {
++        $parsed_type = explode('--', $data['type']);
++        $entity_type_id = $parsed_type[0];
++        $entity_bundle = $parsed_type[1];
++        $resource_type = $this->resourceTypeRepository->get(
++          $entity_type_id,
++          $entity_bundle
++        );
++        $entity_storage = $this->entityTypeManager->getStorage($entity_type_id);
++        $entity_keys = $entity_storage->getEntityType()->getKeys();
++        $this->prepareEntityData($data, $entity_keys);
++        $data_langcode = !empty($entity_keys['langcode']) ? $data['attributes'][$resource_type->getPublicName($entity_keys['langcode'])] : LanguageInterface::LANGCODE_NOT_SPECIFIED;
++
++        // Check if an entity already exists.
++        // JSON:API no longer includes uuid in attributes so we're using id
++        // instead. See https://www.drupal.org/node/2984247.
++        $existing_entities = $entity_storage
++        ->loadByProperties(['uuid' => $data['id']]);
++
++        // Here is the supposition that we are importing a list of content
++        // entities. Currently this is ensured by the fact that it is not possible
++        // to make a channel on config entities and on users. And that in the
++        // relationshipHandleable() method we prevent handling config entities and
++        // users relationships.
++        /** @var \Drupal\Core\Entity\ContentEntityInterface $entity */
++        $entity = $this->extractEntity($data);
++
++        // New entity.
++        if (empty($existing_entities)) {
++          continue;
++        }
++        // Update the existing entity.
++        else {
++          /** @var \Drupal\Core\Entity\ContentEntityInterface $existing_entity */
++          $existing_entity = array_shift($existing_entities);
++          $has_translation = $existing_entity->hasTranslation($data_langcode);
++          // Translation does not exists for existing entity.
++          if (!$has_translation) {
++            continue;
++          }
++        }
++      }
++
+       $this->addOptionFromJson($options, $data, $remote, $channel_id);
+     }
+     return $options;
+@@ -372,6 +416,10 @@ class JsonapiHelper implements JsonapiHelperInterface {
+       $remote_uri = $data['attributes'][$uri_public_name]['value'];
+       $remote_url = $data['attributes'][$uri_public_name]['url'];
+       $stream_wrapper = $this->streamWrapperManager->getViaUri($remote_uri);
++      // Do not proceed if remote uri is not valid.
++      if (!$stream_wrapper) {
++        return;
++      }
+       $directory_uri = $stream_wrapper->dirname($remote_uri);
+       $log_variables = [
+         '%url' => $remote_url,
+@@ -422,6 +470,7 @@ class JsonapiHelper implements JsonapiHelperInterface {
+     $event = new EntityListDataAlterEvent($entity_list_data, $this->remote);
+     $this->eventDispatcher->dispatch(EntityListDataAlterEvent::EVENT_NAME, $event);
+     $entity_list_data = $event->getEntityListData();
++    $action_storage = $this->entityTypeManager->getStorage('action');
+
+     $imported_entity_ids = [];
+     foreach (EntityShareUtility::prepareData($entity_list_data) as $entity_data) {
+@@ -468,6 +517,10 @@ class JsonapiHelper implements JsonapiHelperInterface {
+
+       // New entity.
+       if (empty($existing_entities)) {
++        // Don't create entity if already deleted.
++        if (isset($entity_data['attributes']['field_is_deleted']) && $entity_data['attributes']['field_is_deleted']) {
++          continue;
++        }
+         // Allow other modules to alter the entity with an EventSubscriber.
+         $event = new EntityInsertEvent($entity, $this->remote);
+         $this->eventDispatcher->dispatch(EntityInsertEvent::EVENT_NAME, $event);
+@@ -479,7 +532,29 @@ class JsonapiHelper implements JsonapiHelperInterface {
+         $this->updateRelationships($entity, $entity_data);
+         $this->handlePhysicalFiles($entity, $entity_data);
+         $this->setChangedTime($entity, $resource_type, $entity_data);
++
++        // Add translation for unsupported languages.
++        if ($data_langcode == 'en') {
++          $translation = $entity->toArray();
++          $unsupported_langcodes = $this->getUnsupportedLangcodes();
++          if (!empty($unsupported_langcodes)) {
++            foreach ($unsupported_langcodes as $langcode) {
++              $entity->addTranslation($langcode, $translation);
++            }
++          }
++        }
++
+         $entity->save();
++        // Send notification when entity added.
++        if ($entity->hasField('field_notify_site_taxonomists')) {
++          $field_notify_site_taxonomists = $entity->get('field_notify_site_taxonomists')->getValue();
++          if (isset($field_notify_site_taxonomists[0]['value']) && $field_notify_site_taxonomists[0]['value']) {
++            $action = $action_storage->load('platform_wide_term_add');
++            if ($action) {
++              $action->execute([$entity]);
++            }
++          }
++        }
+       }
+       // Update the existing entity.
+       else {
+@@ -493,6 +568,40 @@ class JsonapiHelper implements JsonapiHelperInterface {
+           $has_translation = $existing_entity->hasTranslation($data_langcode);
+           // Update the existing translation.
+           if ($has_translation) {
++             // Delete entity if delete flag is enabled.
++            if (isset($entity_data['attributes']['field_is_deleted']) && $entity_data['attributes']['field_is_deleted']) {
++              $fallback_langcode = $existing_entity->getUntranslated()->language()->getId();
++              if ($fallback_langcode === $data_langcode) {
++                // Send notification when entity deleted.
++                if ($existing_entity->hasField('field_notify_site_taxonomists')) {
++                  $field_notify_site_taxonomists = $existing_entity->get('field_notify_site_taxonomists')->getValue();
++                  if (isset($field_notify_site_taxonomists[0]['value']) && $field_notify_site_taxonomists[0]['value']) {
++                    $action = $action_storage->load('platform_wide_term_deleted');
++                    if ($action) {
++                      $action->execute([$existing_entity]);
++                    }
++                  }
++                }
++                $existing_entity->delete();
++              }
++              else {
++                // Send notification when translation is deleted.
++                if ($existing_entity->hasField('field_notify_site_taxonomists')) {
++                  $existing_translation = $existing_entity->getTranslation($data_langcode);
++                  $field_notify_site_taxonomists = $existing_translation->get('field_notify_site_taxonomists')->getValue();
++                  if (isset($field_notify_site_taxonomists[0]['value']) && $field_notify_site_taxonomists[0]['value']) {
++                    $action = $action_storage->load('platform_wide_term_deleted');
++                    if ($action) {
++                      $action->execute([$existing_translation]);
++                    }
++                  }
++                }
++                // Delete translation.
++                $existing_entity->removeTranslation($data_langcode);
++                $existing_entity->save();
++              }
++              continue;
++            }
+             $resource_type = $this->resourceTypeRepository->get(
+               $entity->getEntityTypeId(),
+               $entity->bundle()
+@@ -500,18 +609,44 @@ class JsonapiHelper implements JsonapiHelperInterface {
+             $existing_translation = $existing_entity->getTranslation($data_langcode);
+             foreach ($entity_data['attributes'] as $field_name => $value) {
+               $field_name = $resource_type->getInternalName($field_name);
+-              $existing_translation->set(
+-                $field_name,
+-                $entity->get($field_name)->getValue()
+-              );
++              if (($existing_translation->hasField($field_name)) && ($entity->hasField($field_name))) {
++                $existing_translation->set(
++                  $field_name,
++                  $entity->get($field_name)->getValue()
++                );
++              }
+             }
+             // Allow other modules to alter the entity with an EventSubscriber.
+             $event = new EntityAlterEvent($existing_translation, $this->remote);
+             $this->eventDispatcher->dispatch(EntityAlterEvent::EVENT_NAME, $event);
+             $existing_translation->save();
++            // Send notification when entity updated.
++            if ($existing_translation->hasField('field_notify_site_taxonomists')) {
++              $field_notify_site_taxonomists = $existing_translation->get('field_notify_site_taxonomists')->getValue();
++              if (isset($field_notify_site_taxonomists[0]['value']) && $field_notify_site_taxonomists[0]['value']) {
++                $action = $action_storage->load('platform_wide_term_update');
++                if ($action) {
++                  $action->execute([$existing_translation]);
++                }
++
++                // Send notification is scheduled to delete.
++                if ($existing_translation->hasField('field_schedule_deletion')) {
++                  $field_schedule_deletion = $existing_translation->get('field_schedule_deletion')->getValue();
++                  if (isset($field_schedule_deletion[0]['value']) && $field_schedule_deletion[0]['value']) {
++                    $action = $action_storage->load('platform_wide_term_delete_schedule');
++                    if ($action) {
++                      $action->execute([$existing_translation]);
++                    }
++                  }
++                }
++              }
++            }
+           }
+           // Create the new translation.
+           else {
++            if (isset($entity_data['attributes']['field_is_deleted']) && $entity_data['attributes']['field_is_deleted']) {
++              continue;
++            }
+             $translation = $entity->toArray();
+             $existing_entity->addTranslation($data_langcode, $translation);
+             // Allow other modules to alter the entity translation with an
+@@ -520,6 +655,16 @@ class JsonapiHelper implements JsonapiHelperInterface {
+             $this->eventDispatcher->dispatch(EntityAlterEvent::EVENT_NAME, $event);
+             $existing_entity->save();
+             $existing_translation = $existing_entity->getTranslation($data_langcode);
++            // Send notification when entity updated.
++            if ($existing_translation->hasField('field_notify_site_taxonomists')) {
++              $field_notify_site_taxonomists = $existing_translation->get('field_notify_site_taxonomists')->getValue();
++              if (isset($field_notify_site_taxonomists[0]['value']) && $field_notify_site_taxonomists[0]['value']) {
++                $action = $action_storage->load('platform_wide_term_add');
++                if ($action) {
++                  $action->execute([$existing_translation]);
++                }
++              }
++            }
+           }
+           $this->updateRelationships($existing_translation, $entity_data);
+           $this->handlePhysicalFiles($existing_translation, $entity_data);
+@@ -617,33 +762,6 @@ class JsonapiHelper implements JsonapiHelperInterface {
+       ],
+     ];
+
+-    $id_public_name = $resource_type->getPublicName($entity_keys['id']);
+-    if ($this->moduleHandler->moduleExists('diff') &&
+-      in_array($status_info['info_id'], [
+-        StateInformationInterface::INFO_ID_CHANGED,
+-        StateInformationInterface::INFO_ID_NEW_TRANSLATION,
+-      ]) &&
+-      !is_null($status_info['local_revision_id']) &&
+-      isset($data['attributes'][$id_public_name])
+-    ) {
+-      $options[$data['id']]['status']['data'] = new FormattableMarkup('@label: @diff_link', [
+-        '@label' => $options[$data['id']]['status']['data'],
+-        '@diff_link' => Link::createFromRoute($this->t('Diff'), 'entity_share_client.diff', [
+-          'left_revision' => $status_info['local_revision_id'],
+-          'remote' => $remote->id(),
+-          'channel_id' => $channel_id,
+-          'uuid' => $data['id'],
+-        ], [
+-          'attributes' => [
+-            'class' => [
+-              'use-ajax',
+-            ],
+-            'data-dialog-type' => 'modal',
+-            'data-dialog-options' => Json::encode(['width' => '90%']),
+-          ],
+-        ])->toString(),
+-      ]);
+-    }
+   }
+
+   /**
+@@ -850,6 +968,13 @@ class JsonapiHelper implements JsonapiHelperInterface {
+       $parsed_type[1]
+     );
+
++    // Remove all unsupported attributes.
++    unset($data['attributes']['metatag']);
++    unset($data['attributes']['content_translation_source']);
++    unset($data['attributes']['content_translation_outdated']);
++    unset($data['attributes']['content_translation_created']);
++    unset($data['attributes']['revision_created']);
++
+     // Removes some ids.
+     unset($data['attributes'][$resource_type->getPublicName($entity_keys['id'])]);
+     if (isset($entity_keys['revision']) && !empty($entity_keys['revision'])) {
+@@ -877,9 +1002,6 @@ class JsonapiHelper implements JsonapiHelperInterface {
+    */
+   protected function dataLanguageExists($langcode, $entity_label) {
+     if (is_null($this->languageManager->getLanguage($langcode))) {
+-      $this->messenger->addError($this->t('Trying to import an entity (%entity_label) in a disabled language.', [
+-        '%entity_label' => $entity_label,
+-      ]));
+       return FALSE;
+     }
+
+@@ -942,4 +1064,25 @@ class JsonapiHelper implements JsonapiHelperInterface {
+     }
+   }
+
++  /**
++   * Get list of languages that are not supported in remote site.
++   *
++   * @return array
++   *  List of langcodes.
++   */
++  protected function getUnsupportedLangcodes() {
++    $unsupported_langcodes = [];
++    $global_langcodes = ['en', 'fr', 'es', 'ar', 'zh'];
++    $site_langcodes = array_keys($this->languageManager->getLanguages());
++    if (!empty($site_langcodes)) {
++      foreach ($site_langcodes as $site_langcode) {
++        if (!in_array($site_langcode, $global_langcodes)) {
++          $unsupported_langcodes[] = $site_langcode;
++        }
++      }
++    }
++
++    return $unsupported_langcodes;
++  }
++
+ }
+diff --git a/modules/entity_share_client/src/Service/RemoteManager.php b/modules/entity_share_client/src/Service/RemoteManager.php
+index 405b7aa..0260590 100644
+--- a/modules/entity_share_client/src/Service/RemoteManager.php
++++ b/modules/entity_share_client/src/Service/RemoteManager.php
+@@ -51,8 +51,13 @@ class RemoteManager implements RemoteManagerInterface {
+   public function prepareClient(RemoteInterface $remote) {
+     $http_client = $this->httpClientFactory->fromOptions([
+       'base_uri' => $remote->get('url') . '/',
+-      'cookies' => TRUE,
+-      'allow_redirects' => TRUE,
++      'auth' => [
++        $remote->get('basic_auth_username'),
++        $remote->get('basic_auth_password'),
++      ],
++      'headers' => [
++        'Content-type' => 'application/vnd.api+json',
++      ],
+     ]);
+
+     $http_client->post('user/login', [
+diff --git a/modules/entity_share_client/src/Service/StateInformation.php b/modules/entity_share_client/src/Service/StateInformation.php
+index f11906a..faec452 100644
+--- a/modules/entity_share_client/src/Service/StateInformation.php
++++ b/modules/entity_share_client/src/Service/StateInformation.php
+@@ -93,6 +93,40 @@ class StateInformation implements StateInformationInterface {
+     else {
+       /** @var \Drupal\Core\Entity\ContentEntityInterface $existing_entity */
+       $existing_entity = array_shift($existing_entities);
++      // Check if entity is deleted.
++      if (isset($data['attributes']['field_is_deleted']) && $data['attributes']['field_is_deleted']) {
++        $entity_keys = $entity_storage
++        ->getEntityType()
++        ->getKeys();
++
++        // Case of translatable entity.
++        if (isset($entity_keys['langcode']) && !empty($entity_keys['langcode'])) {
++          // TODO: $resource_type->getPublicName().
++          $entity_language_id = $data['attributes'][$entity_keys['langcode']];
++          $fallback_langcode = $existing_entity->getUntranslated()->language()->getId();
++          // Entity has the original translation.
++          if ($entity_language_id === $existing_entity->getUntranslated()->language()->getId()) {
++            $status_info = [
++              'label' => $this->t('Entities to delete'),
++              'class' => 'entity-share-deleted',
++              'info_id' => StateInformationInterface::INFO_ID_DELETED,
++              'local_entity_link' => $existing_entity->toUrl(),
++              'local_revision_id' => $existing_entity->getRevisionId(),
++            ];
++          }
++          else {
++            $status_info = [
++              'label' => $this->t('Translation to delete'),
++              'class' => 'entity-share-deleted',
++              'info_id' => StateInformationInterface::INFO_ID_DELETED_TRANSLATION,
++              'local_entity_link' => $existing_entity->toUrl(),
++              'local_revision_id' => $existing_entity->getRevisionId(),
++            ];
++          }
++        }
++
++        return $status_info;
++      }
+
+       $resource_type = $this->resourceTypeRepository->get(
+         $parsed_type[0],
+diff --git a/modules/entity_share_client/src/Service/StateInformationInterface.php b/modules/entity_share_client/src/Service/StateInformationInterface.php
+index 5d0cd9b..953479b 100644
+--- a/modules/entity_share_client/src/Service/StateInformationInterface.php
++++ b/modules/entity_share_client/src/Service/StateInformationInterface.php
+@@ -35,6 +35,16 @@ interface StateInformationInterface {
+   const INFO_ID_CHANGED = 'changed';
+
+   /**
++   * The info id in the case of a deleted entity.
++   */
++  const INFO_ID_DELETED = 'deleted';
++
++  /**
++   * The info id in the case of a deleted entity translation.
++   */
++   const INFO_ID_DELETED_TRANSLATION = 'deleted_translation';
++
++  /**
+    * The info id in the case of a synchronized entity or translation.
+    */
+   const INFO_ID_SYNCHRONIZED = 'synchronized';

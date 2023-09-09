@@ -1,0 +1,26 @@
+- name: Copies the self-signed database to the local certificate directory
+  copy:
+    src: /var/www/unicefplatform/certs/root-CA.pem
+    dest: /usr/local/share/ca-certificates/root-CA.crt
+    remote_src: yes
+
+- name: Refreshes the certificate database
+  command: update-ca-certificates
+
+- name: Installs SSL tools
+  command: aptitude -y install libnss3-tools
+
+- name: Initialize .pki directory by using Chrome on an SSL page
+  command: google-chrome --headless https://127.0.0.1
+  become: yes
+  become_user: vagrant
+
+- name: Initialize cert DB
+  shell: "mkdir -p $HOME/.pki/nssdb && certutil -d $HOME/.pki/nssdb -N --empty-password"
+  become: yes
+  become_user: vagrant
+
+- name: Add certificate via certutil too
+  command: certutil -d sql:$HOME/.pki/nssdb -A -t "C,," -n "Local self-signed CA" -i /var/www/unicefplatform/certs/root-CA.pem
+  become: yes
+  become_user: vagrant

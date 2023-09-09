@@ -1,0 +1,30 @@
+uuid: f0e295f4-7798-4593-a519-436e8da7608f
+langcode: pt-br
+status: true
+dependencies:
+  module:
+    - options
+    - user
+id: user.field_user_gender
+field_name: field_user_gender
+entity_type: user
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: male
+      label: Masculino
+    -
+      value: female
+      label: Feminino
+    -
+      value: non-binary
+      label: 'Não binário'
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

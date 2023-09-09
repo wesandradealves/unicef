@@ -1,0 +1,48 @@
+# Application 'onemio', environment 'dev'.
+dev:
+  root: /var/www/html/onemio.dev/docroot
+  ac-site: onemio
+  ac-env: dev
+  ac-realm: devcloud
+  uri: onemiowxi2wwgojv.devcloud.acquia-sites.com
+  dev.livedev:
+    parent: '@onemio.dev'
+    root: /mnt/gfs/onemio.dev/livedev/docroot
+  host: onemiowxi2wwgojv.ssh.devcloud.acquia-sites.com
+  user: onemio.dev
+  paths:
+    drush-script: drush9
+
+
+# Application 'onemio', environment 'prod'.
+prod:
+  root: /var/www/html/onemio.prod/docroot
+  ac-site: onemio
+  ac-env: prod
+  ac-realm: devcloud
+  uri: onemiob7atcz9egq.devcloud.acquia-sites.com
+  prod.livedev:
+    parent: '@onemio.prod'
+    root: /mnt/gfs/onemio.prod/livedev/docroot
+  host: onemiob7atcz9egq.ssh.devcloud.acquia-sites.com
+  user: onemio.prod
+  paths:
+    drush-script: drush9
+
+
+# Application 'onemio', environment 'test'.
+test:
+  root: /var/www/html/onemio.test/docroot
+  ac-site: onemio
+  ac-env: test
+  ac-realm: devcloud
+  uri: onemioxbwdrqfab8.devcloud.acquia-sites.com
+  test.livedev:
+    parent: '@onemio.test'
+    root: /mnt/gfs/onemio.test/livedev/docroot
+  host: onemioxbwdrqfab8.ssh.devcloud.acquia-sites.com
+  user: onemio.test
+  paths:
+    drush-script: drush9
+
+

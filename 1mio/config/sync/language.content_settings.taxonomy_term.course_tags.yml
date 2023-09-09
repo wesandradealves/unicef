@@ -1,0 +1,11 @@
+uuid: e5929678-2934-432b-a3cc-d277d94bffc3
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.course_tags
+id: taxonomy_term.course_tags
+target_entity_type_id: taxonomy_term
+target_bundle: course_tags
+default_langcode: site_default
+language_alterable: false

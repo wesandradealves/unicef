@@ -1,0 +1,10 @@
+uuid: 0a4bb5ea-1552-4b5a-8859-7e1cb5d41475
+langcode: pt-br
+status: true
+dependencies: {  }
+id: paragraph_social
+label: 'Rede Social'
+icon_uuid: null
+icon_default: null
+description: 'Campo definido para cadastro das redes sociais do usuários.'
+behavior_plugins: {  }

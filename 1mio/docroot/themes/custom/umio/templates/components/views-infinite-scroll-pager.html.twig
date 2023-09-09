@@ -1,0 +1,25 @@
+{#
+/**
+ * @file
+ * The views infinite scroll pager template.
+ */
+#}
+
+{%
+  set classes = [
+    'umio-button-see-more',
+    'd-flex',
+    'justify-content-center'
+  ]
+%}
+
+{% if items.next %}
+<ul{{ attributes.addClass(classes) }}>
+  <li class="pager__item">
+    <a class="button" href="{{ items.next.href }}" title="{{ 'Load more items'|t }}" rel="next">
+      <i class="ph-arrow-circle-down"></i>
+      {{ options.button_text }}
+    </a>
+  </li>
+</ul>
+{% endif %}

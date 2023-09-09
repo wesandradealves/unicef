@@ -1,0 +1,11 @@
+umio_younger.task_feed_general:
+  route_name: view.feeds_jovens.feed_general
+  title: General opportunities
+  base_route: view.feeds_jovens.feed_general
+  weight: 10
+
+umio_younger.task_feed_skills:
+  route_name: view.feeds_jovens.feed_skills
+  title: My opportunities
+  base_route: view.feeds_jovens.feed_general
+  weight: 20

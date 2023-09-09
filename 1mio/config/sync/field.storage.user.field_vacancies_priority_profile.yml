@@ -1,0 +1,21 @@
+uuid: 9e88e8c1-4145-4a62-83e1-d620f12e70c5
+langcode: pt-br
+status: true
+dependencies:
+  module:
+    - entity_reference_revisions
+    - paragraphs
+    - user
+id: user.field_vacancies_priority_profile
+field_name: field_vacancies_priority_profile
+entity_type: user
+type: entity_reference_revisions
+settings:
+  target_type: paragraph
+module: entity_reference_revisions
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

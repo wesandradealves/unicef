@@ -1,0 +1,62 @@
+uuid: 5cf9c02f-c126-466a-9c96-f1c2c6707483
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_paragraph_address
+    - paragraphs.paragraphs_type.paragraph_address
+  module:
+    - address
+id: paragraph.paragraph_address.field_paragraph_address
+field_name: field_paragraph_address
+entity_type: paragraph
+bundle: paragraph_address
+label: Endereco
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    langcode: ''
+    country_code: BR
+    administrative_area: ''
+    locality: null
+    dependent_locality: ''
+    postal_code: ''
+    sorting_code: null
+    address_line1: ''
+    address_line2: ''
+    organization: null
+    given_name: null
+    additional_name: null
+    family_name: null
+default_value_callback: ''
+settings:
+  available_countries:
+    BR: BR
+  langcode_override: ''
+  field_overrides:
+    givenName:
+      override: hidden
+    additionalName:
+      override: hidden
+    familyName:
+      override: hidden
+    organization:
+      override: hidden
+    addressLine1:
+      override: optional
+    addressLine2:
+      override: optional
+    postalCode:
+      override: optional
+    sortingCode:
+      override: hidden
+    dependentLocality:
+      override: optional
+    locality:
+      override: required
+    administrativeArea:
+      override: required
+  fields: {  }
+field_type: address

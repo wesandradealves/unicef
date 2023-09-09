@@ -1,0 +1,23 @@
+uuid: 76845a8f-311d-4465-9114-ea5566a460b3
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_originating_populations
+    - paragraphs.paragraphs_type.counter_priority_profiles
+id: paragraph.counter_priority_profiles.field_originating_populations
+field_name: field_originating_populations
+entity_type: paragraph
+bundle: counter_priority_profiles
+label: 'Populações originárias (indígenas, quilombolas e ribeirinhos)'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: 0
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

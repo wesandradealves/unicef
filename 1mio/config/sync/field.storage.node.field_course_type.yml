@@ -1,0 +1,33 @@
+uuid: a46b3526-3ff9-4c78-bef8-7f0d93361ba1
+langcode: pt-br
+status: true
+dependencies:
+  module:
+    - node
+    - options
+id: node.field_course_type
+field_name: field_course_type
+entity_type: node
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: Curso
+      label: Curso
+    -
+      value: Congresso
+      label: Congresso
+    -
+      value: Evento
+      label: Evento
+    -
+      value: Palestra
+      label: Palestra
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

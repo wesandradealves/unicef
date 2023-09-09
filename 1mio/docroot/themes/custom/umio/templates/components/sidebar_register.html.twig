@@ -1,0 +1,43 @@
+{#
+/**
+ * @file
+ * Default theme implementation for a region.
+ *
+ * Available variables:
+ * - content: The content for this region, typically blocks.
+ * - attributes: Remaining HTML attributes for the element, including:
+ *   - class: HTML classes that can be used to style contextually through CSS.
+ *
+ * @see template_preprocess_region()
+ *
+ * @ingroup themeable
+ */
+#}
+
+<div class="sidebar-progress col container-steps-{{ steps|length }}">
+  <div class="content-btn-logo d-flex d-md-block">
+    <a href='/'>
+      <img src="{{ base_path ? base_path : '/' }}{{ directory }}/images/logo.png" alt="" width="115" height="64" class="logo d-none d-md-block" />
+    </a>
+    <h1 class="title-progress">{{ title }}</h1>
+  </div>
+
+  <div class="content-progress-bar">
+    <ul class="by-step-progress-bar d-flex d-md-block m-0">
+      {% for step in steps %}
+        <li class="{{ step.active ? 'active' : '' }} {{ step.done ? 'done' : '' }}">
+          <span class="icon-progress-bar">
+            {% if step.done %}
+              <i class="ph-check svg-white svg-icon-check"></i>
+            {% elseif step.active %}
+              <i class="{{ step.icon }} svg-white svg-progress-white"></i>
+            {% else %}
+              <i class="{{ step.icon }} svg-gray svg-progress-default"></i>
+            {% endif %}
+          </span>
+          <span class="title-progress-bar">{{ step.text }}</span>
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>

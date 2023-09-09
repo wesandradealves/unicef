@@ -1,0 +1,15 @@
+services:
+  umio_comments.route.subscriber.change_permissions_comments:
+    class: Drupal\umio_comments\Routing\CommentsPermissionsRouteSubscriber
+    tags:
+      - { name: event_subscriber }
+
+  # Access Check
+  umio_comments.comment_delete_access_check:
+    class: Drupal\umio_comments\Access\CommentsDeleteAccessCheck
+    arguments: [
+      '@current_route_match',
+      '@company.company_service'
+    ]
+    tags:
+      - { name: access_check, applies_to: _comment_delete }

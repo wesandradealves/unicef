@@ -1,0 +1,21 @@
+uuid: f0cd47ed-e764-409a-be9f-78a9467747d3
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_education_begin
+    - paragraphs.paragraphs_type.educational_formation
+  module:
+    - datetime
+id: paragraph.educational_formation.field_education_begin
+field_name: field_education_begin
+entity_type: paragraph
+bundle: educational_formation
+label: Início
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: datetime

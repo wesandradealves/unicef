@@ -1,0 +1,235 @@
+uuid: 5e740321-0239-40ea-8ab6-a9aee1c87c93
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - field.field.node.vacancy.field_vacancy_activities
+    - field.field.node.vacancy.field_vacancy_audio
+    - field.field.node.vacancy.field_vacancy_benefits
+    - field.field.node.vacancy.field_vacancy_city
+    - field.field.node.vacancy.field_vacancy_closing_date
+    - field.field.node.vacancy.field_vacancy_company
+    - field.field.node.vacancy.field_vacancy_job_model
+    - field.field.node.vacancy.field_vacancy_justify
+    - field.field.node.vacancy.field_vacancy_priority_profiles
+    - field.field.node.vacancy.field_vacancy_qr_code
+    - field.field.node.vacancy.field_vacancy_quantity
+    - field.field.node.vacancy.field_vacancy_salary
+    - field.field.node.vacancy.field_vacancy_salary_max
+    - field.field.node.vacancy.field_vacancy_salary_min
+    - field.field.node.vacancy.field_vacancy_salary_options
+    - field.field.node.vacancy.field_vacancy_skills_match
+    - field.field.node.vacancy.field_vacancy_state
+    - field.field.node.vacancy.field_vacancy_subscription_url
+    - field.field.node.vacancy.field_vacancy_type
+    - field.field.node.vacancy.field_vacancy_video
+    - node.type.vacancy
+  module:
+    - conditional_fields
+    - datetime
+    - link
+    - maxlength
+    - select2
+    - umio_helpers
+id: node.vacancy.default
+targetEntityType: node
+bundle: vacancy
+mode: default
+content:
+  field_vacancy_activities:
+    type: string_textarea
+    weight: 4
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings:
+      maxlength:
+        maxlength_js: 500
+        maxlength_js_label: ' '
+        maxlength_js_enforce: false
+        maxlength_js_truncate_html: false
+  field_vacancy_benefits:
+    type: select2_entity_reference
+    weight: 14
+    region: content
+    settings:
+      width: 100%
+      autocomplete: false
+      match_operator: CONTAINS
+      match_limit: 10
+    third_party_settings: {  }
+  field_vacancy_city:
+    type: options_select
+    weight: 9
+    region: content
+    settings: {  }
+    third_party_settings:
+      conditional_fields: {  }
+  field_vacancy_closing_date:
+    type: datetime_default
+    weight: 5
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_vacancy_company:
+    type: select2_entity_reference
+    weight: 16
+    region: content
+    settings:
+      width: 100%
+      autocomplete: false
+      match_operator: CONTAINS
+      match_limit: 10
+    third_party_settings: {  }
+  field_vacancy_job_model:
+    type: options_select
+    weight: 1
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_vacancy_priority_profiles:
+    type: options_buttons
+    weight: 15
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_vacancy_quantity:
+    type: range_custom
+    weight: 3
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_vacancy_salary:
+    type: number
+    weight: 11
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings:
+      conditional_fields:
+        38608b00-be06-4327-86bd-65e8db6f3295:
+          entity_type: node
+          bundle: vacancy
+          dependee: field_vacancy_salary_options
+          settings:
+            state: visible
+            condition: value
+            grouping: AND
+            values_set: 1
+            value: ''
+            values: {  }
+            value_form:
+              -
+                value: unique
+            effect: show
+            effect_options: {  }
+            selector: ''
+  field_vacancy_salary_max:
+    type: number
+    weight: 13
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings:
+      conditional_fields:
+        3592e25c-4548-428b-ac98-468b8b496f57:
+          entity_type: node
+          bundle: vacancy
+          dependee: field_vacancy_salary_options
+          settings:
+            state: visible
+            condition: value
+            grouping: AND
+            values_set: 1
+            value: ''
+            values: {  }
+            value_form:
+              -
+                value: min_max
+            effect: show
+            effect_options: {  }
+            selector: ''
+  field_vacancy_salary_min:
+    type: number
+    weight: 12
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings:
+      conditional_fields:
+        098623c3-9f42-4288-a6d3-42c176923172:
+          entity_type: node
+          bundle: vacancy
+          dependee: field_vacancy_salary_options
+          settings:
+            state: visible
+            condition: value
+            grouping: AND
+            values_set: 1
+            value: ''
+            values: {  }
+            value_form:
+              -
+                value: min_max
+            effect: show
+            effect_options: {  }
+            selector: ''
+  field_vacancy_salary_options:
+    type: options_buttons
+    weight: 10
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_vacancy_skills_match:
+    type: select2
+    weight: 6
+    region: content
+    settings:
+      width: 100%
+    third_party_settings: {  }
+  field_vacancy_state:
+    type: options_select
+    weight: 8
+    region: content
+    settings: {  }
+    third_party_settings:
+      conditional_fields: {  }
+  field_vacancy_subscription_url:
+    type: link_default
+    weight: 7
+    region: content
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings:
+      maxlength:
+        maxlength_js: null
+        maxlength_js_label: ''
+  field_vacancy_type:
+    type: options_select
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  title:
+    type: string_textfield
+    weight: 2
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  created: true
+  field_vacancy_audio: true
+  field_vacancy_justify: true
+  field_vacancy_qr_code: true
+  field_vacancy_video: true
+  langcode: true
+  moderation_state: true
+  path: true
+  promote: true
+  status: true
+  sticky: true
+  uid: true

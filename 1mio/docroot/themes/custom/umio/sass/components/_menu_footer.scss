@@ -1,0 +1,39 @@
+.menu--footer {
+  box-shadow: none;
+  background-color: initial;
+
+  .container {
+    padding: 0;
+  }
+
+  .navbar-nav {
+    flex-direction: column;
+    width: 100%;
+    margin-left: 0;
+
+    .menu-item {
+      border-top: 0.5px solid $gray-primary-50;
+
+      .nav-link {
+        font-weight: 700;
+        font-size: 15px;
+        color: $gray-primary-50;
+        text-decoration: underline;
+        padding: 20px 0;
+
+        &:hover {
+          background-color: initial;
+        }
+      }
+    }
+
+    &:last-child {
+      border-bottom: 0.5px solid $gray-primary-50;
+    }
+
+    &:first-child .nav-link {
+      margin-left: 0;
+      padding-left: 0;
+    }
+  }
+}

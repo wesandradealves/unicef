@@ -1,0 +1,52 @@
+uuid: 01942815-369d-40b0-ac89-7bece445d3a1
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_educational_training
+    - paragraphs.paragraphs_type.educational_formation
+    - paragraphs.paragraphs_type.paragraph_trajectory
+  module:
+    - entity_reference_revisions
+id: paragraph.paragraph_trajectory.field_educational_training
+field_name: field_educational_training
+entity_type: paragraph
+bundle: paragraph_trajectory
+label: Formação
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    target_bundles:
+      educational_formation: educational_formation
+    negate: 0
+    target_bundles_drag_drop:
+      courses_and_abilities:
+        weight: 9
+        enabled: false
+      curriculum:
+        weight: 10
+        enabled: false
+      educational_formation:
+        weight: 11
+        enabled: true
+      experience:
+        weight: 12
+        enabled: false
+      paragraph_address:
+        weight: 13
+        enabled: false
+      paragraph_social:
+        weight: 14
+        enabled: false
+      paragraph_trajectory:
+        weight: 15
+        enabled: false
+      paragraph_volunteer_work:
+        weight: 16
+        enabled: false
+field_type: entity_reference_revisions
